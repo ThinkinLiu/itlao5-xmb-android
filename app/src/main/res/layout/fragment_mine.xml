@@ -1,0 +1,254 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.e7yoo.e7.fragment.MineFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/titlebar_bg"
+                android:gravity="center">
+
+                <com.e7yoo.e7.view.CircleImageView
+                    android:id="@+id/mine_icon2"
+                    android:layout_width="@dimen/mine_icon"
+                    android:layout_height="@dimen/mine_icon"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/icon_me"
+                    app:civ_border_color="@color/white_translucent"
+                    app:civ_border_overlay="false"
+                    app:civ_border_width="@dimen/space_half"
+                    app:civ_fill_color="@color/white" />
+                <!--<com.e7yoo.e7.view.CircleImageView
+                    android:id="@+id/mine_icon"
+                    android:layout_width="@dimen/mine_icon"
+                    android:layout_height="@dimen/mine_icon"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon" />-->
+
+                <TextView
+                    android:id="@+id/mine_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mine_icon2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/space_3x"
+                    android:text="@string/mine_login_hint"
+                    android:textColor="@color/white_translucent"
+                    android:textSize="@dimen/size_xl" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:background="@color/color_seperator" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:layout_marginTop="@dimen/space_2x"
+                android:background="@color/color_seperator" />
+
+            <LinearLayout
+                android:id="@+id/mine_page_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_selector"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_3x">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/space_2x"
+                    android:layout_marginRight="@dimen/space_4x"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="@string/mine_page"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/size_xl" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="@color/text_h"
+                    android:textSize="@dimen/size_xl" />
+
+                <ImageView
+                    android:layout_width="@dimen/array"
+                    android:layout_height="@dimen/array"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:background="@color/color_seperator" />
+
+            <LinearLayout
+                android:id="@+id/mine_msg_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_selector"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_3x">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/space_2x"
+                    android:layout_marginRight="@dimen/space_4x"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="@string/mine_msg"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/size_xl" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="@color/text_h"
+                    android:textSize="@dimen/size_xl" />
+
+                <ImageView
+                    android:layout_width="@dimen/array"
+                    android:layout_height="@dimen/array"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:background="@color/color_seperator" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:layout_marginTop="@dimen/space_2x"
+                android:background="@color/color_seperator" />
+
+            <LinearLayout
+                android:id="@+id/mine_set_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_selector"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_3x">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/space_2x"
+                    android:layout_marginRight="@dimen/space_4x"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="@string/mine_set"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/size_xl" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="@color/text_h"
+                    android:textSize="@dimen/size_xl" />
+
+                <ImageView
+                    android:layout_width="@dimen/array"
+                    android:layout_height="@dimen/array"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:background="@color/color_seperator" />
+
+            <LinearLayout
+                android:id="@+id/mine_about_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_selector"
+                android:orientation="horizontal"
+                android:padding="@dimen/space_3x">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/space_2x"
+                    android:layout_marginRight="@dimen/space_4x"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="@string/mine_about"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/size_xl" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="@color/text_h"
+                    android:textSize="@dimen/size_xl" />
+
+                <ImageView
+                    android:layout_width="@dimen/array"
+                    android:layout_height="@dimen/array"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:background="@color/color_seperator" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>

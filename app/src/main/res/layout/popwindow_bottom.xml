@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/pop_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/popwindow_bg"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/pop_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingTop="@dimen/space_2x"
+            android:paddingBottom="@dimen/space_2x"
+            android:paddingLeft="@dimen/space_6x"
+            android:paddingRight="@dimen/space_6x"
+            android:textColor="@color/text_l"
+            android:textSize="@dimen/size_s"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/pop_seperator1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_1dp"
+            android:background="@color/color_seperator"
+            android:visibility="gone" />
+        
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pop_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_2x"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/space_3x"
+        android:text="@string/cancel"
+        android:textColor="@color/text_h"
+        android:textSize="@dimen/size_l" />
+
+</LinearLayout>

@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">小萌伴</string>
+    <string name="mengmeng">萌萌</string>
+    <string name="title_home">伴侣</string>
+    <string name="title_circle">萌圈</string>
+    <string name="title_more">百宝箱</string>
+    <string name="title_mine">我的</string>
+    <string name="loading">加载中...</string>
+    <string name="loading_up_load_more">上拉加载更多...</string>
+    <string name="loading_no_more">没有更多</string>
+    <string name="item_robot_add">更多萌伴</string>
+    <string name="app_exit">再按一次退出小萌伴</string>
+
+    <string name="title_add_robot">添加萌伴</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tuling_exception">我有点头晕，暂时回答不了您的问题</string>
+    <string name="chat_input_edit_hint">想聊点啥呢...</string>
+    <string name="history_message_nomore">没有更多历史消息</string>
+    <string name="net_no">网络不给力哦o(╥﹏╥)o</string>
+    <string name="joke_happy">开心一刻</string>
+    <string name="joke_parse_error">不开心，不想说笑话了，陪我聊聊其它的o(╥﹏╥)o</string>
+    <string name="mengmeng_welcome">闲暇时光，有我陪你！</string>
+
+    <string name="add_robot_icon">头像</string>
+    <string name="add_robot_name">昵称</string>
+    <string name="add_robot_sex">性别</string>
+    <string name="add_robot_welcome">签名</string>
+    <string name="add_robot_bg">背景</string>
+    <string name="add">添加</string>
+    <string name="more_news">新闻资讯</string>
+    <string name="more_history">历史今日</string>
+    <string name="more_game">小游戏</string>
+    <string name="more_light">手电筒</string>
+    <string name="more_findphone">找手机</string>
+    <string name="more_news_center">资讯中心</string>
+    <string name="more_game_center">娱乐中心</string>
+    <string name="more_app_center">应用中心</string>
+    <string name="add_robot_name_empty">名字不能为空</string>
+    <string name="add_robot_title_robot">萌伴</string>
+    <string name="save">保存</string>
+    <string name="input_is_empty">输入内容不能为空</string>
+    <string name="sex_male">男</string>
+    <string name="sex_female">女</string>
+    <string name="sex_unknow">保密</string>
+    <string name="input_name_hint">为您的萌伴取个名吧</string>
+    <string name="input_welcome_hint">萌伴希望有一条帅气的个性签名哦</string>
+    <string name="sex_hint">您的萌伴是男是女，不会是中性吧^_^</string>
+    <string name="input_error">"萌萌"已经存在，换个更有爱的名字吧^_^</string>
+
+
+    <string name="mine_login_hint">注册/登录</string>
+    <string name="mine_page">私人空间</string>
+    <string name="mine_msg">消息资讯</string>
+    <string name="mine_set">个性设置</string>
+    <string name="mine_about">关于我们</string>
+
+
+    <string name="gamelist">【小萌伴】游戏中心</string>
+    <string name="gamelist_game2048">2048</string>
+    <string name="gamelist_killbird">防御小鸟</string>
+    <string name="gamelist_plane">飞机大战</string>
+    <string name="gamelist_more">更多游戏</string>
+    <string name="game2048">【小萌伴】游戏：2048</string>
+    <string name="game_2048_score">分数：  </string>
+    <string name="game_2048_change_column">切换为%1$dx%2$d方格</string>
+    <string name="game_exit">再按一次退出游戏</string>
+    <string name="game_start">开始游戏</string>
+    <string name="game_share_text">我在【小萌伴】游戏中心玩%1$s，当前分：%2$s,求挑战，求超越！</string>
+
+
+    <string name="open_news_failed">进入新闻详情失败,该条新闻可能已经被删除。。。</string>
+    <string name="open_history_details_failed">进入详情失败,请稍后重试。。。</string>
+    <string name="today_history">历史上的今天</string>
+    <string name="details">详情</string>
+    <string name="progress_ing">查询中...</string>
+    <string name="save_success">保存成功</string>
+    <string name="save_to_phone">保存到手机</string>
+    <string name="cancel">取消</string>
+    <string name="save_pictrue_hint">图片存储…</string>
+    <string name="news_from">来源：</string>
+    <string name="detail_no_content">您没有收藏</string>
+    <string name="favorites_fai">收藏失败</string>
+    <string name="favorites_suc">收藏成功</string>
+    <string name="favorite_time_hint">收藏于：</string>
+    <string name="flashlight">手电筒</string>
+    <string name="flashlight_set">手电筒设置</string>
+    <string name="flashlight_open_error">Camera异常，萌萌不能为您打开手电筒,请检查是否禁止了【小萌伴】的相机权限</string>
+    <string name="flashlight_no">您的手机不支持手电筒</string>
+    <string name="notification_text">点击关闭手电筒</string>
+    <string name="dialog_notify_hint_title">小萌伴</string>
+    <string name="dialog_notify_hint">是否前往打开通知权限，以便正常查看操作提示!</string>
+    <string name="goto_open">前往打开</string>
+    <string name="goto_ignore">忽略</string>
+    <string name="dialog_camera_hint">您禁止了相机权限，将导致手电筒功能不能使用</string>
+    <string name="dialog_camera_hint_title">提示</string>
+    <string name="dialog_shot_cut_hint">您禁止了创建快捷图标权限，无法为你创建手电筒桌面快捷图标</string>
+    <string name="dialog_shot_cut_hint_title">提示</string>
+</resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_selector"
+    android:padding="@dimen/space_2x">
+
+    <ImageView
+        android:id="@+id/item_robot_icon"
+        android:layout_width="@dimen/item_robot_icon"
+        android:layout_height="@dimen/item_robot_icon"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/space"
+        android:src="@mipmap/icon" />
+
+    <ImageView
+        android:id="@+id/item_robot_sex"
+        android:layout_width="@dimen/item_robot_sex"
+        android:layout_height="@dimen/item_robot_sex"
+        android:layout_marginLeft="@dimen/space_3x"
+        android:layout_toRightOf="@id/item_robot_icon"
+        android:src="@mipmap/sex_female_selected" />
+
+    <TextView
+        android:id="@+id/item_robot_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space"
+        android:layout_toLeftOf="@+id/item_robot_time"
+        android:layout_toRightOf="@id/item_robot_sex"
+        android:includeFontPadding="false"
+        android:text="@string/mengmeng"
+        android:textColor="@color/text"
+        android:textSize="@dimen/size_3xl" />
+
+    <TextView
+        android:id="@+id/item_robot_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_robot_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/space_3x"
+        android:includeFontPadding="false"
+        android:text=""
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_m" />
+
+    <TextView
+        android:id="@+id/item_robot_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_robot_icon"
+        android:layout_alignLeft="@id/item_robot_sex"
+        android:includeFontPadding="false"
+        android:text=""
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_l"
+        android:layout_marginBottom="@dimen/space"/>
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="titlebar_bg">#35ac55</color>
+    <color name="titlebar_title">#ffffff</color>
+    <color name="titlebar_text">#cccccc</color>
+
+    <color name="chat_input_edit_bg">#ffffff</color>
+    <color name="chat_input_more_bg">#cccccc</color>
+
+    <color name="text_c">#cccccc</color>
+    <color name="text_l">#999999</color>
+    <color name="text">#666666</color>
+    <color name="text_h">#333333</color>
+
+    <color name="color_green_h">#90ff02</color>
+    <color name="color_seperator">#d7d7d7</color>
+    <color name="white">#ffffff</color>
+
+    <color name="item_selected">#33a6ff02</color>
+    <color name="item_unselected">#ffffff</color>
+    <color name="item_unselected2">#00ffffff</color>
+
+    <color name="white_translucent">#88ffffff</color>
+    <color name="gray_translucent">#88eeeeee</color>
+    <color name="blue_translucent">#88007bff</color>
+
+    <color name="blue">#007bff</color>
+
+    <color name="bottom_navigation_color_checked">#35ac55</color>
+    <color name="bottom_navigation_color_unchecked">#666666</color>
+    <color name="bottom_navigation_color_backgroud">#90ff02</color>
+    <color name="backgroud">#eeeeee</color>
+
+</resources>

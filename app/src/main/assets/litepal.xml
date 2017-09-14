@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="e7yoo"></dbname>
+    <version value="1"></version>
+    <list>
+        <mapping class="com.e7yoo.e7.Msg"></mapping>
+        <mapping class="com.e7yoo.e7.User"></mapping>
+    </list>
+</litepal>

@@ -1,0 +1,214 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.e7yoo.e7.GameListActivity">
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4x"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_3x"
+                android:layout_marginLeft="@dimen/space_3x"
+                android:layout_marginRight="@dimen/space_3x"
+                android:layout_marginTop="@dimen/space"
+                android:background="@drawable/rounded_corners_tag_white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/gamelist_2048_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/gamelist_game2048"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="@color/text_h"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+
+                <LinearLayout
+                    android:id="@+id/gamelist_killbird_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/gamelist_killbird"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="@color/text_h"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+
+                <LinearLayout
+                    android:id="@+id/gamelist_plane_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/gamelist_plane"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="@color/text_h"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+
+                <LinearLayout
+                    android:id="@+id/gamelist_more_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/gamelist_more"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="@color/text_h"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

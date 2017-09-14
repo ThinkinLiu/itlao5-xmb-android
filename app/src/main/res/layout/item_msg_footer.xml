@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/item_msg_footer_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="@dimen/space"
+        android:paddingBottom="@dimen/space"
+        android:paddingLeft="@dimen/space_3x"
+        android:paddingRight="@dimen/space_3x"
+        android:layout_margin="@dimen/space"
+        android:background="@drawable/rounded_corners_tag_gray_trans">
+        <ProgressBar
+            android:id="@+id/item_msg_loading_progressbar"
+            android:layout_width="@dimen/footer_loading_progress"
+            android:layout_height="@dimen/footer_loading_progress"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/space_2x"
+            android:indeterminateDrawable="@drawable/progressbar_item_msg_footer"
+            android:indeterminateDuration="600" />
+
+        <TextView
+            android:id="@+id/item_msg_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@string/loading"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_m" />
+    </LinearLayout>
+
+</RelativeLayout>

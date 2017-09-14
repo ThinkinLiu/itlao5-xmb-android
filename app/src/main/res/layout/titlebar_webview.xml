@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/titlebar_height"
+    android:background="@color/titlebar_bg"
+    android:paddingLeft="@dimen/space">
+
+    <TextView
+        android:id="@+id/titlebar_left_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@mipmap/ic_arrow_back_white_24dp"
+        android:drawablePadding="@dimen/space"
+        android:gravity="center"
+        android:paddingLeft="@dimen/space_2x"
+        android:textColor="@color/titlebar_text"
+        android:textSize="@dimen/size_l" />
+
+    <TextView
+        android:id="@+id/titlebar_left_tv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@mipmap/close_24dp"
+        android:layout_toRightOf="@id/titlebar_left_tv"
+        android:drawablePadding="@dimen/space"
+        android:gravity="center"
+        android:paddingLeft="@dimen/space_2x"
+        android:textColor="@color/titlebar_text"
+        android:textSize="@dimen/size_l" />
+
+    <TextView
+        android:id="@+id/titlebar_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="left|center_vertical"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/space_3x"
+        android:paddingRight="@dimen/space_3x"
+        android:layout_toRightOf="@id/titlebar_left_tv_close"
+        android:layout_toLeftOf="@+id/titlebar_right_tv"
+        android:text="@string/app_name"
+        android:textColor="@color/titlebar_title"
+        android:textSize="@dimen/size_4xl" />
+
+    <TextView
+        android:id="@+id/titlebar_right_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:drawablePadding="@dimen/space"
+        android:drawableRight="@mipmap/ic_menu_white_24dp"
+        android:gravity="center"
+        android:paddingRight="@dimen/space_3x"
+        android:textColor="@color/titlebar_text"
+        android:textSize="@dimen/size_l" />
+</RelativeLayout>

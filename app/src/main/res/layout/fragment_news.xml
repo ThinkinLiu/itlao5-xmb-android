@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	    android:layout_marginBottom="@dimen/space_100dp">
+	    <ImageView
+	        android:id="@+id/detail_loading"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:src="@mipmap/log_e7yoo_transport" />
+	    
+	    <TextView
+	        android:id="@+id/detail_no_content"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_below="@id/detail_loading"
+			android:textSize="@dimen/size_m"
+			android:textColor="@color/text"
+			android:text="@string/detail_no_content"
+			android:visibility="gone"
+			android:gravity="center_horizontal"
+			android:layout_centerHorizontal="true" />
+	</RelativeLayout>
+
+    <com.e7yoo.e7.view.HeadListView
+        android:id="@+id/mListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:fadingEdge="none"
+        android:scrollbars="none" />
+
+</RelativeLayout>

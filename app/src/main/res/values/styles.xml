@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/titlebar_bg</item>
+        <item name="colorPrimaryDark">@color/titlebar_bg</item>
+        <item name="colorAccent">@color/titlebar_bg</item>
+        <item name="android:windowBackground">@color/backgroud</item>
+    </style>
+
+    <style name="myProgressBarStyle">
+        <item name="android:indeterminateDrawable">@drawable/progress_anim</item>
+        <item name="android:minWidth">54dip</item>
+        <item name="android:maxWidth">54dip</item>
+        <item name="android:minHeight">54dip</item>
+        <item name="android:maxHeight">54dip</item>
+    </style>
+
+    <style name="top_category_scroll_view_item_text">
+        <item name="android:textSize">16.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

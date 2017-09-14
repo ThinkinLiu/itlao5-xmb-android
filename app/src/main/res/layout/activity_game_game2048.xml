@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroud"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical" >
+
+        <include layout="@layout/titlebar" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/space_1dp"
+            android:background="@color/color_seperator" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_3x"
+                android:text="@string/game_2048_score"
+                android:textColor="@color/text"
+                android:textSize="@dimen/size_xl" />
+
+            <TextView
+                android:id="@+id/tvScore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_2x"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/text_h"
+                android:textSize="@dimen/size_2xl" />
+
+            <TextView
+                android:id="@+id/change_column"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="@dimen/space_3x"
+                android:text="@string/game_2048_change_column"
+                android:textColor="@color/titlebar_bg"
+                android:textSize="@dimen/size_2xl" />
+        </LinearLayout>
+
+        <com.e7yoo.e7.game.game2048.GameView
+            android:id="@+id/gameView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/space_2x"
+            android:layout_marginRight="@dimen/space_2x"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/my_usertime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="48sp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

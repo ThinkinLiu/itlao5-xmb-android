@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space_2x">
+
+    <TextView
+        android:id="@+id/item_msg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_corners_tag_gray_trans"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/text"
+        android:paddingTop="@dimen/space"
+        android:paddingBottom="@dimen/space"
+        android:paddingLeft="@dimen/space_3x"
+        android:paddingRight="@dimen/space_3x"
+        android:textSize="@dimen/size_m" />
+
+    <TextView
+        android:id="@+id/item_msg_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_msg_time"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_corners_tag_gray_trans"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/text"
+        android:paddingTop="@dimen/space"
+        android:paddingBottom="@dimen/space"
+        android:paddingLeft="@dimen/space_3x"
+        android:paddingRight="@dimen/space_3x"
+        android:textSize="@dimen/size_m" />
+
+</RelativeLayout>

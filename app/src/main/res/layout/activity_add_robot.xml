@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.e7yoo.e7.AddRobotActivity">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_4x"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_3x"
+                android:background="@drawable/rounded_corners_tag_white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/add_robot_icon_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/add_robot_icon"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:id="@+id/add_robot_icon_iv"
+                        android:layout_width="@dimen/add_robot_icon"
+                        android:layout_height="@dimen/add_robot_icon"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|right"
+                        android:src="@mipmap/icon" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+
+                <LinearLayout
+                    android:id="@+id/add_robot_name_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/add_robot_name"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <TextView
+                        android:id="@+id/add_robot_name_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/text_h"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:id="@+id/add_robot_name_arrow"
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+
+                <LinearLayout
+                    android:id="@+id/add_robot_sex_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/add_robot_sex"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <TextView
+                        android:id="@+id/add_robot_sex_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/sex_unknow"
+                        android:textColor="@color/text_h"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+
+                <LinearLayout
+                    android:id="@+id/add_robot_welcome_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/add_robot_welcome"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <TextView
+                        android:id="@+id/add_robot_welcome_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/text_h"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+                <LinearLayout
+                    android:id="@+id/add_robot_bg_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/add_robot_bg"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ImageView
+                        android:id="@+id/add_robot_bg_iv"
+                        android:layout_width="@dimen/add_robot_icon"
+                        android:layout_height="@dimen/add_robot_icon"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|right" />
+
+                    <ImageView
+                        android:layout_width="@dimen/array"
+                        android:layout_height="@dimen/array"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/add_robot_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_4x"
+                android:background="@drawable/rounded_corners_tag_green"
+                android:gravity="center"
+                android:padding="@dimen/space_3x"
+                android:text="@string/add"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_2xl" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

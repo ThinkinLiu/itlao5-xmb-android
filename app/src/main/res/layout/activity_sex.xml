@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.e7yoo.e7.SexActivity">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <RadioGroup
+        android:id="@+id/sex_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space_6x"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/sex_radio_btn_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_2x"
+            android:background="@null"
+            android:button="@null"
+            android:drawableLeft="@drawable/radio_btn_selector"
+            android:drawablePadding="@dimen/space_2x"
+            android:text="@string/sex_male" />
+
+        <RadioButton
+            android:id="@+id/sex_radio_btn_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_2x"
+            android:background="@null"
+            android:button="@null"
+            android:drawableLeft="@drawable/radio_btn_selector"
+            android:drawablePadding="@dimen/space_2x"
+            android:text="@string/sex_female" />
+
+        <RadioButton
+            android:id="@+id/sex_radio_btn_unknow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_2x"
+            android:background="@null"
+            android:button="@null"
+            android:checked="true"
+            android:drawableLeft="@drawable/radio_btn_selector"
+            android:drawablePadding="@dimen/space_2x"
+            android:text="@string/sex_unknow" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/input_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/space_6x"
+        android:layout_marginTop="@dimen/space_3x"
+        android:text="@string/sex_hint"
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_m" />
+</LinearLayout>

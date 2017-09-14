@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    tools:context="com.e7yoo.e7.ChatActivity">
+
+    <ImageView
+        android:id="@+id/chat_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/chat_sr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chat_input_layout"
+        android:layout_below="@id/titleBar"
+        android:scrollbars="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chat_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/chat_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:id="@+id/chat_input_edit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/chat_input_edit_bg"
+            android:padding="@dimen/space_2x">
+
+            <ImageView
+                android:id="@+id/chat_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/space"
+                app:srcCompat="@drawable/ic_keyboard_voice_black_24dp" />
+
+            <EditText
+                android:id="@+id/chat_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/space_2x"
+                android:layout_marginRight="@dimen/space_2x"
+                android:layout_toLeftOf="@+id/chat_send_or_more"
+                android:layout_toRightOf="@id/chat_voice"
+                android:background="@drawable/rounded_corners_tag_white"
+                android:hint="@string/chat_input_edit_hint"
+                android:maxLength="30"
+                android:maxLines="4"
+                android:padding="@dimen/space_2x"
+                android:text=""
+                android:textColor="@color/text"
+                android:textColorHint="@color/text_l"
+                android:textSize="@dimen/size_m" />
+
+            <ImageView
+                android:id="@+id/chat_send_or_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/space"
+                app:srcCompat="@drawable/ic_add_circle_outline_black_24dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/chat_input_more_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chat_input_edit_layout"
+            android:background="@color/chat_input_more_bg"
+            android:visibility="gone">
+
+            <GridView
+                android:id="@+id/chat_input_more_gv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/space_2x"
+                android:cacheColorHint="@android:color/transparent"
+                android:fadingEdge="none"
+                android:gravity="center"
+                android:numColumns="4"
+                android:scrollbars="none"
+                android:verticalSpacing="@dimen/space_2x" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>
