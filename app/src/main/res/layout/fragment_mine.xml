@@ -44,10 +44,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/mine_icon2"
                     android:layout_centerHorizontal="true"
-                    android:layout_margin="@dimen/space_3x"
+                    android:layout_margin="@dimen/space_2x"
                     android:text="@string/mine_login_hint"
                     android:textColor="@color/white_translucent"
-                    android:textSize="@dimen/size_xl" />
+                    android:textSize="@dimen/size_l" />
 
             </RelativeLayout>
 

@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void initTitleBar(String title) {
-        titleView = findViewById(R.id.rootView);
+        titleView = findViewById(R.id.titleBar);
         leftTv = (TextView) findViewById(R.id.titlebar_left_tv);
         titleTv = (TextView) findViewById(R.id.titlebar_title_tv);
         rightTv = (TextView) findViewById(R.id.titlebar_right_tv);

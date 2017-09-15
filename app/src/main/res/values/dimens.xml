@@ -37,7 +37,7 @@
     <dimen name="array">24dp</dimen>
     <dimen name="add_robot_icon">48dp</dimen>
 
-    <dimen name="mine_icon">120dp</dimen>
+    <dimen name="mine_icon">110dp</dimen>
 
     <dimen name="list_news_width">120dp</dimen>
     <dimen name="list_news_height">90dp</dimen>
