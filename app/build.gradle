@@ -13,9 +13,27 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+    signingConfigs {
+        debug {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            def keyDir = properties.getProperty('signing.release.key')
+            def keyPwd = properties.getProperty('signing.release.keyPwd')
+            def alias = properties.getProperty('signing.release.alias')
+            def aliasPwd = properties.getProperty('signing.release.aliasPwd')
+            storeFile file(keyDir)
+            storePassword keyPwd
+            keyAlias alias
+            keyPassword aliasPwd
         }
     }
 }
