@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Activity基类
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    private View titleView;
     private TextView leftTv;
     private TextView titleTv;
     private TextView rightTv;
@@ -60,6 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void initTitleBar(String title) {
+        titleView = findViewById(R.id.rootView);
         leftTv = (TextView) findViewById(R.id.titlebar_left_tv);
         titleTv = (TextView) findViewById(R.id.titlebar_title_tv);
         rightTv = (TextView) findViewById(R.id.titlebar_right_tv);
@@ -215,6 +217,20 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected abstract void initViewListener();
 
+    public void hintTitle() {
+        if(titleView == null) {
+            return;
+        }
+        titleView.setVisibility(View.GONE);
+    }
+
+    public void showTitle() {
+        if(titleView == null) {
+            return;
+        }
+        titleView.setVisibility(View.VISIBLE);
+    }
+
     /**
      * 沉侵式状态栏
      * 使用时在layout根布局增加
@@ -277,8 +293,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void doPermissionsResult(@NonNull int[] grantResults, String permission, int titleResId, int hintResId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[0] != PackageManager.PERMISSION_GRANTED
                     && !shouldShowRequestPermissionRationale(permission)) {
+                // 选择了禁止权限，下次不会再提醒，在此给予提示
                 CheckPermissionUtil.AskForPermission(BaseActivity.this, titleResId, hintResId);
             }
         }
