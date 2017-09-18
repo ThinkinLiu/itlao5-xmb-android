@@ -12,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.e7yoo.e7.AddRobotActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RobotRefreshRecyclerAdapter;
 import com.e7yoo.e7.model.Robot;
-import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
@@ -34,58 +32,59 @@ public class HomeFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onEventMainThread(Message msg) {
-        switch (msg.what) {
-            case Constant.EVENT_BUS_REFRESH_RecyclerView_ADD_ROBOT:
-                Robot addRobot = (Robot) msg.obj;
-                if(addRobot != null) {
-                    if (mRobots == null) {
-                        mRobots = new ArrayList<>();
-                    }
-                    mRobots.add(addRobot);
-                }
-                if(mRvAdapter != null && !isDetached()) {
-                    mRvAdapter.refreshData(mRobots);
-                }
-                break;
-            case Constant.EVENT_BUS_REFRESH_RecyclerView_UPDATE_ROBOT:
-                Robot updateRobot = (Robot) msg.obj;
-                if(updateRobot != null) {
-                    if(mRobots == null) {
-                        mRobots = new ArrayList<>();
-                    }
+    /**
+     *
+     * @param msg
+     * @param flag 0 增加data, 1 刷新data, 2 初始化后刷新data
+     */
+    private void refreshData(Message msg, int flag) {
+        Robot robot = (Robot) msg.obj;
+        if(robot != null) {
+            if (mRobots == null) {
+                mRobots = new ArrayList<>();
+            }
+            switch (flag) {
+                case 0:
+                    mRobots.add(robot);
+                    break;
+                case 1:
                     boolean hasRobot = false;
                     for(int i = 0; i < mRobots.size(); i++) {
-                        if(mRobots.get(i) != null && mRobots.get(i).getId() == updateRobot.getId()) {
-                            mRobots.set(i, updateRobot);
+                        if(mRobots.get(i) != null && mRobots.get(i).getId() == robot.getId()) {
+                            mRobots.set(i, robot);
                             hasRobot = true;
                             break;
                         }
                     }
                     if(!hasRobot) {
-                        mRobots.add(updateRobot);
+                        mRobots.add(robot);
                     }
-                }
-                if(mRvAdapter != null && !isDetached()) {
-                    mRvAdapter.refreshData(mRobots);
-                }
+                    break;
+                case 2:
+                    if(mRobots.size() > 0) {
+                        mRobots.set(0, robot);
+                    } else {
+                        mRobots.add(robot);
+                    }
+                    break;
+            }
+        }
+        if(mRvAdapter != null && !isDetached()) {
+            mRvAdapter.refreshData(mRobots);
+        }
+    }
+
+    @Override
+    public void onEventMainThread(Message msg) {
+        switch (msg.what) {
+            case Constant.EVENT_BUS_REFRESH_RecyclerView_ADD_ROBOT:
+                refreshData(msg, 0);
+                break;
+            case Constant.EVENT_BUS_REFRESH_RecyclerView_UPDATE_ROBOT:
+                refreshData(msg, 1);
                 break;
             case Constant.EVENT_BUS_REFRESH_RecyclerView_INIT_ROBOT:
-                Robot initRobot = (Robot) msg.obj;
-                if(initRobot != null) {
-                    if(mRobots == null) {
-                        mRobots = new ArrayList<>();
-                    }
-                    if(mRobots.size() > 0) {
-                        mRobots.set(0, initRobot);
-                    } else {
-                        mRobots.add(initRobot);
-                    }
-                }
-                if(mRvAdapter != null && !isDetached()) {
-                    mRvAdapter.refreshData(mRobots);
-                }
+                refreshData(msg, 2);
                 break;
         }
     }
