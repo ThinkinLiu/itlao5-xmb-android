@@ -87,7 +87,21 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this, new ComponentName(this, VoiceRecognitionService.class));
         // 注册监听器
         mSpeechRecognizer.setRecognitionListener(this);
-        mSpeechSynthesizer = TtsUtils.getSpeechSynthesizer(this, this, 4);
+        int voice = 4;
+        if(mRobot.getId() > 0) {
+            switch (mRobot.getSex()) {
+                case 0:
+                    voice = 2;
+                    break;
+                case 1:
+                    voice = 1;
+                    break;
+                case 2:
+                    voice = 0;
+                    break;
+            }
+        }
+        mSpeechSynthesizer = TtsUtils.getSpeechSynthesizer(this, this, voice);
     }
 
     @Override
