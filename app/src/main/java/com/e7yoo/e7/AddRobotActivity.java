@@ -106,7 +106,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initViewListener() {
         iconLayout.setOnClickListener(this);
-        if(/*FLAG != 1 */!getString(R.string.mengmeng).equals(RobotUtil.getString(mRobot.getName()))) {
+        if(/*FLAG != 1 */mRobot == null || !getString(R.string.mengmeng).equals(RobotUtil.getString(mRobot.getName()))) {
             nameLayout.setOnClickListener(this);
         }
         sexLayout.setOnClickListener(this);
