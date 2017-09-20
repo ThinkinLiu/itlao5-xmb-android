@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.adapter.RobotRefreshRecyclerAdapter;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.MessageDbHelper;
@@ -140,9 +141,10 @@ public class HomeFragment extends BaseFragment {
         super.onDetach();
     }
 
-    private RobotRefreshRecyclerAdapter.OnItemClickListener onItemClickListener = new RobotRefreshRecyclerAdapter.OnItemClickListener() {
+    private RecyclerAdapter.OnItemClickListener onItemClickListener = new RecyclerAdapter.OnItemClickListener() {
         @Override
-        public void onItemClick(View view, int position, Robot robot) {
+        public void onItemClick(View view, int position) {
+            Robot robot = mRvAdapter.getRobot(position);
             if(robot == null) {
                 // 新建机器人
                 ActivityUtil.toAddRobotActivityForResult(getActivity(), robot, REQUEST_CODE_FOR_ADD_ROBOT);
@@ -153,9 +155,9 @@ public class HomeFragment extends BaseFragment {
         }
     };
 
-    private RobotRefreshRecyclerAdapter.OnItemLongClickListener onItemLongClickListener = new RobotRefreshRecyclerAdapter.OnItemLongClickListener() {
+    private RecyclerAdapter.OnItemLongClickListener onItemLongClickListener = new RecyclerAdapter.OnItemLongClickListener() {
         @Override
-        public boolean onItemLongClick(View view, int position, Robot robot) {
+        public boolean onItemLongClick(View view, int position) {
             return true;
         }
     };

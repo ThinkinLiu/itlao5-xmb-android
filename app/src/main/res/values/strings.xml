@@ -86,7 +86,7 @@
     <string name="favorite_time_hint">收藏于：</string>
     <string name="flashlight">手电筒</string>
     <string name="flashlight_set">手电筒设置</string>
-    <string name="flashlight_open_error">Camera异常，萌萌不能为您打开手电筒,请检查是否禁止了【小萌伴】的相机权限</string>
+    <string name="flashlight_open_error">Camera异常，不能为您打开手电筒,请检查是否禁止了【小萌伴】的相机权限</string>
     <string name="flashlight_no">您的手机不支持手电筒</string>
     <string name="notification_text">点击关闭手电筒</string>
     <string name="dialog_notify_hint_title">小萌伴</string>
@@ -97,4 +97,25 @@
     <string name="dialog_camera_hint_title">提示</string>
     <string name="dialog_shot_cut_hint">您禁止了创建快捷图标权限，无法为你创建手电筒桌面快捷图标</string>
     <string name="dialog_shot_cut_hint_title">提示</string>
+    <string name="dialog_voice_hint">您禁止了语音权限，将无法使用语音功能</string>
+    <string name="dialog_voice_hint_title">提示</string>
+    <string name="chat_voice_tv">按住 说话</string>
+    <string name="chat_voice_tv_end">松开 发送</string>
+    <string name="chat_voice_tv_cancel">松开 取消发送</string>
+
+    <string name="input_voice_toast_start">按住开始说话</string>
+    <string name="input_voice_hint_net_no">当前网络不给力，你仅可以使用离线语音(仅能识别：打开手电筒，关闭手电筒，打开游戏，打开电灯，关闭电灯，说个笑话，小萌小萌)</string>
+    <string name="input_voice_toast_move_out">语音已取消</string>
+    <string name="input_voice_toast_time_short">这么快就说完了，我还没听到</string>
+    <string name="input_voice_toast_time_long">您说的太多，我理解不了</string>
+    <string name="input_voice_toast_end">语音已收到，马上回答</string>
+    <string name="sr_error_network_timeout">网络不给力哦！</string>
+    <string name="sr_error_network">网络不给力哦</string>
+    <string name="sr_error_audio">您说了啥？没听明白</string>
+    <string name="sr_error_server">服务器出故障了，我需要休息一下</string>
+    <string name="sr_error_client">出故障了，您可以反馈给开发者</string>
+    <string name="sr_error_speech_timeout">您说的有点多，我听不太懂</string>
+    <string name="sr_error_no_match">您说了啥？没听太清楚</string>
+    <string name="sr_error_recognizer_busy">忙着呢，有什么稍后告诉我</string>
+    <string name="sr_error_insufficient_permissions">权限</string>
 </resources>

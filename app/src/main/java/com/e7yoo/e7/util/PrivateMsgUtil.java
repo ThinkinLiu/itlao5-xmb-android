@@ -49,10 +49,15 @@ public class PrivateMsgUtil {
     }
 
     private static String replaceName(String text, String replaceTo) {
-        if(text != null && (text.contains("聚合数据") || text.contains("图灵机器人"))) {
-            text = text.replaceAll("聚合数据", replaceTo).replaceAll("图灵机器人", replaceTo);
-            ;
+        if(text != null) {
+            for(int i = 0; i < array.length; i++) {
+                text = text.replaceAll(array[i], replaceTo);
+            }
         }
         return text;
+
     }
+
+    private static String[] array = {"聚合数据", "萌萌", "图灵机器人"};
+
 }

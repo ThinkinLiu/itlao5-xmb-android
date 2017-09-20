@@ -70,7 +70,8 @@ public class CheckNotification {
                 Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE, String.class);
                 Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
                 int value = (int) opPostNotificationValue.get(Integer.class);
-                return ((int) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
+                int mode = (int) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg);
+                return mode == AppOpsManager.MODE_ALLOWED;
             } catch (Exception e) {
                 e.printStackTrace();
             }

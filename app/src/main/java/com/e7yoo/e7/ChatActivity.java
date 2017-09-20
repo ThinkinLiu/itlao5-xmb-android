@@ -1,12 +1,16 @@
 package com.e7yoo.e7;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Message;
+import android.speech.RecognitionListener;
+import android.speech.SpeechRecognizer;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -14,27 +18,38 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.speech.EventManager;
+import com.baidu.speech.VoiceRecognitionService;
+import com.baidu.tts.client.SpeechError;
+import com.baidu.tts.client.SpeechSynthesizer;
+import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
+import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.BdVoiceUtil;
+import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.JokeUtil;
+import com.e7yoo.e7.util.Logs;
 import com.e7yoo.e7.util.PrivateMsgUtil;
 import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.e7yoo.e7.util.TtsUtils;
 
 import org.json.JSONObject;
 
@@ -44,7 +59,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/8/31.
  */
 
-public class ChatActivity extends BaseActivity implements View.OnClickListener {
+public class ChatActivity extends BaseActivity implements View.OnClickListener, RecognitionListener, SpeechSynthesizerListener {
 
     public static final int REQUEST_CODE_FOR_ADD_ROBOT = 1002;
     private SwipeRefreshLayout mHomeSRLayout;
@@ -54,12 +69,26 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView mVoiceImage;
     private EditText mEditText;
+    private TextView mVoiceTv;
     private ImageView mSendOrMoreImage;
 
     private View mChatInputMoreLayout;
     private GridView mChatInputMoreGv;
 
     private Robot mRobot;
+
+
+    private SpeechRecognizer mSpeechRecognizer;
+    // 语音合成客户端
+    private SpeechSynthesizer mSpeechSynthesizer;
+    private EventManager mWpEventManager;
+
+    private void init() {
+        mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this, new ComponentName(this, VoiceRecognitionService.class));
+        // 注册监听器
+        mSpeechRecognizer.setRecognitionListener(this);
+        mSpeechSynthesizer = TtsUtils.getSpeechSynthesizer(this, this, 4);
+    }
 
     @Override
     protected String initTitle() {
@@ -78,6 +107,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mRecyclerView = (RecyclerView) findViewById(R.id.chat_rv);
         mVoiceImage = (ImageView) findViewById(R.id.chat_voice);
         mEditText = (EditText) findViewById(R.id.chat_edit);
+        mVoiceTv = (TextView) findViewById(R.id.chat_voice_tv);
         mSendOrMoreImage = (ImageView) findViewById(R.id.chat_send_or_more);
 
         mChatInputMoreLayout = findViewById(R.id.chat_input_more_layout);
@@ -86,6 +116,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initSettings() {
+        CheckPermissionUtil.checkPermission(this, Manifest.permission.RECORD_AUDIO, REQUEST_TO_BD_VOICE,
+                R.string.dialog_camera_hint_title, R.string.dialog_camera_hint);
         if(getIntent() != null) {
             mRobot = (Robot) getIntent().getSerializableExtra(Constant.INTENT_ROBOT);
         }
@@ -106,6 +138,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         } else if(lastPosition > 0) {
             mRecyclerView.smoothScrollToPosition(lastPosition);
         }
+        init();
     }
 
     private void refresh(Robot robot) {
@@ -144,7 +177,127 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         mHomeSRLayout.setOnRefreshListener(onRefreshListener);
         initLoadMoreListener();
         mEditText.addTextChangedListener(mEditTextWatcher);
+        mVoiceTv.setOnTouchListener(mTouchListener);
+        mRvAdapter.setOnItemClickListener(mOnItemClickListener);
+        mRvAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
+        mRvAdapter.setOnVoiceClickListener(mOnVoiceClickListener);
     }
+
+    boolean isNoMatch = false;
+    boolean isBusy = false;
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        private float x, y;
+        private long time;
+        private Toast lastToast;
+        private boolean isNoNet = false;
+        float space = E7App.mApp.getApplicationContext().getResources().getDimension(R.dimen.space_30dp);
+        int maxTime = 10 * 1000;
+        int minTime = 1 * 1000;
+        private void showToast(int strResId) {
+            if(lastToast != null) {
+                lastToast.cancel();
+            }
+            lastToast = TastyToastUtil.toast(ChatActivity.this, strResId);
+        }
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if(mSpeechRecognizer == null) {
+                        return false;
+                    } else {
+                        actionDown(motionEvent);
+                        view.setPressed(true);
+                        ((TextView) view).setText(R.string.chat_voice_tv_end);
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    boolean isInViewMove = actionMove(view, motionEvent);
+                    if(isInViewMove) {
+                        ((TextView) view).setText(R.string.chat_voice_tv_end);
+                    } else {
+                        ((TextView) view).setText(R.string.chat_voice_tv_cancel);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    actionUp(view, motionEvent);
+                    view.setPressed(false);
+                    ((TextView) view).setText(R.string.chat_voice_tv);
+                    break;
+            }
+            return true;
+        }
+        private void actionDown(MotionEvent motionEvent) {
+            x = motionEvent.getX();
+            y = motionEvent.getY();
+            time = System.currentTimeMillis();
+            isNoNet = false;
+            isNoMatch = false;
+            isBusy = false;
+            if(Net.isNetWorkConnected(ChatActivity.this)) {
+                BdVoiceUtil.startASR(mSpeechRecognizer, mSpeechSynthesizer);
+                showToast(R.string.input_voice_toast_start);
+            } else {
+                String noNetHint = getString(R.string.input_voice_hint_net_no);
+                if(mRvAdapter != null && !mRvAdapter.isEndWithNetError()) {
+                    PrivateMsg msg = new PrivateMsg(Constant.NET_NO, System.currentTimeMillis(), noNetHint, null, PrivateMsg.Type.HINT, mRobot.getId());
+                    mRvAdapter.addItemBottom(msg);
+                }
+                isNoNet = true;
+            }
+        }
+
+        /**
+         * 是否有效
+         * @param view
+         * @param motionEvent
+         * @return
+         */
+        private boolean actionMove(View view, MotionEvent motionEvent) {
+            return isInView(view, motionEvent);
+        }
+
+        /**
+         * 点击位置是否在view的区域内
+         * @param view
+         * @param motionEvent
+         * @return
+         */
+        private boolean isInView(View view, MotionEvent motionEvent) {
+            int l = view.getLeft();
+            int r = view.getRight();
+            int t = view.getTop();
+            int b = view.getBottom();
+            float x = motionEvent.getX();
+            float y = motionEvent.getY();
+            if(x >= 0 && x <= r - l && y >= 0 && y <= b - t) {
+                return true;
+            }
+            return false;
+        }
+
+        private void actionUp(View view, MotionEvent motionEvent) {
+            if(isNoNet) {
+                return;
+            }
+            long now = System.currentTimeMillis();
+            if(!isInView(view, motionEvent)) {
+                BdVoiceUtil.cancelASR(mSpeechRecognizer);
+                showToast(R.string.input_voice_toast_move_out);
+            } else if(now - time < minTime) {
+                BdVoiceUtil.cancelASR(mSpeechRecognizer);
+                showToast(R.string.input_voice_toast_time_short);
+            } else if(now - time > maxTime) {
+                BdVoiceUtil.cancelASR(mSpeechRecognizer);
+                showToast(R.string.input_voice_toast_time_long);
+            } else {
+                BdVoiceUtil.stopASR(mSpeechRecognizer);
+                if(!isNoMatch && !isBusy) {
+                    showToast(R.string.input_voice_toast_end);
+                }
+            }
+        }
+    };
 
     private TextWatcher mEditTextWatcher = new TextWatcher() {
         @Override
@@ -175,6 +328,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                 ActivityUtil.toAddRobotActivityForResult(this, mRobot, REQUEST_CODE_FOR_ADD_ROBOT);
                 break;
             case R.id.chat_voice:
+                if(mVoiceTv.getVisibility() == View.VISIBLE) {
+                    mVoiceTv.setVisibility(View.GONE);
+                    mEditText.setVisibility(View.VISIBLE);
+                } else {
+                    mVoiceTv.setVisibility(View.VISIBLE);
+                    mEditText.setVisibility(View.GONE);
+                }
                 break;
             case R.id.chat_send_or_more:
                 String content = mEditText.getText().toString().trim();
@@ -335,4 +495,183 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void onReadyForSpeech(Bundle bundle) {
+        Logs.logI("-----", "onReadyForSpeech");
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+        Logs.logI("百度语音 onBeginningOfSpeech");
+    }
+
+    @Override
+    public void onRmsChanged(float v) {
+        Logs.logI("百度语音 onRmsChanged");
+    }
+
+    @Override
+    public void onBufferReceived(byte[] bytes) {
+        Logs.logI("百度语音 onBufferReceived");
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+        Logs.logI("百度语音 onEndOfSpeech");
+    }
+
+    @Override
+    public void onError(int error) {
+        //　错误
+        if(Logs.isDebug()) {
+            Logs.logI("百度语音 错误 " + error);
+        }
+        switch (error) {
+            case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                TastyToastUtil.toast(this, R.string.sr_error_network_timeout);
+                break;
+            case SpeechRecognizer.ERROR_NETWORK:
+                TastyToastUtil.toast(this, R.string.sr_error_network);
+                break;
+            case SpeechRecognizer.ERROR_AUDIO:
+                // TastyToastUtil.toast(this, R.string.sr_error_audio);
+                break;
+            case SpeechRecognizer.ERROR_SERVER:
+                TastyToastUtil.toast(this, R.string.sr_error_server);
+                break;
+            case SpeechRecognizer.ERROR_CLIENT:
+                // TastyToastUtil.toast(this, R.string.sr_error_client);
+                break;
+            case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                // TastyToastUtil.toast(this, R.string.sr_error_speech_timeout);
+                break;
+            case SpeechRecognizer.ERROR_NO_MATCH:
+                TastyToastUtil.toast(this, R.string.sr_error_no_match);
+                isNoMatch = true;
+                break;
+            case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                TastyToastUtil.toast(this, R.string.sr_error_recognizer_busy);
+                isBusy = true;
+                break;
+            case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                // TastyToastUtil.toast(this, R.string.sr_error_insufficient_permissions);
+                break;
+        }
+    }
+
+    @Override
+    public void onResults(Bundle bundle) {
+        Logs.logI("百度语音 onResults");
+        sendText(bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0));
+    }
+
+    @Override
+    public void onPartialResults(Bundle bundle) {
+        Logs.logI("百度语音 onPartialResults");
+    }
+
+    @Override
+    public void onEvent(int i, Bundle bundle) {
+        Logs.logI("百度语音 onEvent" + i);
+    }
+
+    @Override
+    public void onSynthesizeStart(String s) {
+        Logs.logI("百度语音 onSynthesizeStart" + s);
+    }
+
+    @Override
+    public void onSynthesizeDataArrived(String s, byte[] bytes, int i) {
+        Logs.logI("百度语音 onSynthesizeDataArrived" + s + " " + i);
+    }
+
+    @Override
+    public void onSynthesizeFinish(String s) {
+        Logs.logI("百度语音 onSynthesizeFinish" + s);
+    }
+
+    @Override
+    public void onSpeechStart(String s) {
+        Logs.logI("百度语音 onSpeechStart" + s);
+    }
+
+    @Override
+    public void onSpeechProgressChanged(String s, int i) {
+        Logs.logI("百度语音 onSpeechProgressChanged" + s + " " + i);
+    }
+
+    @Override
+    public void onSpeechFinish(String s) {
+        Logs.logI("百度语音 onSpeechFinish" + s);
+    }
+
+    @Override
+    public void onError(String s, SpeechError speechError) {
+        Logs.logI("百度语音 onError" + s);
+    }
+
+    @Override
+    protected void onPause() {
+        BdVoiceUtil.eventWekeUpStop(mWpEventManager);
+        BdVoiceUtil.cancelASR(mSpeechRecognizer);
+        BdVoiceUtil.stopTTS(mSpeechSynthesizer);
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        BdVoiceUtil.releaseTTS(mSpeechSynthesizer);
+        BdVoiceUtil.destroyASR(mSpeechRecognizer);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        BdVoiceUtil.stopTTS(mSpeechSynthesizer);
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        mWpEventManager = BdVoiceUtil.eventWakeUp(this, mWpEventManager);
+        super.onResume();
+    }
+
+    RecyclerAdapter.OnItemClickListener mOnItemClickListener = new RecyclerAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+
+        }
+    };
+
+    RecyclerAdapter.OnItemLongClickListener mOnItemLongClickListener = new RecyclerAdapter.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(View view, int position) {
+            return false;
+        }
+    };
+
+    MsgRefreshRecyclerAdapter.OnVoiceClickListener mOnVoiceClickListener = new MsgRefreshRecyclerAdapter.OnVoiceClickListener() {
+        private long ttsMsgTime = 0;
+        public void setTtsMsgTime(long ttsMsgTime) {
+            this.ttsMsgTime = ttsMsgTime;
+        }
+        @Override
+        public void onVoiceClick(View view, int position) {
+            PrivateMsg msg = mRvAdapter.getItem(position);
+            if(msg != null) {
+                long msgTime = msg.getTime();
+                if(ttsMsgTime == msgTime) {
+                    BdVoiceUtil.stopTTS(mSpeechSynthesizer);
+                    view.setSelected(false);
+                    setTtsMsgTime(0);
+                } else {
+                    BdVoiceUtil.startTTS(mSpeechSynthesizer, msg.getContent());
+                    view.setSelected(true);
+                    setTtsMsgTime(msgTime);
+                }
+            }
+        }
+    };
 }

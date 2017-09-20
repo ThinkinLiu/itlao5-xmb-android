@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/8/28.
  */
-public class MsgRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private LayoutInflater mInflater;
     private List<PrivateMsg> mMsgs = new ArrayList<>();
     private static final int VIEW_TYPE_SEND = 0;
@@ -159,7 +159,9 @@ public class MsgRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolderSend.itemMsgIcon.setImageResource(R.mipmap.icon_me);
             }
+            viewHolderSend.itemMsgVoice.setVisibility(View.GONE);
             // viewHolderSend.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
+            addClickListener(viewHolderSend.contentLayout, viewHolderSend.itemMsgVoice, position);
         } else if(holder instanceof ViewHolderRev) {
             ViewHolderRev viewHolderRev = (ViewHolderRev) holder;
             if(showTime) {
@@ -176,8 +178,10 @@ public class MsgRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             } else {
                 viewHolderRev.itemMsgIcon.setImageResource(resIcon);
             }
+            viewHolderRev.itemMsgVoice.setVisibility(View.VISIBLE);
             // viewHolderRev.itemMsgIcon.setImageResource();
             // viewHolderRev.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
+            addClickListener(viewHolderRev.contentLayout, viewHolderRev.itemMsgVoice, position);
         } else if(holder instanceof ViewHolderHint) {
             ViewHolderHint viewHolderHint = (ViewHolderHint) holder;
             if(showTime) {
@@ -201,6 +205,34 @@ public class MsgRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
             viewHolderFooter.loadingPb.setVisibility(mFooterShowProgress ? View.VISIBLE : View.GONE);
         }
         holder.itemView.setTag(position);
+    }
+
+    private void addClickListener(View view, View voice, final int position) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(view, position);
+                }
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(mOnItemLongClickListener != null) {
+                    return mOnItemLongClickListener.onItemLongClick(view, position);
+                }
+                return false;
+            }
+        });
+        voice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnVoiceClickListener != null) {
+                    mOnVoiceClickListener.onVoiceClick(view, position);
+                }
+            }
+        });
     }
 
     private boolean showTime(int position) {
@@ -347,5 +379,18 @@ public class MsgRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         LOADING,
         NO_MORE,
         HINT;
+    }
+
+    public PrivateMsg getItem(int position) {
+        return mMsgs != null && mMsgs.size() > position && position >= 0 ? mMsgs.get(position) : null;
+    }
+
+    private OnVoiceClickListener mOnVoiceClickListener;
+    public void setOnVoiceClickListener(OnVoiceClickListener onVoiceClickListener) {
+        mOnVoiceClickListener = onVoiceClickListener;
+    }
+
+    public interface OnVoiceClickListener{
+        void onVoiceClick(View view, int position);
     }
 }

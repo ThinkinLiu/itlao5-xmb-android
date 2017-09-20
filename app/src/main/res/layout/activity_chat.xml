@@ -74,6 +74,24 @@
                 android:textColorHint="@color/text_l"
                 android:textSize="@dimen/size_m" />
 
+            <TextView
+                android:id="@+id/chat_voice_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/space_2x"
+                android:layout_marginRight="@dimen/space_2x"
+                android:layout_toLeftOf="@+id/chat_send_or_more"
+                android:layout_toRightOf="@id/chat_voice"
+                android:background="@drawable/rounded_corners_tag_gray"
+                android:gravity="center"
+                android:padding="@dimen/space_2x"
+                android:text="@string/chat_voice_tv"
+                android:textColor="@color/text"
+                android:textStyle="bold"
+                android:textSize="@dimen/size_m"
+                android:visibility="gone"/>
+
             <ImageView
                 android:id="@+id/chat_send_or_more"
                 android:layout_width="wrap_content"

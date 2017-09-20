@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/8/28.
  */
-public class RobotRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Robot> mRobots = new ArrayList<>();
@@ -86,11 +86,11 @@ public class RobotRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             viewHolderRobot.nameTv.setText(robot.getName());
             viewHolderRobot.contentTv.setText(robot.getWelcome());
 
-            addClickListener(holder.itemView, position, robot);
+            addClickListener(holder.itemView, position);
         } else if(holder instanceof ViewHolderFooter) {
             ViewHolderFooter viewHolderFooter = (ViewHolderFooter) holder;
 
-            addClickListener(viewHolderFooter.addTv, position, null);
+            addClickListener(viewHolderFooter.addTv, position);
         }
         holder.itemView.setTag(position);
     }
@@ -110,17 +110,17 @@ public class RobotRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    private void addClickListener(View view, final int position, final Robot robot) {
+    private void addClickListener(View view, final int position) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnItemClickListener.onItemClick(view, position, robot);
+                mOnItemClickListener.onItemClick(view, position);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                return mOnItemLongClickListener.onItemLongClick(view, position, robot);
+                return mOnItemLongClickListener.onItemLongClick(view, position);
             }
         });
     }
@@ -183,22 +183,7 @@ public class RobotRefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    private OnItemClickListener mOnItemClickListener;
-    private OnItemLongClickListener mOnItemLongClickListener;
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        mOnItemClickListener = onItemClickListener;
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
-        mOnItemLongClickListener = onItemLongClickListener;
-    }
-
-    public interface OnItemClickListener{
-        void onItemClick(View view, int position, Robot robot);
-    }
-
-    public interface OnItemLongClickListener{
-        boolean onItemLongClick(View view, int position, Robot robot);
+    public Robot getRobot(int position) {
+        return mRobots != null && mRobots.size() > position && position >= 0 ? mRobots.get(position) : null;
     }
 }

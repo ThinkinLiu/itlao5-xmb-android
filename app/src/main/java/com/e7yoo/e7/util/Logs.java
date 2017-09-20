@@ -14,6 +14,10 @@ public class Logs {
         mDebug = debug;
     }
 
+    public static boolean isDebug() {
+        return mDebug;
+    }
+
     public static void logE(String error, Throwable e, String... tags) {
         if(mDebug)
             Log.e(getTag(tags), error, e);

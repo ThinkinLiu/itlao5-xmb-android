@@ -1,9 +1,7 @@
 package com.e7yoo.e7.util;
 
 import android.content.Context;
-
-import com.e7yoo.e7.AddRobotActivity;
-import com.e7yoo.e7.MainActivity;
+import android.widget.Toast;
 import com.sdsmdg.tastytoast.TastyToast;
 
 /**
@@ -11,8 +9,8 @@ import com.sdsmdg.tastytoast.TastyToast;
  */
 
 public class TastyToastUtil {
-    public static void toast(Context context, int stringId, Object... formatArgs) {
-        TastyToast.makeText(context, context.getString(stringId, formatArgs), TastyToast.LENGTH_SHORT, TastyToast.INFO);
+    public static Toast toast(Context context, int stringId, Object... formatArgs) {
+        return TastyToast.makeText(context, context.getString(stringId, formatArgs), TastyToast.LENGTH_SHORT, TastyToast.INFO);
     }
 
 
