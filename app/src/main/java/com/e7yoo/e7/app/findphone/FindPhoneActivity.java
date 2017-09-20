@@ -53,11 +53,11 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
 
     @Override
     protected void initSettings() {
-        boolean sms = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 0) == 0;
+        boolean sms = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 0) == 1;
         initLayout(findPhoneSmsBtn, findPhoneSmsLayout, sms);
-        boolean latlng = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG, 0) == 0;
+        boolean latlng = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG, 0) == 1;
         initLayout(findPhoneLatlngBtn, findPhoneLatlngLayout, latlng);
-        boolean voice = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) == 0;
+        boolean voice = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) == 1;
         initLayout(findPhoneVoiceBtn, findPhoneVoiceLayout, voice);
     }
 

@@ -84,6 +84,7 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
 
     String PERMISSIONS[] = {Manifest.permission.SEND_SMS,
             Manifest.permission.READ_SMS,
+            Manifest.permission.RECEIVE_SMS,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
     };
