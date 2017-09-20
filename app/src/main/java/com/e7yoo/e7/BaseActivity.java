@@ -275,6 +275,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final static int REQUEST_TO_SMS = 10002;
     /** 用于百度语音 */
     protected final static int REQUEST_TO_BD_VOICE = 10003;
+    /** 用于百度语音 */
+    protected final static int REQUEST_TO_RECV_SMS = 10004;
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -289,6 +291,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 doPermissionsResult(grantResults, Manifest.permission.CAMERA, R.string.dialog_camera_hint_title, R.string.dialog_camera_hint);
                 break;
             case REQUEST_TO_BD_VOICE:
+                doPermissionsResult(grantResults, Manifest.permission.RECORD_AUDIO, R.string.dialog_voice_hint_title, R.string.dialog_voice_hint);
+                break;
+            case REQUEST_TO_RECV_SMS:
                 doPermissionsResult(grantResults, Manifest.permission.RECORD_AUDIO, R.string.dialog_voice_hint_title, R.string.dialog_voice_hint);
                 break;
         }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+
+    <EditText
+        android:id="@+id/input_content_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/space_2x"
+        android:background="@drawable/rounded_corners_tag_white"
+        android:gravity="left"
+        android:hint="@string/set_find_phone_sms_edit_hint"
+        android:maxLines="2"
+        android:padding="@dimen/space_2x"
+        android:textColor="@color/text"
+        android:textColorHint="@color/text_l"
+        android:textSize="@dimen/size_l" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="left"
+        android:paddingLeft="@dimen/space_3x"
+        android:paddingRight="@dimen/space_3x"
+        android:text="@string/set_find_phone_sms_text_hint"
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_m" />
+
+</LinearLayout>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@id/titleBar"
+        layout="@layout/titlebar" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:layout_marginTop="@dimen/space_3x"
+        android:background="@color/color_seperator" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingRight="@dimen/space_2x" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:padding="@dimen/space_2x"
+            android:text="@string/findphone_sms"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_l" />
+
+        <ToggleButton
+            android:id="@+id/tb_find_phone_sms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/btn_checkbox"
+            android:checked="false"
+            android:gravity="center"
+            android:textOff=""
+            android:textOn="" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+    <LinearLayout
+        android:id="@+id/find_phone_sms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingRight="@dimen/space_2x" >
+
+        <TextView
+            android:id="@+id/find_phone_sms_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:padding="@dimen/space_2x"
+            android:text="@string/findphone_sms_set"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_l"
+            android:layout_marginLeft="@dimen/space_4x" />
+
+        <TextView
+            android:id="@+id/find_phone_sms_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="right|center_vertical"
+            android:padding="@dimen/space_2x"
+            android:text=""
+            android:textColor="@color/text_l"
+            android:textSize="@dimen/size_m"
+            android:maxLines="1"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:layout_marginTop="@dimen/space_3x"
+        android:background="@color/color_seperator" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingRight="@dimen/space_2x" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:padding="@dimen/space_2x"
+            android:text="@string/findphone_latlng"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_l" />
+
+        <ToggleButton
+            android:id="@+id/tb_find_phone_latlng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/btn_checkbox"
+            android:checked="false"
+            android:gravity="center"
+            android:textOff=""
+            android:textOn="" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+    <LinearLayout
+        android:id="@+id/find_phone_latlng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingRight="@dimen/space_2x" >
+
+        <TextView
+            android:id="@+id/find_phone_hint_latlng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:padding="@dimen/space_2x"
+            android:text="@string/findphone_latlng_set"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_l"
+            android:layout_marginLeft="@dimen/space_4x" />
+
+        <TextView
+            android:id="@+id/find_phone_text_latlng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="right|center_vertical"
+            android:padding="@dimen/space_2x"
+            android:text=""
+            android:textColor="@color/text_l"
+            android:textSize="@dimen/size_m"
+            android:maxLines="1"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:layout_marginTop="@dimen/space_3x"
+        android:background="@color/color_seperator" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingRight="@dimen/space_2x" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:padding="@dimen/space_2x"
+            android:text="@string/findphone_voice"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_l" />
+
+        <ToggleButton
+            android:id="@+id/tb_find_phone_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/btn_checkbox"
+            android:checked="false"
+            android:gravity="center"
+            android:textOff=""
+            android:textOn="" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+    <LinearLayout
+        android:id="@+id/find_phone_voice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingRight="@dimen/space_2x" >
+
+        <TextView
+            android:id="@+id/find_phone_voice_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|top"
+            android:padding="@dimen/space_2x"
+            android:text="@string/findphone_voice_hint"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_l"
+            android:layout_marginLeft="@dimen/space_4x" />
+
+        <TextView
+            android:id="@+id/find_phone_voice_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/space_2x"
+            android:text="@string/findphone_voice_hint2"
+            android:textColor="@color/text_l"
+            android:textSize="@dimen/size_m"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+</LinearLayout>

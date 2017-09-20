@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.e7yoo.e7.GameListActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.app.findphone.FindPhoneActivity;
 import com.e7yoo.e7.app.history.TodayHisActivity;
 import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.app.news.NewsActivity;
@@ -87,6 +88,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
                 ActivityUtil.toActivity(getActivity(), FlashLightActivity.class);
                 break;
             case R.id.more_findphone_layout:
+                ActivityUtil.toActivity(getActivity(), FindPhoneActivity.class);
                 break;
         }
     }

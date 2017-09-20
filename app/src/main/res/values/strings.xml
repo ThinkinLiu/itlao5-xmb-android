@@ -99,6 +99,10 @@
     <string name="dialog_shot_cut_hint_title">提示</string>
     <string name="dialog_voice_hint">您禁止了语音权限，将无法使用语音功能</string>
     <string name="dialog_voice_hint_title">提示</string>
+    <string name="dialog_sms_hint">您禁止了短信权限，将无法使用短信找手机功能</string>
+    <string name="dialog_sms_hint_title">提示</string>
+    <string name="dialog_latlng_hint">您禁止了短信或定位权限，将无法保证找手机功能正常运行</string>
+    <string name="dialog_latlng_hint_title">提示</string>
     <string name="chat_voice_tv">按住 说话</string>
     <string name="chat_voice_tv_end">松开 发送</string>
     <string name="chat_voice_tv_cancel">松开 取消发送</string>
@@ -118,4 +122,24 @@
     <string name="sr_error_no_match">您说了啥？没听太清楚</string>
     <string name="sr_error_recognizer_busy">忙着呢，有什么稍后告诉我</string>
     <string name="sr_error_insufficient_permissions">权限</string>
+    <string name="findphone_sms">短信找手机（声音）</string>
+    <string name="findphone_sms_set">设置短信指令</string>
+    <string name="findphone_sms_update">修改短信指令</string>
+    <string name="findphone_latlng">短信找手机（经纬度）</string>
+    <string name="findphone_latlng_set">设置短信指令</string>
+    <string name="findphone_latlng_update">修改短信指令</string>
+    <string name="findphone_voice">语音找手机</string>
+    <string name="findphone_voice_hint">注意：</string>
+    <string name="findphone_voice_hint2">打开"语音找手机"后，在手机锁屏或黑屏时，可以呼唤“小萌小萌”，萌萌会回复“主人，我在这里”，您即可根据声音来源找到手机，也可大喊“打开手电筒”，萌萌会发光哦！\n该功能需要您允许应用后台运行，并打开语音权限</string>
+
+    <string name="set_find_phone_sms_edit_hint">请输入找手机短信指令（手机接收到该指令会响铃）</string>
+    <string name="set_find_phone_sms_text_hint">备注：\n　　打开找手机功能，手机在附近却找不到时，可以通过另一台手机发送短信指令到该手机中，该手机接收到预设的短信指令后，会发出声音，根据声音即可找到手机。\n　　开通该功能需要接收短信权限，并请允许程序后台运行\n　　更实用便捷的找手机方式正在研发中...</string>
+    <string name="toast_set_find_phone_sms_length">请设置6-20位短信密码</string>
+    <string name="toast_set_find_phone_sms_error">该指令已用于短信位置找手机</string>
+    <string name="set_find_phone_latlng_edit_hint">请输入找手机短信指令（手机接收到该指令会返回位置）</string>
+    <string name="set_find_phone_latlng_text_hint">备注：\n　　打开找手机功能，手机丢失时，可以通过另一台手机发送短信指令到该手机中，该手机接收到预设的短信指令后，会将手机所在位置以短信的形式返回。\n　　该功能可以搭配短信/语音找手机，到达手机附近通过语音找到手机。\n　　开通该功能需要接收及发送短信权限，开通定位权限，并请允许程序后台运行\n　　更实用便捷的找手机方式正在研发中...</string>
+    <string name="toast_set_find_phone_latlng_length">请设置6-20位短信密码</string>
+    <string name="toast_set_find_phone_latlng_error">该指令已用于短信语音找手机</string>
+
+
 </resources>

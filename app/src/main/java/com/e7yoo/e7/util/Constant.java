@@ -32,4 +32,10 @@ public class Constant {
 
 
     public static final String SP_IS_NEED_INIT_ROBOT = "is_need_init_robot";
+
+    public static final String PREFERENCE_SMS_FINDPHONE_TEXT = "preference_sms_findphone_text";
+    public static final String PREFERENCE_SMS_FINDPHONE_TEXT_LATLNG = "preference_sms_findphone_text_latlng";
+    public static final String PREFERENCE_OPEN_SMS_FINDPHONE = "preference_open_sms_findphone";
+    public static final String PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG = "preference_open_sms_findphone_latlng";
+    public static final String PREFERENCE_OPEN_VOICE_FINDPHONE = "preference_open_voice_findphone";
 }

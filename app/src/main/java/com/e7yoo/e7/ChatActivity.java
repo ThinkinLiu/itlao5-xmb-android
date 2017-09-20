@@ -117,7 +117,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void initSettings() {
         CheckPermissionUtil.checkPermission(this, Manifest.permission.RECORD_AUDIO, REQUEST_TO_BD_VOICE,
-                R.string.dialog_camera_hint_title, R.string.dialog_camera_hint);
+                R.string.dialog_voice_hint_title, R.string.dialog_voice_hint);
         if(getIntent() != null) {
             mRobot = (Robot) getIntent().getSerializableExtra(Constant.INTENT_ROBOT);
         }
