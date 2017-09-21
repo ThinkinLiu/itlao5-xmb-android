@@ -21,8 +21,10 @@ public class Robot implements Serializable {
     private long birthTime;
     private String welcome;
     private int sex; // 0，保密 1，男 2，女
+    private int voice; // 0 (普通女声), 1 (普通男声), 2 (特别男声), 3 (情感男声), 4 (童声)
     private String bg;
     private int score;
+    private String desc;
     private int level;
 
     public Robot() {
@@ -36,6 +38,8 @@ public class Robot implements Serializable {
         this.birthTime = this.time;
         this.sex = 2;
         this.score = 0;
+        this.level = 0;
+        this.voice = 0;
     }
 
     public Robot(Context context) {
@@ -48,6 +52,7 @@ public class Robot implements Serializable {
         this.bg = null;
         this.score = 0;
         this.level = 0;
+        this.voice = 4;
     }
 
     public int getId() {
@@ -122,6 +127,30 @@ public class Robot implements Serializable {
         this.score = score;
     }
 
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setVoice(int voice) {
+        this.voice = voice;
+    }
+
+    public int getVoice() {
+        return voice;
+    }
+
     @Override
     public String toString() {
         return "Robot{" +
@@ -134,6 +163,8 @@ public class Robot implements Serializable {
                 ", sex='" + sex + '\'' +
                 ", bg='" + bg + '\'' +
                 ", score='" + score + '\'' +
+                ", level='" + level + '\'' +
+                ", voice='" + voice + '\'' +
                 '}';
     }
 }

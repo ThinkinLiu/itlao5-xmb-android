@@ -13,7 +13,7 @@
         android:id="@+id/chat_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
     <include
         android:id="@+id/titleBar"
@@ -88,9 +88,9 @@
                 android:padding="@dimen/space_2x"
                 android:text="@string/chat_voice_tv"
                 android:textColor="@color/text"
-                android:textStyle="bold"
                 android:textSize="@dimen/size_m"
-                android:visibility="gone"/>
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/chat_send_or_more"
@@ -113,12 +113,14 @@
             <GridView
                 android:id="@+id/chat_input_more_gv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/space_4x"
                 android:layout_marginTop="@dimen/space_2x"
                 android:cacheColorHint="@android:color/transparent"
                 android:fadingEdge="none"
                 android:gravity="center"
+                android:listSelector="@android:color/transparent"
                 android:numColumns="4"
                 android:scrollbars="none"
                 android:verticalSpacing="@dimen/space_2x" />

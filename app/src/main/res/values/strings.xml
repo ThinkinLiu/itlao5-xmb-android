@@ -140,6 +140,10 @@
     <string name="set_find_phone_latlng_text_hint">备注：\n　　打开找手机功能，手机丢失时，可以通过另一台手机发送短信指令到该手机中，该手机接收到预设的短信指令后，会将手机所在位置以短信的形式返回。\n　　该功能可以搭配短信/语音找手机，到达手机附近通过语音找到手机。\n　　开通该功能需要接收及发送短信权限，开通定位权限，并请允许程序后台运行\n　　更实用便捷的找手机方式正在研发中...</string>
     <string name="toast_set_find_phone_latlng_length">请设置6-20位短信密码</string>
     <string name="toast_set_find_phone_latlng_error">该指令已用于短信语音找手机</string>
+    <string name="item_chat_gridview_picture">图片</string>
+    <string name="item_chat_gridview_game">游戏</string>
+    <string name="item_chat_gridview_news">新闻</string>
+    <string name="item_chat_gridview_joke">笑话</string>
 
 
 </resources>

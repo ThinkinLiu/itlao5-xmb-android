@@ -9,7 +9,7 @@
     <color name="titlebar_text">#cccccc</color>
 
     <color name="chat_input_edit_bg">#ffffff</color>
-    <color name="chat_input_more_bg">#cccccc</color>
+    <color name="chat_input_more_bg">#eeeeee</color>
 
     <color name="text_c">#cccccc</color>
     <color name="text_l">#999999</color>

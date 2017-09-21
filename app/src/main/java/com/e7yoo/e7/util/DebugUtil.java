@@ -73,14 +73,14 @@ public class DebugUtil {
             int index= (i + 1) % 3;
             switch (index) {
                 case 0:
-                    newDatas.add(new Robot("萌萌", ""));
+                    newDatas.add(new Robot("呆萌", ""));
                     break;
                 case 1:
                     newDatas.add(new Robot("小萌", ""));
                     break;
                 case 2:
                 default:
-                    newDatas.add(new Robot("哈哈", ""));
+                    newDatas.add(new Robot("二哈", ""));
                     break;
             }
         }

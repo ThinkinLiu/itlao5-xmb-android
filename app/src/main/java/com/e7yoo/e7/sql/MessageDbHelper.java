@@ -23,7 +23,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
     @SuppressWarnings("unused")
     private static final String TAG = "MessageDbHelper";
     private static final String DB_NAME = "db_e7yoo_info";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private static final String TABLE_MESSAGE = "t_message_info";
     private static final String TABLE_FAVORITE = "t_favorite_info";
     private static final String TABLE_ROBOT = "t_robot";
@@ -79,8 +79,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             .append(RobotColumns.BIRTHTIME).append(" INTEGER,")
             .append(RobotColumns.WELCOME).append(" TEXT,")
             .append(RobotColumns.SEX).append(" INTEGER,")
+            .append(RobotColumns.VOICE).append(" INTEGER,")
             .append(RobotColumns.BG).append(" TEXT,")
-            .append(RobotColumns.SCORE).append(" INTEGER")
+            .append(RobotColumns.SCORE).append(" INTEGER,")
+            .append(RobotColumns.DESC).append(" TEXT")
             .append(")");
 
     @Override
@@ -139,8 +141,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         private static final String BIRTHTIME = "birthTime";
         private static final String WELCOME = "welcome";
         private static final String SEX = "sex";
+        private static final String VOICE = "voice";
         private static final String BG = "bg";
         private static final String SCORE = "score";
+        private static final String DESC = "desc"; // 备用
 
     }
 
@@ -298,8 +302,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                 robot.setBirthTime(c.getLong(c.getColumnIndex(RobotColumns.BIRTHTIME)));
                 robot.setWelcome(c.getString(c.getColumnIndex(RobotColumns.WELCOME)));
                 robot.setSex(c.getInt(c.getColumnIndex(RobotColumns.SEX)));
+                robot.setVoice(c.getInt(c.getColumnIndex(RobotColumns.VOICE)));
                 robot.setBg(c.getString(c.getColumnIndex(RobotColumns.BG)));
                 robot.setScore(c.getInt(c.getColumnIndex(RobotColumns.SCORE)));
+                robot.setDesc(c.getString(c.getColumnIndex(RobotColumns.DESC)));
                 robots.add(robot);
             } while (c.moveToNext());
         }
@@ -319,8 +325,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         values.put(RobotColumns.BIRTHTIME, robot.getBirthTime());
         values.put(RobotColumns.WELCOME, robot.getWelcome());
         values.put(RobotColumns.SEX, robot.getSex());
+        values.put(RobotColumns.VOICE, robot.getVoice());
         values.put(RobotColumns.BG, robot.getBg());
         values.put(RobotColumns.SCORE, robot.getScore());
+        values.put(RobotColumns.DESC, robot.getDesc());
         long id = mDatabase.insert(TABLE_ROBOT, null, values);
         return id;
     }
@@ -336,8 +344,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         values.put(RobotColumns.BIRTHTIME, robot.getBirthTime());
         values.put(RobotColumns.WELCOME, robot.getWelcome());
         values.put(RobotColumns.SEX, robot.getSex());
+        values.put(RobotColumns.VOICE, robot.getVoice());
         values.put(RobotColumns.BG, robot.getBg());
         values.put(RobotColumns.SCORE, robot.getScore());
+        values.put(RobotColumns.DESC, robot.getDesc());
         StringBuilder where = new StringBuilder().append(MessageInfoColumns._ID).append(" = ?");
         long id = mDatabase.update(TABLE_ROBOT, values, where.toString(), new String[]{String.valueOf(robot.getId())});
         return id;

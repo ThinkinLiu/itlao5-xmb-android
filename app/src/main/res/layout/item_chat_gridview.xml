@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/space_3x"
+    android:gravity="center">
+    <ImageView
+        android:id="@+id/item_chat_gridview_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners_tag_chat_gridview_item"
+        android:padding="@dimen/space_3x"
+        android:scaleType="matrix" />
+    <TextView
+        android:id="@+id/item_chat_gridview_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_m"
+        android:textColor="@color/text"
+        android:layout_marginTop="@dimen/space"/>
+</LinearLayout>

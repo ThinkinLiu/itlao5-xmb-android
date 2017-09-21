@@ -129,8 +129,8 @@ public class TtsUtils {
 			InputStream is = null;
 			FileOutputStream fos = null;
 			try {
-				if(E7App.mApp == null) {
-					return;
+				if(file.exists()) {
+					file.mkdirs();
 				}
 				is = E7App.mApp.getResources().getAssets().open(source);
 				String path = dest;
@@ -143,6 +143,8 @@ public class TtsUtils {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				if (fos != null) {

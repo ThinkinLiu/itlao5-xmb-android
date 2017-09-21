@@ -32,8 +32,14 @@ import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.bumptech.glide.Glide;
+import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
+import com.e7yoo.e7.adapter.NewsAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.app.news.NewsActivity;
+import com.e7yoo.e7.model.ChannelItem;
+import com.e7yoo.e7.model.GridItem;
+import com.e7yoo.e7.model.GridItemClickListener;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.net.Net;
@@ -59,7 +65,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/8/31.
  */
 
-public class ChatActivity extends BaseActivity implements View.OnClickListener, RecognitionListener, SpeechSynthesizerListener {
+public class ChatActivity extends BaseActivity implements View.OnClickListener, GridItemClickListener, RecognitionListener, SpeechSynthesizerListener {
 
     public static final int REQUEST_CODE_FOR_ADD_ROBOT = 1002;
     private SwipeRefreshLayout mHomeSRLayout;
@@ -87,21 +93,25 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this, new ComponentName(this, VoiceRecognitionService.class));
         // 注册监听器
         mSpeechRecognizer.setRecognitionListener(this);
-        int voice = 4;
-        if(mRobot.getId() > 0) {
-            switch (mRobot.getSex()) {
-                case 0:
+        mSpeechSynthesizer = TtsUtils.getSpeechSynthesizer(this, this, getVoice(mRobot));
+    }
+
+    private int getVoice(Robot robot) {
+        int voice = 4; // 默认播放童音 0 (普通女声), 1 (普通男声), 2 (特别男声), 3 (情感男声), 4 (童声)
+        if(robot.getId() > 0) { // 0是萌萌，语音播放童音
+            switch (robot.getSex()) {
+                case 0: // 保密，特别男声
                     voice = 2;
                     break;
-                case 1:
+                case 1: // 男，男声
                     voice = 1;
                     break;
-                case 2:
+                case 2: // 女，女声
                     voice = 0;
                     break;
             }
         }
-        mSpeechSynthesizer = TtsUtils.getSpeechSynthesizer(this, this, voice);
+        return voice;
     }
 
     @Override
@@ -126,6 +136,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
         mChatInputMoreLayout = findViewById(R.id.chat_input_more_layout);
         mChatInputMoreGv = (GridView) findViewById(R.id.chat_input_more_gv);
+        ArrayList<GridItem> gridItems = new ArrayList<>();
+        GridItem gridItem = new GridItem(R.mipmap.item_chat_gridview_picture, R.string.item_chat_gridview_picture, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_news, R.string.item_chat_gridview_news, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_joke, R.string.item_chat_gridview_joke, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
+        gridItems.add(gridItem);
+        mChatInputMoreGv.setAdapter(new GridAdapter(this, gridItems));
     }
 
     @Override
@@ -369,6 +389,34 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void onGridItemClick(int i, GridItem item) {
+        if(item == null) {
+            return;
+        }
+        int textResId = item.getTextResId();
+        switch (textResId) {
+            case R.string.item_chat_gridview_picture:
+                sendText(getString(textResId));
+                break;
+            case R.string.item_chat_gridview_news:
+                addMsgToView(getString(textResId));
+                ActivityUtil.toActivity(this, NewsActivity.class);
+                break;
+            case R.string.item_chat_gridview_joke:
+                addMsgToView(getString(textResId));
+                if(isNetOk(true)) {
+                    NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
+                    mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
+                }
+                break;
+            case R.string.item_chat_gridview_game:
+                addMsgToView(getString(textResId));
+                ActivityUtil.toActivity(this, GameListActivity.class);
+                break;
+        }
+    }
+
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -392,11 +440,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     };
 
-    private boolean sendText(String content) {
-        // mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
+    private void addMsgToView(String content) {
         PrivateMsg msg = PrivateMsgUtil.getSendPrivateMsg(mRobot.getId(), content);
         mRvAdapter.addItemBottom(msg);
         mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+    }
+
+    private boolean sendText(String content) {
+        // mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
+        addMsgToView(content);
         if(isNetOk(true)) {
             if(getResources().getString(R.string.mengmeng).equals(mRobot.getName())) {
                 NetHelper.newInstance().rootAsk("", content);
