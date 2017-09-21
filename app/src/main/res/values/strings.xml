@@ -149,4 +149,20 @@
     <string name="error_robot_is_null">出故障了，可以换个萌伴聊聊</string>
 
 
+    <string name="app_name_about">小萌伴 -- </string>
+    <string name="app_name_about_info">懂你的闲暇时光伴侣</string>
+    <string name="about_evaluate_error">您的手机没有安装应用商店</string>
+    <string name="about_qr_code">软件下载二维码</string>
+    <string name="about_qq_group">反馈QQ群</string>
+    <string name="about_qq_group_num">364328556</string>
+    <string name="about_qq_group_num_clip">QQ群号已复制</string>
+    <string name="about_wx">微信公众号</string>
+    <string name="about_wx_num">小萌伴</string>
+    <string name="about_wx_num_clip">微信公众号已复制</string>
+    <string name="about_app_version">当前版本</string>
+    <string name="about_app_version_no">当前已是最新版本</string>
+    <string name="qr_code_hint">扫一扫， 下载体验</string>
+    <string name="qr_code_share_hint">单击二维码分享</string>
+    <string name="qr_code_share_title">扫一扫，和我一起玩【小萌伴】</string>
+    <string name="qr_code_share_content">我和萌萌等你哦!</string>
 </resources>
