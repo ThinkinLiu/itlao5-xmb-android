@@ -87,7 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param text 标题
      * @param onClickListeners 点击事件
      */
-    protected void setTitleTv(String text, View.OnClickListener... onClickListeners) {
+    public void setTitleTv(String text, View.OnClickListener... onClickListeners) {
         if(titleTv == null) {
             return;
         }

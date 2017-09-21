@@ -53,7 +53,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center"
                 android:padding="@dimen/space"
-                app:srcCompat="@drawable/ic_keyboard_voice_black_24dp" />
+                android:src="@mipmap/chat_input_voice" />
 
             <EditText
                 android:id="@+id/chat_edit"
@@ -99,7 +99,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center"
                 android:padding="@dimen/space"
-                app:srcCompat="@drawable/ic_add_circle_outline_black_24dp" />
+                android:src="@mipmap/chat_more" />
         </RelativeLayout>
 
         <RelativeLayout

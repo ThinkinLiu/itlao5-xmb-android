@@ -1,25 +1,32 @@
 package com.e7yoo.e7;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.e7yoo.e7.adapter.ViewPagerAdapter;
+import com.e7yoo.e7.app.findphone.FindPhoneLatlngSetActivity;
 import com.e7yoo.e7.app.light.NotificationControl;
 import com.e7yoo.e7.fragment.BaseFragment;
 import com.e7yoo.e7.fragment.CircleFragment;
 import com.e7yoo.e7.fragment.HomeFragment;
 import com.e7yoo.e7.fragment.MineFragment;
 import com.e7yoo.e7.fragment.MoreFragment;
+import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.BottomNavigationViewHelper;
 import com.e7yoo.e7.util.CheckNotification;
+import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
@@ -62,6 +69,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initSettings() {
+        initPermission();
         initRobot();
         setLeftTv(View.GONE);
         BottomNavigationViewHelper.disableShiftMode(navigation);
@@ -111,7 +119,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                setTitleTv(titleResIds[position]);
+                setTitleText(null, position);
                 if (prevMenuItem != null) {
                     prevMenuItem.setChecked(false);
                 } else {
@@ -158,10 +166,18 @@ public class MainActivity extends BaseActivity {
 
         private void setItem(int position) {
             mViewPager.setCurrentItem(position);
-            setTitleTv(titleResIds[position]);
+            setTitleText(null, position);
         }
 
     };
+
+    public void setTitleText(Me me, int position) {
+        if(me != null && position == titleResIds.length - 1) {
+            setTitleTv(me.getNick_name());
+        } else {
+            setTitleTv(titleResIds[position]);
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Message msg) {
@@ -191,4 +207,51 @@ public class MainActivity extends BaseActivity {
     }
 
     long onBackPressedTime = 0;
+
+
+
+    String PERMISSIONS[] = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.RECEIVE_BOOT_COMPLETED
+    };
+
+    /**
+     * android 6.0 以上需要动态申请权限
+     */
+    private void initPermission() {
+
+        ArrayList<String> toApplyList = new ArrayList<String>();
+
+        for (String perm : PERMISSIONS) {
+            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
+                toApplyList.add(perm);
+                // 进入到这里代表没有权限.
+            }
+        }
+        String tmpList[] = new String[toApplyList.size()];
+        if (!toApplyList.isEmpty()) {
+            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 123:
+                if (permissions == null || grantResults == null || permissions.length != grantResults.length) {
+                    return;
+                }
+                for (int i = 0; i < permissions.length; i++) {
+                    String permission = permissions[i];
+                    if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED
+                            && !permission.equals(Manifest.permission.RECEIVE_BOOT_COMPLETED)) {
+                        CheckPermissionUtil.AskForPermission(MainActivity.this, R.string.dialog_file_hint_title, R.string.dialog_file_hint);
+                        return;
+                    }
+                }
+                break;
+        }
+    }
 }

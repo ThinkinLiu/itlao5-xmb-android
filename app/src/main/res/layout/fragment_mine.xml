@@ -21,7 +21,7 @@
                 android:gravity="center">
 
                 <com.e7yoo.e7.view.CircleImageView
-                    android:id="@+id/mine_icon2"
+                    android:id="@+id/mine_icon"
                     android:layout_width="@dimen/mine_icon"
                     android:layout_height="@dimen/mine_icon"
                     android:layout_centerHorizontal="true"
@@ -42,7 +42,7 @@
                     android:id="@+id/mine_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/mine_icon2"
+                    android:layout_below="@id/mine_icon"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="@dimen/space_2x"
                     android:text="@string/mine_login_hint"

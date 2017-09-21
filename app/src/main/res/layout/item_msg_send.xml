@@ -60,6 +60,6 @@
             android:layout_marginTop="@dimen/space"
             android:layout_toLeftOf="@+id/item_msg_content_layout"
             android:padding="@dimen/space"
-            app:srcCompat="@drawable/ic_speaker_phone_black_24dp" />
+            android:src="@drawable/chat_item_voice_selector" />
     </RelativeLayout>
 </RelativeLayout>

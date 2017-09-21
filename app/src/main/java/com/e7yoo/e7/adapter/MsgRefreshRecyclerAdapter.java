@@ -207,6 +207,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         holder.itemView.setTag(position);
     }
 
+    private int voicePosition;
     private void addClickListener(View view, View voice, final int position) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override

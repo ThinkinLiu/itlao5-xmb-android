@@ -103,6 +103,8 @@
     <string name="dialog_sms_hint_title">提示</string>
     <string name="dialog_latlng_hint">您禁止了短信或定位权限，将无法保证找手机功能正常运行</string>
     <string name="dialog_latlng_hint_title">提示</string>
+    <string name="dialog_file_hint">您禁止了文件读写权限，将会影响聊天记录及语音功能的正常使用</string>
+    <string name="dialog_file_hint_title">提示</string>
     <string name="chat_voice_tv">按住 说话</string>
     <string name="chat_voice_tv_end">松开 发送</string>
     <string name="chat_voice_tv_cancel">松开 取消发送</string>
@@ -144,6 +146,7 @@
     <string name="item_chat_gridview_game">游戏</string>
     <string name="item_chat_gridview_news">新闻</string>
     <string name="item_chat_gridview_joke">笑话</string>
+    <string name="error_robot_is_null">出故障了，可以换个萌伴聊聊</string>
 
 
 </resources>

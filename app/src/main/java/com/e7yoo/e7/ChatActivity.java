@@ -4,13 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Message;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -34,10 +31,8 @@ import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.bumptech.glide.Glide;
 import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
-import com.e7yoo.e7.adapter.NewsAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.app.news.NewsActivity;
-import com.e7yoo.e7.model.ChannelItem;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
 import com.e7yoo.e7.model.PrivateMsg;
@@ -136,16 +131,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
         mChatInputMoreLayout = findViewById(R.id.chat_input_more_layout);
         mChatInputMoreGv = (GridView) findViewById(R.id.chat_input_more_gv);
-        ArrayList<GridItem> gridItems = new ArrayList<>();
-        GridItem gridItem = new GridItem(R.mipmap.item_chat_gridview_picture, R.string.item_chat_gridview_picture, this);
-        gridItems.add(gridItem);
-        gridItem = new GridItem(R.mipmap.item_chat_gridview_news, R.string.item_chat_gridview_news, this);
-        gridItems.add(gridItem);
-        gridItem = new GridItem(R.mipmap.item_chat_gridview_joke, R.string.item_chat_gridview_joke, this);
-        gridItems.add(gridItem);
-        gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
-        gridItems.add(gridItem);
-        mChatInputMoreGv.setAdapter(new GridAdapter(this, gridItems));
     }
 
     @Override
@@ -154,6 +139,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 R.string.dialog_voice_hint_title, R.string.dialog_voice_hint);
         if(getIntent() != null) {
             mRobot = (Robot) getIntent().getSerializableExtra(Constant.INTENT_ROBOT);
+        } else {
+            TastyToastUtil.toast(this, R.string.error_robot_is_null);
+            return;
         }
         refresh(mRobot);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -173,6 +161,20 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             mRecyclerView.smoothScrollToPosition(lastPosition);
         }
         init();
+        mChatInputMoreGv.setAdapter(new GridAdapter(this, getGridItems()));
+    }
+
+    private ArrayList<GridItem> getGridItems() {
+        ArrayList<GridItem> gridItems = new ArrayList<>();
+        GridItem gridItem = new GridItem(R.mipmap.item_chat_gridview_picture, R.string.item_chat_gridview_picture, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_news, R.string.item_chat_gridview_news, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_joke, R.string.item_chat_gridview_joke, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
+        gridItems.add(gridItem);
+        return gridItems;
     }
 
     private void refresh(Robot robot) {
@@ -220,11 +222,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     boolean isNoMatch = false;
     boolean isBusy = false;
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        private float x, y;
         private long time;
         private Toast lastToast;
         private boolean isNoNet = false;
-        float space = E7App.mApp.getApplicationContext().getResources().getDimension(R.dimen.space_30dp);
         int maxTime = 10 * 1000;
         int minTime = 1 * 1000;
         private void showToast(int strResId) {
@@ -262,8 +262,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             return true;
         }
         private void actionDown(MotionEvent motionEvent) {
-            x = motionEvent.getX();
-            y = motionEvent.getY();
             time = System.currentTimeMillis();
             isNoNet = false;
             isNoMatch = false;
@@ -348,9 +346,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 return;
             }
             if(editable.toString().trim().length() > 0) {
-                mSendOrMoreImage.setImageResource(R.drawable.ic_send_black_24dp);
+                mSendOrMoreImage.setImageResource(R.mipmap.chat_send);
             } else {
-                mSendOrMoreImage.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+                mSendOrMoreImage.setImageResource(R.mipmap.chat_more);
             }
         }
     };
@@ -365,9 +363,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 if(mVoiceTv.getVisibility() == View.VISIBLE) {
                     mVoiceTv.setVisibility(View.GONE);
                     mEditText.setVisibility(View.VISIBLE);
+                    mVoiceImage.setImageResource(R.mipmap.chat_input_voice);
+                    if(mEditText.getText().toString().trim().length() > 0) {
+                        mSendOrMoreImage.setImageResource(R.mipmap.chat_send);
+                    } else {
+                        mSendOrMoreImage.setImageResource(R.mipmap.chat_more);
+                    }
                 } else {
                     mVoiceTv.setVisibility(View.VISIBLE);
                     mEditText.setVisibility(View.GONE);
+                    mVoiceImage.setImageResource(R.mipmap.chat_input_keyboard);
+                    mSendOrMoreImage.setImageResource(R.mipmap.chat_more);
                 }
                 break;
             case R.id.chat_send_or_more:

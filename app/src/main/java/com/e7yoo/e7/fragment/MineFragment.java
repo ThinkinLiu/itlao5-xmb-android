@@ -7,11 +7,21 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.model.Me;
 
-public class MineFragment extends BaseFragment {
+public class MineFragment extends BaseFragment implements View.OnClickListener {
+    private View mRootView;
+    private ImageView mHeadIconIv;
+    private TextView mine_label;
+    private View mSpaceLayout, mMsgLayout, mSetLayout, mAboutLayout;
+    private Me mMe;
+
 
     public MineFragment() {
         // Required empty public constructor
@@ -32,17 +42,49 @@ public class MineFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mine, container, false);
+        if(mRootView == null) {
+            mRootView = inflater.inflate(R.layout.fragment_mine, container, false);
+            initView();
+            initListener();
+        }
+        return mRootView;
+    }
+
+    private void initView() {
+        mHeadIconIv = mRootView.findViewById(R.id.mine_icon);
+        mine_label = mRootView.findViewById(R.id.mine_label);
+        mSpaceLayout = mRootView.findViewById(R.id.mine_page_layout);
+        mMsgLayout = mRootView.findViewById(R.id.mine_msg_layout);
+        mSetLayout = mRootView.findViewById(R.id.mine_set_layout);
+        mAboutLayout = mRootView.findViewById(R.id.mine_about_layout);
+    }
+
+    private void initListener() {
+        mSpaceLayout.setOnClickListener(this);
+        mMsgLayout.setOnClickListener(this);
+        mSetLayout.setOnClickListener(this);
+        mAboutLayout.setOnClickListener(this);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // ((BaseActivity) getActivity()).hintTitle();
+        initDatas();
+    }
+
+    private void initDatas() {
+        if(mMe != null) {
+            // 用户名在MainActivity中设置（setTitleText方法）
+            Glide.with(getActivity()).load(mMe.getIcon()).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(mHeadIconIv);
+            mine_label.setText(mMe.getLabel());
+        }
     }
 
     @Override
@@ -55,4 +97,17 @@ public class MineFragment extends BaseFragment {
         super.onDetach();
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.mine_page_layout:
+                break;
+            case R.id.mine_msg_layout:
+                break;
+            case R.id.mine_set_layout:
+                break;
+            case R.id.mine_about_layout:
+                break;
+        }
+    }
 }
