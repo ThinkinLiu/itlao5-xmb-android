@@ -1,11 +1,5 @@
 package com.e7yoo.e7;
 
-/*import com.baidu.autoupdatesdk.AppUpdateInfo;
-import com.baidu.autoupdatesdk.AppUpdateInfoForInstall;
-import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
-import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
-import com.baidu.autoupdatesdk.UICheckUpdateCallback;*/
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;

@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="titlebar_bg">#35ac55</color>
+    <color name="titlebar_bg_about">#459f47</color>
+    <color name="titlebar_bg">#459f47</color>
+    <!--<color name="titlebar_bg">#35ac55</color>-->
     <color name="titlebar_title">#ffffff</color>
     <color name="titlebar_text">#cccccc</color>
 
@@ -31,7 +33,8 @@
 
     <color name="blue">#007bff</color>
 
-    <color name="bottom_navigation_color_checked">#35ac55</color>
+    <color name="bottom_navigation_color_checked">#459f47</color>
+    <!--<color name="bottom_navigation_color_checked">#35ac55</color>-->
     <color name="bottom_navigation_color_unchecked">#666666</color>
     <color name="bottom_navigation_color_backgroud">#90ff02</color>
     <color name="backgroud">#eeeeee</color>
