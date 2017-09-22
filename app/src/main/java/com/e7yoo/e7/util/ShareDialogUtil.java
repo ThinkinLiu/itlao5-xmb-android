@@ -3,6 +3,8 @@ package com.e7yoo.e7.util;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -81,17 +84,17 @@ public class ShareDialogUtil {
 
     private static void initView(View view) {
         GridView gridView = view.findViewById(R.id.share_gv);
-        GridAdapter mAdapter = new GridAdapter(gridView.getContext(), getDatas());
+        GridAdapter mAdapter = new GridAdapter(gridView.getContext(), getDatas(), true);
         gridView.setAdapter(mAdapter);
     }
 
     private static ArrayList<GridItem> getDatas() {
         ArrayList<GridItem> items = new ArrayList<>();
-        items.add(new GridItem(R.mipmap.item_chat_gridview_picture, R.string.share_to_wx, gridItemClickListener));
-        items.add(new GridItem(R.mipmap.item_chat_gridview_picture, R.string.share_to_circle, gridItemClickListener));
-        items.add(new GridItem(R.mipmap.item_chat_gridview_picture, R.string.share_to_qq, gridItemClickListener));
-        items.add(new GridItem(R.mipmap.item_chat_gridview_picture, R.string.share_to_qzone, gridItemClickListener));
-        items.add(new GridItem(R.mipmap.item_chat_gridview_picture, R.string.share_to_sina, gridItemClickListener));
+        items.add(new GridItem(R.mipmap.share_wechat, R.string.share_to_wx, gridItemClickListener));
+        items.add(new GridItem(R.mipmap.share_wxcircle, R.string.share_to_circle, gridItemClickListener));
+        items.add(new GridItem(R.mipmap.share_qq, R.string.share_to_qq, gridItemClickListener));
+        items.add(new GridItem(R.mipmap.share_qzone, R.string.share_to_qzone, gridItemClickListener));
+        // items.add(new GridItem(R.mipmap.share_sina, R.string.share_to_sina, gridItemClickListener));
         return items;
     }
 
@@ -133,20 +136,31 @@ public class ShareDialogUtil {
             if(name != null) {
                 shareParams.setShareType(Platform.SHARE_WEBPAGE);
                 shareParams.setUrl(share_url);//必须
-                shareParams.setImagePath(getImagePath(R.mipmap.logo_share));
+                String imagePath = getImagePath();
+                if(TextUtils.isEmpty(imagePath)) {
+                    if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
+                        shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
+                    } else {
+                        shareParams.setImageUrl("http://e7yoo.com/apk/logo_share.png");
+                    }
+                } else {
+                    shareParams.setImagePath(getImagePath());
+                }
                 JShareInterface.share(name, shareParams, new PlatActionListener() {
                     @Override
                     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
 
+                        Logs.isDebug();
                     }
 
                     @Override
                     public void onError(Platform platform, int i, int i1, Throwable throwable) {
-
+                        Logs.isDebug();
                     }
 
                     @Override
                     public void onCancel(Platform platform, int i) {
+                        Logs.isDebug();
 
                     }
                 });
@@ -154,15 +168,20 @@ public class ShareDialogUtil {
         }
     };
 
-    private static String getImagePath(int resId) {
+    private static String getImagePath() {
         try {
-            return ContentResolver.SCHEME_ANDROID_RESOURCE
-                    + "://" + context.getResources().getResourcePackageName(resId)
-                    + "/" + context.getResources().getResourceTypeName(resId)
-                    + "/" + context.getResources().getResourceEntryName(resId);
+            String filePath = FileUtil.getFilePath(context, "share.png");
+            if(FileUtil.isFileExists(context, "share.png")) {
+                return filePath;
+            } else {
+                boolean result = FileUtil.copyFromAssetsToSdcard(true, "log_share.png", filePath);
+                if(result) {
+                    return filePath;
+                }
+            }
         } catch (Throwable e) {
             e.printStackTrace();
-            return "";
         }
+        return "";
     }
 }

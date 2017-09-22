@@ -86,7 +86,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 final android.text.ClipboardManager clipboard2 =
                         (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard2.setText(getString(R.string.about_wx_num));
-                TastyToast.makeText(this, getString(R.string.about_qq_group_num_clip), TastyToast.LENGTH_SHORT, TastyToast.INFO);
+                TastyToast.makeText(this, getString(R.string.about_wx_num_clip), TastyToast.LENGTH_SHORT, TastyToast.INFO);
                 break;
             case R.id.ll_app_version:
                 // UpdateHelper.getInstance().manualUpdate(getApplicationContext().getPackageName());

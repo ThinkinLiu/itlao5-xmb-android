@@ -23,9 +23,13 @@ public class GridAdapter extends BaseAdapter {
     private ArrayList<GridItem> mDatas = new ArrayList<>();
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    public GridAdapter(Context context, ArrayList<GridItem> datas) {
+    private boolean mNoPadding = false;
+    public GridAdapter(Context context, ArrayList<GridItem> datas, boolean... noPadding) {
         mLayoutInflater = LayoutInflater.from(context);
         mContext = context;
+        if(noPadding != null && noPadding.length > 0) {
+            mNoPadding = noPadding[0];
+        }
         if(datas != null && datas.size() > 0) {
             mDatas.addAll(datas);
         }
@@ -61,6 +65,9 @@ public class GridAdapter extends BaseAdapter {
             holder = new ViewHolder();
             view = mLayoutInflater.inflate(R.layout.item_chat_gridview, null, false);
             holder.iv = view.findViewById(R.id.item_chat_gridview_iv);
+            if(mNoPadding) {
+                holder.iv.setPadding(0, 0, 0, 0);
+            }
             holder.tv = view.findViewById(R.id.item_chat_gridview_tv);
             view.setTag(holder);
         } else {

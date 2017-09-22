@@ -36,7 +36,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/space_3x"
             android:background="@mipmap/e7_qrcode_360"
             android:gravity="center" />
 
