@@ -157,7 +157,8 @@
     <string name="about_qq_group_num">364328556</string>
     <string name="about_qq_group_num_clip">QQ群号已复制</string>
     <string name="about_wx">微信公众号</string>
-    <string name="about_wx_num">小萌伴</string>
+    <string name="about_wx_text">xmengban</string>
+    <string name="about_wx_num">xmengban</string>
     <string name="about_wx_num_clip">微信公众号已复制</string>
     <string name="about_app_version">当前版本</string>
     <string name="about_app_version_no">当前已是最新版本</string>

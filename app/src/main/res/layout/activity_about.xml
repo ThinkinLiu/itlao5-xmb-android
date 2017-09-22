@@ -162,7 +162,7 @@
                     android:background="#33333333"
                     android:gravity="right"
                     android:padding="@dimen/space"
-                    android:text="@string/about_wx_num"
+                    android:text="@string/about_wx_text"
                     android:textColor="@color/text_h"
                     android:textSize="@dimen/size_xl" />
             </LinearLayout>
