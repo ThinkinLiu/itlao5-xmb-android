@@ -165,4 +165,15 @@
     <string name="qr_code_share_hint">单击二维码分享</string>
     <string name="qr_code_share_title">扫一扫，和我一起玩【小萌伴】</string>
     <string name="qr_code_share_content">我和萌萌等你哦!</string>
+
+    <string name="setting_feedback">常见问题及反馈</string>
+    <string name="setting_msg_no_disturb">消息免打扰</string>
+    <string name="setting_reply_auto_tts">回复语音播放</string>
+
+    <string name="share_to_wx">微信</string>
+    <string name="share_to_circle">朋友圈</string>
+    <string name="share_to_qq">QQ</string>
+    <string name="share_to_qzone">QQ空间</string>
+    <string name="share_to_sina">微博</string>
+
 </resources>

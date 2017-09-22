@@ -11,8 +11,12 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.OsUtil;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import cn.jiguang.share.android.api.JShareInterface;
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
 
@@ -65,8 +69,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 }
                 break;
             case R.id.iv_share:
-                // BitmapUtils.takeScreenShot(this, getString(R.string.app_share_about));
-                // ShareUtil.share(this, null, null, null, null);
+                ShareDialogUtil.show(this);
                 break;
             case R.id.ll_qr_code:
                 qrCodeDialog();
@@ -173,5 +176,11 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
         /** attention to this below ,must add this**/
         // UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         Log.d("result", "onActivityResult");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ShareDialogUtil.release();
     }
 }

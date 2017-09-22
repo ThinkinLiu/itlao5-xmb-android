@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.e7yoo.e7.AboutActivity;
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.SettingsActivity;
 import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.util.ActivityUtil;
 
@@ -107,6 +108,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.mine_msg_layout:
                 break;
             case R.id.mine_set_layout:
+                ActivityUtil.toActivity(getActivity(), SettingsActivity.class);
                 break;
             case R.id.mine_about_layout:
                 ActivityUtil.toActivity(getActivity(), AboutActivity.class);

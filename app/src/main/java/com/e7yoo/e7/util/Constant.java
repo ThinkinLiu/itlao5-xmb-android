@@ -38,4 +38,8 @@ public class Constant {
     public static final String PREFERENCE_OPEN_SMS_FINDPHONE = "preference_open_sms_findphone";
     public static final String PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG = "preference_open_sms_findphone_latlng";
     public static final String PREFERENCE_OPEN_VOICE_FINDPHONE = "preference_open_voice_findphone";
+    /** 回复是否自动语音播报，0 不播报，1 播报，2 播报所有非提示性的返回值，3 仅播报通过语音输入时的回复 */
+    public static final String PREFERENCE_REPLY_TTS_TYPE = "preference_reply_tts_type";
+    public static final String PREFERENCE_REPLY_TTS_ISHINT = "preference_reply_tts_ishint";
+    public static final String PREFERENCE_REPLY_PUSH_DISTURB = "preference_reply_push_disturb";
 }
