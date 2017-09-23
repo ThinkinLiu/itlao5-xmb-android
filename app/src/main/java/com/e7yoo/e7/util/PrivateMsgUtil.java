@@ -12,6 +12,13 @@ import org.json.JSONObject;
  */
 
 public class PrivateMsgUtil {
+    public static PrivateMsg getRecvPrivateMsg(int robotId, String content) {
+        return new PrivateMsg(1000, System.currentTimeMillis(), content, null, PrivateMsg.Type.REPLY, robotId);
+    }
+    public static PrivateMsg getHintPrivateMsg(int robotId, String content) {
+        return new PrivateMsg(1000, System.currentTimeMillis(), content, null, PrivateMsg.Type.HINT, robotId);
+    }
+
     public static PrivateMsg getSendPrivateMsg(int robotId, String content) {
         return new PrivateMsg(1000, System.currentTimeMillis(), content, null, PrivateMsg.Type.SEND, robotId);
     }
@@ -58,6 +65,6 @@ public class PrivateMsgUtil {
 
     }
 
-    private static String[] array = {"聚合数据", "萌萌", "图灵机器人"};
+    private static String[] array = {"聚合数据", "萌萌", "图灵机器人", "机器宝宝"};
 
 }

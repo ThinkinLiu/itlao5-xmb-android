@@ -34,6 +34,7 @@ import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.app.news.NewsActivity;
+import com.e7yoo.e7.model.AutoMsg;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
 import com.e7yoo.e7.model.PrivateMsg;
@@ -57,6 +58,7 @@ import com.e7yoo.e7.view.BlurTransformation;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2017/8/31.
@@ -164,6 +166,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
         init();
         mChatInputMoreGv.setAdapter(new GridAdapter(this, getGridItems()));
+        addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
     }
 
     private ArrayList<GridItem> getGridItems() {
@@ -442,6 +445,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             }).start();
         }
     };
+
+    private void addMsgToViewRecv(String content) {
+        PrivateMsg msg = PrivateMsgUtil.getRecvPrivateMsg(mRobot.getId(), content);
+        mRvAdapter.addItemBottom(msg);
+        mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+    }
+
+    private void addMsgToViewHint(String content) {
+        PrivateMsg msg = PrivateMsgUtil.getHintPrivateMsg(mRobot.getId(), content);
+        mRvAdapter.addItemBottom(msg);
+        mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+    }
 
     private void addMsgToView(String content) {
         PrivateMsg msg = PrivateMsgUtil.getSendPrivateMsg(mRobot.getId(), content);
