@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.e7yoo.e7.model.Robot;
@@ -16,6 +18,7 @@ import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
+import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.RobotUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.jph.takephoto.app.TakePhoto;
@@ -36,8 +39,9 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
     public static final int REQUEST_CODE_FOR_INPUT_NAME = 1003;
     public static final int REQUEST_CODE_FOR_INPUT_WELCOME = 1004;
     public static final int REQUEST_CODE_FOR_INPUT_SEX = 1005;
-    private View iconLayout, nameLayout, sexLayout, welcomeLayout, bgLayout;
+    private View iconLayout, nameLayout, sexLayout, welcomeLayout, bgLayout, bgBlurLayout;
     private ImageView iconIv, bgIv;
+    private ToggleButton bgBlurTb;
     private TextView nameTv, sexTv, welcomeTv;
     private TextView saveTv;
     private View nameArrow;
@@ -65,8 +69,10 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         sexLayout = findViewById(R.id.add_robot_sex_layout);
         welcomeLayout = findViewById(R.id.add_robot_welcome_layout);
         bgLayout = findViewById(R.id.add_robot_bg_layout);
+        bgBlurLayout = findViewById(R.id.add_robot_bg_blur_layout);
         iconIv = (ImageView) findViewById(R.id.add_robot_icon_iv);
         bgIv = (ImageView) findViewById(R.id.add_robot_bg_iv);
+        bgBlurTb = (ToggleButton) findViewById(R.id.add_robot_bg_blur_tb);
         nameTv = (TextView) findViewById(R.id.add_robot_name_tv);
         nameArrow = findViewById(R.id.add_robot_name_arrow);
         sexTv = (TextView) findViewById(R.id.add_robot_sex_tv);
@@ -99,6 +105,9 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
                 welcomeTv.setText(RobotUtil.getString(mRobot.getWelcome()));
                 Glide.with(this).load(mRobot.getBg()).into(bgIv);
                 bgIv.setTag(R.id.add_robot_bg_iv, mRobot.getBg());
+                if(mRobot.getBgblur() == 25) {
+                    bgBlurTb.setChecked(true);
+                }
             }
         }
     }
@@ -174,6 +183,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         mRobot.setWelcome(welcomeTv.getText().toString().trim());
         mRobot.setIcon(String.valueOf(iconIv.getTag(R.id.add_robot_icon_iv)));
         mRobot.setBg(String.valueOf(bgIv.getTag(R.id.add_robot_bg_iv)));
+        mRobot.setBgblur(bgBlurTb.isChecked() ? 25 : 0);
         mRobot.setSex(RobotUtil.getSex(sexTv.getText().toString()));
         if (FLAG == 0) {
             MessageDbHelper.getInstance(this).insertRobot(mRobot);

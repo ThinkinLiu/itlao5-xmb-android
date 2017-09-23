@@ -23,6 +23,7 @@ public class Robot implements Serializable {
     private int sex; // 0，保密 1，男 2，女
     private int voice; // 0 (普通女声), 1 (普通男声), 2 (特别男声), 3 (情感男声), 4 (童声)
     private String bg;
+    private int bgblur; // 0-25
     private int score;
     private String desc;
     private int level;
@@ -50,6 +51,7 @@ public class Robot implements Serializable {
         this.welcome = context.getString(R.string.mengmeng_welcome);
         this.sex = 2;
         this.bg = null;
+        this.bgblur = 0;
         this.score = 0;
         this.level = 0;
         this.voice = 4;
@@ -119,6 +121,14 @@ public class Robot implements Serializable {
         this.bg = bg;
     }
 
+    public int getBgblur() {
+        return bgblur;
+    }
+
+    public void setBgblur(int bgblur) {
+        this.bgblur = bgblur;
+    }
+
     public int getScore() {
         return score;
     }
@@ -162,6 +172,7 @@ public class Robot implements Serializable {
                 ", birthTime='" + birthTime + '\'' +
                 ", sex='" + sex + '\'' +
                 ", bg='" + bg + '\'' +
+                ", bgblur='" + bgblur + '\'' +
                 ", score='" + score + '\'' +
                 ", level='" + level + '\'' +
                 ", voice='" + voice + '\'' +

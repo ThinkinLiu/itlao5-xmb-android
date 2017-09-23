@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.speech.RecognitionListener;
@@ -51,6 +52,7 @@ import com.e7yoo.e7.util.PrivateMsgUtil;
 import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.TtsUtils;
+import com.e7yoo.e7.view.BlurTransformation;
 
 import org.json.JSONObject;
 
@@ -188,17 +190,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 setRightTv(View.VISIBLE, R.mipmap.title_right_chat_robot, 0, this);
             }
             if(!TextUtils.isEmpty(mRobot.getBg())) {
-                Glide.with(this).load(mRobot.getBg()).into(bgImage/*new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        Drawable drawable = new BitmapDrawable(getResources(), resource);
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            mHomeSRLayout.setBackground(drawable);
-                        } else {
-                            mHomeSRLayout.setBackgroundDrawable(drawable);
-                        }
-                    }
-                }*/);
+                int bgblur = mRobot.getBgblur();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && bgblur > 0) {
+                    Glide.with(this).load(mRobot.getBg()).crossFade(1000).bitmapTransform(new BlurTransformation(this, bgblur)).into(bgImage);
+                } else {
+                    Glide.with(this).load(mRobot.getBg()).crossFade(1000).into(bgImage);
+                }
             }
             if(mRvAdapter != null) {
                 mRvAdapter.refreshRobot(mRobot);
@@ -700,6 +697,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
+        if(mChatInputMoreLayout.getVisibility() == View.VISIBLE) {
+            mChatInputMoreLayout.setVisibility(View.GONE);
+            return;
+        }
         BdVoiceUtil.stopTTS(mSpeechSynthesizer);
         super.onBackPressed();
     }

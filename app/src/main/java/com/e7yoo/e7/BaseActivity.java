@@ -69,7 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         leftTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                onBackPressed();
             }
         });
         leftTv.setVisibility(View.VISIBLE);

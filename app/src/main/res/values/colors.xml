@@ -27,6 +27,8 @@
     <color name="item_unselected">#ffffff</color>
     <color name="item_unselected2">#00ffffff</color>
 
+    <color name="gray_translucent_33">#55000000</color>
+    <color name="white_translucent_33">#55ffffff</color>
     <color name="white_translucent">#88ffffff</color>
     <color name="gray_translucent">#88eeeeee</color>
     <color name="blue_translucent">#88007bff</color>

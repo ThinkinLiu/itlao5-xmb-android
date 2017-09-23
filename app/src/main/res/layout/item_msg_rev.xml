@@ -58,6 +58,7 @@
             android:layout_marginLeft="@dimen/space__96dp"
             android:layout_marginTop="@dimen/space"
             android:layout_toRightOf="@+id/item_msg_content_layout"
+            android:background="@drawable/rounded_chat_voice_bg"
             android:padding="@dimen/space"
             android:src="@drawable/chat_item_voice_selector" />
     </RelativeLayout>

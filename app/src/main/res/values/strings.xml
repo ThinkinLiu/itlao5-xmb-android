@@ -28,6 +28,7 @@
     <string name="add_robot_sex">性别</string>
     <string name="add_robot_welcome">签名</string>
     <string name="add_robot_bg">背景</string>
+    <string name="add_robot_bg_blur">背景模糊</string>
     <string name="add">添加</string>
     <string name="more_news">新闻资讯</string>
     <string name="more_history">历史今日</string>
