@@ -127,7 +127,7 @@
     <string name="findphone_sms">短信找手机（声音）</string>
     <string name="findphone_sms_set">设置短信指令</string>
     <string name="findphone_sms_update">修改短信指令</string>
-    <string name="findphone_latlng">短信找手机（经纬度）</string>
+    <string name="findphone_latlng">短信找手机（位置）</string>
     <string name="findphone_latlng_set">设置短信指令</string>
     <string name="findphone_latlng_update">修改短信指令</string>
     <string name="findphone_voice">语音找手机</string>

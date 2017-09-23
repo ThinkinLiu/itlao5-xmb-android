@@ -725,25 +725,25 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     };
 
     MsgRefreshRecyclerAdapter.OnVoiceClickListener mOnVoiceClickListener = new MsgRefreshRecyclerAdapter.OnVoiceClickListener() {
-        private long ttsMsgTime = 0;
-        public void setTtsMsgTime(long ttsMsgTime) {
-            this.ttsMsgTime = ttsMsgTime;
-        }
+        private int lastPosition = -1;
         @Override
         public void onVoiceClick(View view, int position) {
             PrivateMsg msg = mRvAdapter.getItem(position);
             if(msg != null) {
                 long msgTime = msg.getTime();
-                if(ttsMsgTime == msgTime) {
+                if(mRvAdapter.getTtsMsgTime() == msgTime) {
                     BdVoiceUtil.stopTTS(mSpeechSynthesizer);
                     view.setSelected(false);
-                    setTtsMsgTime(0);
+                    mRvAdapter.setTtsMsgTime(0);
                 } else {
                     BdVoiceUtil.startTTS(mSpeechSynthesizer, msg.getContent());
                     view.setSelected(true);
-                    setTtsMsgTime(msgTime);
+                    mRvAdapter.setTtsMsgTime(msgTime);
+                    if(lastPosition < mRvAdapter.getItemCount() && lastPosition >= 0)
+                    mRvAdapter.notifyItemChanged(lastPosition);
                 }
             }
+            lastPosition = position;
         }
     };
 }

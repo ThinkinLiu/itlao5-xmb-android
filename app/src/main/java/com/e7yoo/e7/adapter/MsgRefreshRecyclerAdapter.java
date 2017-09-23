@@ -160,6 +160,11 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderSend.itemMsgIcon.setImageResource(R.mipmap.icon_me);
             }
             viewHolderSend.itemMsgVoice.setVisibility(View.GONE);
+            if(ttsMsgTime == mMsgs.get(position).getTime()) {
+                viewHolderSend.itemMsgVoice.setSelected(true);
+            } else {
+                viewHolderSend.itemMsgVoice.setSelected(false);
+            }
             // viewHolderSend.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
             addClickListener(viewHolderSend.contentLayout, viewHolderSend.itemMsgVoice, position);
         } else if(holder instanceof ViewHolderRev) {
@@ -179,6 +184,11 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderRev.itemMsgIcon.setImageResource(resIcon);
             }
             viewHolderRev.itemMsgVoice.setVisibility(View.VISIBLE);
+            if(ttsMsgTime == mMsgs.get(position).getTime()) {
+                viewHolderRev.itemMsgVoice.setSelected(true);
+            } else {
+                viewHolderRev.itemMsgVoice.setSelected(false);
+            }
             // viewHolderRev.itemMsgIcon.setImageResource();
             // viewHolderRev.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
             addClickListener(viewHolderRev.contentLayout, viewHolderRev.itemMsgVoice, position);
@@ -391,6 +401,13 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         mOnVoiceClickListener = onVoiceClickListener;
     }
 
+    private long ttsMsgTime = -1;
+    public void setTtsMsgTime(long ttsMsgTime) {
+        this.ttsMsgTime = ttsMsgTime;
+    }
+    public long getTtsMsgTime() {
+        return ttsMsgTime;
+    }
     public interface OnVoiceClickListener{
         void onVoiceClick(View view, int position);
     }
