@@ -68,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/item_selector"
                 android:orientation="horizontal"
-                android:padding="@dimen/space_3x">
+                android:padding="@dimen/space_3x"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,7 +106,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_1dp"
-                android:background="@color/color_seperator" />
+                android:background="@color/color_seperator"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/mine_msg_layout"

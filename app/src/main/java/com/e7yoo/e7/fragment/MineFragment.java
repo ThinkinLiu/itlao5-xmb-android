@@ -88,6 +88,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             Glide.with(getActivity()).load(mMe.getIcon()).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(mHeadIconIv);
             mine_label.setText(mMe.getLabel());
         }
+        mine_label.setText(R.string.mine_label_hint);
+
     }
 
     @Override

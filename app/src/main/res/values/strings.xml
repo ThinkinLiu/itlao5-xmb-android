@@ -177,5 +177,7 @@
     <string name="share_to_qq">QQ</string>
     <string name="share_to_qzone">QQ空间</string>
     <string name="share_to_sina">微博</string>
+    <string name="mengmeng_is_here">萌萌在这里</string>
+    <string name="mine_label_hint">闲暇时光·有我陪你</string>
 
 </resources>
