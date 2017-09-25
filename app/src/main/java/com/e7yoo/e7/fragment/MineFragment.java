@@ -121,6 +121,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.mine_msg_layout:
                 ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
                 PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
+                mineMsgPoint.setVisibility(View.GONE);
                 try {
                     ShortCutUtils.deleteShortCut(getContext(), MainActivity.class);
                 } catch (Throwable e) {

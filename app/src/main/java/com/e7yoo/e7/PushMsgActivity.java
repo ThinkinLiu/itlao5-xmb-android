@@ -2,6 +2,7 @@ package com.e7yoo.e7;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +20,7 @@ import com.e7yoo.e7.util.RandomUtil;
 
 import java.util.ArrayList;
 
-public class PushMsgActivity extends BaseActivity implements OnClickListener {
+public class PushMsgActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private PushMsgRefreshRecyclerAdapter mRvAdapter;
     private ArrayList<PushMsg> mPushMsgs;
@@ -42,9 +43,11 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void initSettings() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mPushMsgs = MessageDbHelper.getInstance(this).getPushMsgs(0, PAGE_NUM);
         mRvAdapter = new PushMsgRefreshRecyclerAdapter(this);
-        // mRvAdapter.refreshData();
         mRvAdapter.setOnItemClickListener(mOnItemClickListener);
         mRvAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
         mRvAdapter.refreshData(mPushMsgs);
@@ -63,29 +66,29 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
         initLoadMoreListener();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.actionbar_back:
-                break;
-        }
-    }
-
     RecyclerAdapter.OnItemClickListener mOnItemClickListener = new RecyclerAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            PushMsg msg = mRvAdapter.getItem(position);
-            if(msg != null) {
-                switch (msg.getAction()) {
-                    case 0:
-                        break;
-                    case 1:
-                        Intent intent = new Intent(PushMsgActivity.this, NewsWebviewActivity.class);
-                        intent.putExtra(NewsWebviewActivity.INTENT_URL, msg.getUrl());
-                        ActivityUtil.toActivity(PushMsgActivity.this, intent);
-                        break;
-                }
+            final PushMsg msg = mRvAdapter.getItem(position);
+            if(msg == null) {
+                return;
             }
+            switch (msg.getAction()) {
+                case 0:
+                    break;
+                case 1:
+                    Intent intent = new Intent(PushMsgActivity.this, NewsWebviewActivity.class);
+                    intent.putExtra(NewsWebviewActivity.INTENT_URL, msg.getUrl());
+                    ActivityUtil.toActivity(PushMsgActivity.this, intent);
+                    break;
+            }
+            mRvAdapter.setRead(position);
+            DbThreadPool.getInstance().execute(new Runnable() {
+                @Override
+                public void run() {
+                    MessageDbHelper.getInstance(E7App.mApp).updatePushMSg(msg.get_id(), 0);
+                }
+            });
         }
     };
 

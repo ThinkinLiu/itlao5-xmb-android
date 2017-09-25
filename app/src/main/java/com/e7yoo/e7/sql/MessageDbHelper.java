@@ -461,6 +461,9 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         String extras = pushMsg.getExtras();
         try {
             JSONObject jsonObject = new JSONObject(extras);
+            if(TextUtils.isEmpty(pushMsg.getTitle())) {
+                pushMsg.setTitle(jsonObject.optString("title"));
+            }
             pushMsg.setAction(jsonObject.optInt("action"));
             pushMsg.setUrl(jsonObject.optString("url"));
             pushMsg.setPic_url(jsonObject.optString("pic_url"));
@@ -495,34 +498,20 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public long updatePushMSg(PushMsg pushMsg) {
-        if (pushMsg == null) {
-            return -1;
-        }
+    public long updatePushMSg(int _id, int unRead) {
         ContentValues values = new ContentValues();
-        values.put(PushMsgColumns.TIME, pushMsg.getTime());
-        values.put(PushMsgColumns.ACTION, pushMsg.getAction());
-        values.put(PushMsgColumns.URL, pushMsg.getUrl());
-        values.put(PushMsgColumns.PIC_URL, pushMsg.getPic_url());
-        values.put(PushMsgColumns.MSG_TIME, pushMsg.getMsg_time());
-        values.put(PushMsgColumns.CONTENT_URL, pushMsg.getContent_url());
-        values.put(PushMsgColumns.CONTENT_PIC_URL, pushMsg.getContent_pic_url());
-        values.put(PushMsgColumns.TITLE, pushMsg.getTitle());
-        values.put(PushMsgColumns.CONTENT, pushMsg.getContent());
-        values.put(PushMsgColumns.EXTRAS, pushMsg.getExtras());
-        values.put(PushMsgColumns.MSG_ID, pushMsg.getMsgId());
-        values.put(PushMsgColumns.DESC, pushMsg.getDesc());
-        values.put(PushMsgColumns.UNREAD, pushMsg.getUnread());
+        values.put(PushMsgColumns.UNREAD, unRead);
         StringBuilder where = new StringBuilder().append(PushMsgColumns._ID).append(" = ?");
-        long id = mDatabase.update(TABLE_PUSH_MSG, values, where.toString(), new String[]{String.valueOf(pushMsg.get_id())});
+        long id = mDatabase.update(TABLE_PUSH_MSG, values, where.toString(), new String[]{String.valueOf(_id)});
         return id;
     }
 
-    public void deletePushMsg(String pushMsgId) {
-        if (pushMsgId == null) {
+
+    public void deletePushMsg(String _id) {
+        if (_id == null) {
             return;
         }
         StringBuilder where = new StringBuilder().append(PushMsgColumns._ID).append(" = ?");
-        int count = mDatabase.delete(TABLE_PUSH_MSG, where.toString(), new String[]{pushMsgId});
+        int count = mDatabase.delete(TABLE_PUSH_MSG, where.toString(), new String[]{_id});
     }
 }

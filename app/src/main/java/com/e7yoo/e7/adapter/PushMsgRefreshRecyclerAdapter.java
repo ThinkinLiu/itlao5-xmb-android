@@ -2,6 +2,7 @@ package com.e7yoo.e7.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,15 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
         notifyDataSetChanged();
     }
 
+    public void setRead(int position) {
+        try {
+            mMsgs.get(position).setUnread(0);
+            notifyDataSetChanged();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
     public FooterType getFooter() {
         return mFooterType;
     }
@@ -111,7 +121,12 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
         if(holder instanceof ViewHolderPushMsg) {
             ViewHolderPushMsg viewHolderPushMsg = (ViewHolderPushMsg) holder;
             viewHolderPushMsg.itemMsgIcon.setVisibility(View.GONE);
-            viewHolderPushMsg.itemMsgTitle.setText(mMsgs.get(position).getTitle());
+            String title = mMsgs.get(position).getTitle();
+            if(TextUtils.isEmpty(title)) {
+                viewHolderPushMsg.itemMsgTitle.setText("[萌伴]消息");
+            } else {
+                viewHolderPushMsg.itemMsgTitle.setText(title);
+            }
             viewHolderPushMsg.itemMsgContent.setText(mMsgs.get(position).getContent());
             int unRead = mMsgs.get(position).getUnread();
             viewHolderPushMsg.itemMsgPoint.setVisibility(unRead > 0 ? View.VISIBLE : View.INVISIBLE);
@@ -150,16 +165,6 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 return false;
             }
         });
-    }
-
-    private boolean showTime(int position) {
-        if(position == 0) {
-            return true;
-        } else if(position >= mMsgs.size()) {
-            return false;
-        } else {
-            return (mMsgs.get(position).getTime() - mMsgs.get(position - 1).getTime()) / (1000 * 60) >= 1;
-        }
     }
 
     private int getFooterStringId() {
