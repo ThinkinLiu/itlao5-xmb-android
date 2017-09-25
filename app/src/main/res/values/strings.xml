@@ -8,6 +8,7 @@
     <string name="loading">加载中...</string>
     <string name="loading_up_load_more">上拉加载更多...</string>
     <string name="loading_no_more">没有更多</string>
+    <string name="loading_no_push_msg">暂无消息</string>
     <string name="item_robot_add">更多萌伴</string>
     <string name="app_exit">再按一次退出小萌伴</string>
 

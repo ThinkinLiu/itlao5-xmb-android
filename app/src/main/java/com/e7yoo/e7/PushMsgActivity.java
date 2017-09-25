@@ -23,6 +23,7 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
     private RecyclerView mRecyclerView;
     private PushMsgRefreshRecyclerAdapter mRvAdapter;
     private ArrayList<PushMsg> mPushMsgs;
+    public final static int PAGE_NUM = 15;
 
     @Override
     protected String initTitle() {
@@ -41,13 +42,22 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void initSettings() {
-        mPushMsgs = MessageDbHelper.getInstance(this).getPushMsgs(0, 15);
+        mPushMsgs = MessageDbHelper.getInstance(this).getPushMsgs(0, PAGE_NUM);
         mRvAdapter = new PushMsgRefreshRecyclerAdapter(this);
         // mRvAdapter.refreshData();
         mRvAdapter.setOnItemClickListener(mOnItemClickListener);
         mRvAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
         mRvAdapter.refreshData(mPushMsgs);
         mRecyclerView.setAdapter(mRvAdapter);
+        if(mPushMsgs != null) {
+            if(mPushMsgs.size() <= 0) {
+                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_no_push_msg, false);
+            } else if(mPushMsgs.size() < PAGE_NUM) {
+                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_no_more, false);
+            } else {
+                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_up_load_more, false);
+            }
+        }
     }
 
     @Override
@@ -101,7 +111,22 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
                     DbThreadPool.getInstance().execute(new Runnable() {
                         @Override
                         public void run() {
-                            mPushMsgs = MessageDbHelper.getInstance(PushMsgActivity.this).getPushMsgs(0, 15);
+                            if(mRvAdapter != null) {
+                                mPushMsgs = MessageDbHelper.getInstance(PushMsgActivity.this).getPushMsgs(mRvAdapter.getLastId(), PAGE_NUM);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(!isFinishing() && mRvAdapter != null) {
+                                            mRvAdapter.addItemBottom(mPushMsgs);
+                                            if(mPushMsgs.size() < PAGE_NUM) {
+                                                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
+                                            } else {
+                                                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_up_load_more, false);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
                         }
                     });
                 }
@@ -118,7 +143,7 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
             private boolean isNeedLoadMore(int newState) {
                 return !isFinishing() && newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mRvAdapter.getItemCount()
                         && mRvAdapter.getFooter() != PushMsgRefreshRecyclerAdapter.FooterType.LOADING
-                        && mRvAdapter.getFooter() != PushMsgRefreshRecyclerAdapter.FooterType.NO_MORE;
+                        && mRvAdapter.getFooter() != PushMsgRefreshRecyclerAdapter.FooterType.NO_MORE && mPushMsgs.size() >= PAGE_NUM;
             }
         });
 
