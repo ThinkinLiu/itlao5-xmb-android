@@ -1,5 +1,6 @@
 package com.e7yoo.e7;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -71,8 +72,9 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
                     case 0:
                         break;
                     case 1:
-                        Intent
-                        ActivityUtil.toActivity(PushMsgActivity.this, NewsWebviewActivity.class);
+                        Intent intent = new Intent(PushMsgActivity.this, NewsWebviewActivity.class);
+                        intent.putExtra(NewsWebviewActivity.INTENT_URL, msg.getUrl());
+                        ActivityUtil.toActivity(PushMsgActivity.this, intent);
                         break;
                 }
             }
