@@ -222,12 +222,12 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         /*Cursor c = mDatabase.query(TABLE_MESSAGE, null, where, new String[]{name}, null, null, orderBy, limit);*/
 
         if (c == null) {
-            return null;
+            return new ArrayList<>();
         }
         boolean exist = c.moveToLast();
         if (!exist) {
             c.close();
-            return null;
+            return new ArrayList<>();
         }
         ArrayList<PrivateMsg> msgs = new ArrayList<PrivateMsg>();
         PrivateMsg msg;
@@ -331,7 +331,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         Cursor c = mDatabase.query(TABLE_ROBOT, null, null, null, null, null, null, null);
 
         if (c == null) {
-            return null;
+            return new ArrayList<>();
         }
         boolean exist = c.moveToFirst();
         ArrayList<Robot> robots = new ArrayList<>();
@@ -421,7 +421,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         Cursor c = mDatabase.query(TABLE_PUSH_MSG, null, where, null, null, null, orderBy, limit);
 
         if (c == null) {
-            return null;
+            return new ArrayList<>();
         }
         boolean exist = c.moveToFirst();
         ArrayList<PushMsg> pushMsgs = new ArrayList<>();

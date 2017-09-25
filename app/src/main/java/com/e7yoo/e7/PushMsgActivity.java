@@ -49,14 +49,12 @@ public class PushMsgActivity extends BaseActivity implements OnClickListener {
         mRvAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
         mRvAdapter.refreshData(mPushMsgs);
         mRecyclerView.setAdapter(mRvAdapter);
-        if(mPushMsgs != null) {
-            if(mPushMsgs.size() <= 0) {
-                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_no_push_msg, false);
-            } else if(mPushMsgs.size() < PAGE_NUM) {
-                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_no_more, false);
-            } else {
-                mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_up_load_more, false);
-            }
+        if(mPushMsgs.size() <= 0) {
+            mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_no_push_msg, false);
+        } else if(mPushMsgs.size() < PAGE_NUM) {
+            mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_no_more, false);
+        } else {
+            mRvAdapter.setFooter(PushMsgRefreshRecyclerAdapter.FooterType.HINT, R.string.loading_up_load_more, false);
         }
     }
 
