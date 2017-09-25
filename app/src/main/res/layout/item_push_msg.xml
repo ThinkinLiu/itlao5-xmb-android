@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space_2x"
+    android:background="@drawable/item_selector">
+
+    <ImageView
+        android:id="@+id/item_push_msg_icon"
+        android:layout_width="@dimen/item_push_msg_icon_width"
+        android:layout_height="@dimen/item_push_msg_icon_height"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/item_push_msg_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/item_push_msg_point"
+        android:background="@drawable/rounded_corners_tag_gray_trans"
+        android:maxLines="1"
+        android:paddingBottom="@dimen/space"
+        android:paddingLeft="@dimen/space_3x"
+        android:paddingRight="@dimen/space_3x"
+        android:paddingTop="@dimen/space"
+        android:text="@string/app_name"
+        android:textColor="@color/text_h"
+        android:textSize="@dimen/size_xl" />
+
+    <TextView
+        android:id="@+id/item_push_msg_point"
+        android:layout_width="@dimen/item_push_msg_point"
+        android:layout_height="@dimen/item_push_msg_point"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/space_2x"
+        android:layout_marginTop="@dimen/space_2x"
+        android:background="@drawable/point" />
+
+    <TextView
+        android:id="@+id/item_push_msg_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_push_msg_title"
+        android:layout_toLeftOf="@+id/item_push_msg_point"
+        android:background="@drawable/rounded_corners_tag_gray_trans"
+        android:maxLines="1"
+        android:paddingBottom="@dimen/space"
+        android:paddingLeft="@dimen/space_3x"
+        android:paddingRight="@dimen/space_3x"
+        android:paddingTop="@dimen/space"
+        android:text="@string/app_name"
+        android:textColor="@color/text"
+        android:textSize="@dimen/size_m" />
+
+</RelativeLayout>

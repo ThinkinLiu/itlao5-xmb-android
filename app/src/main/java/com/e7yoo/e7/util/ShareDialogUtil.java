@@ -144,7 +144,7 @@ public class ShareDialogUtil {
                         shareParams.setImageUrl("http://e7yoo.com/apk/logo_share.png");
                     }
                 } else {
-                    shareParams.setImagePath(getImagePath());
+                    shareParams.setImagePath(imagePath);
                 }
                 JShareInterface.share(name, shareParams, new PlatActionListener() {
                     @Override

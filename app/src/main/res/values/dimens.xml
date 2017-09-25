@@ -41,4 +41,7 @@
 
     <dimen name="list_news_width">120dp</dimen>
     <dimen name="list_news_height">90dp</dimen>
+    <dimen name="item_push_msg_icon_width">36dp</dimen>
+    <dimen name="item_push_msg_icon_height">28dp</dimen>
+    <dimen name="item_push_msg_point">12dp</dimen>
 </resources>

@@ -141,6 +141,14 @@
                     android:textColor="@color/text_h"
                     android:textSize="@dimen/size_xl" />
 
+                <TextView
+                    android:id="@+id/mine_msg_point"
+                    android:layout_width="@dimen/item_push_msg_point"
+                    android:layout_height="@dimen/item_push_msg_point"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/space_2x"
+                    android:layout_marginTop="@dimen/space_2x"
+                    android:background="@drawable/point" />
                 <ImageView
                     android:layout_width="@dimen/array"
                     android:layout_height="@dimen/array"

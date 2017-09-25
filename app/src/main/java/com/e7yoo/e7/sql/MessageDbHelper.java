@@ -12,9 +12,12 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.PrivateMsg.Type;
+import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -23,10 +26,11 @@ public class MessageDbHelper extends SQLiteOpenHelper {
     @SuppressWarnings("unused")
     private static final String TAG = "MessageDbHelper";
     private static final String DB_NAME = "db_e7yoo_info";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 5;
     private static final String TABLE_MESSAGE = "t_message_info";
     private static final String TABLE_FAVORITE = "t_favorite_info";
     private static final String TABLE_ROBOT = "t_robot";
+    private static final String TABLE_PUSH_MSG = "t_pushmsg";
 
     private static MessageDbHelper mInstance = null;
     private SQLiteDatabase mDatabase;
@@ -85,12 +89,30 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             .append(RobotColumns.SCORE).append(" INTEGER,")
             .append(RobotColumns.DESC).append(" TEXT")
             .append(")");
+    StringBuilder sql_push_msg = new StringBuilder().append("CREATE TABLE IF NOT EXISTS ")
+            .append(TABLE_PUSH_MSG).append("(")
+            .append(PushMsgColumns._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
+            .append(PushMsgColumns.TIME).append(" INTEGER,")
+            .append(PushMsgColumns.ACTION).append(" INTEGER,")
+            .append(PushMsgColumns.URL).append(" TEXT,")
+            .append(PushMsgColumns.PIC_URL).append(" TEXT,")
+            .append(PushMsgColumns.MSG_TIME).append(" INTEGER,")
+            .append(PushMsgColumns.CONTENT_URL).append(" TEXT,")
+            .append(PushMsgColumns.CONTENT_PIC_URL).append(" TEXT,")
+            .append(PushMsgColumns.TITLE).append(" TEXT,")
+            .append(PushMsgColumns.CONTENT).append(" TEXT,")
+            .append(PushMsgColumns.EXTRAS).append(" TEXT,")
+            .append(PushMsgColumns.MSG_ID).append(" TEXT,")
+            .append(PushMsgColumns.DESC).append(" TEXT,")
+            .append(PushMsgColumns.UNREAD).append(" INTEGER")
+            .append(")");
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sb_message.toString());
         db.execSQL(sql_favorite.toString());
         db.execSQL(sql_robot.toString());
+        db.execSQL(sql_push_msg.toString());
     }
 
     @Override
@@ -99,12 +121,14 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             if (oldVersion == 1) {
                 // 数据库版本1基础上增加robot表，message表增加robot_id列，其他数据库未改变
                 db.execSQL(sql_robot.toString());
+                db.execSQL(sql_push_msg.toString());
                 db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER;");
             } else {
                 // 其他情况，将表销毁再创建（后续版本可自行修改）
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGE);
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITE);
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROBOT);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUSH_MSG);
                 onCreate(db);
             }
         }
@@ -147,6 +171,24 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         private static final String BGBLUR = "bgblur";
         private static final String SCORE = "score";
         private static final String DESC = "desc"; // 备用
+
+    }
+
+    private static class PushMsgColumns implements BaseColumns {
+        private static final String _ID = "_id";
+        private static final String TIME = "time";
+        private static final String ACTION = "action";
+        private static final String URL = "url";
+        private static final String PIC_URL = "pic_url";
+        private static final String MSG_TIME = "msg_time";
+        private static final String CONTENT_PIC_URL = "content_pic_url";
+        private static final String CONTENT_URL = "content_url";
+        private static final String TITLE = "title";
+        private static final String CONTENT = "content";
+        private static final String EXTRAS = "extras";
+        private static final String MSG_ID = "msg_id";
+        private static final String DESC = "desc";
+        private static final String UNREAD = "unread";
 
     }
 
@@ -364,5 +406,123 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         }
         StringBuilder where = new StringBuilder().append(MessageInfoColumns._ID).append(" = ?");
         int count = mDatabase.delete(TABLE_ROBOT, where.toString(), new String[]{robotId});
+    }
+
+    public ArrayList<PushMsg> getPushMsgs(int id, int num) {
+        if (num <= 0) {
+            num = 100;
+        }
+        String where = null;
+        if (id > 0) {
+            where = PushMsgColumns._ID + "<" + id;
+        }
+        String orderBy = PushMsgColumns._ID + " DESC";
+        String limit = String.valueOf(num);
+        Cursor c = mDatabase.query(TABLE_PUSH_MSG, null, where, null, null, null, orderBy, limit);
+
+        if (c == null) {
+            return null;
+        }
+        boolean exist = c.moveToFirst();
+        ArrayList<PushMsg> pushMsgs = new ArrayList<>();
+        PushMsg pushMsg;
+        if (exist) {
+            do {
+                pushMsg = new PushMsg();
+                pushMsg.set_id(c.getInt(c.getColumnIndex(PushMsgColumns._ID)));
+                pushMsg.setTime(c.getLong(c.getColumnIndex(PushMsgColumns.TIME)));
+                pushMsg.setAction(c.getInt(c.getColumnIndex(PushMsgColumns.ACTION)));
+                pushMsg.setUrl(c.getString(c.getColumnIndex(PushMsgColumns.URL)));
+                pushMsg.setPic_url(c.getString(c.getColumnIndex(PushMsgColumns.PIC_URL)));
+                pushMsg.setMsg_time(c.getLong(c.getColumnIndex(PushMsgColumns.MSG_TIME)));
+                pushMsg.setContent_pic_url(c.getString(c.getColumnIndex(PushMsgColumns.CONTENT_PIC_URL)));
+                pushMsg.setContent_url(c.getString(c.getColumnIndex(PushMsgColumns.CONTENT_URL)));
+                pushMsg.setTitle(c.getString(c.getColumnIndex(PushMsgColumns.TITLE)));
+                pushMsg.setContent(c.getString(c.getColumnIndex(PushMsgColumns.CONTENT)));
+                pushMsg.setExtras(c.getString(c.getColumnIndex(PushMsgColumns.EXTRAS)));
+                pushMsg.setMsgId(c.getString(c.getColumnIndex(PushMsgColumns.MSG_ID)));
+                pushMsg.setDesc(c.getString(c.getColumnIndex(PushMsgColumns.DESC)));
+                pushMsg.setUnread(c.getInt(c.getColumnIndex(PushMsgColumns.UNREAD)));
+                pushMsgs.add(pushMsg);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return pushMsgs;
+    }
+
+    /**
+     *
+     * @param pushMsg
+     * @param hasExtras 是否需要处理extras
+     * @return
+     */
+    public long insertPushMsg(PushMsg pushMsg, boolean hasExtras) {
+        String extras = pushMsg.getExtras();
+        try {
+            JSONObject jsonObject = new JSONObject(extras);
+            pushMsg.setAction(jsonObject.optInt("action"));
+            pushMsg.setUrl(jsonObject.optString("url"));
+            pushMsg.setPic_url(jsonObject.optString("pic_url"));
+            pushMsg.setMsg_time(jsonObject.optLong("msg_time"));
+            pushMsg.setContent_pic_url(jsonObject.optString("content_pic_url"));
+            pushMsg.setContent_url(jsonObject.optString("content_url"));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return insertPushMsg(pushMsg);
+    }
+
+    private long insertPushMsg(PushMsg pushMsg) {
+        if (pushMsg == null) {
+            return -1;
+        }
+        ContentValues values = new ContentValues();
+        values.put(PushMsgColumns.TIME, pushMsg.getTime());
+        values.put(PushMsgColumns.ACTION, pushMsg.getAction());
+        values.put(PushMsgColumns.URL, pushMsg.getUrl());
+        values.put(PushMsgColumns.PIC_URL, pushMsg.getPic_url());
+        values.put(PushMsgColumns.MSG_TIME, pushMsg.getMsg_time());
+        values.put(PushMsgColumns.CONTENT_PIC_URL, pushMsg.getContent_pic_url());
+        values.put(PushMsgColumns.CONTENT_URL, pushMsg.getContent_url());
+        values.put(PushMsgColumns.TITLE, pushMsg.getTitle());
+        values.put(PushMsgColumns.CONTENT, pushMsg.getContent());
+        values.put(PushMsgColumns.EXTRAS, pushMsg.getExtras());
+        values.put(PushMsgColumns.MSG_ID, pushMsg.getMsgId());
+        values.put(PushMsgColumns.DESC, pushMsg.getDesc());
+        values.put(PushMsgColumns.UNREAD, pushMsg.getUnread());
+        long id = mDatabase.insert(TABLE_PUSH_MSG, null, values);
+        return id;
+    }
+
+    public long updatePushMSg(PushMsg pushMsg) {
+        if (pushMsg == null) {
+            return -1;
+        }
+        ContentValues values = new ContentValues();
+        values.put(PushMsgColumns.TIME, pushMsg.getTime());
+        values.put(PushMsgColumns.ACTION, pushMsg.getAction());
+        values.put(PushMsgColumns.URL, pushMsg.getUrl());
+        values.put(PushMsgColumns.PIC_URL, pushMsg.getPic_url());
+        values.put(PushMsgColumns.MSG_TIME, pushMsg.getMsg_time());
+        values.put(PushMsgColumns.CONTENT_URL, pushMsg.getContent_url());
+        values.put(PushMsgColumns.CONTENT_PIC_URL, pushMsg.getContent_pic_url());
+        values.put(PushMsgColumns.TITLE, pushMsg.getTitle());
+        values.put(PushMsgColumns.CONTENT, pushMsg.getContent());
+        values.put(PushMsgColumns.EXTRAS, pushMsg.getExtras());
+        values.put(PushMsgColumns.MSG_ID, pushMsg.getMsgId());
+        values.put(PushMsgColumns.DESC, pushMsg.getDesc());
+        values.put(PushMsgColumns.UNREAD, pushMsg.getUnread());
+        StringBuilder where = new StringBuilder().append(PushMsgColumns._ID).append(" = ?");
+        long id = mDatabase.update(TABLE_PUSH_MSG, values, where.toString(), new String[]{String.valueOf(pushMsg.get_id())});
+        return id;
+    }
+
+    public void deletePushMsg(String pushMsgId) {
+        if (pushMsgId == null) {
+            return;
+        }
+        StringBuilder where = new StringBuilder().append(PushMsgColumns._ID).append(" = ?");
+        int count = mDatabase.delete(TABLE_PUSH_MSG, where.toString(), new String[]{pushMsgId});
     }
 }

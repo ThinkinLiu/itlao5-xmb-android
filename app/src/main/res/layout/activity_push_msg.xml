@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    tools:context="com.e7yoo.e7.PushMsgActivity">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/push_msg_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleBar"
+        android:layout_marginTop="@dimen/space_3x" />
+
+</RelativeLayout>

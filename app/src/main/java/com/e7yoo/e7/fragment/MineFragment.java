@@ -13,16 +13,22 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.e7yoo.e7.AboutActivity;
 import com.e7yoo.e7.BaseActivity;
+import com.e7yoo.e7.MainActivity;
+import com.e7yoo.e7.PushMsgActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
 import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ShortCutUtils;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
     private View mRootView;
     private ImageView mHeadIconIv;
     private TextView mine_label;
     private View mSpaceLayout, mMsgLayout, mSetLayout, mAboutLayout;
+    private TextView mineMsgPoint;
     private Me mMe;
 
 
@@ -66,6 +72,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mMsgLayout = mRootView.findViewById(R.id.mine_msg_layout);
         mSetLayout = mRootView.findViewById(R.id.mine_set_layout);
         mAboutLayout = mRootView.findViewById(R.id.mine_about_layout);
+        mineMsgPoint = mRootView.findViewById(R.id.mine_msg_point);
     }
 
     private void initListener() {
@@ -89,7 +96,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             mine_label.setText(mMe.getLabel());
         }
         mine_label.setText(R.string.mine_label_hint);
-
+        if(PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0) > 0) {
+            mineMsgPoint.setVisibility(View.VISIBLE);
+        } else {
+            mineMsgPoint.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -108,6 +119,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.mine_page_layout:
                 break;
             case R.id.mine_msg_layout:
+                ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
+                PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
+                try {
+                    ShortCutUtils.deleteShortCut(getContext(), MainActivity.class);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.mine_set_layout:
                 ActivityUtil.toActivity(getActivity(), SettingsActivity.class);
