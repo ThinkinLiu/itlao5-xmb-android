@@ -7,6 +7,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
+import com.alibaba.sdk.android.feedback.util.IUnreadCountCallback;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 
@@ -60,7 +62,7 @@ public class SettingsActivity extends BaseActivity implements OnCheckedChangeLis
     }
 
     private void initFeedBackCount() {
-        /*FeedbackAPI.getFeedbackUnreadCount(new IUnreadCountCallback() {
+        FeedbackAPI.getFeedbackUnreadCount(new IUnreadCountCallback() {
             @Override
             public void onSuccess(final int arg0) {
                 runOnUiThread(new Runnable() {
@@ -78,7 +80,8 @@ public class SettingsActivity extends BaseActivity implements OnCheckedChangeLis
             @Override
             public void onError(int arg0, String arg1) {
             }
-        });*/
+        });
+        FeedbackAPI.setBackIcon(R.mipmap.ic_arrow_back_white_24dp);
     }
 
     private void initTtsSet() {
@@ -106,10 +109,7 @@ public class SettingsActivity extends BaseActivity implements OnCheckedChangeLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.settings_feedback_layout:
-                // 1.0
-                // FeedbackAPI.openFeedbackActivity(this);
-                // 2.0
-                // FeedbackAPI.openFeedbackActivity();
+                FeedbackAPI.openFeedbackActivity();
                 feedbackUnreadTv.setText("");
                 break;
         }

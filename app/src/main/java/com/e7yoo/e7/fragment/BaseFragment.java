@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.e7yoo.e7.R;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,4 +25,15 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void onEventMainThread(Message msg);
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(this.getClass().getSimpleName());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(this.getClass().getSimpleName());
+    }
 }

@@ -106,7 +106,18 @@ dependencies {
     // 此处以jshare-wechatmodel 1.1.1 版本为例，具体版本请参考压缩包libs的jar包版本。
     compile 'cn.jiguang.sdk:jshare-sinamodel:1.2.1'
     // 此处以jshare-sinamodel 1.1.1 版本为例，具体版本请参考压缩包libs的jar包版本。
+
     // compile 'cn.jiguang.sdk:jcore:1.1.5'  // 此处以JCore 1.1.5版本为例，具体版本请参考压缩包libs的jar包版本。
     testCompile 'junit:junit:4.12'
     compile files('libs/BaiduLBS_Android.jar')
+    compile 'com.aliyun.ams:alicloud-android-feedback:3.1.1@aar'
+    compile 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
+    compile 'com.aliyun.ams:alicloud-android-ut:5.1.0'
+    compile 'com.aliyun.ams:alicloud-android-utils:1.0.3'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    compile files('libs/360update-7.0.3.jar')
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.e7yoo.e7">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -63,15 +64,35 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
     <!-- end 百度定位 -->
 
+    <!-- start bugly -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- end bugly -->
+
+    <!-- start 360update -->
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>-->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- end 360update -->
+
+
     <application
         android:name=".E7App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:roundIcon="@mipmap/logo_round"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5788cee967e58e9b78004641" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="e7yoo" />
 
         <!-- begin: baidu speech sdk -->
         <!-- 请填写应用实际的APP_ID -->
@@ -287,6 +308,28 @@
                 <category android:name="com.e7yoo.e7" />
             </intent-filter>
         </receiver>
+        <!-- start 360update -->
+        <activity
+            android:name="com.qihoo.appstore.common.updatesdk.lib.UpdateTipDialogActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <service
+            android:name="com.qihoo.appstore.updatelib.CheckUpdateService"
+            android:exported="false" />
+
+        <provider
+            android:name="com.qihoo.appstore.updatelib.UpdateProvider"
+            android:authorities="com.e7yoo.e7"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/update_apk_path" />
+        </provider>
+        <!-- end 360update -->
     </application>
 
 </manifest>

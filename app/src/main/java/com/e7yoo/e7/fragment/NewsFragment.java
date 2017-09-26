@@ -32,7 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends BaseFragment {
 	private final static String TAG = "NewsFragment";
 	private Activity activity;
 	private ArrayList<NewsEntity> newsList = new ArrayList<NewsEntity>();
@@ -276,5 +276,10 @@ public class NewsFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		Log.d(TAG, "channel_id = " + channel_id);
+	}
+
+	@Override
+	public void onEventMainThread(Message msg) {
+
 	}
 }

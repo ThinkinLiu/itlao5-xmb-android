@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
+import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import cn.jiguang.share.android.api.JShareInterface;
@@ -89,7 +90,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 TastyToast.makeText(this, getString(R.string.about_wx_num_clip), TastyToast.LENGTH_SHORT, TastyToast.INFO);
                 break;
             case R.id.ll_app_version:
-                // UpdateHelper.getInstance().manualUpdate(getApplicationContext().getPackageName());
+                UpdateHelper.getInstance().manualUpdate(getApplicationContext().getPackageName());
                 break;
             default:
                 break;

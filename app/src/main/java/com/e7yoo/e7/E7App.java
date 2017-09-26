@@ -1,6 +1,13 @@
 package com.e7yoo.e7;
 
 import android.app.Application;
+import android.graphics.Color;
+
+import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
+import com.e7yoo.e7.util.OsUtil;
+import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.jiguang.share.android.api.JShareInterface;
 import cn.jpush.android.api.JPushInterface;
@@ -16,10 +23,26 @@ public class E7App extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = this;
-        JPushInterface.setDebugMode(true);
+        jPush();
+        ali();
+        bugly();
+    }
+
+    private void jPush() {
+        JPushInterface.setDebugMode(false);
         JPushInterface.init(mApp);
-        JShareInterface.setDebugMode(true);
+        JShareInterface.setDebugMode(false);
         JShareInterface.init(mApp);
     }
 
+    private void ali() {
+        FeedbackAPI.init(mApp, "23473106", "f934f0f40717aa6b4416cf3883f28f6d");
+    }
+
+    private void bugly() {
+        MobclickAgent.setDebugMode(false);
+        MobclickAgent.setCatchUncaughtExceptions(false);
+        CrashReport.initCrashReport(getApplicationContext(), "ab0c0f5941", false);
+        CrashReport.setUserId(OsUtil.getUdid(this));
+    }
 }

@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/titlebar_bg</item>
         <item name="colorPrimaryDark">@color/titlebar_bg</item>
         <item name="colorAccent">@color/titlebar_bg</item>
-        <item name="android:windowBackground">@color/backgroud</item>
+        <item name="android:windowBackground">@drawable/ic_loading</item>
     </style>
 
     <style name="myProgressBarStyle">

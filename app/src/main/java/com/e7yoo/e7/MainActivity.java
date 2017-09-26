@@ -30,6 +30,7 @@ import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -80,6 +81,10 @@ public class MainActivity extends BaseActivity {
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
 
         CheckNotification.checkAndOpenNotification(this);
+
+        UpdateHelper.getInstance().init(getApplicationContext(), getResources().getColor(R.color.titlebar_bg));/*Color.parseColor("#459F47"));*/
+        UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
+
     }
 
     private void initRobot() {
@@ -214,7 +219,8 @@ public class MainActivity extends BaseActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.RECEIVE_BOOT_COMPLETED,
-            /*该权限无法弹出框口进行提醒*/Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS
+            /*该权限无法弹出框口进行提醒*/Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+            Manifest.permission.WAKE_LOCK
     };
 
     /**
