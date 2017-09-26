@@ -88,7 +88,7 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.CHANGE_WIFI_STATE,
-            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+            /*该权限无法弹出框口进行提醒*/Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -123,7 +123,8 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
                 }
                 for (int i = 0; i < permissions.length; i++) {
                     String permission = permissions[i];
-                    if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED
+                            && !permission.equals(Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)) {
                         CheckPermissionUtil.AskForPermission(FindPhoneLatlngSetActivity.this, R.string.dialog_latlng_hint_title, R.string.dialog_latlng_hint);
                         return;
                     }

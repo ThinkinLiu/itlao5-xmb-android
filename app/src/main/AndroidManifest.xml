@@ -8,11 +8,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-
+    <!-- start 手电筒 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera.flash" />
-    <!-- 使用相机 -->
     <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <!-- end 手电筒 -->
     <!--START百度tts-->
     <!--<uses-permission android:name="android.permission.INTERNET" />-->
     <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->

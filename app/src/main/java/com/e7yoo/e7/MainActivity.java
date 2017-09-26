@@ -213,7 +213,8 @@ public class MainActivity extends BaseActivity {
     String PERMISSIONS[] = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.RECEIVE_BOOT_COMPLETED
+            Manifest.permission.RECEIVE_BOOT_COMPLETED,
+            /*该权限无法弹出框口进行提醒*/Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS
     };
 
     /**
@@ -246,7 +247,8 @@ public class MainActivity extends BaseActivity {
                 for (int i = 0; i < permissions.length; i++) {
                     String permission = permissions[i];
                     if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED
-                            && !permission.equals(Manifest.permission.RECEIVE_BOOT_COMPLETED)) {
+                            && !permission.equals(Manifest.permission.RECEIVE_BOOT_COMPLETED)
+                            && !permission.equals(Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)) {
                         CheckPermissionUtil.AskForPermission(MainActivity.this, R.string.dialog_file_hint_title, R.string.dialog_file_hint);
                         return;
                     }
