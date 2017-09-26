@@ -2,6 +2,7 @@ package com.e7yoo.e7.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,7 +167,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderSend.itemMsgVoice.setSelected(false);
             }
             // viewHolderSend.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
-            addClickListener(viewHolderSend.contentLayout, viewHolderSend.itemMsgVoice, position);
+            addClickListener(viewHolderSend.contentLayout, viewHolderSend.itemMsgVoice, null, position);
         } else if(holder instanceof ViewHolderRev) {
             ViewHolderRev viewHolderRev = (ViewHolderRev) holder;
             if(showTime) {
@@ -189,9 +190,17 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             } else {
                 viewHolderRev.itemMsgVoice.setSelected(false);
             }
+            View urlView;
+            if(TextUtils.isEmpty(mMsgs.get(position).getUrl())) {
+                viewHolderRev.itemMsgUrl.setVisibility(View.GONE);
+                urlView = null;
+            } else {
+                viewHolderRev.itemMsgUrl.setVisibility(View.VISIBLE);
+                urlView = viewHolderRev.itemMsgUrl;
+            }
             // viewHolderRev.itemMsgIcon.setImageResource();
             // viewHolderRev.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
-            addClickListener(viewHolderRev.contentLayout, viewHolderRev.itemMsgVoice, position);
+            addClickListener(viewHolderRev.contentLayout, viewHolderRev.itemMsgVoice, urlView, position);
         } else if(holder instanceof ViewHolderHint) {
             ViewHolderHint viewHolderHint = (ViewHolderHint) holder;
             if(showTime) {
@@ -218,7 +227,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     }
 
     private int voicePosition;
-    private void addClickListener(View view, View voice, final int position) {
+    private void addClickListener(View view, View voice, View url, final int position) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -236,6 +245,16 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 return false;
             }
         });
+        if(url != null) {
+            url.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mOnUrlClickListener != null) {
+                        mOnUrlClickListener.onUrlClick(view, position);
+                    }
+                }
+            });
+        }
         voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -350,8 +369,10 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
      */
     public static class ViewHolderRev extends BaseMsgViewHolder {
 
+        public TextView itemMsgUrl;
         public ViewHolderRev(View view) {
             super(view);
+            itemMsgUrl = view.findViewById(R.id.item_msg_url);
         }
     }
 
@@ -396,9 +417,20 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         return mMsgs != null && mMsgs.size() > position && position >= 0 ? mMsgs.get(position) : null;
     }
 
+    private OnUrlClickListener mOnUrlClickListener;
+    public void setOnUrlClickListener(OnUrlClickListener onUrlClickListener) {
+        mOnUrlClickListener = onUrlClickListener;
+    }
+    public interface OnUrlClickListener{
+        void onUrlClick(View view, int position);
+    }
+
     private OnVoiceClickListener mOnVoiceClickListener;
     public void setOnVoiceClickListener(OnVoiceClickListener onVoiceClickListener) {
         mOnVoiceClickListener = onVoiceClickListener;
+    }
+    public interface OnVoiceClickListener{
+        void onVoiceClick(View view, int position);
     }
 
     private long ttsMsgTime = -1;
@@ -407,8 +439,5 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     }
     public long getTtsMsgTime() {
         return ttsMsgTime;
-    }
-    public interface OnVoiceClickListener{
-        void onVoiceClick(View view, int position);
     }
 }

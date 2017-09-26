@@ -33,10 +33,15 @@ import com.bumptech.glide.Glide;
 import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.app.findphone.FindPhoneActivity;
+import com.e7yoo.e7.app.history.TodayHisActivity;
+import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.app.news.NewsActivity;
+import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.model.AutoMsg;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
+import com.e7yoo.e7.model.MsgUrlType;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.net.Net;
@@ -49,8 +54,10 @@ import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.JokeUtil;
 import com.e7yoo.e7.util.Logs;
+import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.PrivateMsgUtil;
 import com.e7yoo.e7.util.RandomUtil;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.TtsUtils;
 import com.e7yoo.e7.view.BlurTransformation;
@@ -217,6 +224,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         mRvAdapter.setOnItemClickListener(mOnItemClickListener);
         mRvAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
         mRvAdapter.setOnVoiceClickListener(mOnVoiceClickListener);
+        mRvAdapter.setOnUrlClickListener(mOnUrlClickListener);
     }
 
     boolean isNoMatch = false;
@@ -458,8 +466,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
     }
 
-    private void addMsgToView(String content) {
+    private void addMsgToView(String content, String... url) {
         PrivateMsg msg = PrivateMsgUtil.getSendPrivateMsg(mRobot.getId(), content);
+        if(url != null && url.length > 0) {
+            msg.setUrl(url[0]);
+        }
         mRvAdapter.addItemBottom(msg);
         mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
     }
@@ -502,7 +513,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if (isNeedLoadMore(newState)) {
-                    if(isNetOk(true)) {
+                    int pullUpTimes = PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, 0);
+                    if(pullUpTimes % 50 == 8) {
+                        addMsgToView(getString(R.string.chat_url_to_share), MsgUrlType.share);
+                    } else if(pullUpTimes % 50 == 12) {
+                        addMsgToView(getString(R.string.chat_url_to_game), MsgUrlType.game);
+                    } else if(pullUpTimes % 100 == 25) {
+                        addMsgToView(getString(R.string.chat_url_to_history), MsgUrlType.history);
+                    } else if(pullUpTimes % 200 == 15) {
+                        addMsgToView(getString(R.string.chat_url_to_findphone), MsgUrlType.finaphone);
+                    } else if(pullUpTimes % 100 == 20) {
+                        addMsgToView(getString(R.string.chat_url_to_news), MsgUrlType.news);
+                    } else if(isNetOk(true)) {
                         NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
                         mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                     }
@@ -760,6 +782,36 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 }
             }
             lastPosition = position;
+        }
+    };
+
+    MsgRefreshRecyclerAdapter.OnUrlClickListener mOnUrlClickListener = new MsgRefreshRecyclerAdapter.OnUrlClickListener() {
+        @Override
+        public void onUrlClick(View view, int position) {
+            PrivateMsg msg = mRvAdapter.getItem(position);
+            if(msg != null && TextUtils.isEmpty(msg.getUrl())) {
+                // 此处保留自定义可拓展协议（如"bigpic:"等）
+                if(msg.getUrl().startsWith(MsgUrlType.bigpic)) { // 查看大图
+
+                } else if(msg.getUrl().startsWith(MsgUrlType.game)) {
+                    ActivityUtil.toActivity(ChatActivity.this, GameListActivity.class);
+                } else if(msg.getUrl().startsWith(MsgUrlType.news)) {
+                    ActivityUtil.toActivity(ChatActivity.this, NewsActivity.class);
+                } else if(msg.getUrl().startsWith(MsgUrlType.share)) {
+                    ShareDialogUtil.show(ChatActivity.this);
+                } else if(msg.getUrl().startsWith(MsgUrlType.history)) {
+                    ActivityUtil.toActivity(ChatActivity.this, TodayHisActivity.class);
+                } else if(msg.getUrl().startsWith(MsgUrlType.flashlight)) {
+                    ActivityUtil.toActivity(ChatActivity.this, FlashLightActivity.class);
+                } else if(msg.getUrl().startsWith(MsgUrlType.finaphone)) {
+                    ActivityUtil.toActivity(ChatActivity.this, FindPhoneActivity.class);
+                } else if(msg.getUrl().startsWith(MsgUrlType.circle)) {
+
+                } else{
+                    // 其他，跳往webview
+                    ActivityUtil.toNewsWebviewActivity(ChatActivity.this, msg.getUrl(), NewsWebviewActivity.INTENT_FROM_CHAT_MSG);
+                }
+            }
         }
     };
 }

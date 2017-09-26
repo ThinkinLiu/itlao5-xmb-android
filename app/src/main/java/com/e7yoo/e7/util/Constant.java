@@ -43,4 +43,5 @@ public class Constant {
     public static final String PREFERENCE_REPLY_TTS_ISHINT = "preference_reply_tts_ishint";
     public static final String PREFERENCE_REPLY_PUSH_DISTURB = "preference_reply_push_disturb";
     public static final String PREFERENCE_PUSH_MSG_UNREAD = "preference_push_msg_unread";
+    public static final String PREFERENCE_CHAT_PULL_UP_TIMES = "preference_chat_pull_up_times";
 }
