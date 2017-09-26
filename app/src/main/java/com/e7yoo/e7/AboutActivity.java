@@ -46,6 +46,8 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
         findViewById(R.id.actionbar_back).setOnClickListener(this);
         findViewById(R.id.iv_evaluate).setOnClickListener(this);
         findViewById(R.id.iv_share).setOnClickListener(this);
+        findViewById(R.id.ll_share).setOnClickListener(this);
+        findViewById(R.id.ll_evaluate).setOnClickListener(this);
         findViewById(R.id.ll_qr_code).setOnClickListener(this);
         findViewById(R.id.ll_qq_group).setOnClickListener(this);
         findViewById(R.id.ll_wx).setOnClickListener(this);
@@ -60,6 +62,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 onBackPressed();
                 break;
             case R.id.iv_evaluate:
+            case R.id.ll_evaluate:
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("market://details?id=" + this.getPackageName()));
@@ -70,6 +73,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 }
                 break;
             case R.id.iv_share:
+            case R.id.ll_share:
                 ShareDialogUtil.show(this);
                 break;
             case R.id.ll_qr_code:

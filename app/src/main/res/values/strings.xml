@@ -153,6 +153,8 @@
 
     <string name="app_name_about">小萌伴 -- </string>
     <string name="app_name_about_info">懂你的闲暇时光伴侣</string>
+    <string name="about_share">不错，分享给朋友</string>
+    <string name="about_evaluate">喜欢，去给个好评</string>
     <string name="about_evaluate_error">您的手机没有安装应用商店</string>
     <string name="about_qr_code">软件下载二维码</string>
     <string name="about_qq_group">反馈QQ群</string>
