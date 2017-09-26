@@ -164,16 +164,27 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
         ArrayList<PrivateMsg> msgs = MessageDbHelper.getInstance(this).getPrivateMsgs(mRobot.getId(), 0, 100);
         mRvAdapter.addItemBottom(msgs);
-        int lastPosition = mRvAdapter.getLastPosition();
-        if(lastPosition > 20) {
-            mRecyclerView.scrollToPosition(lastPosition - 15);
-            mRecyclerView.smoothScrollToPosition(lastPosition);
-        } else if(lastPosition > 0) {
-            mRecyclerView.smoothScrollToPosition(lastPosition);
-        }
+        scrollToEnd();
         init();
         mChatInputMoreGv.setAdapter(new GridAdapter(this, getGridItems()));
         addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
+    }
+
+    private void scrollToEnd() {
+        int position = 0;
+        try {
+            position = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findLastVisibleItemPosition();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        int lastPosition = mRvAdapter.getLastPosition();
+        if(lastPosition > 0) {
+            if(lastPosition - position > 15) {
+                // 相差15个item以上，则先直接跳转到相差12个item的位置，再进行动画滚动smoothScrollToPosition
+                mRecyclerView.scrollToPosition(lastPosition - 12);
+            }
+            mRecyclerView.smoothScrollToPosition(lastPosition);
+        }
     }
 
     private ArrayList<GridItem> getGridItems() {
@@ -454,25 +465,25 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     };
 
-    private void addMsgToViewRecv(String content) {
+    private void addMsgToViewRecv(String content, String... url) {
         PrivateMsg msg = PrivateMsgUtil.getRecvPrivateMsg(mRobot.getId(), content);
+        if(url != null && url.length > 0) {
+            msg.setUrl(url[0]);
+        }
         mRvAdapter.addItemBottom(msg);
-        mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+        scrollToEnd();
     }
 
     private void addMsgToViewHint(String content) {
         PrivateMsg msg = PrivateMsgUtil.getHintPrivateMsg(mRobot.getId(), content);
         mRvAdapter.addItemBottom(msg);
-        mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+        scrollToEnd();
     }
 
-    private void addMsgToView(String content, String... url) {
+    private void addMsgToView(String content) {
         PrivateMsg msg = PrivateMsgUtil.getSendPrivateMsg(mRobot.getId(), content);
-        if(url != null && url.length > 0) {
-            msg.setUrl(url[0]);
-        }
         mRvAdapter.addItemBottom(msg);
-        mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+        scrollToEnd();
     }
 
     private boolean sendText(String content) {
@@ -495,7 +506,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     PrivateMsg msg = new PrivateMsg(Constant.NET_NO, System.currentTimeMillis(),
                             getString(R.string.net_no), null, PrivateMsg.Type.HINT, mRobot.getId());
                     mRvAdapter.addItemBottom(msg);
-                    mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+                    scrollToEnd();
                 }
                 mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
             }
@@ -515,23 +526,20 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 if (isNeedLoadMore(newState)) {
                     int pullUpTimes = PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, 0);
                     if(pullUpTimes % 50 == 8) {
-                        addMsgToView(getString(R.string.chat_url_to_share), MsgUrlType.share);
+                        addMsgToViewRecv(getString(R.string.chat_url_to_share), MsgUrlType.share);
                     } else if(pullUpTimes % 50 == 12) {
-                        addMsgToView(getString(R.string.chat_url_to_game), MsgUrlType.game);
+                        addMsgToViewRecv(getString(R.string.chat_url_to_game), MsgUrlType.game);
                     } else if(pullUpTimes % 100 == 25) {
-                        addMsgToView(getString(R.string.chat_url_to_history), MsgUrlType.history);
+                        addMsgToViewRecv(getString(R.string.chat_url_to_history), MsgUrlType.history);
                     } else if(pullUpTimes % 200 == 15) {
-                        addMsgToView(getString(R.string.chat_url_to_findphone), MsgUrlType.finaphone);
+                        addMsgToViewRecv(getString(R.string.chat_url_to_findphone), MsgUrlType.finaphone);
                     } else if(pullUpTimes % 100 == 20) {
-                        addMsgToView(getString(R.string.chat_url_to_news), MsgUrlType.news);
+                        addMsgToViewRecv(getString(R.string.chat_url_to_news), MsgUrlType.news);
                     } else if(isNetOk(true)) {
                         NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
                         mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                     }
-                    /*mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
-                    String content = "你好啊！你叫什么名字？";
-                    mRvAdapter.addItemBottom(PrivateMsgUtil.getSendPrivateMsg(content));
-                    NetHelper.newInstance().rootAsk(content);*/
+                    PreferenceUtil.commitInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, ++pullUpTimes);
                 }
             }
 
@@ -569,13 +577,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             case Constant.EVENT_BUS_NET_tobotAsk:
                 PrivateMsg privateMsg = PrivateMsgUtil.getRobotPrivateMsg((JSONObject) msg.obj, robotName, robotId);
                 mRvAdapter.addItemBottom(privateMsg);
-                mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+                scrollToEnd();
                 mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
                 break;
             case Constant.EVENT_BUS_NET_jokeNew:
                 PrivateMsg jokeMsg = JokeUtil.parseJoke(robotId, robotName, (JSONObject) msg.obj);
                 mRvAdapter.addItemBottom(jokeMsg);
-                mRecyclerView.smoothScrollToPosition(mRvAdapter.getLastPosition());
+                scrollToEnd();
                 mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
                 break;
             case Constant.EVENT_BUS_REFRESH_RecyclerView:
@@ -789,7 +797,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onUrlClick(View view, int position) {
             PrivateMsg msg = mRvAdapter.getItem(position);
-            if(msg != null && TextUtils.isEmpty(msg.getUrl())) {
+            if(msg != null && !TextUtils.isEmpty(msg.getUrl())) {
                 // 此处保留自定义可拓展协议（如"bigpic:"等）
                 if(msg.getUrl().startsWith(MsgUrlType.bigpic)) { // 查看大图
 

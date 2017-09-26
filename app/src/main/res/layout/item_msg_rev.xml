@@ -33,20 +33,21 @@
             android:layout_alignParentLeft="true"
             android:src="@mipmap/icon" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/item_msg_content_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_2x"
             android:layout_marginRight="@dimen/space_100dp"
             android:layout_toRightOf="@id/item_msg_icon"
-            android:background="@drawable/chat_pop_meng_seletor">
+            android:background="@drawable/chat_pop_meng_seletor"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/item_msg_content"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_height="match_parent"
                 android:text="@string/app_name"
                 android:textColor="@color/text_h"
                 android:textSize="@dimen/size_l" />
@@ -55,13 +56,12 @@
                 android:id="@+id/item_msg_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:padding="@dimen/space_2x"
                 android:text="@string/item_msg_rev_url"
                 android:textColor="@color/blue"
-                android:textSize="@dimen/size_l"
-                android:padding="@dimen/space_2x"
-                android:layout_below="@id/item_msg_content"/>
-        </RelativeLayout>
+                android:textSize="@dimen/size_l" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/item_msg_voice"
