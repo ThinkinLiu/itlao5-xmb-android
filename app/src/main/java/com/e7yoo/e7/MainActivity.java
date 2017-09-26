@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
     private final ArrayList<BaseFragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private BottomNavigationView navigation;
-    private final int[] titleResIds = {R.string.title_home, R.string.title_circle, R.string.title_more, R.string.title_mine};
+    private final int[] titleResIds = {R.string.title_home, /*R.string.title_circle,*/ R.string.title_more, R.string.title_mine};
 
     @Override
     protected int initLayoutResId() {
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
         setLeftTv(View.GONE);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         fragments.add(HomeFragment.newInstance());
-        fragments.add(CircleFragment.newInstance());
+        // fragments.add(CircleFragment.newInstance());
         fragments.add(MoreFragment.newInstance());
         fragments.add(MineFragment.newInstance());
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
