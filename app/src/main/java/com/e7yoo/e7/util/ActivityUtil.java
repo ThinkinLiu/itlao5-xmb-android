@@ -8,7 +8,10 @@ import android.os.Bundle;
 import com.e7yoo.e7.AddRobotActivity;
 import com.e7yoo.e7.ChatActivity;
 import com.e7yoo.e7.InputActivity;
+import com.e7yoo.e7.PushMsgDetailsActivity;
 import com.e7yoo.e7.SexActivity;
+import com.e7yoo.e7.app.news.NewsWebviewActivity;
+import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
 
 /**
@@ -27,6 +30,19 @@ public class ActivityUtil {
         Intent intent = new Intent(activity, AddRobotActivity.class);
         intent.putExtra(Constant.INTENT_ROBOT, robot);
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    public static void toPushMsgDetailsActivity(Context context, PushMsg pushMsg) {
+        Intent intent = new Intent(context, PushMsgDetailsActivity.class);
+        intent.putExtra("PushMsg", pushMsg);
+        context.startActivity(intent);
+    }
+
+    public static void toNewsWebviewActivity(Context context, String url, String from) {
+        Intent intent = new Intent(context, NewsWebviewActivity.class);
+        intent.putExtra(NewsWebviewActivity.INTENT_URL, url);
+        intent.putExtra(NewsWebviewActivity.INTENT_FROM, from);
+        context.startActivity(intent);
     }
 
     public static void toInputActivityForResult(Activity activity, int titleResId, int maxLength, int minLength, String text, String hint, int requestCode) {

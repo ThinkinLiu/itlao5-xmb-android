@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:background="@color/color_seperator" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space" >
+
+                    <ImageView
+                        android:id="@+id/push_msg_details_pic"
+                        android:layout_width="@dimen/list_news_width"
+                        android:layout_height="@dimen/list_news_height"
+                        android:padding="@dimen/space"
+                        android:textColor="@color/text_h" />
+
+                    <TextView
+                        android:id="@+id/push_msg_details_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:textColor="@color/text_h"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_3xl" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/push_msg_details_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/space_2x"
+                    android:paddingRight="@dimen/space_2x"
+                    android:paddingTop="@dimen/space_2x"
+                    android:gravity="right"
+                    android:text="@string/details"
+                    android:textColor="@color/text_l"
+                    android:textSize="@dimen/size_xl" />
+
+                <TextView
+                    android:id="@+id/push_msg_details_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/space_2x"
+                    android:paddingLeft="@dimen/space_2x"
+                    android:paddingRight="@dimen/space_2x"
+                    android:paddingTop="@dimen/space"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/size_l" />
+
+                <TextView
+                    android:id="@+id/push_msg_details_url_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/space_30dp"
+                    android:paddingLeft="@dimen/space_2x"
+                    android:paddingRight="@dimen/space_5x"
+                    android:paddingTop="@dimen/space"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/size_l"
+                    android:gravity="right"
+                    android:text="@string/push_msg_details_more"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/push_msg_details_loading_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/log_e7yoo_transport" />
+    </RelativeLayout>
+
+</LinearLayout>

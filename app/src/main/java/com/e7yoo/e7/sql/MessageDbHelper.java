@@ -96,8 +96,9 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             .append(PushMsgColumns.ACTION).append(" INTEGER,")
             .append(PushMsgColumns.URL).append(" TEXT,")
             .append(PushMsgColumns.PIC_URL).append(" TEXT,")
-            .append(PushMsgColumns.MSG_TIME).append(" INTEGER,")
+            .append(PushMsgColumns.MSG_TIME).append(" TEXT,")
             .append(PushMsgColumns.CONTENT_URL).append(" TEXT,")
+            .append(PushMsgColumns.CONTENT_URL_HINT).append(" TEXT,")
             .append(PushMsgColumns.CONTENT_PIC_URL).append(" TEXT,")
             .append(PushMsgColumns.TITLE).append(" TEXT,")
             .append(PushMsgColumns.CONTENT).append(" TEXT,")
@@ -183,6 +184,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         private static final String MSG_TIME = "msg_time";
         private static final String CONTENT_PIC_URL = "content_pic_url";
         private static final String CONTENT_URL = "content_url";
+        private static final String CONTENT_URL_HINT = "content_url_hint";
         private static final String TITLE = "title";
         private static final String CONTENT = "content";
         private static final String EXTRAS = "extras";
@@ -434,9 +436,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                 pushMsg.setAction(c.getInt(c.getColumnIndex(PushMsgColumns.ACTION)));
                 pushMsg.setUrl(c.getString(c.getColumnIndex(PushMsgColumns.URL)));
                 pushMsg.setPic_url(c.getString(c.getColumnIndex(PushMsgColumns.PIC_URL)));
-                pushMsg.setMsg_time(c.getLong(c.getColumnIndex(PushMsgColumns.MSG_TIME)));
+                pushMsg.setMsg_time(c.getString(c.getColumnIndex(PushMsgColumns.MSG_TIME)));
                 pushMsg.setContent_pic_url(c.getString(c.getColumnIndex(PushMsgColumns.CONTENT_PIC_URL)));
                 pushMsg.setContent_url(c.getString(c.getColumnIndex(PushMsgColumns.CONTENT_URL)));
+                pushMsg.setContent_url_hint(c.getString(c.getColumnIndex(PushMsgColumns.CONTENT_URL_HINT)));
                 pushMsg.setTitle(c.getString(c.getColumnIndex(PushMsgColumns.TITLE)));
                 pushMsg.setContent(c.getString(c.getColumnIndex(PushMsgColumns.CONTENT)));
                 pushMsg.setExtras(c.getString(c.getColumnIndex(PushMsgColumns.EXTRAS)));
@@ -467,9 +470,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             pushMsg.setAction(jsonObject.optInt("action"));
             pushMsg.setUrl(jsonObject.optString("url"));
             pushMsg.setPic_url(jsonObject.optString("pic_url"));
-            pushMsg.setMsg_time(jsonObject.optLong("msg_time"));
+            pushMsg.setMsg_time(jsonObject.optString("msg_time"));
             pushMsg.setContent_pic_url(jsonObject.optString("content_pic_url"));
             pushMsg.setContent_url(jsonObject.optString("content_url"));
+            pushMsg.setContent_url_hint(jsonObject.optString("content_url_hint"));
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -488,6 +492,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         values.put(PushMsgColumns.MSG_TIME, pushMsg.getMsg_time());
         values.put(PushMsgColumns.CONTENT_PIC_URL, pushMsg.getContent_pic_url());
         values.put(PushMsgColumns.CONTENT_URL, pushMsg.getContent_url());
+        values.put(PushMsgColumns.CONTENT_URL_HINT, pushMsg.getContent_url_hint());
         values.put(PushMsgColumns.TITLE, pushMsg.getTitle());
         values.put(PushMsgColumns.CONTENT, pushMsg.getContent());
         values.put(PushMsgColumns.EXTRAS, pushMsg.getExtras());

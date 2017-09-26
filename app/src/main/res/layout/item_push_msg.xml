@@ -2,14 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/space_2x"
+    android:padding="@dimen/space_3x"
     android:background="@drawable/item_selector">
 
     <ImageView
         android:id="@+id/item_push_msg_icon"
         android:layout_width="@dimen/item_push_msg_icon_width"
         android:layout_height="@dimen/item_push_msg_icon_height"
-        android:scaleType="centerCrop" />
+        android:layout_marginLeft="@dimen/space_3x"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/item_push_msg_title"
@@ -18,7 +20,6 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/item_push_msg_point"
         android:layout_toRightOf="@+id/item_push_msg_icon"
-        android:background="@drawable/rounded_corners_tag_gray_trans"
         android:maxLines="1"
         android:paddingBottom="@dimen/space"
         android:paddingLeft="@dimen/space_3x"
@@ -44,7 +45,6 @@
         android:layout_below="@id/item_push_msg_title"
         android:layout_toLeftOf="@+id/item_push_msg_point"
         android:layout_toRightOf="@+id/item_push_msg_icon"
-        android:background="@drawable/rounded_corners_tag_gray_trans"
         android:maxLines="1"
         android:paddingBottom="@dimen/space"
         android:paddingLeft="@dimen/space_3x"

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.util.TimeUtil;
@@ -120,10 +121,16 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ViewHolderPushMsg) {
             ViewHolderPushMsg viewHolderPushMsg = (ViewHolderPushMsg) holder;
-            viewHolderPushMsg.itemMsgIcon.setVisibility(View.GONE);
+            String icon = mMsgs.get(position).getPic_url();
+            if(TextUtils.isEmpty(icon)) {
+                viewHolderPushMsg.itemMsgIcon.setVisibility(View.GONE);
+            } else {
+                Glide.with(mContext).load(icon).placeholder(R.mipmap.log_e7yoo_transport).into(viewHolderPushMsg.itemMsgIcon);
+                viewHolderPushMsg.itemMsgIcon.setVisibility(View.VISIBLE);
+            }
             String title = mMsgs.get(position).getTitle();
             if(TextUtils.isEmpty(title)) {
-                viewHolderPushMsg.itemMsgTitle.setText("[萌伴]消息");
+                viewHolderPushMsg.itemMsgTitle.setText(R.string.item_push_msg_title_default);
             } else {
                 viewHolderPushMsg.itemMsgTitle.setText(title);
             }

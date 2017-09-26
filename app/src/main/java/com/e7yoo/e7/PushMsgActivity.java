@@ -75,11 +75,10 @@ public class PushMsgActivity extends BaseActivity {
             }
             switch (msg.getAction()) {
                 case 0:
+                    ActivityUtil.toPushMsgDetailsActivity(PushMsgActivity.this, msg);
                     break;
                 case 1:
-                    Intent intent = new Intent(PushMsgActivity.this, NewsWebviewActivity.class);
-                    intent.putExtra(NewsWebviewActivity.INTENT_URL, msg.getUrl());
-                    ActivityUtil.toActivity(PushMsgActivity.this, intent);
+                    ActivityUtil.toNewsWebviewActivity(PushMsgActivity.this, msg.getUrl(), NewsWebviewActivity.INTENT_FROM_PUSH_MSG);
                     break;
             }
             mRvAdapter.setRead(position);

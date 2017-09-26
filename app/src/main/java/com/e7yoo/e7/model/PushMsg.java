@@ -1,18 +1,22 @@
 package com.e7yoo.e7.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/9/25.
  */
 
-public class PushMsg {
+public class PushMsg implements Serializable {
+    private static final long serialVersionUID = -1L;
     private int _id;
     private long time;
     private int action; // 是跳转详情页0还是网页1（拓展字段extras）
     private String url; // 列表页跳转url（拓展字段extras）
     private String pic_url; // 列表页图片（拓展字段extras）
-    private long msg_time; // 消息时间（拓展字段extras）
+    private String msg_time; // 消息时间（拓展字段extras）
     private String content_pic_url; // 内容中的图片url（拓展字段extras）
     private String content_url; // 内容中的跳转url（拓展字段extras）
+    private String content_url_hint; // 内容中的跳转url（拓展字段extras）
     private String title;
     private String content;
     private String extras;
@@ -60,11 +64,11 @@ public class PushMsg {
         this.pic_url = pic_url;
     }
 
-    public long getMsg_time() {
+    public String getMsg_time() {
         return msg_time;
     }
 
-    public void setMsg_time(long msg_time) {
+    public void setMsg_time(String msg_time) {
         this.msg_time = msg_time;
     }
 
@@ -82,6 +86,14 @@ public class PushMsg {
 
     public void setContent_url(String content_url) {
         this.content_url = content_url;
+    }
+
+    public String getContent_url_hint() {
+        return content_url_hint;
+    }
+
+    public void setContent_url_hint(String content_url_hint) {
+        this.content_url_hint = content_url_hint;
     }
 
     public String getTitle() {

@@ -180,5 +180,8 @@
     <string name="share_to_sina">微博</string>
     <string name="mengmeng_is_here">萌萌在这里</string>
     <string name="mine_label_hint">闲暇时光·有我陪你</string>
+    <string name="push_msg_details">消息</string>
+    <string name="push_msg_details_more">更多推荐</string>
+    <string name="item_push_msg_title_default">[萌伴]消息</string>
 
 </resources>
