@@ -160,10 +160,10 @@ public class MainActivity extends BaseActivity {
                     setItem(1);
                     return true;
                 case R.id.navigation_more:
-                    setItem(2);
+                    setItem(titleResIds.length - 2);
                     return true;
                 case R.id.navigation_mine:
-                    setItem(3);
+                    setItem(titleResIds.length - 1);
                     return true;
             }
             return false;
