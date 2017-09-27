@@ -156,9 +156,9 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_home:
                     setItem(0);
                     return true;
-                case R.id.navigation_circle:
+                /*case R.id.navigation_circle:
                     setItem(1);
-                    return true;
+                    return true;*/
                 case R.id.navigation_more:
                     setItem(titleResIds.length - 2);
                     return true;
