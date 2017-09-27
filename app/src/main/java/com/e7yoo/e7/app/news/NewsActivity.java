@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,10 +52,11 @@ public class NewsActivity extends BaseActivity {
 	protected String initTitle() {
 		if(getIntent() != null) {
 			text = getIntent().getStringExtra("text");
-			return text;
-		} else {
-			return "";
+			if(!TextUtils.isEmpty(text)) {
+				return text;
+			}
 		}
+		return getString(R.string.more_news);
 	}
 
 	@Override
