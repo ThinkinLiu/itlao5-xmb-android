@@ -65,6 +65,6 @@ public class PrivateMsgUtil {
 
     }
 
-    private static String[] array = {"聚合数据", "萌萌", "图灵机器人", "机器宝宝"};
+    private static String[] array = {"聚合数据", "萌萌", "图灵机器人", "图灵工程师", "机器宝宝"};
 
 }
