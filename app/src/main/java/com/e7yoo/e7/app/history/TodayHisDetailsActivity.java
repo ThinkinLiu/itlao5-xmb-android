@@ -1,6 +1,7 @@
 package com.e7yoo.e7.app.history;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -24,11 +25,13 @@ public class TodayHisDetailsActivity extends BaseActivity implements OnClickList
 		if (getIntent() != null) {
 			entity = (TodayHisEntity) getIntent().getSerializableExtra("TodayHisEntity");
 			if(entity != null) {
-				return entity.getTitle();
+                String title = entity.getTitle();
+                if(!TextUtils.isEmpty(title)) {
+                    return title;
+                }
 			}
-
 		}
-		return "";
+		return getString(R.string.more_history);
 	}
 
 	@Override
