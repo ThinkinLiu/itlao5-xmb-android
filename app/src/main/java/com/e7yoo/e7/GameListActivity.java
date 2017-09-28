@@ -1,7 +1,9 @@
 package com.e7yoo.e7;
 
+import android.content.Intent;
 import android.view.View;
 
+import com.e7yoo.e7.game.GameActivity;
 import com.e7yoo.e7.game.game2048.Game2048Activity;
 import com.e7yoo.e7.game.killbird.KillBirdActivity;
 import com.e7yoo.e7.game.plane.PlaneMainActivity;
@@ -54,6 +56,9 @@ public class GameListActivity extends BaseActivity implements View.OnClickListen
                 ActivityUtil.toActivity(this, PlaneMainActivity.class);
                 break;
             case R.id.gamelist_more_layout:
+                Intent intent = new Intent(this, GameActivity.class);
+                intent.putExtra(GameActivity.INTENT_URL, "http://sda.4399.com/4399swf/upload_swf/ftp14/yzg/20141021/3a/game.htm");
+                ActivityUtil.toActivity(this, intent);
                 break;
         }
     }

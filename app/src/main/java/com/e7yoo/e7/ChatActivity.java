@@ -167,7 +167,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         scrollToEnd();
         init();
         mChatInputMoreGv.setAdapter(new GridAdapter(this, getGridItems()));
-        addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
+        int openTimes = PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_OPEN_TIMES, 0);
+        if(openTimes == 5) {
+            addMsgToViewRecv(getString(R.string.chat_url_to_ceshi), MsgUrlType.ceshi);
+        } else {
+            addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
+        }
+        PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_OPEN_TIMES, ++openTimes);
     }
 
     private void scrollToEnd() {

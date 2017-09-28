@@ -191,5 +191,8 @@
     <string name="chat_url_to_history">每一天都是特别的日子，是否去了解一下呢？</string>
     <string name="chat_url_to_findphone">手机老是找不到，试试找手机功能吧！</string>
     <string name="chat_url_to_news">是否需要看看新闻呢？</string>
+    <string name="chat_url_to_ceshi">我们做个小测试吧，我会告诉你属于什么类型的人</string>
+    <string name="share_content_ceshi">在【小萌伴】上测试，我居然是这样的人</string>
+    <string name="share_title_ceshi">快来看看我是什么样的人</string>
 
 </resources>

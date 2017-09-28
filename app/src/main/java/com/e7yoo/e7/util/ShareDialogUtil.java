@@ -32,14 +32,31 @@ import cn.jiguang.share.wechat.WechatMoments;
 import cn.jiguang.share.weibo.SinaWeibo;
 
 public class ShareDialogUtil {
-    public static String share_url = "http://a.app.qq.com/o/simple.jsp?pkgname=com.e7yoo.e7";
-    public static String share_title = "懂你的【小萌伴】";
-    public static String share_content = "拥有【小萌伴】，闲暇时光·陪你";
+    public static final String SHARE_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.e7yoo.e7";
+    public static final String SHARE_TITLE = "懂你的【小萌伴】";
+    public static final String SHARE_CONTENT = "拥有【小萌伴】，闲暇时光·陪你";
+    public static final String SHARE_IMAGEPATH = null;
+    private static String share_url = SHARE_URL;
+    private static String share_title = SHARE_TITLE;
+    private static String share_content = SHARE_CONTENT;
+    private static String share_imagePath = SHARE_IMAGEPATH;
 
     private static Dialog dialog;
     private static Context context;
 
+    public static void show(Context context, String url, String title, String content, String iamgePath) {
+        share_url = TextUtils.isEmpty(url) ? SHARE_URL : url;
+        share_title = TextUtils.isEmpty(title) ? SHARE_TITLE : title;
+        share_content = TextUtils.isEmpty(content) ? SHARE_CONTENT : content;
+        share_imagePath = TextUtils.isEmpty(iamgePath) ? SHARE_IMAGEPATH : iamgePath;
+        show(context);
+    }
+
     public static void show(Context context){
+        share_url = SHARE_URL;
+        share_title = SHARE_TITLE;
+        share_content = SHARE_CONTENT;
+        share_imagePath = SHARE_IMAGEPATH;
         if(ShareDialogUtil.context != context || dialog == null) {
             ShareDialogUtil.context = context;
             dialog = new Dialog(context, R.style.ShareDialogStyle);
@@ -136,7 +153,7 @@ public class ShareDialogUtil {
             if(name != null) {
                 shareParams.setShareType(Platform.SHARE_WEBPAGE);
                 shareParams.setUrl(share_url);//必须
-                String imagePath = getImagePath();
+                String imagePath = TextUtils.isEmpty(share_imagePath) ? getImagePath() : share_imagePath;
                 if(TextUtils.isEmpty(imagePath)) {
                     if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
                         shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
