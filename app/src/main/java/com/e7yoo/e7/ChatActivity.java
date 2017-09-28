@@ -173,7 +173,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         } else {
             addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
         }
-        PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_OPEN_TIMES, ++openTimes);
+        PreferenceUtil.commitInt(Constant.PREFERENCE_CHAT_OPEN_TIMES, ++openTimes);
     }
 
     private void scrollToEnd() {
