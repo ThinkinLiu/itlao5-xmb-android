@@ -90,6 +90,9 @@ public class ReWebViewClient extends WebViewClient {
         if (view != null && view.getContext() != null && ADFilterUtil.hasAd(view.getContext(), url.toLowerCase())) {
             return new WebResourceResponse(null,null,null);
         }
+        if (view != null && view.getContext() != null && ADFilterUtil.isAd(view.getContext(), url.toLowerCase())) {
+            return new WebResourceResponse(null,null,null);
+        }
         if (url != null && !(url.contains("e7yoo") || url.contains("xmb") || url.contains("xiaomengban")) && url.endsWith(".apk")) {
         	return new WebResourceResponse(null,null,null);
         }
@@ -102,6 +105,9 @@ public class ReWebViewClient extends WebViewClient {
         try {
             String url = request.getUrl().getHost().toLowerCase() +  request.getUrl().getPath().toLowerCase();
             if (url != null && view != null && view.getContext() != null && ADFilterUtil.hasAd(view.getContext(), url)) {
+                return new WebResourceResponse(null,null,null);
+            }
+            if (view != null && view.getContext() != null && ADFilterUtil.isAd(view.getContext(), url)) {
                 return new WebResourceResponse(null,null,null);
             }
             if (url != null && !(url.contains("e7yoo") || url.contains("xmb") || url.contains("xiaomengban")) && url.endsWith(".apk")) {

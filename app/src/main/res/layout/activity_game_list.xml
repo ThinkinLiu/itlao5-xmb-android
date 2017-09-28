@@ -12,7 +12,7 @@
         android:id="@+id/titleBar"
         layout="@layout/titlebar" />
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -209,6 +209,9 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
-
+    </ScrollView>-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/game_list_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

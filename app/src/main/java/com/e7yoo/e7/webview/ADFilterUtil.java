@@ -33,4 +33,15 @@ public class ADFilterUtil {
 		return false;
 	}
 
+	public static boolean isAd(Context context, String url) {
+		Resources res = context.getResources();
+		String[] adUrls = res.getStringArray(R.array.adUrl);
+		for (String adUrl : adUrls) {
+			if (url.equals(adUrl)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

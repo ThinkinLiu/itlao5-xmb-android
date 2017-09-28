@@ -26,6 +26,8 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
     /** 来源 */
     public final static String INTENT_FROM = "from";
     public final static String INTENT_FROM_CHAT_CESHI = "from_chat_ceshi";
+    /** Game信息 */
+    public final static String INTENT_GAME_INFO = "game_info";
     /** URL */
     public final static String INTENT_URL = "url";
     private String intent_url;
@@ -79,7 +81,6 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
 
     @Override
     protected void initViewListener() {
-        setLeftTvListener(this);
         closeView.setOnClickListener(this);
     }
 
@@ -93,15 +94,13 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
                 String url = null;
                 String title = null;
                 String content = null;
-                String imageUrl = null;
+                String imageUrl = ViewUtil.saveViewCapture(this, mWebView);
                 if(INTENT_FROM_CHAT_CESHI.equals(from)) {
                     title = getString(R.string.share_title_ceshi);
                     content = getString(R.string.share_content_ceshi);
-                }
-                try {
-                    imageUrl = ViewUtil.saveViewCapture(this, mWebView);
-                } catch (Throwable e) {
-                    e.printStackTrace();
+                } else {
+                    title = getString(R.string.share_title_game);
+                    content = getString(R.string.share_content_game);
                 }
                 ShareDialogUtil.show(this, url, title, content, imageUrl);
                 break;
@@ -149,6 +148,9 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
     ReWebViewClient reWebViewClient = new ReWebViewClient() {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
+            /*if("http://www.4399.com/".equals(url)) {
+                return true;
+            }*/
             view.loadUrl(url);
             return true;
         }

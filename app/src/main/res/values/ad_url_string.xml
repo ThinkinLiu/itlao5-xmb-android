@@ -20,4 +20,16 @@
         <item>com.songheng.eastnews</item>
         <item>ecma.bdimg.com</item>
     </string-array>
+    <string-array name="adUrl">
+        <item>http://www.4399.com/</item>
+        <item>http://www.4399.com</item>
+        <item>https://www.4399.com</item>
+        <item>https://www.4399.com/</item>
+        <item>www.4399.com</item>
+        <item>www.4399.com/</item>
+        <item>http://4399.com</item>
+        <item>http://4399.com/</item>
+        <item>4399.com/</item>
+        <item>4399.com</item>
+    </string-array>
 </resources>

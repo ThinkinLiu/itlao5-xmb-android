@@ -270,6 +270,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".game.GameLandscapeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".wxapi.WXEntryActivity"

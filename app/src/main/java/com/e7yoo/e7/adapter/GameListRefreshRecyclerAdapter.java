@@ -12,8 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.model.PushMsg;
-import com.e7yoo.e7.util.TimeUtil;
+import com.e7yoo.e7.model.GameInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +20,10 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/9/25.
  */
-public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
+public class GameListRefreshRecyclerAdapter extends RecyclerAdapter {
     private LayoutInflater mInflater;
-    private List<PushMsg> mMsgs = new ArrayList<>();
-    private static final int VIEW_TYPE_PUSH_MSG = 0;
+    private List<GameInfo> mDatas = new ArrayList<>();
+    private static final int VIEW_TYPE_GAME_INFO = 0;
     private static final int VIEW_TYPE_FOOTER = 10;
     /** 用于Footer的类型 */
     private FooterType mFooterType = FooterType.DEFAULT;
@@ -32,55 +31,46 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private boolean mFooterShowProgress = false;
     /** 用于Footer的文字显示，<= 0 时不显示GONE */
     private int mFooterStringId = 0;
-    private static final int FOOTER_COUNT = 1;
+    private static final int FOOTER_COUNT = 0;
     private Context mContext;
 
-    public PushMsgRefreshRecyclerAdapter(Context context) {
+    public GameListRefreshRecyclerAdapter(Context context) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
-        // DebugUtil.setDatas(mMsgs, 1, true);
+        // DebugUtil.setDatas(mDatas, 1, true);
     }
 
-    public void addItemTop(PushMsg newData) {
-        mMsgs.add(0, newData);
+    public void addItemTop(GameInfo newData) {
+        mDatas.add(0, newData);
         notifyDataSetChanged();
     }
 
-    public void addItemTop(List<PushMsg> newDatas) {
+    public void addItemTop(List<GameInfo> newDatas) {
         if(newDatas != null && newDatas.size() > 0) {
-            mMsgs.addAll(0, newDatas);
+            mDatas.addAll(0, newDatas);
             notifyItemRangeChanged(0, newDatas.size());
             notifyDataSetChanged();
         }
     }
 
-    public void addItemBottom(List<PushMsg> newDatas) {
+    public void addItemBottom(List<GameInfo> newDatas) {
         if(newDatas != null && newDatas.size() > 0) {
-            mMsgs.addAll(newDatas);
+            mDatas.addAll(newDatas);
             notifyDataSetChanged();
         }
     }
 
-    public void addItemBottom(PushMsg newData) {
-        mMsgs.add(newData);
+    public void addItemBottom(GameInfo newData) {
+        mDatas.add(newData);
         notifyDataSetChanged();
     }
 
-    public void refreshData(List<PushMsg> newDatas) {
-        mMsgs.clear();
+    public void refreshData(List<GameInfo> newDatas) {
+        mDatas.clear();
         if(newDatas != null) {
-            mMsgs.addAll(newDatas);
+            mDatas.addAll(newDatas);
         }
         notifyDataSetChanged();
-    }
-
-    public void setRead(int position) {
-        try {
-            mMsgs.get(position).setUnread(0);
-            notifyDataSetChanged();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
     }
 
     public FooterType getFooter() {
@@ -96,7 +86,7 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
     }
 
     public int getLastId() {
-        return (mMsgs == null || mMsgs.size() == 0) ? -1 : mMsgs.get(0).get_id();
+        return (mDatas == null || mDatas.size() == 0) ? -1 : mDatas.get(0).get_id();
     }
 
     @Override
@@ -108,10 +98,10 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 view = mInflater.inflate(R.layout.item_msg_footer, parent, false);
                 viewHolder = new ViewHolderFooter(view);
                 break;
-            case VIEW_TYPE_PUSH_MSG:
+            case VIEW_TYPE_GAME_INFO:
             default:
-                view = mInflater.inflate(R.layout.item_push_msg, parent, false);
-                viewHolder = new ViewHolderPushMsg(view);
+                view = mInflater.inflate(R.layout.item_game_list, parent, false);
+                viewHolder = new ViewHolderGameInfo(view);
                 break;
         }
         return viewHolder;
@@ -119,25 +109,12 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ViewHolderPushMsg) {
-            ViewHolderPushMsg viewHolderPushMsg = (ViewHolderPushMsg) holder;
-            String icon = mMsgs.get(position).getPic_url();
-            if(TextUtils.isEmpty(icon)) {
-                viewHolderPushMsg.itemMsgIcon.setVisibility(View.GONE);
-            } else {
-                Glide.with(mContext).load(icon).placeholder(R.mipmap.log_e7yoo_transport).into(viewHolderPushMsg.itemMsgIcon);
-                viewHolderPushMsg.itemMsgIcon.setVisibility(View.VISIBLE);
-            }
-            String title = mMsgs.get(position).getTitle();
-            if(TextUtils.isEmpty(title)) {
-                viewHolderPushMsg.itemMsgTitle.setText(R.string.item_push_msg_title_default);
-            } else {
-                viewHolderPushMsg.itemMsgTitle.setText(title);
-            }
-            viewHolderPushMsg.itemMsgContent.setText(mMsgs.get(position).getContent());
-            int unRead = mMsgs.get(position).getUnread();
-            viewHolderPushMsg.itemMsgPoint.setVisibility(unRead > 0 ? View.VISIBLE : View.INVISIBLE);
-            addClickListener(viewHolderPushMsg.itemView, position);
+        if(holder instanceof ViewHolderGameInfo) {
+            ViewHolderGameInfo viewHolderGameInfo = (ViewHolderGameInfo) holder;
+            Glide.with(mContext).load(mDatas.get(position).getIcon()).placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport).into(viewHolderGameInfo.itemGameIcon);
+            viewHolderGameInfo.itemGameName.setText(mDatas.get(position).getName());
+            viewHolderGameInfo.itemGameContent.setText(mDatas.get(position).getContent());
+            addClickListener(viewHolderGameInfo.itemView, position);
         } else if(holder instanceof ViewHolderFooter) {
             ViewHolderFooter viewHolderFooter = (ViewHolderFooter) holder;
             int footerStringId = getFooterStringId();
@@ -202,12 +179,12 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
     }
 
     public int getLastPosition() {
-        return mMsgs == null || mMsgs.size() == 0 ? 0 : mMsgs.size() - 1;
+        return mDatas == null || mDatas.size() == 0 ? 0 : mDatas.size() - 1;
     }
 
     @Override
     public int getItemCount() {
-        return mMsgs.size() + FOOTER_COUNT;
+        return mDatas.size() + FOOTER_COUNT;
     }
 
     @Override
@@ -216,7 +193,7 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
         if (position == getItemCount() - FOOTER_COUNT) {
             itemViewType = VIEW_TYPE_FOOTER;
         } else {
-            itemViewType = VIEW_TYPE_PUSH_MSG;
+            itemViewType = VIEW_TYPE_GAME_INFO;
         }
         return itemViewType;
     }
@@ -224,18 +201,16 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
     /**
      * 消息item
      */
-    public static class ViewHolderPushMsg extends RecyclerView.ViewHolder {
-        public ImageView itemMsgIcon;
-        public TextView itemMsgTitle;
-        public TextView itemMsgContent;
-        public TextView itemMsgPoint;
+    public static class ViewHolderGameInfo extends RecyclerView.ViewHolder {
+        public ImageView itemGameIcon;
+        public TextView itemGameName;
+        public TextView itemGameContent;
 
-        public ViewHolderPushMsg(View view) {
+        public ViewHolderGameInfo(View view) {
             super(view);
-            itemMsgIcon = view.findViewById(R.id.item_push_msg_icon);
-            itemMsgTitle = view.findViewById(R.id.item_push_msg_title);
-            itemMsgContent = view.findViewById(R.id.item_push_msg_content);
-            itemMsgPoint = view.findViewById(R.id.item_push_msg_point);
+            itemGameIcon = view.findViewById(R.id.item_game_list_icon);
+            itemGameName = view.findViewById(R.id.item_game_list_name);
+            itemGameContent = view.findViewById(R.id.item_game_list_content);
         }
     }
 
@@ -262,8 +237,8 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
         HINT;
     }
 
-    public PushMsg getItem(int position) {
-        return mMsgs != null && mMsgs.size() > position && position >= 0 ? mMsgs.get(position) : null;
+    public GameInfo getItem(int position) {
+        return mDatas != null && mDatas.size() > position && position >= 0 ? mDatas.get(position) : null;
     }
 
 }

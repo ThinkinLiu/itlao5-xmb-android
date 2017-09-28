@@ -45,11 +45,11 @@ public class ShareDialogUtil {
     private static Context context;
 
     public static void show(Context context, String url, String title, String content, String iamgePath) {
+        show(context);
         share_url = TextUtils.isEmpty(url) ? SHARE_URL : url;
         share_title = TextUtils.isEmpty(title) ? SHARE_TITLE : title;
         share_content = TextUtils.isEmpty(content) ? SHARE_CONTENT : content;
         share_imagePath = TextUtils.isEmpty(iamgePath) ? SHARE_IMAGEPATH : iamgePath;
-        show(context);
     }
 
     public static void show(Context context){

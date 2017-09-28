@@ -38,6 +38,7 @@ import com.e7yoo.e7.app.history.TodayHisActivity;
 import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.app.news.NewsActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
+import com.e7yoo.e7.game.GameActivity;
 import com.e7yoo.e7.model.AutoMsg;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
@@ -821,6 +822,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     ActivityUtil.toActivity(ChatActivity.this, FindPhoneActivity.class);
                 } else if(msg.getUrl().startsWith(MsgUrlType.circle)) {
 
+                } else if(msg.getUrl().startsWith(MsgUrlType.ceshi)) {
+                    ActivityUtil.toGameActivity(ChatActivity.this,
+                            "http://sda.4399.com/4399swf/upload_swf/ftp14/yzg/20141021/3a/game.htm",
+                            GameActivity.INTENT_FROM_CHAT_CESHI, false);
                 } else{
                     // 其他，跳往webview
                     ActivityUtil.toNewsWebviewActivity(ChatActivity.this, msg.getUrl(), NewsWebviewActivity.INTENT_FROM_CHAT_MSG);

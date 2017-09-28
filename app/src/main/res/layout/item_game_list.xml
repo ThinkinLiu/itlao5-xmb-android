@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_selector"
+    android:padding="@dimen/space_3x">
+
+    <ImageView
+        android:id="@+id/item_game_list_icon"
+        android:layout_width="@dimen/item_push_msg_icon_width"
+        android:layout_height="@dimen/item_push_msg_icon_height"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/item_game_list_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/space_2x"
+        android:layout_marginRight="@dimen/space_4x"
+        android:layout_toRightOf="@+id/item_game_list_icon"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="@string/gamelist_game2048"
+        android:textColor="@color/text_h"
+        android:textSize="@dimen/size_2xl" />
+
+    <TextView
+        android:id="@+id/item_game_list_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/item_game_list_name"
+        android:layout_below="@+id/item_game_list_name"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/space_2x"
+        android:gravity="center_vertical|right"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="@string/app_name"
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_s" />
+
+    <ImageView
+        android:layout_width="@dimen/array"
+        android:layout_height="@dimen/array"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+</RelativeLayout>

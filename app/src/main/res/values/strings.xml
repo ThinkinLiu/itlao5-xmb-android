@@ -61,8 +61,11 @@
 
     <string name="gamelist">【小萌伴】游戏中心</string>
     <string name="gamelist_game2048">2048</string>
+    <string name="gamelist_game2048_content">你能合成2048吗</string>
     <string name="gamelist_killbird">防御小鸟</string>
+    <string name="gamelist_killbird_content">同样的小鸟，不一样的玩法</string>
     <string name="gamelist_plane">飞机大战</string>
+    <string name="gamelist_plane_content">一起来打飞机吧</string>
     <string name="gamelist_more">更多游戏</string>
     <string name="game2048">【小萌伴】游戏：2048</string>
     <string name="game_2048_score">分数：  </string>
@@ -70,6 +73,15 @@
     <string name="game_exit">再按一次退出游戏</string>
     <string name="game_start">开始游戏</string>
     <string name="game_share_text">我在【小萌伴】游戏中心玩%1$s，当前分：%2$s,求挑战，求超越！</string>
+    <string name="game_no_need_net">本地游戏，不需流量</string>
+    <string name="game_h5_wucaiguodong">五彩果冻大相连</string>
+    <string name="game_h5_wucaiguodong_content">移动果冻，使同颜色果冻相连</string>
+    <string name="game_h5_guoshanche">惊险过山车</string>
+    <string name="game_h5_guoshanche_content">合理操作，体验惊现刺激的过山车吧</string>
+    <string name="game_h5_zhaoyaojing">照妖镜</string>
+    <string name="game_h5_zhaoyaojing_content">你前世是什么妖</string>
+    <string name="game_h5_zaqiche">土豪砸汽车</string>
+    <string name="game_h5_zaqiche_content">合理操作，尽情泄愤，摧毁名车</string>
 
 
     <string name="open_news_failed">进入新闻详情失败,该条新闻可能已经被删除。。。</string>
@@ -192,7 +204,9 @@
     <string name="chat_url_to_findphone">手机老是找不到，试试找手机功能吧！</string>
     <string name="chat_url_to_news">是否需要看看新闻呢？</string>
     <string name="chat_url_to_ceshi">我们做个小测试吧，我会告诉你属于什么类型的人</string>
+    <string name="share_title_ceshi">快来看看你是什么样的人</string>
     <string name="share_content_ceshi">在【小萌伴】上测试，我居然是这样的人</string>
-    <string name="share_title_ceshi">快来看看我是什么样的人</string>
+    <string name="share_title_game">兄弟，快来陪我</string>
+    <string name="share_content_game">我在【小萌伴】上 玩游戏，谁来陪我</string>
 
 </resources>

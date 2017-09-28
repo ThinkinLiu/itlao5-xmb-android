@@ -11,6 +11,9 @@ import com.e7yoo.e7.InputActivity;
 import com.e7yoo.e7.PushMsgDetailsActivity;
 import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
+import com.e7yoo.e7.game.GameActivity;
+import com.e7yoo.e7.game.GameLandscapeActivity;
+import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
 
@@ -73,5 +76,23 @@ public class ActivityUtil {
 
     public static void toActivity(Activity activity, Intent intent) {
         activity.startActivity(intent);
+    }
+
+    public static void toGameActivity(Context context, String url, String from, boolean isLandscape, GameInfo... gameInfo) {
+        Class cls = isLandscape ? GameLandscapeActivity.class : GameActivity.class;
+        Intent intent = new Intent(context, cls);
+        intent.putExtra(GameActivity.INTENT_URL, url);
+        intent.putExtra(GameActivity.INTENT_FROM, from);
+        if(gameInfo != null && gameInfo.length > 0) {
+            intent.putExtra(GameActivity.INTENT_FROM, gameInfo);
+        }
+        context.startActivity(intent);
+    }
+
+    public static void toGameActivity(Context context, GameInfo gameInfo, String from, boolean isLandscape) {
+        Class cls = isLandscape ? GameLandscapeActivity.class : GameActivity.class;
+        Intent intent = new Intent(context, cls);
+        intent.putExtra(GameActivity.INTENT_URL, gameInfo);
+        context.startActivity(intent);
     }
 }

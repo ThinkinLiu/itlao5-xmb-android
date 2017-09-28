@@ -134,7 +134,7 @@ public abstract class BaseWebviewActivity extends BaseActivity implements ReWebC
 		settings.setLoadWithOverviewMode(true);
 		settings.setJavaScriptEnabled(true);
 		settings.setAllowFileAccess(true);// 设置允许访问文件数据
-		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 		settings.setJavaScriptCanOpenWindowsAutomatically(true);
 		settings.setLoadsImagesAutomatically(true);
 
