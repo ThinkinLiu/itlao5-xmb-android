@@ -18,10 +18,13 @@ public class GameInfoUtil {
     public static ArrayList<GameInfo> getGameInfos(Context context) {
         ArrayList<GameInfo> gameInfos = new ArrayList<>();
         GameInfo gameInfo = new GameInfo(context.getString(R.string.gamelist_game2048), context.getString(R.string.gamelist_game2048_content), 0, null, Game2048Activity.class.getSimpleName());
+        gameInfo.setIconResId(R.mipmap.game_2048);
         gameInfos.add(gameInfo);
         gameInfo = new GameInfo(context.getString(R.string.gamelist_killbird), context.getString(R.string.gamelist_killbird_content), 0, null, KillBirdActivity.class.getSimpleName());
+        gameInfo.setIconResId(R.mipmap.game_killbird);
         gameInfos.add(gameInfo);
         gameInfo = new GameInfo(context.getString(R.string.gamelist_plane), context.getString(R.string.gamelist_plane_content), 0, null, PlaneMainActivity.class.getSimpleName());
+        gameInfo.setIconResId(R.mipmap.game_plane);
         gameInfos.add(gameInfo);
         gameInfo = new GameInfo(context.getString(R.string.game_h5_zhaoyaojing), context.getString(R.string.game_h5_zhaoyaojing_content), 1, "http://h.4399.com/play/161856.htm", null);
         gameInfo.setShare_title(context.getString(R.string.game_h5_zhaoyaojing_share));

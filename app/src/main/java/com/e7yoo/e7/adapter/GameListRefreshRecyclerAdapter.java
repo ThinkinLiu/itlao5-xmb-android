@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.GameInfo;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,9 +113,20 @@ public class GameListRefreshRecyclerAdapter extends RecyclerAdapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ViewHolderGameInfo) {
             ViewHolderGameInfo viewHolderGameInfo = (ViewHolderGameInfo) holder;
-            Glide.with(mContext).load(mDatas.get(position).getIcon()).placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport).into(viewHolderGameInfo.itemGameIcon);
-            viewHolderGameInfo.itemGameName.setText(mDatas.get(position).getName());
-            viewHolderGameInfo.itemGameContent.setText(mDatas.get(position).getContent());
+            GameInfo gameInfo = mDatas.get(position);
+            if(gameInfo != null) {
+                if(TextUtils.isEmpty(gameInfo.getIcon())) {
+                    if(gameInfo.getIconResId() > 0) {
+                        viewHolderGameInfo.itemGameIcon.setImageResource(gameInfo.getIconResId());
+                    } else {
+                        viewHolderGameInfo.itemGameIcon.setImageResource(R.mipmap.log_e7yoo_transport);
+                    }
+                } else {
+                    Glide.with(mContext).load(gameInfo.getIcon()).placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport).into(viewHolderGameInfo.itemGameIcon);
+                }
+                viewHolderGameInfo.itemGameName.setText(gameInfo.getName());
+                viewHolderGameInfo.itemGameContent.setText(gameInfo.getContent());
+            }
             addClickListener(viewHolderGameInfo.itemView, position);
         } else if(holder instanceof ViewHolderFooter) {
             ViewHolderFooter viewHolderFooter = (ViewHolderFooter) holder;

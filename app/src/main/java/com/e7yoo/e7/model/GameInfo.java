@@ -13,6 +13,7 @@ public class GameInfo implements Serializable {
     private String content;// 描述
     private String type;// 游戏类型，射击/竞技/消除/单机/网络等
     private String icon;//游戏截图
+    private int iconResId;//游戏resId，本地集成游戏使用
     private String big_icon;//游戏大图
     private int game_type; // 0 本地集成游戏， 1 h5竖屏游戏， 2 h5横屏游戏 3，打开本地游戏app
     private String h5_url;// h5地址
@@ -69,6 +70,14 @@ public class GameInfo implements Serializable {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public int getIconResId() {
+        return iconResId;
+    }
+
+    public void setIconResId(int iconResId) {
+        this.iconResId = iconResId;
     }
 
     public String getBig_icon() {
