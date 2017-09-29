@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.e7yoo.e7.BaseWebviewActivity;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.util.AnimaUtils;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
@@ -32,6 +33,7 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
     public final static String INTENT_URL = "url";
     private String intent_url;
     private String from;
+    private GameInfo gameInfo;
 
     @Override
     protected String initTitle() {
@@ -60,6 +62,7 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
             // intent_type = getIntent().getStringExtra(INTENT_TYPE);
             intent_url = getIntent().getStringExtra(INTENT_URL);
             from = getIntent().getStringExtra(INTENT_FROM);
+            gameInfo = (GameInfo) getIntent().getSerializableExtra(INTENT_GAME_INFO);
         }
         initWebView();
         setRightTv(View.VISIBLE, R.mipmap.ic_share, 0, this);
@@ -91,22 +94,33 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
                 finishAct();
                 break;
             case R.id.titlebar_right_tv:
-                String url = null;
-                String title = null;
-                String content = null;
-                String imageUrl = ViewUtil.saveViewCapture(this, mWebView);
-                if(INTENT_FROM_CHAT_CESHI.equals(from)) {
-                    title = getString(R.string.share_title_ceshi);
-                    content = getString(R.string.share_content_ceshi);
-                } else {
-                    title = getString(R.string.share_title_game);
-                    content = getString(R.string.share_content_game);
-                }
-                ShareDialogUtil.show(this, url, title, content, imageUrl);
+                share();
                 break;
             default:
                 break;
         }
+    }
+
+    protected void share() {
+        String url = null;
+        String title = null;
+        String content = null;
+        String imageUrl = ViewUtil.saveViewCapture(this, mWebView);
+        if(INTENT_FROM_CHAT_CESHI.equals(from)) {
+            title = getString(R.string.share_title_ceshi);
+            content = getString(R.string.share_content_ceshi);
+        } else {
+            if(gameInfo != null) {
+                url = gameInfo.getShare_url();
+                title = gameInfo.getShare_title() != null ? gameInfo.getShare_title() : getString(R.string.share_title_game);
+                content = gameInfo.getShare_content() != null ? gameInfo.getShare_content() : getString(R.string.share_content_game);
+                imageUrl = gameInfo.getShare_image();
+            } else {
+                title = getString(R.string.share_title_game);
+                content = getString(R.string.share_content_game);
+            }
+        }
+        ShareDialogUtil.show(this, url, title, content, imageUrl);
     }
 
     @Override

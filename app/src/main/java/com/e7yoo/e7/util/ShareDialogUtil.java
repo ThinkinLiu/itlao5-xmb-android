@@ -161,7 +161,15 @@ public class ShareDialogUtil {
                         shareParams.setImageUrl("http://e7yoo.com/apk/logo_share.png");
                     }
                 } else {
-                    shareParams.setImagePath(imagePath);
+                    if(share_imagePath.startsWith("http")) {
+                        if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
+                            shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
+                        } else {
+                            shareParams.setImageUrl(share_imagePath);
+                        }
+                    } else {
+                        shareParams.setImagePath(imagePath);
+                    }
                 }
                 JShareInterface.share(name, shareParams, new PlatActionListener() {
                     @Override

@@ -31,8 +31,26 @@ public class GameLandscapeActivity extends GameActivity {
     }
 
     @Override
+    protected int initLayoutResId() {
+        return R.layout.activity_game_webview;
+    }
+
+    @Override
     protected void initSettings() {
         super.initSettings();
         hintTitle();
+        findViewById(R.id.ic_share_landscape).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ic_share_landscape:
+                share();
+                break;
+            default:
+                super.onClick(v);
+                break;
+        }
     }
 }
