@@ -32,7 +32,7 @@ public class GameLandscapeActivity extends GameActivity {
 
     @Override
     protected int initLayoutResId() {
-        return R.layout.activity_game_webview;
+        return R.layout.activity_game_webview_landscape;
     }
 
     @Override
