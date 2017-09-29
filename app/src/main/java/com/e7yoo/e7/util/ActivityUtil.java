@@ -84,7 +84,7 @@ public class ActivityUtil {
         intent.putExtra(GameActivity.INTENT_URL, url);
         intent.putExtra(GameActivity.INTENT_FROM, from);
         if(gameInfo != null && gameInfo.length > 0) {
-            intent.putExtra(GameActivity.INTENT_GAME_INFO, gameInfo);
+            intent.putExtra(GameActivity.INTENT_GAME_INFO, gameInfo[0]);
         }
         context.startActivity(intent);
     }

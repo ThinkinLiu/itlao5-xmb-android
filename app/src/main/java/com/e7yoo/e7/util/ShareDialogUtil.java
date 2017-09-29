@@ -190,6 +190,7 @@ public class ShareDialogUtil {
                     }
                 });
             }
+            dismiss();
         }
     };
 
