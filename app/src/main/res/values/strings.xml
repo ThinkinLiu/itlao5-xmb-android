@@ -102,6 +102,10 @@
     <string name="game_h5_chazhen_content">您能插多少？</string>
     <string name="game_h5_chazhen_share">见缝插箭</string>
     <string name="game_h5_chazhen_share_content">快来【小萌伴】，和我一起挑战极限</string>
+    <string name="game_h5_motuo">超极限摩托车</string>
+    <string name="game_h5_motuo_content">控制越野摩托车翻越重重障碍获取高分</string>
+    <string name="game_h5_motuo_share">超极限摩托车</string>
+    <string name="game_h5_motuo_share_content">我在【小萌伴】玩极限摩托，谁来跟我一起挑战极限</string>
 
 
     <string name="open_news_failed">进入新闻详情失败,该条新闻可能已经被删除。。。</string>
