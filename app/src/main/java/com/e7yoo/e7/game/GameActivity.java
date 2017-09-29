@@ -105,19 +105,21 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
         String url = null;
         String title = null;
         String content = null;
-        String imageUrl = ViewUtil.saveViewCapture(this, mWebView);
+        String imageUrl = null;
         if(INTENT_FROM_CHAT_CESHI.equals(from)) {
             title = getString(R.string.share_title_ceshi);
             content = getString(R.string.share_content_ceshi);
+            imageUrl = ViewUtil.saveViewCapture(this, mWebView);
         } else {
             if(gameInfo != null) {
                 url = gameInfo.getShare_url();
                 title = gameInfo.getShare_title() != null ? gameInfo.getShare_title() : getString(R.string.share_title_game);
                 content = gameInfo.getShare_content() != null ? gameInfo.getShare_content() : getString(R.string.share_content_game);
-                imageUrl = gameInfo.getShare_image();
+                imageUrl = gameInfo.getShare_image() != null ? gameInfo.getShare_image() : ViewUtil.saveViewCapture(this, mWebView);
             } else {
                 title = getString(R.string.share_title_game);
                 content = getString(R.string.share_content_game);
+                imageUrl = ViewUtil.saveViewCapture(this, mWebView);
             }
         }
         ShareDialogUtil.show(this, url, title, content, imageUrl);
