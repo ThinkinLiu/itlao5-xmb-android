@@ -230,7 +230,7 @@
     <string name="chat_url_to_ceshi">我们做个小测试吧，我会告诉你属于什么类型的人</string>
     <string name="share_title_ceshi">快来看看你是什么样的人</string>
     <string name="share_content_ceshi">在【小萌伴】上测试，我居然是这样的人</string>
-    <string name="share_title_game">兄弟，快来陪我</string>
-    <string name="share_content_game">我在【小萌伴】上 玩游戏，谁来陪我</string>
+    <string name="share_title_game">快来【小萌伴】陪我</string>
+    <string name="share_content_game">我在【小萌伴】玩游戏，谁来陪我</string>
 
 </resources>

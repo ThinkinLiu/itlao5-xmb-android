@@ -2,10 +2,14 @@ package com.e7yoo.e7.game;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.Target;
 import com.e7yoo.e7.BaseWebviewActivity;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
@@ -16,6 +20,9 @@ import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.ViewUtil;
 import com.e7yoo.e7.webview.ReWebChomeClient;
 import com.e7yoo.e7.webview.ReWebViewClient;
+
+import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Administrator on 2017/9/28.
@@ -34,6 +41,7 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
     private String intent_url;
     private String from;
     private GameInfo gameInfo;
+    private String shareImagePath = null;
 
     @Override
     protected String initTitle() {
@@ -63,6 +71,7 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
             intent_url = getIntent().getStringExtra(INTENT_URL);
             from = getIntent().getStringExtra(INTENT_FROM);
             gameInfo = (GameInfo) getIntent().getSerializableExtra(INTENT_GAME_INFO);
+            initShareImagePath();
         }
         initWebView();
         setRightTv(View.VISIBLE, R.mipmap.ic_share, 0, this);
@@ -79,6 +88,35 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
             mWebView.loadUrl(intent_url);
         } else {
             finishAct();
+        }
+    }
+
+    private void initShareImagePath() {
+        if(gameInfo != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        FutureTarget<File> target = null;
+                        if(TextUtils.isEmpty(gameInfo.getShare_image())) {
+                            if(!TextUtils.isEmpty(gameInfo.getIcon())) {
+                                target  = Glide.with(GameActivity.this).load(gameInfo.getIcon()).downloadOnly(124, 124);
+                            }
+                        } else {
+                            target  = Glide.with(GameActivity.this).load(gameInfo.getShare_image()).downloadOnly(200, 200);
+                        }
+                        if(target != null) {
+                            shareImagePath = target.get().getAbsolutePath();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
     }
 
@@ -109,20 +147,27 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
         if(INTENT_FROM_CHAT_CESHI.equals(from)) {
             title = getString(R.string.share_title_ceshi);
             content = getString(R.string.share_content_ceshi);
-            imageUrl = ViewUtil.saveViewCapture(this, mWebView);
+            imageUrl = getImagePath();
         } else {
             if(gameInfo != null) {
                 url = gameInfo.getShare_url();
                 title = gameInfo.getShare_title() != null ? gameInfo.getShare_title() : getString(R.string.share_title_game);
                 content = gameInfo.getShare_content() != null ? gameInfo.getShare_content() : getString(R.string.share_content_game);
-                imageUrl = gameInfo.getShare_image() != null ? gameInfo.getShare_image() : ViewUtil.saveViewCapture(this, mWebView);
+                imageUrl = getImagePath();
             } else {
                 title = getString(R.string.share_title_game);
                 content = getString(R.string.share_content_game);
-                imageUrl = ViewUtil.saveViewCapture(this, mWebView);
+                imageUrl = getImagePath();
             }
         }
         ShareDialogUtil.show(this, url, title, content, imageUrl);
+    }
+
+    private String getImagePath() {
+        if(!TextUtils.isEmpty(shareImagePath)) {
+            return shareImagePath;
+        }
+        return ViewUtil.saveViewCapture(this, mWebView);
     }
 
     @Override

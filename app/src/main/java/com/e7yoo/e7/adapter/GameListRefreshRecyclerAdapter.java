@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.GameInfo;
 
@@ -122,7 +123,13 @@ public class GameListRefreshRecyclerAdapter extends RecyclerAdapter {
                         viewHolderGameInfo.itemGameIcon.setImageResource(R.mipmap.log_e7yoo_transport);
                     }
                 } else {
-                    Glide.with(mContext).load(gameInfo.getIcon()).placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport).into(viewHolderGameInfo.itemGameIcon);
+                    Glide.with(mContext)
+                            .load(gameInfo.getIcon())
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.mipmap.log_e7yoo_transport)
+                            .error(R.mipmap.log_e7yoo_transport)
+                            .override(124, 124)
+                            .into(viewHolderGameInfo.itemGameIcon);
                 }
                 viewHolderGameInfo.itemGameName.setText(gameInfo.getName());
                 viewHolderGameInfo.itemGameContent.setText(gameInfo.getContent());
