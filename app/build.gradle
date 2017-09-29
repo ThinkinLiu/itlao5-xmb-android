@@ -34,7 +34,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 60
-        versionName "3.0.0"
+        versionName "3.0.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         ndk {
