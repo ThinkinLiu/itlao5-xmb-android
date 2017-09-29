@@ -76,12 +76,20 @@
     <string name="game_no_need_net">本地游戏，不需流量</string>
     <string name="game_h5_wucaiguodong">五彩果冻大相连</string>
     <string name="game_h5_wucaiguodong_content">移动果冻，使同颜色果冻相连</string>
+    <string name="game_h5_wucaiguodong_share">快来【小萌伴】玩果冻相连</string>
+    <string name="game_h5_wucaiguodong_share_content">我在【小萌伴】体验好玩的五彩果冻游戏</string>
     <string name="game_h5_guoshanche">惊险过山车</string>
-    <string name="game_h5_guoshanche_content">合理操作，体验惊现刺激的过山车吧</string>
+    <string name="game_h5_guoshanche_content">合理操作，体验惊险刺激的过山车吧</string>
+    <string name="game_h5_guoshanche_share">我在【小萌伴】玩过山车</string>
+    <string name="game_h5_guoshanche_share_content">快来【小萌伴】体验惊险刺激的过山车吧</string>
     <string name="game_h5_zhaoyaojing">照妖镜</string>
     <string name="game_h5_zhaoyaojing_content">你前世是什么妖</string>
+    <string name="game_h5_zhaoyaojing_share">我在【小萌伴】玩照妖镜</string>
+    <string name="game_h5_zhaoyaojing_share_content">让【小萌伴】告诉你前世是什么妖</string>
     <string name="game_h5_zaqiche">土豪砸汽车</string>
     <string name="game_h5_zaqiche_content">合理操作，尽情泄愤，摧毁名车</string>
+    <string name="game_h5_zaqiche_share">土豪，快来【小萌伴】砸汽车</string>
+    <string name="game_h5_zaqiche_share_content">快来【小萌伴】，合理操作，尽情泄愤，摧毁名车，土豪快感</string>
 
 
     <string name="open_news_failed">进入新闻详情失败,该条新闻可能已经被删除。。。</string>
