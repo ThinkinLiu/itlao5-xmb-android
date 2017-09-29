@@ -46,6 +46,21 @@ public class GameInfoUtil {
         gameInfo.setShare_content(context.getString(R.string.game_h5_guoshanche_share_content));
         gameInfo.setIcon("http://imga4.5054399.com/upload_pic/2017/2/22/4399_14113059688.jpg");
         gameInfos.add(gameInfo);
+        gameInfo = new GameInfo(context.getString(R.string.game_h5_kengdie), context.getString(R.string.game_h5_kengdie_content), 2, "http://h.4399.com/play/175320.htm", null);
+        gameInfo.setShare_title(context.getString(R.string.game_h5_kengdie_share));
+        gameInfo.setShare_content(context.getString(R.string.game_h5_kengdie_share_content));
+        gameInfo.setIcon("http://imga1.5054399.com/upload_pic/2016/6/3/4399_17021821034.jpg");
+        gameInfos.add(gameInfo);
+        gameInfo = new GameInfo(context.getString(R.string.game_h5_baikuai), context.getString(R.string.game_h5_baikuai_content), 2, "http://h.4399.com/play/154247.htm", null);
+        gameInfo.setShare_title(context.getString(R.string.game_h5_baikuai_share));
+        gameInfo.setShare_content(context.getString(R.string.game_h5_baikuai_share_content));
+        gameInfo.setIcon("http://imga3.5054399.com/upload_pic/2016/11/11/4399_14302471814.jpg");
+        gameInfos.add(gameInfo);
+        gameInfo = new GameInfo(context.getString(R.string.game_h5_chazhen), context.getString(R.string.game_h5_chazhen_content), 2, "http://h.4399.com/play/190181.htm", null);
+        gameInfo.setShare_title(context.getString(R.string.game_h5_chazhen_share));
+        gameInfo.setShare_content(context.getString(R.string.game_h5_chazhen_share_content));
+        gameInfo.setIcon("http://imga2.5054399.com/upload_pic/2017/8/14/4399_16002464962.jpg");
+        gameInfos.add(gameInfo);
         return gameInfos;
     }
 }

@@ -90,6 +90,18 @@
     <string name="game_h5_zaqiche_content">合理操作，尽情泄愤，摧毁名车</string>
     <string name="game_h5_zaqiche_share">土豪，快来【小萌伴】砸汽车</string>
     <string name="game_h5_zaqiche_share_content">快来【小萌伴】，合理操作，尽情泄愤，摧毁名车，土豪快感</string>
+    <string name="game_h5_kengdie">史上最坑爹的游戏</string>
+    <string name="game_h5_kengdie_content">脑洞大开，解开关卡成功闯关。</string>
+    <string name="game_h5_kengdie_share">史上最坑爹的游戏</string>
+    <string name="game_h5_kengdie_share_content">快来【小萌伴】，和我一起成功关卡</string>
+    <string name="game_h5_baikuai">别踩白块儿</string>
+    <string name="game_h5_baikuai_content">脑洞大开，解开关卡成功闯关。</string>
+    <string name="game_h5_baikuai_share">别再踩白块儿</string>
+    <string name="game_h5_baikuai_share_content">快来【小萌伴】，和我一起挑战极限</string>
+    <string name="game_h5_chazhen">见缝插箭</string>
+    <string name="game_h5_chazhen_content">您能插多少？</string>
+    <string name="game_h5_chazhen_share">见缝插箭</string>
+    <string name="game_h5_chazhen_share_content">快来【小萌伴】，和我一起挑战极限</string>
 
 
     <string name="open_news_failed">进入新闻详情失败,该条新闻可能已经被删除。。。</string>
