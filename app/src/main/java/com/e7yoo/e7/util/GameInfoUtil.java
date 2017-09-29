@@ -29,18 +29,22 @@ public class GameInfoUtil {
         gameInfo = new GameInfo(context.getString(R.string.game_h5_zhaoyaojing), context.getString(R.string.game_h5_zhaoyaojing_content), 1, "http://h.4399.com/play/161856.htm", null);
         gameInfo.setShare_title(context.getString(R.string.game_h5_zhaoyaojing_share));
         gameInfo.setShare_content(context.getString(R.string.game_h5_zhaoyaojing_share_content));
+        gameInfo.setIcon("http://imga2.5054399.com/upload_pic/2015/8/31/4399_15445940405.jpg");
         gameInfos.add(gameInfo);
         gameInfo = new GameInfo(context.getString(R.string.game_h5_zaqiche), context.getString(R.string.game_h5_zaqiche_content), 1, "http://h.4399.com/play/159875.htm", null);
         gameInfo.setShare_title(context.getString(R.string.game_h5_zaqiche_share));
         gameInfo.setShare_content(context.getString(R.string.game_h5_zaqiche_share_content));
+        gameInfo.setIcon("http://imga1.5054399.com/upload_pic/2016/3/15/4399_14520189468.jpg");
         gameInfos.add(gameInfo);
         gameInfo = new GameInfo(context.getString(R.string.game_h5_wucaiguodong), context.getString(R.string.game_h5_wucaiguodong_content), 2, "http://h.4399.com/play/191530.htm", null);
         gameInfo.setShare_title(context.getString(R.string.game_h5_wucaiguodong_share));
         gameInfo.setShare_content(context.getString(R.string.game_h5_wucaiguodong_share_content));
+        gameInfo.setIcon("http://imga1.5054399.com/upload_pic/2017/9/28/4399_15142086906.jpg");
         gameInfos.add(gameInfo);
         gameInfo = new GameInfo(context.getString(R.string.game_h5_guoshanche), context.getString(R.string.game_h5_guoshanche_content), 2, "http://h.4399.com/play/158682.htm", null);
         gameInfo.setShare_title(context.getString(R.string.game_h5_guoshanche_share));
         gameInfo.setShare_content(context.getString(R.string.game_h5_guoshanche_share_content));
+        gameInfo.setIcon("http://imga4.5054399.com/upload_pic/2017/2/22/4399_14113059688.jpg");
         gameInfos.add(gameInfo);
         return gameInfos;
     }
