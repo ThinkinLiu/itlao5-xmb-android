@@ -33,6 +33,7 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
     /** 来源 */
     public final static String INTENT_FROM = "from";
     public final static String INTENT_FROM_CHAT_CESHI = "from_chat_ceshi";
+    public final static String INTENT_FROM_CHAT_GAME = "from_chat_game";
     /** Game信息 */
     public final static String INTENT_GAME_INFO = "game_info";
     /** URL */

@@ -40,6 +40,7 @@ import com.e7yoo.e7.app.news.NewsActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.game.GameActivity;
 import com.e7yoo.e7.model.AutoMsg;
+import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
 import com.e7yoo.e7.model.MsgUrlType;
@@ -53,6 +54,7 @@ import com.e7yoo.e7.util.BdVoiceUtil;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
+import com.e7yoo.e7.util.GameInfoUtil;
 import com.e7yoo.e7.util.JokeUtil;
 import com.e7yoo.e7.util.Logs;
 import com.e7yoo.e7.util.PreferenceUtil;
@@ -153,6 +155,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             mRobot = (Robot) getIntent().getSerializableExtra(Constant.INTENT_ROBOT);
         } else {
             TastyToastUtil.toast(this, R.string.error_robot_is_null);
+            finish();
+            return;
+        }
+        if(mRobot == null) {
+            finish();
             return;
         }
         refresh(mRobot);
@@ -171,6 +178,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         int openTimes = PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_OPEN_TIMES, 0);
         if(openTimes == 5) {
             addMsgToViewRecv(getString(R.string.chat_url_to_ceshi), MsgUrlType.ceshi);
+        } else if(openTimes % 50 == 8) {
+            addMsgToViewRecv(getString(R.string.chat_url_to_zhaoyaojing), MsgUrlType.zhaoyaojing);
         } else {
             addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
         }
@@ -203,6 +212,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         gridItem = new GridItem(R.mipmap.item_chat_gridview_joke, R.string.item_chat_gridview_joke, this);
         gridItems.add(gridItem);
         gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
+        gridItems.add(gridItem);
+        gridItem = new GridItem(R.mipmap.item_chat_gridview_film, R.string.item_chat_gridview_film, this);
         gridItems.add(gridItem);
         return gridItems;
     }
@@ -443,6 +456,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 break;
             case R.string.item_chat_gridview_game:
+                addMsgToView(getString(textResId));
+                ActivityUtil.toActivity(this, GameListActivity.class);
+                break;
+            case R.string.item_chat_gridview_film:
                 addMsgToView(getString(textResId));
                 ActivityUtil.toActivity(this, GameListActivity.class);
                 break;
@@ -742,8 +759,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void onDestroy() {
-        BdVoiceUtil.releaseTTS(mSpeechSynthesizer);
-        BdVoiceUtil.destroyASR(mSpeechRecognizer);
+        try {
+            BdVoiceUtil.releaseTTS(mSpeechSynthesizer);
+            BdVoiceUtil.destroyASR(mSpeechRecognizer);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 
@@ -826,6 +847,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     ActivityUtil.toGameActivity(ChatActivity.this,
                             "http://sda.4399.com/4399swf/upload_swf/ftp14/yzg/20141021/3a/game.htm",
                             GameActivity.INTENT_FROM_CHAT_CESHI, false);
+                } else if(msg.getUrl().startsWith(MsgUrlType.zhaoyaojing)) {
+                    GameInfo gameInfo = GameInfoUtil.getZhaoyaojing(ChatActivity.this);
+                    ActivityUtil.toGameActivity(ChatActivity.this,
+                            gameInfo.getH5_url(),
+                            GameActivity.INTENT_FROM_CHAT_GAME, false, gameInfo);
                 } else{
                     // 其他，跳往webview
                     ActivityUtil.toNewsWebviewActivity(ChatActivity.this, msg.getUrl(), NewsWebviewActivity.INTENT_FROM_CHAT_MSG);

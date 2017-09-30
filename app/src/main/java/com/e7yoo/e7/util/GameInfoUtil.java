@@ -26,11 +26,7 @@ public class GameInfoUtil {
         gameInfo = new GameInfo(context.getString(R.string.gamelist_plane), context.getString(R.string.gamelist_plane_content), 0, null, PlaneMainActivity.class.getSimpleName());
         gameInfo.setIconResId(R.mipmap.game_plane);
         gameInfos.add(gameInfo);
-        gameInfo = new GameInfo(context.getString(R.string.game_h5_zhaoyaojing), context.getString(R.string.game_h5_zhaoyaojing_content), 1, "http://h.4399.com/play/161856.htm", null);
-        gameInfo.setShare_title(context.getString(R.string.game_h5_zhaoyaojing_share));
-        gameInfo.setShare_content(context.getString(R.string.game_h5_zhaoyaojing_share_content));
-        gameInfo.setIcon("http://imga2.5054399.com/upload_pic/2015/8/31/4399_15445940405.jpg");
-        gameInfos.add(gameInfo);
+        gameInfos.add(getZhaoyaojing(context));
         gameInfo = new GameInfo(context.getString(R.string.game_h5_zaqiche), context.getString(R.string.game_h5_zaqiche_content), 1, "http://h.4399.com/play/159875.htm", null);
         gameInfo.setShare_title(context.getString(R.string.game_h5_zaqiche_share));
         gameInfo.setShare_content(context.getString(R.string.game_h5_zaqiche_share_content));
@@ -67,5 +63,13 @@ public class GameInfoUtil {
         gameInfo.setIcon("http://imga3.5054399.com/upload_pic/2015/11/23/4399_15592890967.jpg");
         gameInfos.add(gameInfo);
         return gameInfos;
+    }
+
+    public static GameInfo getZhaoyaojing(Context context) {
+        GameInfo gameInfo = new GameInfo(context.getString(R.string.game_h5_zhaoyaojing), context.getString(R.string.game_h5_zhaoyaojing_content), 1, "http://h.4399.com/play/161856.htm", null);
+        gameInfo.setShare_title(context.getString(R.string.game_h5_zhaoyaojing_share));
+        gameInfo.setShare_content(context.getString(R.string.game_h5_zhaoyaojing_share_content));
+        gameInfo.setIcon("http://imga2.5054399.com/upload_pic/2015/8/31/4399_15445940405.jpg");
+        return gameInfo;
     }
 }

@@ -14,5 +14,6 @@ public class MsgUrlType {
     public static final String finaphone = "finaphone:";
     public static final String circle = "circle:";
     public static final String ceshi = "ceshi:";
+    public static final String zhaoyaojing = "zhaoyaojing:";
 
 }

@@ -184,6 +184,7 @@
     <string name="item_chat_gridview_game">游戏</string>
     <string name="item_chat_gridview_news">新闻</string>
     <string name="item_chat_gridview_joke">笑话</string>
+    <string name="item_chat_gridview_film">影视</string>
     <string name="error_robot_is_null">出故障了，可以换个萌伴聊聊</string>
 
 
@@ -228,6 +229,7 @@
     <string name="chat_url_to_findphone">手机老是找不到，试试找手机功能吧！</string>
     <string name="chat_url_to_news">是否需要看看新闻呢？</string>
     <string name="chat_url_to_ceshi">我们做个小测试吧，我会告诉你属于什么类型的人</string>
+    <string name="chat_url_to_zhaoyaojing">【照妖镜】快来看看，你的前世究竟是什么样的妖</string>
     <string name="share_title_ceshi">快来看看你是什么样的人</string>
     <string name="share_content_ceshi">在【小萌伴】上测试，我居然是这样的人</string>
     <string name="share_title_game">快来【小萌伴】陪我</string>
