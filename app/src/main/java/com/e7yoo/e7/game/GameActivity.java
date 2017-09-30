@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.target.Target;
 import com.e7yoo.e7.BaseWebviewActivity;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
