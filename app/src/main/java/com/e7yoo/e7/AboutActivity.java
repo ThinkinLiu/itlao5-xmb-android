@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
+import com.e7yoo.e7.util.UmengUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.jiguang.share.android.api.JShareInterface;
 
@@ -67,14 +69,17 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("market://details?id=" + this.getPackageName()));
                     startActivity(intent);
+                    UmengUtil.onEvent(UmengUtil.ABOUT_LIKE);
                 } catch (Exception e) {
                     TastyToast.makeText(this, getString(R.string.about_evaluate_error), TastyToast.LENGTH_SHORT,
                             TastyToast.WARNING);
+                    CrashReport.postCatchedException(new Exception("evaluate no app shop"));
                 }
                 break;
             case R.id.iv_share:
             case R.id.ll_share:
                 ShareDialogUtil.show(this);
+                UmengUtil.onEvent(UmengUtil.ABOUT_SHARE);
                 break;
             case R.id.ll_qr_code:
                 qrCodeDialog();

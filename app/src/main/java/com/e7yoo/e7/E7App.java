@@ -1,11 +1,9 @@
 package com.e7yoo.e7;
 
 import android.app.Application;
-import android.graphics.Color;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.e7yoo.e7.util.OsUtil;
-import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
@@ -45,4 +43,5 @@ public class E7App extends Application {
         CrashReport.initCrashReport(getApplicationContext(), "ab0c0f5941", false);
         CrashReport.setUserId(OsUtil.getUdid(this));
     }
+
 }

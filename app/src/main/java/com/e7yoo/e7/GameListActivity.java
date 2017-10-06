@@ -1,25 +1,20 @@
 package com.e7yoo.e7;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.e7yoo.e7.adapter.GameListRefreshRecyclerAdapter;
-import com.e7yoo.e7.adapter.PushMsgRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
-import com.e7yoo.e7.app.news.NewsWebviewActivity;
-import com.e7yoo.e7.game.GameActivity;
 import com.e7yoo.e7.game.game2048.Game2048Activity;
 import com.e7yoo.e7.game.killbird.KillBirdActivity;
 import com.e7yoo.e7.game.plane.PlaneMainActivity;
 import com.e7yoo.e7.model.GameInfo;
-import com.e7yoo.e7.model.PushMsg;
-import com.e7yoo.e7.sql.DbThreadPool;
-import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.GameInfoUtil;
+import com.e7yoo.e7.util.UmengUtil;
 
 import java.util.ArrayList;
 
@@ -126,6 +121,11 @@ public class GameListActivity extends BaseActivity/* implements View.OnClickList
                 case 3:
                     // 预留
                     break;
+            }
+            if(TextUtils.isEmpty(gameInfo.getUmengKey())) {
+                UmengUtil.onEvent(UmengUtil.GAME_OTHER);
+            } else {
+                UmengUtil.onEvent(gameInfo.getUmengKey());
             }
         }
     };

@@ -17,7 +17,7 @@ import com.e7yoo.e7.app.news.NewsActivity;
 import com.e7yoo.e7.util.ActivityUtil;
 
 public class MoreFragment extends BaseFragment implements View.OnClickListener {
-    private View newsLayout, historyLayout, gameLayout, lightLayout, findPhoneLayout;
+    private View newsLayout, historyLayout, gameLayout, lightLayout, findPhoneLayout, taobaoLayout;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -48,11 +48,13 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             gameLayout = mRootView.findViewById(R.id.more_game_layout);
             lightLayout = mRootView.findViewById(R.id.more_light_layout);
             findPhoneLayout = mRootView.findViewById(R.id.more_findphone_layout);
+            taobaoLayout = mRootView.findViewById(R.id.more_taobao_layout);
             newsLayout.setOnClickListener(this);
             historyLayout.setOnClickListener(this);
             gameLayout.setOnClickListener(this);
             lightLayout.setOnClickListener(this);
             findPhoneLayout.setOnClickListener(this);
+            taobaoLayout.setOnClickListener(this);
         }
         return mRootView;
     }
@@ -89,6 +91,8 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.more_findphone_layout:
                 ActivityUtil.toActivity(getActivity(), FindPhoneActivity.class);
+                break;
+            case R.id.more_taobao_layout:
                 break;
         }
     }

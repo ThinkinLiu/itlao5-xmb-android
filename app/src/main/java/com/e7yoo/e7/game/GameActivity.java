@@ -16,6 +16,7 @@ import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.util.AnimaUtils;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
+import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.util.ViewUtil;
 import com.e7yoo.e7.webview.ReWebChomeClient;
 import com.e7yoo.e7.webview.ReWebViewClient;
@@ -161,6 +162,8 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
             }
         }
         ShareDialogUtil.show(this, url, title, content, imageUrl);
+
+        UmengUtil.onEvent(UmengUtil.GAME_SHARE);
     }
 
     private String getImagePath() {
@@ -235,4 +238,10 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
             super.onProgressChanged(view, newProgress);
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        ShareDialogUtil.release();
+        super.onDestroy();
+    }
 }

@@ -16,6 +16,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -181,6 +182,7 @@ public class ShareDialogUtil {
                     @Override
                     public void onError(Platform platform, int i, int i1, Throwable throwable) {
                         Logs.isDebug();
+                        CrashReport.postCatchedException(throwable);
                     }
 
                     @Override

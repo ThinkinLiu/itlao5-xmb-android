@@ -14,6 +14,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.UmengUtil;
 
 public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeListener, OnClickListener {
     private ToggleButton findPhoneSmsBtn;
@@ -111,9 +112,11 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                     }
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 1);
                     findPhoneSmsLayout.setVisibility(View.VISIBLE);
+                    UmengUtil.onEvent(UmengUtil.FP_SMS_1);
                 } else {
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 0);
                     findPhoneSmsLayout.setVisibility(View.GONE);
+                    UmengUtil.onEvent(UmengUtil.FP_SMS_0);
                 }
                 break;
             case R.id.tb_find_phone_latlng:
@@ -123,9 +126,11 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                     }
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG, 1);
                     findPhoneLatlngLayout.setVisibility(View.VISIBLE);
+                    UmengUtil.onEvent(UmengUtil.FP_LATLNG_1);
                 } else {
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG, 0);
                     findPhoneLatlngLayout.setVisibility(View.GONE);
+                    UmengUtil.onEvent(UmengUtil.FP_LATLNG_0);
                 }
                 break;
             case R.id.tb_find_phone_voice:
@@ -134,9 +139,11 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                             R.string.dialog_voice_hint_title, R.string.dialog_voice_hint);
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 1);
                     findPhoneVoiceLayout.setVisibility(View.VISIBLE);
+                    UmengUtil.onEvent(UmengUtil.FP_VOICE_1);
                 } else {
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0);
                     findPhoneVoiceLayout.setVisibility(View.GONE);
+                    UmengUtil.onEvent(UmengUtil.FP_VOICE_0);
                 }
                 break;
             default:

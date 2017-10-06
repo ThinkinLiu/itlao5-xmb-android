@@ -63,6 +63,7 @@ import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.TtsUtils;
+import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.view.BlurTransformation;
 
 import org.json.JSONObject;
@@ -155,11 +156,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             mRobot = (Robot) getIntent().getSerializableExtra(Constant.INTENT_ROBOT);
         } else {
             TastyToastUtil.toast(this, R.string.error_robot_is_null);
-            finish();
-            return;
-        }
-        if(mRobot == null) {
-            finish();
             return;
         }
         refresh(mRobot);
@@ -178,8 +174,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         int openTimes = PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_OPEN_TIMES, 0);
         if(openTimes == 5) {
             addMsgToViewRecv(getString(R.string.chat_url_to_ceshi), MsgUrlType.ceshi);
-        } else if(openTimes % 50 == 8) {
-            addMsgToViewRecv(getString(R.string.chat_url_to_zhaoyaojing), MsgUrlType.zhaoyaojing);
         } else {
             addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
         }
@@ -212,10 +206,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         gridItem = new GridItem(R.mipmap.item_chat_gridview_joke, R.string.item_chat_gridview_joke, this);
         gridItems.add(gridItem);
         gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
-        gridItems.add(gridItem);
-        gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
-        gridItems.add(gridItem);
-        gridItem = new GridItem(R.mipmap.item_chat_gridview_film, R.string.item_chat_gridview_film, this);
         gridItems.add(gridItem);
         return gridItems;
     }
@@ -365,6 +355,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 BdVoiceUtil.stopASR(mSpeechRecognizer);
                 if(!isNoMatch && !isBusy) {
                     showToast(R.string.input_voice_toast_end);
+                    UmengUtil.onEvent(UmengUtil.VOICE);
                 }
             }
         }
@@ -423,6 +414,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     if(send) {
                         mEditText.setText("");
                     }
+                    UmengUtil.onEvent(UmengUtil.SEND_TXT);
                 } else {
                     if(mChatInputMoreLayout.getVisibility() == View.GONE) {
                         mChatInputMoreLayout.setVisibility(View.VISIBLE);
@@ -443,10 +435,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         switch (textResId) {
             case R.string.item_chat_gridview_picture:
                 sendText(getString(textResId));
+                UmengUtil.onEvent(UmengUtil.SEND_IMG);
                 break;
             case R.string.item_chat_gridview_news:
                 addMsgToView(getString(textResId));
                 ActivityUtil.toActivity(this, NewsActivity.class);
+                UmengUtil.onEvent(UmengUtil.SEND_NEWS);
                 break;
             case R.string.item_chat_gridview_joke:
                 addMsgToView(getString(textResId));
@@ -454,14 +448,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
                     mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                 }
+                UmengUtil.onEvent(UmengUtil.SEND_JOKE);
                 break;
             case R.string.item_chat_gridview_game:
                 addMsgToView(getString(textResId));
                 ActivityUtil.toActivity(this, GameListActivity.class);
-                break;
-            case R.string.item_chat_gridview_film:
-                addMsgToView(getString(textResId));
-                ActivityUtil.toActivity(this, GameListActivity.class);
+                UmengUtil.onEvent(UmengUtil.SEND_GAME);
                 break;
         }
     }
@@ -565,6 +557,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     }
                     PreferenceUtil.commitInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, ++pullUpTimes);
                 }
+                UmengUtil.onEvent(UmengUtil.PULL_UP);
             }
 
             @Override
@@ -702,6 +695,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     public void onResults(Bundle bundle) {
         Logs.logI("百度语音 onResults");
         sendText(bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0));
+        UmengUtil.onEvent(UmengUtil.SEND_VOICE);
     }
 
     @Override
@@ -765,6 +759,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         } catch (Throwable e) {
             e.printStackTrace();
         }
+        ShareDialogUtil.release();
         super.onDestroy();
     }
 
@@ -813,8 +808,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     BdVoiceUtil.startTTS(mSpeechSynthesizer, msg.getContent());
                     view.setSelected(true);
                     mRvAdapter.setTtsMsgTime(msgTime);
-                    if(lastPosition < mRvAdapter.getItemCount() && lastPosition >= 0)
-                    mRvAdapter.notifyItemChanged(lastPosition);
+                    if(lastPosition < mRvAdapter.getItemCount() && lastPosition >= 0) {
+                        mRvAdapter.notifyItemChanged(lastPosition);
+                    }
+                    UmengUtil.onEvent(UmengUtil.TTS);
                 }
             }
             lastPosition = position;
@@ -829,32 +826,43 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 // 此处保留自定义可拓展协议（如"bigpic:"等）
                 if(msg.getUrl().startsWith(MsgUrlType.bigpic)) { // 查看大图
 
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_BIGPIC);
                 } else if(msg.getUrl().startsWith(MsgUrlType.game)) {
                     ActivityUtil.toActivity(ChatActivity.this, GameListActivity.class);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_GAME);
                 } else if(msg.getUrl().startsWith(MsgUrlType.news)) {
                     ActivityUtil.toActivity(ChatActivity.this, NewsActivity.class);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_NEWS);
                 } else if(msg.getUrl().startsWith(MsgUrlType.share)) {
                     ShareDialogUtil.show(ChatActivity.this);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_SHARE);
                 } else if(msg.getUrl().startsWith(MsgUrlType.history)) {
                     ActivityUtil.toActivity(ChatActivity.this, TodayHisActivity.class);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_HISTORY);
                 } else if(msg.getUrl().startsWith(MsgUrlType.flashlight)) {
                     ActivityUtil.toActivity(ChatActivity.this, FlashLightActivity.class);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_LIGHT);
                 } else if(msg.getUrl().startsWith(MsgUrlType.finaphone)) {
                     ActivityUtil.toActivity(ChatActivity.this, FindPhoneActivity.class);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_FINDPHONE);
                 } else if(msg.getUrl().startsWith(MsgUrlType.circle)) {
 
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_CIRCLE);
                 } else if(msg.getUrl().startsWith(MsgUrlType.ceshi)) {
                     ActivityUtil.toGameActivity(ChatActivity.this,
                             "http://sda.4399.com/4399swf/upload_swf/ftp14/yzg/20141021/3a/game.htm",
                             GameActivity.INTENT_FROM_CHAT_CESHI, false);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_CESHI);
                 } else if(msg.getUrl().startsWith(MsgUrlType.zhaoyaojing)) {
                     GameInfo gameInfo = GameInfoUtil.getZhaoyaojing(ChatActivity.this);
                     ActivityUtil.toGameActivity(ChatActivity.this,
                             gameInfo.getH5_url(),
                             GameActivity.INTENT_FROM_CHAT_GAME, false, gameInfo);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_ZYJ);
                 } else{
                     // 其他，跳往webview
                     ActivityUtil.toNewsWebviewActivity(ChatActivity.this, msg.getUrl(), NewsWebviewActivity.INTENT_FROM_CHAT_MSG);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_WEB);
                 }
             }
         }

@@ -23,6 +23,7 @@ public class GameInfo implements Serializable {
     private String share_content;
     private String share_image;
     private String desc; // 备用字段
+    private String umengKey; // umeng统计用
 
     public GameInfo(String name, String content, int game_type, String h5_url, String game_path) {
         this.name = name;
@@ -150,5 +151,13 @@ public class GameInfo implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getUmengKey() {
+        return umengKey;
+    }
+
+    public void setUmengKey(String umengKey) {
+        this.umengKey = umengKey;
     }
 }
