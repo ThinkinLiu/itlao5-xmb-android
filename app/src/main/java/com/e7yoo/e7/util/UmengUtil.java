@@ -34,6 +34,8 @@ public class UmengUtil {
     public static final String CHAT_TO_FINDPHONE = "3_chat_to_findphone";
     public static final String CHAT_TO_CESHI = "3_chat_to_ceshi";
     public static final String CHAT_TO_ZYJ = "3_chat_to_zyj";
+    public static final String CHAT_TO_GIF = "3_chat_to_gif";
+    public static final String CHAT_TO_BIG_PIC = "3_chat_to_big_pic";
     public static final String CHAT_TO_SHARE = "3_chat_to_share";
     public static final String CHAT_TO_HISTORY = "3_chat_to_history";
     public static final String CHAT_TO_CIRCLE = "3_chat_to_circle";

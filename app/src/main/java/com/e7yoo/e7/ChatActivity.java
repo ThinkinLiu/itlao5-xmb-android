@@ -30,6 +30,7 @@ import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
@@ -91,6 +92,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private View mChatInputMoreLayout;
     private GridView mChatInputMoreGv;
 
+    private ImageView bigPic;
+
     private Robot mRobot;
 
 
@@ -146,6 +149,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
         mChatInputMoreLayout = findViewById(R.id.chat_input_more_layout);
         mChatInputMoreGv = (GridView) findViewById(R.id.chat_input_more_gv);
+
+        bigPic = (ImageView) findViewById(R.id.chat_big_pic);
     }
 
     @Override
@@ -859,6 +864,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                             gameInfo.getH5_url(),
                             GameActivity.INTENT_FROM_CHAT_GAME, false, gameInfo);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_ZYJ);
+                } else if(msg.getUrl().startsWith(MsgUrlType.gif)) {
+                    // Gif需要使用source缓存策略，参考http://blog.csdn.net/u010316858/article/details/49665107
+                    Glide.with(ChatActivity.this).load(msg.getUrl().replace(MsgUrlType.gif, "")).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(bigPic);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_GIF);
+                } else if(msg.getUrl().startsWith(MsgUrlType.big_pic)) {
+                    Glide.with(ChatActivity.this).load(msg.getUrl().replace(MsgUrlType.big_pic, "")).into(bigPic);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_BIG_PIC);
                 } else{
                     // 其他，跳往webview
                     ActivityUtil.toNewsWebviewActivity(ChatActivity.this, msg.getUrl(), NewsWebviewActivity.INTENT_FROM_CHAT_MSG);
