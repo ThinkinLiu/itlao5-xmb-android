@@ -13,6 +13,7 @@ import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -81,6 +82,7 @@ public class JPushReceiver extends BroadcastReceiver {
                     ShortCutUtils.addNumShortCut(E7App.mApp, MainActivity.class, true, String.valueOf(unRead));
                 } catch (Throwable e) {
                     e.printStackTrace();
+                    CrashReport.postCatchedException(e);
                 }
             }
         }).start();

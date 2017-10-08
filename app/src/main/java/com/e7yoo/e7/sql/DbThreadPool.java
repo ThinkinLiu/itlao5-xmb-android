@@ -3,6 +3,7 @@ package com.e7yoo.e7.sql;
 import android.content.Context;
 
 import com.e7yoo.e7.model.PrivateMsg;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +35,11 @@ public class DbThreadPool {
         execute(new Runnable() {
             @Override
             public void run() {
-                MessageDbHelper.getInstance(context).insertMessageInfo(msg);
+                try {
+                    MessageDbHelper.getInstance(context).insertMessageInfo(msg);
+                } catch (Throwable e) {
+                    CrashReport.postCatchedException(e);
+                }
             }
         });
     }

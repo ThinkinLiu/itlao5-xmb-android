@@ -9,7 +9,7 @@ public class PrivateMsg implements Serializable {
 	 */
 	private static final long serialVersionUID = 92167621L;
 	private int _id;
-	// private String user;
+	private String user;
 	private int code;
 	private long time;// 发送时间
 	private String content;
@@ -155,13 +155,13 @@ public class PrivateMsg implements Serializable {
 		this._id = _id;
 	}
 
-	/*public String getUser() {
+	public String getUser() {
 		return user;
 	}
 
 	public void setUser(String user) {
 		this.user = user;
-	}*/
+	}
 
 	public int getRobotId() {
 		return robot_id;

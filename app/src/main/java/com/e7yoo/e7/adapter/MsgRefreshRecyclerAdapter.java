@@ -85,6 +85,9 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     public void addItemBottom(PrivateMsg newData) {
         mMsgs.add(newData);
         notifyDataSetChanged();
+        if(mRobot != null && mRobot.getName() != null) {
+            newData.setUser(mRobot.getName());
+        }
         DbThreadPool.getInstance().insert(mContext, newData);
     }
 

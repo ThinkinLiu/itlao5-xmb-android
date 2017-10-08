@@ -15,6 +15,7 @@ import com.e7yoo.e7.model.PrivateMsg.Type;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
 import com.google.gson.Gson;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
     @SuppressWarnings("unused")
     private static final String TAG = "MessageDbHelper";
     private static final String DB_NAME = "db_e7yoo_info";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 6;
     private static final String TABLE_MESSAGE = "t_message_info";
     private static final String TABLE_FAVORITE = "t_favorite_info";
     private static final String TABLE_ROBOT = "t_robot";
@@ -55,7 +56,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
     StringBuilder sb_message = new StringBuilder().append("CREATE TABLE IF NOT EXISTS ")
             .append(TABLE_MESSAGE).append("(")
             .append(MessageInfoColumns._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
-            //.append(MessageInfoColumns.USER).append(" TEXT NOT NULL,")
+            .append(MessageInfoColumns.USER).append(" TEXT NOT NULL,")
             .append(MessageInfoColumns.CODE).append(" INTEGER,")
             .append(MessageInfoColumns.TIME).append(" INTEGER,")
             .append(MessageInfoColumns.CONTENT).append(" TEXT,")
@@ -124,6 +125,13 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                 db.execSQL(sql_robot.toString());
                 db.execSQL(sql_push_msg.toString());
                 db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER;");
+            } else if(oldVersion <= 5) {
+                try {
+                    db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + "user" + " TEXT NOT NULL;");
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    CrashReport.postCatchedException(e);
+                }
             } else {
                 // 其他情况，将表销毁再创建（后续版本可自行修改）
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGE);
@@ -137,7 +145,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
 
     private static class MessageInfoColumns implements BaseColumns {
         private static final String _ID = "_id";
-        //private static final String USER = "user";
+        private static final String USER = "user";
         private static final String CODE = "code";
         private static final String TIME = "time";
         private static final String CONTENT = "content";
@@ -237,7 +245,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         do {
             msg = new PrivateMsg();
             msg.set_id(c.getInt(c.getColumnIndex(MessageInfoColumns._ID)));
-            // msg.setUser(c.getString(c.getColumnIndex(MessageInfoColumns.USER)));
+            msg.setUser(c.getString(c.getColumnIndex(MessageInfoColumns.USER)));
             msg.setCode(c.getInt(c.getColumnIndex(MessageInfoColumns.CODE)));
             msg.setTime(c.getLong(c.getColumnIndex(MessageInfoColumns.TIME)));// 发送时间
             msg.setContent(c.getString(c.getColumnIndex(MessageInfoColumns.CONTENT)));
@@ -259,7 +267,11 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             return;
         }
         ContentValues values = new ContentValues();
-        //values.put(MessageInfoColumns.USER, msg.getUser());
+        String user = msg.getUser();
+        if(user == null) {
+            user = "萌萌";
+        }
+        values.put(MessageInfoColumns.USER, user);
         values.put(MessageInfoColumns.CODE, msg.getCode());
         values.put(MessageInfoColumns.TIME, msg.getTime());
         values.put(MessageInfoColumns.CONTENT, msg.getContent());
@@ -397,7 +409,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         values.put(RobotColumns.BGBLUR, robot.getBgblur());
         values.put(RobotColumns.SCORE, robot.getScore());
         values.put(RobotColumns.DESC, robot.getDesc());
-        StringBuilder where = new StringBuilder().append(MessageInfoColumns._ID).append(" = ?");
+        StringBuilder where = new StringBuilder().append(RobotColumns._ID).append(" = ?");
         long id = mDatabase.update(TABLE_ROBOT, values, where.toString(), new String[]{String.valueOf(robot.getId())});
         return id;
     }
