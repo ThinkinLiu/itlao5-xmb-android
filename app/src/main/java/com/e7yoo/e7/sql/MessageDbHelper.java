@@ -124,10 +124,10 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                 // 数据库版本1基础上增加robot表，message表增加robot_id列，其他数据库未改变
                 db.execSQL(sql_robot.toString());
                 db.execSQL(sql_push_msg.toString());
-                db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER;");
+                db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER DEFAULT 0;");
             } else if(oldVersion <= 5) {
                 try {
-                    db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + "user" + " TEXT NOT NULL;");
+                    db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + "user" + " TEXT NOT NULL DEFAULT " + "萌萌" + ";");
                 } catch (Throwable e) {
                     e.printStackTrace();
                     CrashReport.postCatchedException(e);
