@@ -14,14 +14,14 @@ import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<BaseFragment> mFragmentList;
+    private ArrayList<Fragment> mFragmentList;
     private FragmentManager mFm;
 
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public ViewPagerAdapter(FragmentManager fm, ArrayList<BaseFragment> fragmentList) {
+    public ViewPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentList) {
         super(fm);
         mFm = fm;
         mFragmentList = fragmentList;

@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
@@ -47,10 +48,10 @@ public class MainActivity extends BaseActivity {
     /**
      * 主页，萌圈，更多，我的
      */
-    private final ArrayList<BaseFragment> fragments = new ArrayList<>();
+    private final ArrayList<Fragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private BottomNavigationView navigation;
-    private final int[] titleResIds = {R.string.title_home, /*R.string.title_circle,*/ R.string.title_more, R.string.title_mine};
+    private final int[] titleResIds = {R.string.title_home, R.string.title_circle, R.string.title_more, R.string.title_mine};
 
     @Override
     protected int initLayoutResId() {
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity {
         setLeftTv(View.GONE);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         fragments.add(HomeFragment.newInstance());
-        // fragments.add(CircleFragment.newInstance());
+        fragments.add(CircleFragment.newInstance());
         fragments.add(MoreFragment.newInstance());
         fragments.add(MineFragment.newInstance());
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
@@ -156,9 +157,9 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_home:
                     setItem(0);
                     return true;
-                /*case R.id.navigation_circle:
+                case R.id.navigation_circle:
                     setItem(1);
-                    return true;*/
+                    return true;
                 case R.id.navigation_more:
                     setItem(titleResIds.length - 2);
                     return true;
@@ -191,9 +192,9 @@ public class MainActivity extends BaseActivity {
             case Constant.EVENT_BUS_REFRESH_RecyclerView_UPDATE_ROBOT:
             case Constant.EVENT_BUS_REFRESH_RecyclerView_INIT_ROBOT:
                 if (!isFinishing() && fragments != null && fragments.size() > 0) {
-                    BaseFragment fragment = fragments.get(0);
-                    if (fragment != null) {
-                        fragment.onEventMainThread(msg);
+                    Fragment fragment = fragments.get(0);
+                    if (fragment != null && fragment instanceof BaseFragment) {
+                        ((BaseFragment) fragment).onEventMainThread(msg);
                     }
                 }
                 break;

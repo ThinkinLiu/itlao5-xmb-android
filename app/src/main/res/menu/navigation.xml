@@ -6,10 +6,10 @@
         android:icon="@drawable/ic_child_care_black_24dp"
         android:title="@string/title_home" />
 
-    <!--<item
+    <item
         android:id="@+id/navigation_circle"
         android:icon="@drawable/ic_camera_black_24dp"
-        android:title="@string/title_circle" />-->
+        android:title="@string/title_circle" />
 
     <item
         android:id="@+id/navigation_more"
