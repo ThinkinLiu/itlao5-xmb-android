@@ -186,7 +186,8 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         mRobot.setBgblur(bgBlurTb.isChecked() ? 25 : 0);
         mRobot.setSex(RobotUtil.getSex(sexTv.getText().toString()));
         if (FLAG == 0) {
-            MessageDbHelper.getInstance(this).insertRobot(mRobot);
+            long id = MessageDbHelper.getInstance(this).insertRobot(mRobot);
+            mRobot.setId((int) id);
         } else {
             MessageDbHelper.getInstance(this).updateRobot(mRobot);
         }

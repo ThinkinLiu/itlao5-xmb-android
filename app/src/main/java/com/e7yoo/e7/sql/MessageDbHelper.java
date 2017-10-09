@@ -124,7 +124,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                 // 数据库版本1基础上增加robot表，message表增加robot_id列，其他数据库未改变
                 db.execSQL(sql_robot.toString());
                 db.execSQL(sql_push_msg.toString());
-                db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER DEFAULT 0;");
+                db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER DEFAULT 1;");
             } else if(oldVersion <= 5) {
                 try {
                     db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + "user" + " TEXT NOT NULL DEFAULT " + "萌萌" + ";");
@@ -216,7 +216,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         } else {
             whereName = MessageInfoColumns.USER + " = ?";
         }*/
-        if(robot_id <= 0) {
+        if(robot_id <= 1) {
             whereName = MessageInfoColumns.ROBOT_ID + " = ? OR " + MessageInfoColumns.ROBOT_ID + " is null";
         } else {
             whereName = MessageInfoColumns.ROBOT_ID + " = ?";
@@ -410,8 +410,8 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         values.put(RobotColumns.SCORE, robot.getScore());
         values.put(RobotColumns.DESC, robot.getDesc());
         StringBuilder where = new StringBuilder().append(RobotColumns._ID).append(" = ?");
-        long id = mDatabase.update(TABLE_ROBOT, values, where.toString(), new String[]{String.valueOf(robot.getId())});
-        return id;
+        long count = mDatabase.update(TABLE_ROBOT, values, where.toString(), new String[]{String.valueOf(robot.getId())});
+        return count;
     }
 
     public void deleteRobot(String robotId) {
@@ -519,8 +519,8 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(PushMsgColumns.UNREAD, unRead);
         StringBuilder where = new StringBuilder().append(PushMsgColumns._ID).append(" = ?");
-        long id = mDatabase.update(TABLE_PUSH_MSG, values, where.toString(), new String[]{String.valueOf(_id)});
-        return id;
+        long count = mDatabase.update(TABLE_PUSH_MSG, values, where.toString(), new String[]{String.valueOf(_id)});
+        return count;
     }
 
 
