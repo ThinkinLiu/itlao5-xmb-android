@@ -1,6 +1,7 @@
 package com.e7yoo.e7;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -33,6 +34,9 @@ import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.ui.fragments.CommunityMainFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -72,11 +76,15 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initSettings() {
         initPermission();
+        initCommunity();
         initRobot();
         setLeftTv(View.GONE);
         BottomNavigationViewHelper.disableShiftMode(navigation);
         fragments.add(HomeFragment.newInstance());
         fragments.add(CircleFragment.newInstance());
+        /*CommunityMainFragment mFeedsFragment = new CommunityMainFragment();
+        mFeedsFragment.setBackButtonVisibility(View.INVISIBLE);
+        fragments.add(mFeedsFragment);*/
         fragments.add(MoreFragment.newInstance());
         fragments.add(MineFragment.newInstance());
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
@@ -86,6 +94,11 @@ public class MainActivity extends BaseActivity {
         UpdateHelper.getInstance().init(getApplicationContext(), getResources().getColor(R.color.titlebar_bg));/*Color.parseColor("#459F47"));*/
         UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
 
+    }
+
+    private void initCommunity() {
+        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getApplicationContext());
+        mCommSDK.initSDK(getApplicationContext());
     }
 
     private void initRobot() {
@@ -262,5 +275,11 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }

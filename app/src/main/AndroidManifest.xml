@@ -77,6 +77,32 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- end 360update -->
 
+    <!-- start community -->
+    <!-- 使用相机 -->
+    <!--<uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />-->
+    <!-- 检测网络状态 -->
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!-- 获取mac地址作为用户的备用唯一标识 -->
+    <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
+    <!-- 获取用户手机的IMEI，用来唯一的标识用户 -->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!-- 缓存资源优先存入SDcard -->
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!-- 允许应用程序联网，以便向我们的服务器端发送数据 -->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
+    <!-- 定位所需的权限 -->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!-- 推送相关的权限 -->
+    <!--<uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--<uses-permission android:name="android.permission.WRITE_SETTINGS" />-->
+    <!-- QQ登录所需权限 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- end community -->
 
     <application
         android:name=".E7App"
@@ -90,6 +116,9 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5788cee967e58e9b78004641" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="afbf92d21efd4a6c01d749e645cac08d" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="e7yoo" />
@@ -122,7 +151,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -340,6 +369,7 @@
                 android:resource="@xml/update_apk_path" />
         </provider>
         <!-- end 360update -->
+
     </application>
 
 </manifest>

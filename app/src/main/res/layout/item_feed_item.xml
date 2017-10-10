@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_selector"
+    android:padding="@dimen/space_2x">
+
+    <ImageView
+        android:id="@+id/item_feed_item_icon"
+        android:layout_width="@dimen/item_feed_item_icon"
+        android:layout_height="@dimen/item_feed_item_icon"
+        android:layout_marginLeft="@dimen/space"
+        android:src="@mipmap/icon" />
+
+    <ImageView
+        android:id="@+id/item_feed_item_sex"
+        android:layout_width="@dimen/item_robot_sex"
+        android:layout_height="@dimen/item_robot_sex"
+        android:layout_marginLeft="@dimen/space_3x"
+        android:layout_toRightOf="@id/item_feed_item_icon"
+        android:src="@mipmap/sex_female_selected" />
+
+    <TextView
+        android:id="@+id/item_feed_item_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space"
+        android:layout_toRightOf="@id/item_feed_item_sex"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="@string/mengmeng"
+        android:textColor="@color/text"
+        android:textSize="@dimen/size_xl" />
+
+    <TextView
+        android:id="@+id/item_feed_item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_feed_item_username"
+        android:layout_below="@id/item_feed_item_username"
+        android:layout_marginBottom="@dimen/space"
+        android:includeFontPadding="false"
+        android:maxLines="5"
+        android:text=""
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_l" />
+
+    <GridView
+        android:id="@+id/item_feed_item_gv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_feed_item_username"
+        android:layout_below="@id/item_feed_item_content" />
+
+    <TextView
+        android:id="@+id/item_feed_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mengmeng"
+        android:textSize="@dimen/size_s"
+        android:textColor="@color/text_l"
+        android:layout_alignLeft="@id/item_feed_item_username"
+        android:layout_below="@id/item_feed_item_gv"/>
+
+    <TextView
+        android:id="@+id/item_feed_item_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mengmeng"
+        android:textSize="@dimen/size_s"
+        android:textColor="@color/text_l"
+        android:layout_toLeftOf="@+id/item_feed_item_comment"
+        android:layout_below="@id/item_feed_item_gv"
+        android:layout_alignBottom="@id/item_feed_item_time"
+        android:drawableLeft="@drawable/circle_feed_item_share_selector"/>
+
+    <TextView
+        android:id="@+id/item_feed_item_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mengmeng"
+        android:textSize="@dimen/size_s"
+        android:textColor="@color/text_l"
+        android:layout_toLeftOf="@+id/item_feed_item_praise"
+        android:layout_below="@id/item_feed_item_gv"
+        android:layout_alignBottom="@id/item_feed_item_time"
+        android:drawableLeft="@drawable/circle_feed_item_comment_selector"/>
+
+    <TextView
+        android:id="@+id/item_feed_item_praise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mengmeng"
+        android:textSize="@dimen/size_s"
+        android:textColor="@color/text_l"
+        android:layout_below="@id/item_feed_item_gv"
+        android:layout_alignBottom="@id/item_feed_item_time"
+        android:layout_alignParentRight="true"
+        android:drawableLeft="@drawable/circle_feed_item_praise_selector"/>
+</RelativeLayout>
