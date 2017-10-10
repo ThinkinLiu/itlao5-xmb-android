@@ -2,6 +2,7 @@ package com.e7yoo.e7.community;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.model.FeedItem;
 import com.umeng.comm.core.beans.FeedItem;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
