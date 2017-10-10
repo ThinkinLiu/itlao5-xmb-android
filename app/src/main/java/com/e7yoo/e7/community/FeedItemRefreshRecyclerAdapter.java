@@ -2,7 +2,6 @@ package com.e7yoo.e7.community;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
-import com.e7yoo.e7.model.FeedItem;
 import com.umeng.comm.core.beans.FeedItem;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +102,7 @@ public class FeedItemRefreshRecyclerAdapter extends RecyclerAdapter {
                 break;
             case VIEW_TYPE_GAME_INFO:
             default:
-                view = mInflater.inflate(R.layout.item_game_list, parent, false);
+                view = mInflater.inflate(R.layout.item_feed_item, parent, false);
                 viewHolder = new ViewHolderFeedItem(view);
                 break;
         }
@@ -121,11 +117,23 @@ public class FeedItemRefreshRecyclerAdapter extends RecyclerAdapter {
             if(item != null) {
                 setUser(viewHolderFeedItem, item);
                 viewHolderFeedItem.contentTv.setText(item.text);
-                viewHolderFeedItem.gridView.setAdapter();
+                int size = item.getImages().size();
+                if(size == 0) {
+                    viewHolderFeedItem.gridView.setAdapter(null);
+                } else if(size == 1) {
+                    viewHolderFeedItem.gridView.setNumColumns(2);
+                    viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
+                } else if(size == 2 || size == 4) {
+                    viewHolderFeedItem.gridView.setNumColumns(2);
+                    viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
+                } else {
+                    viewHolderFeedItem.gridView.setNumColumns(3);
+                    viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
+                }
                 viewHolderFeedItem.timeTv.setText(item.addTime);
-                viewHolderFeedItem.shareTv.setText(item.forwardCount);
-                viewHolderFeedItem.commentTv.setText(item.commentCount);
-                viewHolderFeedItem.praiseTv.setText(item.likeCount);
+                viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
+                viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));
+                viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount));
             }
             addClickListener(viewHolderFeedItem.itemView, position);
         } else if(holder instanceof ViewHolderFooter) {

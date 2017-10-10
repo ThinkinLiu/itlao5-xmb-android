@@ -73,14 +73,14 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
             public void onPageSelected(int position) {
                 switch (position) {
                     case 1:
-                        setSelectedTv(mTopicTv);
+                        setSelectedTv(mHotTv);
                         break;
                     case 2:
                         setSelectedTv(mPlateTv);
                         break;
                     case 0:
                     default:
-                        setSelectedTv(mHotTv);
+                        setSelectedTv(mTopicTv);
                         break;
                 }
             }
@@ -108,12 +108,12 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.circle_hot:
-                setSelectedTv(mHotTv);
-                mViewPager.setCurrentItem(0);
-                break;
             case R.id.circle_topic:
                 setSelectedTv(mTopicTv);
+                mViewPager.setCurrentItem(0);
+                break;
+            case R.id.circle_hot:
+                setSelectedTv(mHotTv);
                 mViewPager.setCurrentItem(1);
                 break;
             case R.id.circle_plate:
@@ -124,8 +124,8 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void setSelectedTv(TextView view) {
-        mHotTv.setSelected(view == mHotTv ? true : false);
         mTopicTv.setSelected(view == mTopicTv ? true : false);
+        mHotTv.setSelected(view == mHotTv ? true : false);
         mPlateTv.setSelected(view == mPlateTv ? true : false);
     }
 }

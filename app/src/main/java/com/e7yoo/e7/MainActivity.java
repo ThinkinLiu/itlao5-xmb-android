@@ -15,8 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.e7yoo.e7.adapter.ViewPagerAdapter;
-import com.e7yoo.e7.app.findphone.FindPhoneLatlngSetActivity;
-import com.e7yoo.e7.app.light.NotificationControl;
 import com.e7yoo.e7.fragment.BaseFragment;
 import com.e7yoo.e7.fragment.CircleFragment;
 import com.e7yoo.e7.fragment.HomeFragment;
@@ -36,14 +34,11 @@ import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.impl.CommunityFactory;
-import com.umeng.comm.ui.fragments.CommunityMainFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-
-import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * app主Activity
@@ -82,9 +77,6 @@ public class MainActivity extends BaseActivity {
         BottomNavigationViewHelper.disableShiftMode(navigation);
         fragments.add(HomeFragment.newInstance());
         fragments.add(CircleFragment.newInstance());
-        /*CommunityMainFragment mFeedsFragment = new CommunityMainFragment();
-        mFeedsFragment.setBackButtonVisibility(View.INVISIBLE);
-        fragments.add(mFeedsFragment);*/
         fragments.add(MoreFragment.newInstance());
         fragments.add(MineFragment.newInstance());
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
