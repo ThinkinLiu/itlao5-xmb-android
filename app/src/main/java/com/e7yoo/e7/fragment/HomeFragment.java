@@ -112,7 +112,9 @@ public class HomeFragment extends BaseFragment {
             mRecyclerView.addItemDecoration(new RecyclerViewDivider(
                     getContext(), LinearLayoutManager.VERTICAL,
                     getResources().getDimensionPixelOffset(R.dimen.item_robot_divider),
-                    ContextCompat.getColor(getContext(), R.color.backgroud)));
+                    ContextCompat.getColor(getContext(), R.color.backgroud),
+                    true,
+                    getResources().getDimensionPixelOffset(R.dimen.space_3x)));
             mRecyclerView.setLayoutManager(linearLayoutManager);
         }
         return mRootView;

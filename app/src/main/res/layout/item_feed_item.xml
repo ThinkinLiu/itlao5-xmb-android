@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/item_selector"
+    android:background="@drawable/rounded_corners_tag_white"
     android:padding="@dimen/space_2x">
 
-    <ImageView
+    <com.e7yoo.e7.view.CircleImageView
         android:id="@+id/item_feed_item_icon"
         android:layout_width="@dimen/item_feed_item_icon"
         android:layout_height="@dimen/item_feed_item_icon"
-        android:layout_marginLeft="@dimen/space"
-        android:src="@mipmap/icon" />
+        android:src="@mipmap/icon"
+        app:civ_border_color="@color/white_translucent"
+        app:civ_border_overlay="false"
+        app:civ_border_width="@dimen/space_half"
+        app:civ_fill_color="@color/white" />
 
     <ImageView
         android:id="@+id/item_feed_item_sex"
         android:layout_width="@dimen/item_robot_sex"
         android:layout_height="@dimen/item_robot_sex"
-        android:layout_marginLeft="@dimen/space_3x"
+        android:layout_marginLeft="@dimen/space_2x"
         android:layout_toRightOf="@id/item_feed_item_icon"
         android:src="@mipmap/sex_female_selected" />
 
@@ -29,7 +33,7 @@
         android:includeFontPadding="false"
         android:maxLines="1"
         android:text="@string/mengmeng"
-        android:textColor="@color/text"
+        android:textColor="@color/text_l"
         android:textSize="@dimen/size_xl" />
 
     <TextView
@@ -39,10 +43,11 @@
         android:layout_alignLeft="@id/item_feed_item_sex"
         android:layout_below="@id/item_feed_item_username"
         android:layout_marginBottom="@dimen/space"
+        android:layout_marginTop="@dimen/space_2x"
         android:includeFontPadding="false"
         android:maxLines="5"
         android:text=""
-        android:textColor="@color/text_l"
+        android:textColor="@color/text"
         android:textSize="@dimen/size_l" />
 
     <GridView
@@ -50,7 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_feed_item_sex"
-        android:layout_below="@id/item_feed_item_content" />
+        android:layout_below="@id/item_feed_item_content"
+        android:layout_marginTop="@dimen/space" />
 
     <TextView
         android:id="@+id/item_feed_item_time"
@@ -58,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_feed_item_sex"
         android:layout_below="@id/item_feed_item_gv"
+        android:layout_marginTop="@dimen/space_2x"
         android:text="@string/mengmeng"
         android:textColor="@color/text_l"
         android:textSize="@dimen/size_s" />
@@ -67,11 +74,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/item_feed_item_time"
-        android:layout_below="@id/item_feed_item_gv"
         android:layout_marginRight="@dimen/space_3x"
         android:layout_toLeftOf="@+id/item_feed_item_comment"
         android:drawableLeft="@drawable/circle_feed_item_share_selector"
         android:drawablePadding="@dimen/space_2x"
+        android:gravity="center"
         android:text="@string/mengmeng"
         android:textColor="@color/text_l"
         android:textSize="@dimen/size_s" />
@@ -81,11 +88,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/item_feed_item_time"
-        android:layout_below="@id/item_feed_item_gv"
         android:layout_marginRight="@dimen/space_3x"
         android:layout_toLeftOf="@+id/item_feed_item_praise"
         android:drawableLeft="@drawable/circle_feed_item_comment_selector"
         android:drawablePadding="@dimen/space_2x"
+        android:gravity="center"
         android:text="@string/mengmeng"
         android:textColor="@color/text_l"
         android:textSize="@dimen/size_s" />
@@ -96,10 +103,10 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/item_feed_item_time"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/item_feed_item_gv"
         android:layout_marginRight="@dimen/space_3x"
         android:drawableLeft="@drawable/circle_feed_item_praise_selector"
         android:drawablePadding="@dimen/space_2x"
+        android:gravity="center"
         android:text="@string/mengmeng"
         android:textColor="@color/text_l"
         android:textSize="@dimen/size_s" />

@@ -235,8 +235,10 @@
     <string name="share_content_ceshi">在【小萌伴】上测试，我居然是这样的人</string>
     <string name="share_title_game">快来【小萌伴】陪我</string>
     <string name="share_content_game">我在【小萌伴】玩游戏，谁来陪我</string>
-    <string name="circle_topic">帖子</string>
+    <string name="circle_all">全部</string>
+    <string name="circle_recom">推荐</string>
     <string name="circle_hot">热门</string>
+    <string name="circle_followed">关注</string>
     <string name="circle_plate">话题</string>
 
 </resources>

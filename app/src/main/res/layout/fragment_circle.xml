@@ -6,20 +6,39 @@
 
     <LinearLayout
         android:id="@+id/circle_top"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:padding="@dimen/space_3x">
+        android:padding="@dimen/space_2x">
 
         <TextView
-            android:id="@+id/circle_topic"
+            android:id="@+id/circle_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners_circle_text"
             android:gravity="center"
-            android:padding="@dimen/space_2x"
-            android:text="@string/circle_topic"
+            android:paddingBottom="@dimen/space_half"
+            android:paddingLeft="@dimen/space_3x"
+            android:paddingRight="@dimen/space_3x"
+            android:paddingTop="@dimen/space_half"
+            android:text="@string/circle_all"
+            android:textColor="@color/circle_text_selector"
+            android:textSize="@dimen/size_l" />
+
+        <TextView
+            android:id="@+id/circle_recom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_4x"
+            android:background="@drawable/rounded_corners_circle_text"
+            android:gravity="center"
+            android:paddingBottom="@dimen/space_half"
+            android:paddingLeft="@dimen/space_3x"
+            android:paddingRight="@dimen/space_3x"
+            android:paddingTop="@dimen/space_half"
+            android:text="@string/circle_recom"
             android:textColor="@color/circle_text_selector"
             android:textSize="@dimen/size_l" />
 
@@ -30,8 +49,26 @@
             android:layout_marginLeft="@dimen/space_4x"
             android:background="@drawable/rounded_corners_circle_text"
             android:gravity="center"
-            android:padding="@dimen/space_2x"
+            android:paddingBottom="@dimen/space_half"
+            android:paddingLeft="@dimen/space_3x"
+            android:paddingRight="@dimen/space_3x"
+            android:paddingTop="@dimen/space_half"
             android:text="@string/circle_hot"
+            android:textColor="@color/circle_text_selector"
+            android:textSize="@dimen/size_l" />
+
+        <TextView
+            android:id="@+id/circle_followed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_4x"
+            android:background="@drawable/rounded_corners_circle_text"
+            android:gravity="center"
+            android:paddingBottom="@dimen/space_half"
+            android:paddingLeft="@dimen/space_3x"
+            android:paddingRight="@dimen/space_3x"
+            android:paddingTop="@dimen/space_half"
+            android:text="@string/circle_followed"
             android:textColor="@color/circle_text_selector"
             android:textSize="@dimen/size_l" />
 
@@ -42,16 +79,26 @@
             android:layout_marginLeft="@dimen/space_4x"
             android:background="@drawable/rounded_corners_circle_text"
             android:gravity="center"
-            android:padding="@dimen/space_2x"
+            android:paddingBottom="@dimen/space_half"
+            android:paddingLeft="@dimen/space_3x"
+            android:paddingRight="@dimen/space_3x"
+            android:paddingTop="@dimen/space_half"
             android:text="@string/circle_plate"
             android:textColor="@color/circle_text_selector"
             android:textSize="@dimen/size_l" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/circle_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:layout_below="@id/circle_top"
+        android:background="@color/backgroud" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/circle_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/circle_top"/>
+        android:layout_below="@id/circle_line" />
 
 </RelativeLayout>

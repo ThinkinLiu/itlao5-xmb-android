@@ -21,6 +21,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private int mDividerHeight = 2;//分割线高度，默认为1px
     private int mOrientation;//列表的方向：LinearLayoutManager.VERTICAL或LinearLayoutManager.HORIZONTAL
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
+    private boolean mShowTop;
+    private int mTopHeight;
 
     /**
      * 默认分割线：高度为2px，颜色为灰色
@@ -34,9 +36,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
         mOrientation = orientation;
 
-        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        /*final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
-        a.recycle();
+        a.recycle();*/
     }
 
     /**
@@ -46,10 +48,12 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * @param orientation 列表方向
      * @param drawableId  分割线图片
      */
-    public RecyclerViewDivider(Context context, int orientation, int drawableId) {
+    public RecyclerViewDivider(Context context, int orientation, int drawableId, boolean showTop, int topHeight) {
         this(context, orientation);
         mDivider = ContextCompat.getDrawable(context, drawableId);
         mDividerHeight = mDivider.getIntrinsicHeight();
+        mShowTop = showTop;
+        mTopHeight = topHeight;
     }
 
     /**
@@ -60,20 +64,24 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * @param dividerHeight 分割线高度
      * @param dividerColor  分割线颜色
      */
-    public RecyclerViewDivider(Context context, int orientation, int dividerHeight, int dividerColor) {
+    public RecyclerViewDivider(Context context, int orientation, int dividerHeight, int dividerColor, boolean showTop, int topHeight) {
         this(context, orientation);
         mDividerHeight = dividerHeight;
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(dividerColor);
         mPaint.setStyle(Paint.Style.FILL);
+        mShowTop = showTop;
+        mTopHeight = topHeight;
     }
 
-
-    //获取分割线尺寸
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-        outRect.set(0, 0, 0, mDividerHeight);
+    public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
+        super.getItemOffsets(outRect, itemPosition, parent);
+        if(mShowTop && itemPosition == 0) {
+            outRect.set(0, mTopHeight, 0, mDividerHeight);
+        } else {
+            outRect.set(0, 0, 0, mDividerHeight);
+        }
     }
 
     //绘制分割线

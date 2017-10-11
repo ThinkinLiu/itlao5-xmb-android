@@ -13,12 +13,17 @@ import android.widget.TextView;
 
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.ViewPagerAdapter;
+import com.e7yoo.e7.community.FollowedFeedsFragment;
+import com.e7yoo.e7.community.HotFeedsFragmentFeed;
+import com.e7yoo.e7.community.RealtimeFeedsFragment;
+import com.e7yoo.e7.community.RecomFeedsFragment;
+import com.e7yoo.e7.community.TopicListFragment;
 
 import java.util.ArrayList;
 
 public class CircleFragment extends BaseFragment implements View.OnClickListener {
 
-    private TextView mTopicTv, mHotTv, mPlateTv;
+    private TextView mAllTv, mRecomTv, mHotTv, mFollowedTv, mPlateTv;
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
@@ -47,8 +52,10 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         if(mRootView == null) {
             mRootView = inflater.inflate(R.layout.fragment_circle, container, false);
+            mAllTv = mRootView.findViewById(R.id.circle_all);
+            mRecomTv = mRootView.findViewById(R.id.circle_recom);
             mHotTv = mRootView.findViewById(R.id.circle_hot);
-            mTopicTv = mRootView.findViewById(R.id.circle_topic);
+            mFollowedTv = mRootView.findViewById(R.id.circle_followed);
             mPlateTv = mRootView.findViewById(R.id.circle_plate);
             mViewPager = mRootView.findViewById(R.id.circle_viewpager);
         }
@@ -58,39 +65,20 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if(mViewPagerAdapter == null) {
-            fragments.add(TopicFragment.newInstance());
-            fragments.add(TopicFragment.newInstance());
-            fragments.add(TopicFragment.newInstance());
+            fragments.add(RealtimeFeedsFragment.newInstance());
+            fragments.add(RecomFeedsFragment.newInstance());
+            fragments.add(HotFeedsFragmentFeed.newInstance());
+            fragments.add(FollowedFeedsFragment.newInstance());
+            fragments.add(TopicListFragment.newInstance());
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
+            setSelectedTv(mAllTv);
         }
         mViewPager.setAdapter(mViewPagerAdapter);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 1:
-                        setSelectedTv(mHotTv);
-                        break;
-                    case 2:
-                        setSelectedTv(mPlateTv);
-                        break;
-                    case 0:
-                    default:
-                        setSelectedTv(mTopicTv);
-                        break;
-                }
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        mViewPager.addOnPageChangeListener(mOnPageChangeListener);
+        mAllTv.setOnClickListener(this);
+        mRecomTv.setOnClickListener(this);
         mHotTv.setOnClickListener(this);
-        mTopicTv.setOnClickListener(this);
+        mFollowedTv.setOnClickListener(this);
         mPlateTv.setOnClickListener(this);
         super.onViewCreated(view, savedInstanceState);
     }
@@ -108,24 +96,66 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.circle_topic:
-                setSelectedTv(mTopicTv);
+            case R.id.circle_all:
+                setSelectedTv(mAllTv);
                 mViewPager.setCurrentItem(0);
+                break;
+            case R.id.circle_recom:
+                setSelectedTv(mRecomTv);
+                mViewPager.setCurrentItem(1);
                 break;
             case R.id.circle_hot:
                 setSelectedTv(mHotTv);
-                mViewPager.setCurrentItem(1);
+                mViewPager.setCurrentItem(2);
+                break;
+            case R.id.circle_followed:
+                setSelectedTv(mFollowedTv);
+                mViewPager.setCurrentItem(3);
                 break;
             case R.id.circle_plate:
                 setSelectedTv(mPlateTv);
-                mViewPager.setCurrentItem(2);
+                mViewPager.setCurrentItem(4);
                 break;
         }
     }
 
     private void setSelectedTv(TextView view) {
-        mTopicTv.setSelected(view == mTopicTv ? true : false);
+        mAllTv.setSelected(view == mAllTv ? true : false);
+        mRecomTv.setSelected(view == mRecomTv ? true : false);
         mHotTv.setSelected(view == mHotTv ? true : false);
+        mFollowedTv.setSelected(view == mFollowedTv ? true : false);
         mPlateTv.setSelected(view == mPlateTv ? true : false);
     }
+
+    private ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+        @Override
+        public void onPageSelected(int position) {
+            switch (position) {
+                case 1:
+                    setSelectedTv(mRecomTv);
+                    break;
+                case 2:
+                    setSelectedTv(mHotTv);
+                    break;
+                case 3:
+                    setSelectedTv(mFollowedTv);
+                    break;
+                case 4:
+                    setSelectedTv(mPlateTv);
+                    break;
+                case 0:
+                default:
+                    setSelectedTv(mAllTv);
+                    break;
+            }
+        }
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 }

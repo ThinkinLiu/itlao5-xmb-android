@@ -1,0 +1,121 @@
+package com.e7yoo.e7.community;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.e7yoo.e7.R;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.Topic;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.Response;
+
+/**
+ * Created by Administrator on 2017/9/25.
+ */
+public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
+
+    public TopicRefreshRecyclerAdapter(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected RecyclerView.ViewHolder initViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.item_topic, parent, false);
+        return new ViewHolderTopic(view);
+    }
+
+    @Override
+    protected void setHolderView(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof ViewHolderTopic) {
+            final ViewHolderTopic viewHolder = (ViewHolderTopic) holder;
+            final Topic item = (Topic) mDatas.get(position);
+            if (item != null) {
+                Glide.with(mContext)
+                        .load(item.icon)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.mipmap.log_e7yoo_transport)
+                        .error(R.mipmap.log_e7yoo_transport)
+                        .override(124, 124)
+                        .into(viewHolder.topicIcon);
+                viewHolder.nameTv.setText(item.name);
+                viewHolder.descTv.setText(item.desc);
+                if(item.isFocused) {
+                    viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
+                    viewHolder.attentionIv.setOnClickListener(null);
+                } else {
+                    viewHolder.attentionIv.setImageResource(R.drawable.circle_attention_selector);
+                    viewHolder.attentionIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            item.isFocused = true;
+                            viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
+                            viewHolder.attentionIv.setOnClickListener(null);
+                            CommunitySDK communitySDK = CommunityFactory.getCommSDK(mContext);
+                            communitySDK.followTopic(item, new Listeners.SimpleFetchListener<Response>() {
+                                @Override
+                                public void onComplete(Response response) {
+                                    if(response.errCode == ErrorCode.NO_ERROR) {
+                                    } else {
+                                        item.isFocused = false;
+                                        notifyDataSetChanged();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+            addClickListener(viewHolder.itemView, position);
+        }
+    }
+
+    private void addClickListener(View view, final int position) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(view, position);
+                }
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(mOnItemLongClickListener != null) {
+                    return mOnItemLongClickListener.onItemLongClick(view, position);
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 消息item
+     */
+    public static class ViewHolderTopic extends RecyclerView.ViewHolder {
+
+        public ImageView topicIcon;
+        public TextView nameTv;
+        public TextView descTv;
+        public ImageView attentionIv;
+
+        public ViewHolderTopic(View view) {
+            super(view);
+            topicIcon = view.findViewById(R.id.item_topic_icon);
+            nameTv = view.findViewById(R.id.item_topic_name);
+            descTv = view.findViewById(R.id.item_topic_desc);
+            attentionIv = view.findViewById(R.id.item_topic_attention);
+        }
+    }
+
+}

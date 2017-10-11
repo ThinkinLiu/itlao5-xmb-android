@@ -21,6 +21,8 @@ public class TimeUtil {
 
 	/** 时间日期格式化到年月日时分秒. */
 	public static final String dateFormatYMDHMS = "yyyy-MM-dd HH:mm:ss";
+	/** 时间日期格式化到月日时分. */
+	public static final String dateFormatMDHM = "MM-dd HH:mm";
 	/** 时间日期格式化到年月日时分. */
 	public static final String dateFormatYMDHM = "yyyy-MM-dd HH:mm";
 	/** 时分. */
@@ -45,6 +47,45 @@ public class TimeUtil {
 			return "前天" + " " + formatTime(millis, dateFormatHM);
 		} else if (offDay <= 6) {// 七天前
 			return format2WeekTime(millis);
+		} else {
+			return formatTime(millis, dateFormatYMDHM);
+		}
+
+	}
+
+	/**
+	 * 将毫秒转换为显示的时间 TODO(这里用一句话描述这个方法的作用)
+	 *
+	 * @param millisStr
+	 * @return
+	 */
+	public static String formatFeedTime(String millisStr) {
+		long millis = 0;
+		try {
+			millis = Long.parseLong(millisStr);
+		} catch (Throwable e) {
+		}
+		if(millis <= 0) {
+			return "";
+		}
+		long curMillis = System.currentTimeMillis();
+		long diff = curMillis - millis;
+		if(diff < 60) {
+			return "刚刚";
+		}/* else if(diff < 5 * 60) {
+			return "5分钟内";
+		} else if(diff < 60 * 60) {
+			return "1小时内";
+		}*/
+		int offDay = getOffectDay(curMillis, millis);
+		if (offDay == 0) {// 今天
+			return formatTime(millis, dateFormatHM);
+		} else if (offDay == 1) {// 昨天
+			return "昨天" + " " + formatTime(millis, dateFormatHM);
+		} else if (offDay <= 2) {// 前天
+			return "前天" + " " + formatTime(millis, dateFormatHM);
+		} else if (isSameYear(curMillis, millis)) {// 同一年
+			return formatTime(millis, dateFormatMDHM);
 		} else {
 			return formatTime(millis, dateFormatYMDHM);
 		}
@@ -123,6 +164,32 @@ public class TimeUtil {
 			calendar2.setTimeInMillis(milliseconds2);
 			int m1 = calendar1.get(Calendar.MINUTE);
 			int m2 = calendar2.get(Calendar.MINUTE);
+			if (m1 == m2) {
+				return true;
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 是否同一年内
+	 *
+	 * @param milliseconds1
+	 * @param milliseconds2
+	 * @return
+	 */
+	public static boolean isSameYear(long milliseconds1, long milliseconds2) {
+		if (Math.abs(milliseconds1 - milliseconds2) >= 366 * 24 * 60 * 60 * 1000) {
+			// 两者之差大于366天则肯定不会是同一年
+			return false;
+		} else {
+			// 否则，判断minute值是否相同
+			Calendar calendar1 = Calendar.getInstance();
+			calendar1.setTimeInMillis(milliseconds1);
+			Calendar calendar2 = Calendar.getInstance();
+			calendar2.setTimeInMillis(milliseconds2);
+			int m1 = calendar1.get(Calendar.YEAR);
+			int m2 = calendar2.get(Calendar.YEAR);
 			if (m1 == m2) {
 				return true;
 			}
@@ -231,7 +298,7 @@ public class TimeUtil {
 	 * long型转换
 	 * @param str
 	 * 
-	 * @return 不能转换时，返回{@link Long.MIN_VALUE}
+	 * @return 不能转换时，返回Long.MIN_VALUE
 	 */
 	public static long parse2Long(String str) {
 		long result = Long.MIN_VALUE;

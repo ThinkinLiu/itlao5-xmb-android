@@ -18,4 +18,5 @@
     <string name="umeng_comm_not_network">抱歉,没有网络连接</string>
     <string name="umeng_comm_http_time_out">请求超时,请检查您的网络~</string>
     <string name="umeng_comm_http_req_failed">网络请求失败,请重试~</string>
+    <string name="umeng_comm_invalid_req">无效的请求</string>
 </resources>
