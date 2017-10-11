@@ -68,6 +68,7 @@ public abstract class ListFragment extends BaseFragment {
         mRecyclerView.setAdapter(mRvAdapter);
         mSRLayout.setOnRefreshListener(mOnRefreshListener);
         initLoadMoreListener();
+        addListener();
         super.onViewCreated(view, savedInstanceState);
     }
 
