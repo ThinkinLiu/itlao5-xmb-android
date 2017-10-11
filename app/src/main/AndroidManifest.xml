@@ -370,6 +370,11 @@
         </provider>
         <!-- end 360update -->
 
+        <activity
+            android:name=".community.FeedDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

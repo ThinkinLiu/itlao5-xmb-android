@@ -161,12 +161,16 @@ public abstract class ListRefreshRecyclerAdapter extends RecyclerAdapter {
     @Override
     public int getItemViewType(int position) {
         int itemViewType;
-        if (position == getItemCount() - FOOTER_COUNT) {
+        if (FOOTER_COUNT > 0 && position >= getItemCount() - FOOTER_COUNT) {
             itemViewType = VIEW_TYPE_FOOTER;
         } else {
-            itemViewType = VIEW_TYPE_DATA;
+            itemViewType = initItemViewType(position);
         }
         return itemViewType;
+    }
+
+    public int initItemViewType(int position) {
+        return VIEW_TYPE_DATA;
     }
 
     /**

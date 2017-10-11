@@ -240,5 +240,6 @@
     <string name="circle_hot">热门</string>
     <string name="circle_followed">关注</string>
     <string name="circle_plate">话题</string>
+    <string name="circle_feed_detail">详情</string>
 
 </resources>

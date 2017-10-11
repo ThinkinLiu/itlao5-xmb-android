@@ -1,6 +1,11 @@
 package com.e7yoo.e7.community;
 
+import android.content.Intent;
+import android.view.View;
+
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.util.ActivityUtil;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
@@ -12,6 +17,19 @@ public abstract class FeedListFragment extends ListFragment {
     @Override
     protected ListRefreshRecyclerAdapter initAdapter() {
         return new FeedItemRefreshRecyclerAdapter(getActivity());
+    }
+
+    protected void addListener() {
+        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof FeedItem) {
+                    Intent intent = new Intent(getActivity(), FeedDetailActivity.class);
+                    intent.putExtra("FeedItem", (FeedItem) mRvAdapter.getItem(position));
+                    ActivityUtil.toActivity(getActivity(), intent);
+                }
+            }
+        });
     }
 
     protected abstract void saveDataToDb(List<FeedItem> feedItems);

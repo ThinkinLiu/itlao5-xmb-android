@@ -73,6 +73,8 @@ public abstract class ListFragment extends BaseFragment {
 
     protected abstract ListRefreshRecyclerAdapter initAdapter();
 
+    protected abstract void addListener();
+
     private boolean isFirstShow = true;
 
     @Override
@@ -103,7 +105,6 @@ public abstract class ListFragment extends BaseFragment {
             loadData(true, mNextPageUrl);
         }
     };
-
 
     private void initLoadMoreListener() {
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -1,9 +1,13 @@
 package com.e7yoo.e7.community;
 
+import android.content.Intent;
 import android.os.Message;
+import android.view.View;
 
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.util.ActivityUtil;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
@@ -26,6 +30,20 @@ public class TopicListFragment extends ListFragment {
     @Override
     protected ListRefreshRecyclerAdapter initAdapter() {
         return new TopicRefreshRecyclerAdapter(getActivity());
+    }
+
+    @Override
+    protected void addListener() {
+        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof Topic) {
+                    /*Intent intent = new Intent(getActivity(), TopicActivity.class);
+                    intent.putExtra("Topic", (Topic) mRvAdapter.getItem(position));
+                    ActivityUtil.toActivity(getActivity(), intent);*/
+                }
+            }
+        });
     }
 
     @Override

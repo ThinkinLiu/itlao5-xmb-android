@@ -13,6 +13,7 @@
     <dimen name="space_4x">16dp</dimen>
     <dimen name="space_5x">20dp</dimen>
     <dimen name="space_6x">24dp</dimen>
+    <dimen name="space_10x">40dp</dimen>
     <dimen name="space_100dp">100dp</dimen>
     <dimen name="space__96dp">-96dp</dimen>
     <dimen name="space_30dp">30dp</dimen>
@@ -26,6 +27,8 @@
     <dimen name="item_robot_divider">6dp</dimen>
 
     <dimen name="item_feed_item_icon">36dp</dimen>
+
+    <dimen name="item_comment_icon">32dp</dimen>
 
     <dimen name="size_xs">12dp</dimen>
     <dimen name="size_s">13dp</dimen>
