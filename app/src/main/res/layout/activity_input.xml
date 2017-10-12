@@ -23,7 +23,7 @@
         android:layout_marginLeft="@dimen/space_4x"
         android:layout_marginRight="@dimen/space_4x"
         android:background="@drawable/rounded_corners_tag_white"
-        android:hint="请输入..."
+        android:hint="@string/input_hint"
         android:maxLength="20"
         android:maxLines="4"
         android:paddingTop="@dimen/space_2x"

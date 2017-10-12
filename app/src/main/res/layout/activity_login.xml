@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -8,41 +8,81 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.e7yoo.e7.InputActivity">
+    tools:context="com.e7yoo.e7.LoginActivity">
 
     <include
         android:id="@+id/titleBar"
         layout="@layout/titlebar" />
 
+    <ImageView
+        android:id="@+id/login_icon"
+        android:layout_width="@dimen/login_icon_width"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/space_6x"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/logo_round"
+        android:layout_below="@id/titleBar" />
+
     <EditText
-        android:id="@+id/input_edit"
+        android:id="@+id/login_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/space_6x"
+        android:layout_marginRight="@dimen/space_6x"
         android:layout_marginTop="@dimen/space_6x"
-        android:layout_marginLeft="@dimen/space_4x"
-        android:layout_marginRight="@dimen/space_4x"
-        android:background="@drawable/rounded_corners_tag_white"
-        android:hint="请输入..."
+        android:background="@drawable/rounded_corners_tag_trans"
+        android:drawableLeft="@drawable/login_name_selector"
+        android:drawablePadding="@dimen/space_3x"
+        android:hint="@string/login_input_user_hint"
         android:maxLength="20"
-        android:maxLines="4"
-        android:paddingTop="@dimen/space_2x"
+        android:maxLines="1"
+        android:paddingBottom="@dimen/space_3x"
         android:paddingLeft="@dimen/space_4x"
         android:paddingRight="@dimen/space_4x"
-        android:paddingBottom="@dimen/space_2x"
+        android:paddingTop="@dimen/space_3x"
         android:text=""
         android:textColor="@color/text"
         android:textColorHint="@color/text_l"
-        android:textSize="@dimen/size_xl" />
+        android:textSize="@dimen/size_xl"
+        android:layout_below="@id/login_icon" />
 
-    <TextView
-        android:id="@+id/input_hint"
+    <EditText
+        android:id="@+id/login_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/space_3x"
         android:layout_marginLeft="@dimen/space_6x"
+        android:layout_marginRight="@dimen/space_6x"
+        android:layout_marginTop="@dimen/space_6x"
+        android:background="@drawable/rounded_corners_tag_trans"
+        android:drawableLeft="@drawable/login_pwd_selector"
+        android:drawablePadding="@dimen/space_3x"
+        android:hint="@string/login_input_pwd_hint"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:paddingBottom="@dimen/space_3x"
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingRight="@dimen/space_4x"
+        android:paddingTop="@dimen/space_3x"
         android:text=""
-        android:textColor="@color/text_l"
-        android:textSize="@dimen/size_m" />
-</LinearLayout>
+        android:textColor="@color/text"
+        android:textColorHint="@color/text_l"
+        android:textSize="@dimen/size_2xl"
+        android:layout_below="@id/login_name" />
+
+    <TextView
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_6x"
+        android:background="@drawable/rounded_corners_tag_green"
+        android:gravity="center"
+        android:padding="@dimen/space_3x"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_xl"
+        android:layout_below="@id/login_pwd"/>
+
+</RelativeLayout>

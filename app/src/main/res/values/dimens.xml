@@ -32,6 +32,8 @@
     <!-- item_feed_item_icon + space + item_comment_icon + space_2x -->
     <dimen name="feed_detail_comment_divider_left_padding">80dp</dimen>
 
+    <dimen name="login_icon_width">100dp</dimen>
+
     <dimen name="size_xs">12dp</dimen>
     <dimen name="size_s">13dp</dimen>
     <dimen name="size_m">14dp</dimen>

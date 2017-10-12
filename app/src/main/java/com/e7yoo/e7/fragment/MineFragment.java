@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.e7yoo.e7.AboutActivity;
 import com.e7yoo.e7.BaseActivity;
+import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.PushMsgActivity;
 import com.e7yoo.e7.R;
@@ -76,6 +77,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initListener() {
+        mHeadIconIv.setOnClickListener(this);
         mSpaceLayout.setOnClickListener(this);
         mMsgLayout.setOnClickListener(this);
         mSetLayout.setOnClickListener(this);
@@ -116,6 +118,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.mine_icon:
+                ActivityUtil.toActivity(getActivity(), LoginActivity.class);
+                break;
             case R.id.mine_page_layout:
                 break;
             case R.id.mine_msg_layout:
