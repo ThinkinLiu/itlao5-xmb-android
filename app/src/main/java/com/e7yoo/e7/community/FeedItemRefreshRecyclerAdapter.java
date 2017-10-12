@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.TimeUtil;
 import com.umeng.comm.core.beans.FeedItem;
@@ -43,19 +44,7 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
             if (item != null) {
                 setUser(viewHolderFeedItem, item);
                 viewHolderFeedItem.contentTv.setText(item.text);
-                int size = item.getImages().size();
-                if (size == 0) {
-                    viewHolderFeedItem.gridView.setAdapter(null);
-                } else if (size == 1) {
-                    viewHolderFeedItem.gridView.setNumColumns(2);
-                    viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
-                } else if (size == 2 || size == 4) {
-                    viewHolderFeedItem.gridView.setNumColumns(2);
-                    viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
-                } else {
-                    viewHolderFeedItem.gridView.setNumColumns(3);
-                    viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
-                }
+                CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages());
                 viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
                 viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
                 viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));

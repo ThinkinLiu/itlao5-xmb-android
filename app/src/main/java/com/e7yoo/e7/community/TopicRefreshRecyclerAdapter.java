@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
@@ -47,7 +48,7 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                         .error(R.mipmap.log_e7yoo_transport)
                         .override(124, 124)
                         .into(viewHolder.topicIcon);
-                viewHolder.nameTv.setText(item.name);
+                viewHolder.nameTv.setText(item.name.replace("#", ""));
                 viewHolder.descTv.setText(item.desc);
                 if(item.isFocused) {
                     viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
@@ -64,10 +65,15 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                             communitySDK.followTopic(item, new Listeners.SimpleFetchListener<Response>() {
                                 @Override
                                 public void onComplete(Response response) {
-                                    if(response.errCode == ErrorCode.NO_ERROR) {
-                                    } else {
-                                        item.isFocused = false;
-                                        notifyDataSetChanged();
+                                    switch (response.errCode) {
+                                        case ErrorCode.NO_ERROR:
+                                            break;
+                                        case ErrorCode.UNLOGIN_ERROR:
+                                            TastyToastUtil.toast(mContext, R.string.circle_no_login);
+                                        default:
+                                            item.isFocused = false;
+                                            notifyDataSetChanged();
+                                            break;
                                     }
                                 }
                             });

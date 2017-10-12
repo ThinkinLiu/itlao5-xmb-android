@@ -68,7 +68,10 @@ public class FeedItemGvAdapter extends BaseAdapter {
         }
         final ImageItem item = getItem(i);
         if(item != null) {
-            Glide.with(mContext).load(item.thumbnail).asBitmap().into(holder.iv);
+            Glide.with(mContext).load(item.thumbnail)
+                    .placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport).into(holder.iv);
+        } else {
+            holder.iv.setImageResource(0);
         }
         return view;
     }

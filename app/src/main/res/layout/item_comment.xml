@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_corners_tag_white"
-    android:padding="@dimen/space_2x">
+    android:background="@drawable/item_selector"
+    android:paddingLeft="@dimen/space_2x"
+    android:paddingRight="@dimen/space_2x">
+
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_2x"
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingTop="@dimen/space_2x"
+        android:text="@string/circle_comment"
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_l" />
 
     <com.e7yoo.e7.view.CircleImageView
         android:id="@+id/item_comment_icon"
         android:layout_width="@dimen/item_comment_icon"
         android:layout_height="@dimen/item_comment_icon"
+        android:layout_below="@id/hint"
+        android:layout_marginLeft="@dimen/space_10x"
+        android:layout_marginTop="@dimen/space_2x"
         android:src="@mipmap/icon"
         app:civ_border_color="@color/white_translucent"
         app:civ_border_overlay="false"
         app:civ_border_width="@dimen/space_half"
-        app:civ_fill_color="@color/white"
-        android:layout_marginLeft="@dimen/space_10x"/>
+        app:civ_fill_color="@color/white" />
 
     <ImageView
         android:id="@+id/item_comment_sex"
         android:layout_width="@dimen/item_robot_sex"
         android:layout_height="@dimen/item_robot_sex"
+        android:layout_alignTop="@id/item_comment_icon"
         android:layout_marginLeft="@dimen/space_2x"
         android:layout_toRightOf="@id/item_comment_icon"
         android:src="@mipmap/sex_female_selected" />
@@ -29,6 +45,7 @@
         android:id="@+id/item_comment_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_comment_icon"
         android:layout_marginLeft="@dimen/space"
         android:layout_toRightOf="@id/item_comment_sex"
         android:includeFontPadding="false"
@@ -46,18 +63,19 @@
         android:layout_marginBottom="@dimen/space"
         android:layout_marginTop="@dimen/space_2x"
         android:includeFontPadding="false"
-        android:maxLines="5"
         android:text=""
-        android:textColor="@color/text"
+        android:textColor="@color/text_l"
         android:textSize="@dimen/size_l" />
 
-    <GridView
+    <com.e7yoo.e7.view.CircleGridView
         android:id="@+id/item_comment_gv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_comment_sex"
         android:layout_below="@id/item_comment_content"
-        android:layout_marginTop="@dimen/space" />
+        android:layout_marginTop="@dimen/space"
+        android:horizontalSpacing="@dimen/space"
+        android:verticalSpacing="@dimen/space" />
 
     <TextView
         android:id="@+id/item_comment_time"
@@ -65,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_comment_sex"
         android:layout_below="@id/item_comment_gv"
+        android:layout_marginBottom="@dimen/space_2x"
         android:layout_marginTop="@dimen/space_2x"
         android:text="@string/mengmeng"
         android:textColor="@color/text_l"
@@ -111,4 +130,12 @@
         android:text="@string/mengmeng"
         android:textColor="@color/text_l"
         android:textSize="@dimen/size_s" />
+
+    <View
+        android:id="@+id/divide"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:layout_below="@id/item_comment_time"
+        android:layout_marginLeft="@dimen/feed_detail_comment_divider_left_padding"
+        android:background="@color/backgroud" />
 </RelativeLayout>

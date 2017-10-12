@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_corners_tag_white"
     android:padding="@dimen/space_2x">
-
     <com.e7yoo.e7.view.CircleImageView
         android:id="@+id/item_feed_item_icon"
         android:layout_width="@dimen/item_feed_item_icon"
@@ -50,13 +50,15 @@
         android:textColor="@color/text"
         android:textSize="@dimen/size_l" />
 
-    <GridView
+    <com.e7yoo.e7.view.CircleGridView
         android:id="@+id/item_feed_item_gv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_feed_item_sex"
         android:layout_below="@id/item_feed_item_content"
-        android:layout_marginTop="@dimen/space" />
+        android:layout_marginTop="@dimen/space"
+        android:horizontalSpacing="@dimen/space"
+        android:verticalSpacing="@dimen/space"/>
 
     <TextView
         android:id="@+id/item_feed_item_time"

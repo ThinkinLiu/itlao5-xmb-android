@@ -81,7 +81,13 @@ public abstract class ListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isFirstShow) {
+        if (isVisibleToUser) {
+            firstLoadData();
+        }
+    }
+
+    public void firstLoadData() {
+        if(isFirstShow) {
             isFirstShow = false;
             if(mSRLayout != null) {
                 mSRLayout.setRefreshing(true);

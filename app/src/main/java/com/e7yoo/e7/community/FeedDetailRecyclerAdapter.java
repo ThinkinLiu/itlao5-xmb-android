@@ -2,6 +2,8 @@ package com.e7yoo.e7.community;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
@@ -23,6 +26,13 @@ import java.util.List;
  */
 public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     private static final int VIEW_TYPE_FEEDITEM = 100;
+
+    public void refreshData(FeedItem item, List<Comment> commentList) {
+        mDatas.clear();
+        mDatas.add(item);
+        mDatas.addAll(commentList);
+        notifyDataSetChanged();
+    }
 
     public void refreshFeedItem(FeedItem item) {
         if(mDatas.size() > 0) {
@@ -44,7 +54,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         if(item != null) {
             mDatas.add(item);
         }
-        mDatas.add(commentList);
+        mDatas.addAll(commentList);
         notifyDataSetChanged();
     }
 
@@ -87,6 +97,8 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             Comment item = (Comment) mDatas.get(position);
             setUser(viewHolderComment, item.creator);
             setViewTypeComment(viewHolderComment, item);
+            viewHolderComment.hint.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
+            viewHolderComment.divide.setVisibility(position < mDatas.size() - 1 ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -98,7 +110,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 .error(R.mipmap.log_e7yoo_transport)
                 .override(124, 124)
                 .into(viewHolderFeedItem.userIcon);
-        int sexIcon = R.mipmap.sex_unknow_selected;
+        int sexIcon;
         switch (item.gender) {
             case FEMALE:
                 sexIcon = R.mipmap.sex_female_selected;
@@ -115,21 +127,9 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void setViewTypeFeeditem(BaseViewHolder viewHolderFeedItem, FeedItem item) {
-        viewHolderFeedItem.contentTv.setMaxLines(0);
+        viewHolderFeedItem.contentTv.setMaxLines(1000);
         viewHolderFeedItem.contentTv.setText(item.text);
-        int size = item.getImages().size();
-        if (size == 0) {
-            viewHolderFeedItem.gridView.setAdapter(null);
-        } else if (size == 1) {
-            viewHolderFeedItem.gridView.setNumColumns(2);
-            viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
-        } else if (size == 2 || size == 4) {
-            viewHolderFeedItem.gridView.setNumColumns(2);
-            viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
-        } else {
-            viewHolderFeedItem.gridView.setNumColumns(3);
-            viewHolderFeedItem.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.getImages()));
-        }
+        CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages());
         viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
         viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
         viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));
@@ -137,21 +137,17 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void setViewTypeComment(BaseViewHolder viewHolder, Comment item) {
-        viewHolder.contentTv.setMaxLines(0);
-        viewHolder.contentTv.setText(item.text);
-        int size = item.imageUrls.size();
-        if (size == 0) {
-            viewHolder.gridView.setAdapter(null);
-        } else if (size == 1) {
-            viewHolder.gridView.setNumColumns(2);
-            viewHolder.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.imageUrls));
-        } else if (size == 2 || size == 4) {
-            viewHolder.gridView.setNumColumns(2);
-            viewHolder.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.imageUrls));
-        } else {
-            viewHolder.gridView.setNumColumns(3);
-            viewHolder.gridView.setAdapter(new FeedItemGvAdapter(mContext, item.imageUrls));
+        viewHolder.contentTv.setMaxLines(1000);
+        String reply = "";
+        if(item.replyUser != null && !TextUtils.isEmpty(item.replyUser.name)) {
+            reply = "回复 <font color= 'blue'>" + item.replyUser.name + "</font> ";
         }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            viewHolder.contentTv.setText(Html.fromHtml(reply + item.text, Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            viewHolder.contentTv.setText(Html.fromHtml(reply + item.text));
+        }
+        CircleGvAdapterUtil.setGridView(mContext, viewHolder.gridView, item.imageUrls);
         viewHolder.timeTv.setText(TimeUtil.formatFeedTime(item.createTime));
         viewHolder.shareTv.setVisibility(View.GONE);
         viewHolder.commentTv.setVisibility(View.GONE);
@@ -179,6 +175,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     public static class BaseViewHolder extends RecyclerView.ViewHolder {
+        public View rootLayout;
         public ImageView userIcon;
         public ImageView sexIcon;
         public TextView usernameTv;
@@ -191,6 +188,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
         public BaseViewHolder(View itemView) {
             super(itemView);
+            rootLayout = itemView.findViewById(R.id.root_layout);
         }
     }
 
@@ -218,9 +216,12 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
      * 消息item
      */
     public static class ViewHolderComment extends BaseViewHolder {
+        private TextView hint;
+        public View divide;
 
         public ViewHolderComment(View view) {
             super(view);
+            hint = view.findViewById(R.id.hint);
             userIcon = view.findViewById(R.id.item_comment_icon);
             sexIcon = view.findViewById(R.id.item_comment_sex);
             usernameTv = view.findViewById(R.id.item_comment_username);
@@ -230,6 +231,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             shareTv = view.findViewById(R.id.item_comment_share);
             commentTv = view.findViewById(R.id.item_comment_comment);
             praiseTv = view.findViewById(R.id.item_comment_praise);
+            divide = view.findViewById(R.id.divide);
         }
     }
 }

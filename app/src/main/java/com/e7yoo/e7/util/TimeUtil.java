@@ -66,7 +66,7 @@ public class TimeUtil {
 		} catch (Throwable e) {
 		}
 		if(millis <= 0) {
-			return "";
+			return millisStr;
 		}
 		long curMillis = System.currentTimeMillis();
 		long diff = curMillis - millis;

@@ -38,9 +38,9 @@ public class TopicListFragment extends ListFragment {
             @Override
             public void onItemClick(View view, int position) {
                 if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof Topic) {
-                    /*Intent intent = new Intent(getActivity(), TopicActivity.class);
+                    Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
                     intent.putExtra("Topic", (Topic) mRvAdapter.getItem(position));
-                    ActivityUtil.toActivity(getActivity(), intent);*/
+                    ActivityUtil.toActivity(getActivity(), intent);
                 }
             }
         });

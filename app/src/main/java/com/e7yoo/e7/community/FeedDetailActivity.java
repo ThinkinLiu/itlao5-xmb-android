@@ -1,11 +1,15 @@
 package com.e7yoo.e7.community;
 
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.CommentAPI;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.Comment;
@@ -52,21 +56,40 @@ public class FeedDetailActivity extends BaseActivity {
             mFeedItem = getIntent().getParcelableExtra("FeedItem");
         }
         if(mFeedItem == null || mFeedItem.id == null) {
-            TastyToastUtil.toast(this, R.id.circle_feed_not_exist);
+            TastyToastUtil.toast(this, R.string.circle_feed_not_exist);
+            finish();
             return;
         }
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+        mRecyclerView.addItemDecoration(getDivider());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mRvAdapter = new FeedDetailRecyclerAdapter(this);
-        mRvAdapter.addItemBottom(mFeedItem);
-        mRvAdapter.addItemBottom(mFeedItem.comments);
         mRecyclerView.setAdapter(mRvAdapter);
+
+        mRvAdapter.refreshData(mFeedItem, mFeedItem.comments);
+
         communitySDK = CommunityFactory.getCommSDK(this);
         communitySDK.fetchFeedWithId(mFeedItem.id, mFetchListener);
+        mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         communitySDK.fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
+    }
+
+    private RecyclerViewDivider getDivider() {
+        RecyclerViewDivider divider = new RecyclerViewDivider(
+                this, LinearLayoutManager.VERTICAL,
+                0,
+                ContextCompat.getColor(this, R.color.backgroud),
+                true,
+                getResources().getDimensionPixelOffset(R.dimen.space_3x),
+                true,
+                getResources().getDimensionPixelOffset(R.dimen.item_robot_divider));
+        return divider;
     }
 
     @Override
     protected void initViewListener() {
-
+        initLoadMoreListener();
     }
 
     private Listeners.FetchListener<FeedItemResponse> mFetchListener = new Listeners.FetchListener<FeedItemResponse>() {
@@ -76,12 +99,7 @@ public class FeedDetailActivity extends BaseActivity {
         @Override
         public void onComplete(FeedItemResponse feedItemResponse) {
             if(feedItemResponse != null && feedItemResponse.result != null) {
-                mNextPageUrl = feedItemResponse.nextPageUrl;
-                if(mFeedItem == null) {
-                    mRvAdapter.refreshFeedItem(feedItemResponse.result);
-                } else {
-                    mRvAdapter.addItemBottom(feedItemResponse.result);
-                }
+                mRvAdapter.refreshFeedItem(feedItemResponse.result);
                 mFeedItem = feedItemResponse.result;
             }
         }
@@ -94,6 +112,13 @@ public class FeedDetailActivity extends BaseActivity {
                 mNextPageUrl = commentResponse.nextPageUrl;
                 mComments = commentResponse.result;
                 mRvAdapter.refreshComments(commentResponse.result);
+                if(commentResponse.result.size() > 0) {
+                    mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+                } else {
+                    mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
+                }
+            } else {
+                mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
             }
         }
     };
@@ -104,10 +129,13 @@ public class FeedDetailActivity extends BaseActivity {
         }
         @Override
         public void onComplete(CommentResponse commentResponse) {
-            if(commentResponse != null && commentResponse.result != null) {
+            if(commentResponse != null && commentResponse.result != null && commentResponse.result.size() > 0) {
                 mNextPageUrl = commentResponse.nextPageUrl;
                 mComments = commentResponse.result;
                 mRvAdapter.addItemBottom(commentResponse.result);
+                mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+            } else {
+                mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
             }
         }
     };
@@ -121,7 +149,11 @@ public class FeedDetailActivity extends BaseActivity {
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if (isNeedLoadMore(newState)) {
                     mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
-                    communitySDK.fetchNextPageData(mNextPageUrl, CommentResponse.class, mCommentFetchListener);
+                    if(mNextPageUrl == null) {
+                        communitySDK.fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
+                    } else {
+                        communitySDK.fetchNextPageData(mNextPageUrl, CommentResponse.class, mCommentFetchListener);
+                    }
                 }
             }
 

@@ -3,6 +3,7 @@ package com.e7yoo.e7.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private boolean mShowTop;
     private int mTopHeight;
+    private boolean mShowFirstBottom;
+    private int mFirstBottomHeight;
 
     /**
      * 默认分割线：高度为2px，颜色为灰色
@@ -74,14 +77,43 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         mTopHeight = topHeight;
     }
 
+    /**
+     * 自定义分割线
+     *
+     * @param context
+     * @param orientation   列表方向
+     * @param dividerHeight 分割线高度
+     * @param dividerColor  分割线颜色
+     */
+    public RecyclerViewDivider(Context context, int orientation, int dividerHeight, int dividerColor, boolean showTop, int topHeight, boolean showFirstBottom, int firstBottomHeight) {
+        this(context, orientation);
+        mDividerHeight = dividerHeight;
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setColor(dividerColor);
+        mPaint.setStyle(Paint.Style.FILL);
+        mShowTop = showTop;
+        mTopHeight = topHeight;
+        mShowFirstBottom = showFirstBottom;
+        mFirstBottomHeight = firstBottomHeight;
+    }
+
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
         super.getItemOffsets(outRect, itemPosition, parent);
-        if(mShowTop && itemPosition == 0) {
-            outRect.set(0, mTopHeight, 0, mDividerHeight);
+        int left = 0, top = 0, right = 0, bottom = 0;
+        if(itemPosition == 0) {
+            if(mShowTop) {
+                top = mTopHeight;
+            }
+            if(mShowFirstBottom) {
+                bottom = mFirstBottomHeight;
+            } else {
+                bottom = mDividerHeight;
+            }
         } else {
-            outRect.set(0, 0, 0, mDividerHeight);
+            bottom = mDividerHeight;
         }
+        outRect.set(left, top, right, bottom);
     }
 
     //绘制分割线
@@ -89,9 +121,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
         if (mOrientation == LinearLayoutManager.VERTICAL) {
-            drawVertical(c, parent);
-        } else {
             drawHorizontal(c, parent);
+        } else {
+            drawVertical(c, parent);
         }
     }
 

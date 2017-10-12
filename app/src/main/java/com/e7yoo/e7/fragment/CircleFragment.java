@@ -73,7 +73,6 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
             setSelectedTv(mAllTv);
         }
-        mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.addOnPageChangeListener(mOnPageChangeListener);
         mAllTv.setOnClickListener(this);
         mRecomTv.setOnClickListener(this);
@@ -81,6 +80,16 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
         mFollowedTv.setOnClickListener(this);
         mPlateTv.setOnClickListener(this);
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private boolean isFirstShow = true;
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if(isVisibleToUser && isFirstShow) {
+            isFirstShow = false;
+            mViewPager.setAdapter(mViewPagerAdapter);
+        }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     @Override

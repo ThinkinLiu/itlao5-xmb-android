@@ -8,6 +8,7 @@
     <string name="loading">加载中...</string>
     <string name="loading_up_load_more">上拉加载更多...</string>
     <string name="loading_no_more">没有更多</string>
+    <string name="loading_no_more_comment">没有更多评论</string>
     <string name="loading_no_push_msg">暂无消息</string>
     <string name="item_robot_add">更多萌伴</string>
     <string name="app_exit">再按一次退出小萌伴</string>
@@ -241,5 +242,11 @@
     <string name="circle_followed">关注</string>
     <string name="circle_plate">话题</string>
     <string name="circle_feed_detail">详情</string>
+    <string name="circle_comment">评论</string>
+    <string name="circle_topic">主题</string>
+    <string name="circle_feed_not_exist">帖子不存在或已失效</string>
+    <string name="circle_topic_not_exist">主题不存在或已失效</string>
+    <string name="circle_no_login">请先登录后再进行此操作</string>
+    <string name="login">登录</string>
 
 </resources>
