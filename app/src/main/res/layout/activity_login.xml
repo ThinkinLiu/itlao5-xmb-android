@@ -61,6 +61,7 @@
         android:drawableLeft="@drawable/login_pwd_selector"
         android:drawablePadding="@dimen/space_3x"
         android:hint="@string/login_input_pwd_hint"
+        android:inputType="textPassword"
         android:maxLength="20"
         android:maxLines="1"
         android:singleLine="true"

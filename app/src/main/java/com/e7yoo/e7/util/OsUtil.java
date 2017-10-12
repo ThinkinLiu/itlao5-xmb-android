@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.e7yoo.e7.R;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -50,6 +51,8 @@ public class OsUtil {
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Exception while encrypting to md5");
             e.printStackTrace();
+            CrashReport.postCatchedException(e);
+            return encTarget;
         }
         mdEnc.update(encTarget.getBytes(), 0, encTarget.length());
         /**

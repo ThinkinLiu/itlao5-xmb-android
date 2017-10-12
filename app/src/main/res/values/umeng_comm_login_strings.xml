@@ -22,4 +22,7 @@
     <string name="umeng_comm_secret_l_style">2-20个中英文字符</string>
     <string name="umeng_comm_finish_l_register">完成注册</string>
     <string name="umeng_comm_other_l_login">其他登录方式</string>
+    <string name="umeng_comm_login_secret_empty"></string>
+    <string name="umeng_comm_user_invalid"></string>
+
 </resources>

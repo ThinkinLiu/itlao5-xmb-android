@@ -254,5 +254,6 @@
     <string name="login_error_empty">请输入正确的账号、密码</string>
     <string name="login_ing">正在登录...</string>
     <string name="login_failed">登录失败</string>
+    <string name="login_failed_pwd_error">账号或密码错误</string>
 
 </resources>
