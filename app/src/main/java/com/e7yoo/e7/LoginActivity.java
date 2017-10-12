@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void initView() {
         mNameEt = (EditText) findViewById(R.id.login_name);
         mPwdEt = (EditText) findViewById(R.id.login_pwd);
-        mLoginTv = (TextView) findViewById(R.id.login_tv);
+        mLoginTv = (TextView) findViewById(R.id.login);
     }
 
     @Override
