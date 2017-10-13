@@ -6,6 +6,8 @@ import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.e7yoo.e7.util.OsUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.impl.CommunityFactory;
 
 import cn.jiguang.share.android.api.JShareInterface;
 import cn.jpush.android.api.JPushInterface;
@@ -44,4 +46,11 @@ public class E7App extends Application {
         CrashReport.setUserId(OsUtil.getUdid(this));
     }
 
+    private static CommunitySDK mCommunitySDK;
+    public static CommunitySDK getCommunitySdk() {
+        if(mCommunitySDK == null) {
+            mCommunitySDK = CommunityFactory.getCommSDK(E7App.mApp);
+        }
+        return mCommunitySDK;
+    }
 }

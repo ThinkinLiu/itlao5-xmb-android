@@ -3,10 +3,8 @@ package com.e7yoo.e7.community;
 import android.os.Message;
 
 import com.e7yoo.e7.E7App;
-import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
-import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 
@@ -25,12 +23,11 @@ public class HotFeedsFragmentFeed extends FeedListFragment {
 
     @Override
     protected void loadDataFromNet(boolean isRefresh, String nextPageUrl) {
-        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(E7App.mApp);
         if(isRefresh || nextPageUrl == null) {
             // listener-监听器 ranktime-热度时间（1，3，7，30） start-从第几个index开始
-            mCommSDK.fetchHotestFeeds(mRefreshFetchListener, 30, 0);
+            E7App.getCommunitySdk().fetchHotestFeeds(mRefreshFetchListener, 30, 0);
         } else {
-            mCommSDK.fetchNextPageData(nextPageUrl, FeedsResponse.class, mFetchListener);
+            E7App.getCommunitySdk().fetchNextPageData(nextPageUrl, FeedsResponse.class, mFetchListener);
         }
     }
 

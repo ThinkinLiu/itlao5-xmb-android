@@ -1,24 +1,19 @@
 package com.e7yoo.e7.community;
 
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 
 import com.e7yoo.e7.BaseActivity;
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
-import com.umeng.comm.core.CommentAPI;
-import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
-import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.core.listeners.Listeners;
-import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.CommentResponse;
-import com.umeng.comm.core.nets.responses.FeedCommentResponse;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 
 import java.util.List;
@@ -33,7 +28,6 @@ public class FeedDetailActivity extends BaseActivity {
     private FeedItem mFeedItem;
     private List<Comment> mComments;
     private String mNextPageUrl;
-    private CommunitySDK communitySDK;
 
     @Override
     protected String initTitle() {
@@ -69,10 +63,9 @@ public class FeedDetailActivity extends BaseActivity {
 
         mRvAdapter.refreshData(mFeedItem, mFeedItem.comments);
 
-        communitySDK = CommunityFactory.getCommSDK(this);
-        communitySDK.fetchFeedWithId(mFeedItem.id, mFetchListener);
+        E7App.getCommunitySdk().fetchFeedWithId(mFeedItem.id, mFetchListener);
         mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
-        communitySDK.fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
+        E7App.getCommunitySdk().fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
     }
 
     private RecyclerViewDivider getDivider() {
@@ -150,9 +143,9 @@ public class FeedDetailActivity extends BaseActivity {
                 if (isNeedLoadMore(newState)) {
                     mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                     if(mNextPageUrl == null) {
-                        communitySDK.fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
+                        E7App.getCommunitySdk().fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
                     } else {
-                        communitySDK.fetchNextPageData(mNextPageUrl, CommentResponse.class, mCommentFetchListener);
+                        E7App.getCommunitySdk().fetchNextPageData(mNextPageUrl, CommentResponse.class, mCommentFetchListener);
                     }
                 }
             }

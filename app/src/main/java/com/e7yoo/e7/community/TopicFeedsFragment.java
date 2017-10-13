@@ -8,12 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.e7yoo.e7.E7App;
-import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
-import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
-import com.umeng.comm.core.impl.CommunityFactory;
-import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 
 import java.util.List;
@@ -50,11 +46,10 @@ public class TopicFeedsFragment extends FeedListFragment {
 
     @Override
     protected void loadDataFromNet(boolean isRefresh, String nextPageUrl) {
-        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(E7App.mApp);
         if(isRefresh || nextPageUrl == null) {
-            mCommSDK.fetchTopicFeed(mTopic.id, mRefreshFetchListener);
+            E7App.getCommunitySdk().fetchTopicFeed(mTopic.id, mRefreshFetchListener);
         } else {
-            mCommSDK.fetchNextPageData(nextPageUrl, FeedsResponse.class, mFetchListener);
+            E7App.getCommunitySdk().fetchNextPageData(nextPageUrl, FeedsResponse.class, mFetchListener);
         }
     }
 

@@ -3,10 +3,8 @@ package com.e7yoo.e7.community;
 import android.os.Message;
 
 import com.e7yoo.e7.E7App;
-import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
-import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 
@@ -25,11 +23,10 @@ public class RealtimeFeedsFragment extends FeedListFragment {
 
     @Override
     protected void loadDataFromNet(boolean isRefresh, String nextPageUrl) {
-        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(E7App.mApp);
         if(isRefresh || nextPageUrl == null) {
-            mCommSDK.fetchRealTimeFeed(mRefreshFetchListener);
+            E7App.getCommunitySdk().fetchRealTimeFeed(mRefreshFetchListener);
         } else {
-            mCommSDK.fetchNextPageData(nextPageUrl, FeedsResponse.class, mFetchListener);
+            E7App.getCommunitySdk().fetchNextPageData(nextPageUrl, FeedsResponse.class, mFetchListener);
         }
     }
 

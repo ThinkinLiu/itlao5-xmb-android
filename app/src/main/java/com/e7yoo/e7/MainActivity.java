@@ -32,8 +32,6 @@ import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
-import com.umeng.comm.core.CommunitySDK;
-import com.umeng.comm.core.impl.CommunityFactory;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -71,7 +69,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initSettings() {
         initPermission();
-        initCommunity();
         initRobot();
         setLeftTv(View.GONE);
         BottomNavigationViewHelper.disableShiftMode(navigation);
@@ -86,11 +83,6 @@ public class MainActivity extends BaseActivity {
         UpdateHelper.getInstance().init(getApplicationContext(), getResources().getColor(R.color.titlebar_bg));/*Color.parseColor("#459F47"));*/
         UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
 
-    }
-
-    private void initCommunity() {
-        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getApplicationContext());
-        mCommSDK.initSDK(getApplicationContext());
     }
 
     private void initRobot() {

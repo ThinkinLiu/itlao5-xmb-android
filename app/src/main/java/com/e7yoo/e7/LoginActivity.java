@@ -8,22 +8,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.e7yoo.e7.util.CommonUtil;
-import com.e7yoo.e7.util.Constant;
-import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.TastyToastUtil;
-import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
-import com.umeng.comm.core.impl.CommunityFactory;
-import com.umeng.comm.core.impl.CommunitySDKImpl;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.responses.LoginResponse;
-import com.umeng.comm.core.nets.uitls.MD5Util;
-
-import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     CommUser mCommUser;
@@ -91,8 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         user.id = name;
 
         // CommunitySDKImpl.getInstance().loginToWsq(this, user, loginListener, pwd);
-        CommunitySDK communitySDK = CommunityFactory.getCommSDK(this);
-        communitySDK.loginByWsq(user, pwd, loginFetchListener);
+        E7App.getCommunitySdk().loginByWsq(user, pwd, loginFetchListener);
     }
 
     ProgressDialogEx progressDialogEx;

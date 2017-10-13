@@ -8,14 +8,9 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.umeng.comm.core.CommunitySDK;
-import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
-import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.core.listeners.Listeners;
-import com.umeng.comm.core.nets.responses.FeedsResponse;
-import com.umeng.comm.core.nets.responses.TopicItemResponse;
 import com.umeng.comm.core.nets.responses.TopicResponse;
 
 import java.util.List;
@@ -48,11 +43,10 @@ public class TopicListFragment extends ListFragment {
 
     @Override
     protected void loadDataFromNet(boolean isRefresh, String nextPageUrl) {
-        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(E7App.mApp);
         if(isRefresh || nextPageUrl == null) {
-            mCommSDK.fetchTopics(mRefreshTopicListener);
+            E7App.getCommunitySdk().fetchTopics(mRefreshTopicListener);
         } else {
-            mCommSDK.fetchNextPageData(nextPageUrl, TopicResponse.class, mFetchListener);
+            E7App.getCommunitySdk().fetchNextPageData(nextPageUrl, TopicResponse.class, mFetchListener);
         }
     }
 

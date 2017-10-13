@@ -4,19 +4,16 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.TastyToastUtil;
-import com.umeng.comm.core.CommunitySDK;
-import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
-import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.Response;
 
@@ -61,8 +58,7 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                             item.isFocused = true;
                             viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
                             viewHolder.attentionIv.setOnClickListener(null);
-                            CommunitySDK communitySDK = CommunityFactory.getCommSDK(mContext);
-                            communitySDK.followTopic(item, new Listeners.SimpleFetchListener<Response>() {
+                            E7App.getCommunitySdk().followTopic(item, new Listeners.SimpleFetchListener<Response>() {
                                 @Override
                                 public void onComplete(Response response) {
                                     switch (response.errCode) {
