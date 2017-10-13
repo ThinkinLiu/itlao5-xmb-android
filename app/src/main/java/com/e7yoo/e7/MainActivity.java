@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initSettings() {
+        E7App.getCommunitySdk();
         initPermission();
         initRobot();
         setLeftTv(View.GONE);
@@ -216,10 +217,25 @@ public class MainActivity extends BaseActivity {
     String PERMISSIONS[] = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WAKE_LOCK,
+            Manifest.permission.READ_SMS,
+
             Manifest.permission.RECEIVE_BOOT_COMPLETED,
             /*该权限无法弹出框口进行提醒*/Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+            Manifest.permission.CHANGE_NETWORK_STATE,
+            Manifest.permission.BROADCAST_PACKAGE_REMOVED,
+            Manifest.permission.DELETE_PACKAGES,
+            Manifest.permission.INSTALL_PACKAGES,
+            Manifest.permission.REQUEST_DELETE_PACKAGES,
+            Manifest.permission.REQUEST_INSTALL_PACKAGES,
+            Manifest.permission.PACKAGE_USAGE_STATS
+    };
+
+    String NOTIFY_PERMISSIONS[] = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WAKE_LOCK,
-            Manifest.permission.READ_SMS
+            Manifest.permission.READ_SMS,
     };
 
     /**
@@ -252,14 +268,22 @@ public class MainActivity extends BaseActivity {
                 for (int i = 0; i < permissions.length; i++) {
                     String permission = permissions[i];
                     if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED
-                            && !permission.equals(Manifest.permission.RECEIVE_BOOT_COMPLETED)
-                            && !permission.equals(Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)) {
+                            && isNeedNotify(permission)) {
                         CheckPermissionUtil.AskForPermission(MainActivity.this, R.string.dialog_file_hint_title, R.string.dialog_file_hint);
                         return;
                     }
                 }
                 break;
         }
+    }
+
+    private boolean isNeedNotify(String permission) {
+        for(String p : NOTIFY_PERMISSIONS) {
+            if(p.equals(permission)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

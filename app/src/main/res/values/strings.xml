@@ -250,10 +250,31 @@
     <string name="login">登录</string>
     <string name="login_input_user_hint">请输入账号...</string>
     <string name="login_input_pwd_hint">请输入密码...</string>
+    <string name="login_input_pwd_two_hint">请再次输入密码...</string>
     <string name="input_hint">请输入...</string>
     <string name="login_error_empty">请输入正确的账号、密码</string>
     <string name="login_ing">正在登录...</string>
     <string name="login_failed">登录失败</string>
     <string name="login_failed_pwd_error">账号或密码错误</string>
+    <string name="login_forget_pwd">忘记密码</string>
+    <string name="login_register">新用户，前往注册</string>
+    <string name="register">注册</string>
+    <string name="register_pwd_equals_error">两次密码输入不一致</string>
+    <string name="register_error_empty">账号、密码不能为空</string>
+    <string name="register_pwd_length_error">请输入6-18位密码</string>
+    <string name="circle_name_default">萌友_</string>
+    <string name="register_ing">注册中...</string>
+    <string name="register_failed">注册失败</string>
+    <string name="register_illegal_uid">用户名非法</string>
+    <string name="register_device_forbiddened">该设备禁止注册</string>
+    <string name="register_close_community">服务器错误</string>
+    <string name="register_user_haved">用户名已经存在</string>
+    <string name="register_user_name_illegal_char">用户名含有非法字符</string>
+    <string name="login_close_community">服务器错误</string>
+    <string name="login_device_forbiddened">该设备禁止登录</string>
+    <string name="register_name_error">账号格式错误</string>
+    <string name="register_name_hint">账号(邮箱):</string>
+    <string name="register_pwd_hint">密码(6-18位):</string>
+    <string name="register_pwd_two_hint">密码确认:</string>
 
 </resources>

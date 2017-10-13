@@ -18,6 +18,9 @@ public class Constant {
     public static final int EVENT_BUS_NET_todayHistory = 102;
     public static final int EVENT_BUS_NET_todayHistoryDetails = 103;
     public static final int EVENT_BUS_NET_jokeNew = 104;
+    public static final int EVENT_BUS_CIRCLE_LOGIN = 1001;
+    public static final int EVENT_BUS_CIRCLE_REGISTER = 1002;
+    public static final int EVENT_BUS_CIRCLE_LOGOUT = 1002;
 
     public static final String FILE_ROBOT_LIST = "file_robot_list";
     public static final String FILE_FAVORITES_NEWS_LIST = "file_favorites_news_list";

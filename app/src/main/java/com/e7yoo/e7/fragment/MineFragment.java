@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,12 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
 import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.utils.CommonUtils;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
     private View mRootView;
@@ -30,7 +34,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private TextView mine_label;
     private View mSpaceLayout, mMsgLayout, mSetLayout, mAboutLayout;
     private TextView mineMsgPoint;
-    private Me mMe;
+    // private Me mMe;
+    private CommUser mUser;
 
 
     public MineFragment() {
@@ -92,12 +97,17 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initDatas() {
-        if(mMe != null) {
-            // 用户名在MainActivity中设置（setTitleText方法）
-            Glide.with(getActivity()).load(mMe.getIcon()).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(mHeadIconIv);
-            mine_label.setText(mMe.getLabel());
+        if(CommonUtils.isLogin(getActivity())) {
+            mUser = CommonUtils.getLoginUser(getActivity());
         }
-        mine_label.setText(R.string.mine_label_hint);
+        if(mUser != null && !TextUtils.isEmpty(mUser.id)) {
+            // 用户名在MainActivity中设置（setTitleText方法）
+            Glide.with(getActivity()).load(mUser.iconUrl).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(mHeadIconIv);
+            mine_label.setText(mUser.customField);
+        } else {
+            mHeadIconIv.setImageResource(R.mipmap.icon_me);
+            mine_label.setText(R.string.mine_label_hint);
+        }
         if(PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0) > 0) {
             mineMsgPoint.setVisibility(View.VISIBLE);
         } else {

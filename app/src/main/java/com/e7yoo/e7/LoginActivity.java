@@ -3,24 +3,36 @@ package com.e7yoo.e7;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.CommonUtil;
+import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.impl.CommunitySDKImpl;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
+import com.umeng.comm.core.login.Loginable;
 import com.umeng.comm.core.nets.responses.LoginResponse;
+import com.umeng.comm.core.utils.CommonUtils;
+import com.umeng.comm.core.utils.ResFinder;
+import com.umeng.comm.core.utils.ToastMsg;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     CommUser mCommUser;
     private EditText mNameEt;
     private EditText mPwdEt;
     private TextView mLoginTv;
+    private TextView mForgetPwdTv;
+    private TextView mRegisterTv;
 
     @Override
     protected String initTitle() {
@@ -37,16 +49,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mNameEt = (EditText) findViewById(R.id.login_name);
         mPwdEt = (EditText) findViewById(R.id.login_pwd);
         mLoginTv = (TextView) findViewById(R.id.login);
+        mForgetPwdTv = (TextView) findViewById(R.id.login_forget_pwd);
+        mRegisterTv = (TextView) findViewById(R.id.login_register);
     }
 
     @Override
     protected void initSettings() {
-        mLoginTv.setOnClickListener(this);
     }
 
     @Override
     protected void initViewListener() {
-
+        mLoginTv.setOnClickListener(this);
+        mForgetPwdTv.setOnClickListener(this);
+        mRegisterTv.setOnClickListener(this);
     }
 
     @Override
@@ -54,6 +69,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.login:
                 login();
+                break;
+            case R.id.login_forget_pwd:
+                login();
+                break;
+            case R.id.login_register:
+                Intent intent = new Intent(this, RegisterActivity.class);
+                intent.putExtra("name", mNameEt.getText().toString());
+                ActivityUtil.toActivity(this, intent);
                 break;
         }
     }
@@ -111,22 +134,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void onComplete(int i, CommUser commUser) {
             dismissProgress();
-            switch (i) {
-                case ErrorCode.NO_ERROR:
-                    mCommUser = commUser;
-                    finish(mCommUser);
-                    break;
-                case ErrorCode.ERR_CODE_PASSWORD_ERROR:
-                case ErrorCode.ERR_CODE_USER_DELETED:
-                    TastyToastUtil.toast(LoginActivity.this, R.string.login_failed_pwd_error);
-                    break;
-                case ErrorCode.NO_NETWORK:
-                case ErrorCode.CONNECTION_ERR_CODE:
-                    TastyToastUtil.toast(LoginActivity.this, R.string.net_no);
-                    break;
-                default:
-                    TastyToastUtil.toast(LoginActivity.this, R.string.login_failed);
-                    break;
+            if (commUser != null && !TextUtils.isEmpty(commUser.id) && i == ErrorCode.NO_ERROR) {
+                mCommUser = commUser;
+                CommonUtils.saveLoginUserInfo(LoginActivity.this, mCommUser);
+                finish(true);
+            } else {
+                switch (i) {
+                    case ErrorCode.ERR_CODE_USER_NAME_DUPLICATE:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_failed);
+                        break;
+                    case ErrorCode.ERR_CODE_DEVICE_FORBIDDEN:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_device_forbiddened);
+                        break;
+                    case ErrorCode.SENSITIVE_ERR_CODE:
+                    case ErrorCode.ERR_CODE_USER_NAME_ILLEGAL_CHAR:
+                    case ErrorCode.ERR_CODE_USER_NAME_LENGTH_ERROR:
+                    case ErrorCode.ERR_CODE_PASSWORD_ERROR:
+                    case ErrorCode.ERR_CODE_USER_DELETED:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_failed_pwd_error);
+                        break;
+                    case ErrorCode.ERROR_CLOSE_COMMUNITY:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_close_community);
+                        CommonUtils.cleanCurrentUserCache(ResFinder.getApplicationContext());
+                        break;
+                    default:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_failed);
+                        break;
+                }
             }
         }
     };
@@ -138,19 +172,53 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void onComplete(LoginResponse loginResponse) {
             dismissProgress();
-            if(loginResponse != null && loginResponse.result != null && loginResponse.errCode == ErrorCode.NO_ERROR) {
+            CommUser loginedUser = loginResponse.result;
+            if (loginedUser != null && !TextUtils.isEmpty(loginedUser.id) && loginResponse.errCode == ErrorCode.NO_ERROR) {
                 mCommUser = loginResponse.result;
-                finish(mCommUser);
+                CommonUtils.saveLoginUserInfo(LoginActivity.this, mCommUser);
+                finish(true);
             } else {
-                TastyToastUtil.toast(LoginActivity.this, R.string.login_failed);
+                switch (loginResponse.errCode) {
+                    case ErrorCode.ERR_CODE_USER_NAME_DUPLICATE:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_failed);
+                        break;
+                    case ErrorCode.ERR_CODE_DEVICE_FORBIDDEN:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_device_forbiddened);
+                        break;
+                    case ErrorCode.SENSITIVE_ERR_CODE:
+                    case ErrorCode.ERR_CODE_USER_NAME_ILLEGAL_CHAR:
+                    case ErrorCode.ERR_CODE_USER_NAME_LENGTH_ERROR:
+                    case ErrorCode.ERR_CODE_PASSWORD_ERROR:
+                    case ErrorCode.ERR_CODE_USER_DELETED:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_failed_pwd_error);
+                        break;
+                    case ErrorCode.ERROR_CLOSE_COMMUNITY:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_close_community);
+                        CommonUtils.cleanCurrentUserCache(ResFinder.getApplicationContext());
+                        break;
+                    default:
+                        TastyToastUtil.toast(LoginActivity.this, R.string.login_failed);
+                        break;
+                }
             }
         }
     };
 
-    private void finish(CommUser commUser) {
-        Intent intent = new Intent();
-        intent.putExtra("CommUser", commUser);
-        setResult(Activity.RESULT_OK, intent);
+    public void finish(boolean login) {
+        if(login) {
+            EventBusUtil.post(Constant.EVENT_BUS_CIRCLE_LOGIN);
+        }
         finish();
     }
+
+    @Override
+    public void onEventMainThread(Message msg) {
+        super.onEventMainThread(msg);
+        switch (msg.what) {
+            case Constant.EVENT_BUS_CIRCLE_REGISTER:
+                finish(true);
+                break;
+        }
+    }
+
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -17,12 +17,12 @@
     <ImageView
         android:id="@+id/login_icon"
         android:layout_width="@dimen/login_icon_width"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/space_6x"
+        android:layout_height="@dimen/login_icon_width"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/space_4x"
         android:adjustViewBounds="true"
-        android:src="@mipmap/logo_round"
-        android:layout_below="@id/titleBar" />
+        android:alpha="0.8"
+        android:src="@mipmap/logo_round" />
 
     <EditText
         android:id="@+id/login_name"
@@ -31,23 +31,22 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/space_6x"
         android:layout_marginRight="@dimen/space_6x"
-        android:layout_marginTop="@dimen/space_6x"
-        android:background="@drawable/rounded_corners_tag_trans"
+        android:layout_marginTop="@dimen/space_4x"
+        android:background="@drawable/rounded_corners_tag_login"
         android:drawableLeft="@drawable/login_name_selector"
         android:drawablePadding="@dimen/space_3x"
         android:hint="@string/login_input_user_hint"
         android:maxLength="20"
         android:maxLines="1"
-        android:singleLine="true"
         android:paddingBottom="@dimen/space_3x"
         android:paddingLeft="@dimen/space_4x"
         android:paddingRight="@dimen/space_4x"
         android:paddingTop="@dimen/space_3x"
+        android:singleLine="true"
         android:text=""
         android:textColor="@color/text"
         android:textColorHint="@color/text_l"
-        android:textSize="@dimen/size_xl"
-        android:layout_below="@id/login_icon" />
+        android:textSize="@dimen/size_xl" />
 
     <EditText
         android:id="@+id/login_pwd"
@@ -56,36 +55,62 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/space_6x"
         android:layout_marginRight="@dimen/space_6x"
-        android:layout_marginTop="@dimen/space_6x"
-        android:background="@drawable/rounded_corners_tag_trans"
+        android:layout_marginTop="@dimen/space_4x"
+        android:background="@drawable/rounded_corners_tag_login"
         android:drawableLeft="@drawable/login_pwd_selector"
         android:drawablePadding="@dimen/space_3x"
         android:hint="@string/login_input_pwd_hint"
         android:inputType="textPassword"
-        android:maxLength="20"
+        android:maxLength="18"
         android:maxLines="1"
-        android:singleLine="true"
         android:paddingBottom="@dimen/space_3x"
         android:paddingLeft="@dimen/space_4x"
         android:paddingRight="@dimen/space_4x"
         android:paddingTop="@dimen/space_3x"
+        android:singleLine="true"
         android:text=""
         android:textColor="@color/text"
         android:textColorHint="@color/text_l"
-        android:textSize="@dimen/size_2xl"
-        android:layout_below="@id/login_name" />
+        android:textSize="@dimen/size_xl" />
 
     <TextView
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space_6x"
+        android:layout_marginLeft="@dimen/space_6x"
+        android:layout_marginRight="@dimen/space_6x"
+        android:layout_marginTop="@dimen/space_6x"
         android:background="@drawable/rounded_corners_tag_green"
         android:gravity="center"
         android:padding="@dimen/space_3x"
         android:text="@string/login"
         android:textColor="@color/white"
-        android:textSize="@dimen/size_xl"
-        android:layout_below="@id/login_pwd"/>
+        android:textSize="@dimen/size_xl" />
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_4x"
+        android:layout_marginRight="@dimen/space_4x"
+        android:layout_marginTop="@dimen/space">
+
+        <TextView
+            android:id="@+id/login_forget_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_3x"
+            android:text="@string/login_forget_pwd"
+            android:textColor="@color/text"
+            android:textSize="@dimen/size_xl" />
+
+        <TextView
+            android:id="@+id/login_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/space_3x"
+            android:text="@string/login_register"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/size_xl" />
+    </RelativeLayout>
+</LinearLayout>
