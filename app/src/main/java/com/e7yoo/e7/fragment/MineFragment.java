@@ -44,7 +44,12 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onEventMainThread(Message msg) {
-
+        switch(msg.what) {
+            case Constant.EVENT_BUS_CIRCLE_LOGIN:
+            case Constant.EVENT_BUS_CIRCLE_LOGOUT:
+                initDatas();
+                break;
+        }
     }
 
     public static MineFragment newInstance() {
@@ -103,7 +108,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         if(mUser != null && !TextUtils.isEmpty(mUser.id)) {
             // 用户名在MainActivity中设置（setTitleText方法）
             Glide.with(getActivity()).load(mUser.iconUrl).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(mHeadIconIv);
-            mine_label.setText(mUser.customField);
+            mine_label.setText(mUser.name);
         } else {
             mHeadIconIv.setImageResource(R.mipmap.icon_me);
             mine_label.setText(R.string.mine_label_hint);
