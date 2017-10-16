@@ -16,7 +16,7 @@
         android:drawablePadding="@dimen/space"
         android:gravity="center"
         android:paddingLeft="@dimen/space_2x"
-        android:textColor="@color/titlebar_text"
+        android:textColor="@color/titlebar_title"
         android:textSize="@dimen/size_l" />
 
     <TextView
@@ -43,6 +43,6 @@
         android:drawableRight="@mipmap/ic_menu_white_24dp"
         android:gravity="center"
         android:paddingRight="@dimen/space_3x"
-        android:textColor="@color/titlebar_text"
+        android:textColor="@color/titlebar_title"
         android:textSize="@dimen/size_l" />
 </RelativeLayout>

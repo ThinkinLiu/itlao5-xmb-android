@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -16,9 +15,10 @@ import com.bumptech.glide.Glide;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.CommUserUtil;
+import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
-import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.RobotUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.jph.takephoto.app.TakePhoto;
@@ -31,128 +31,127 @@ import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.Response;
+import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
+import com.umeng.comm.core.utils.CommonUtils;
 
 import java.io.File;
 
-public class AddRobotActivity extends BaseActivity implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener {
+public class InfoActivity extends BaseActivity implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener {
 
     public static final int REQUEST_CODE_FOR_INPUT_NAME = 1003;
     public static final int REQUEST_CODE_FOR_INPUT_WELCOME = 1004;
     public static final int REQUEST_CODE_FOR_INPUT_SEX = 1005;
-    private View iconLayout, nameLayout, sexLayout, welcomeLayout, bgLayout, bgBlurLayout;
-    private ImageView iconIv, bgIv;
-    private ToggleButton bgBlurTb;
+    private View iconLayout, nameLayout, sexLayout, welcomeLayout;
+    private ImageView iconIv;
     private TextView nameTv, sexTv, welcomeTv;
     private TextView saveTv;
-    private View nameArrow;
     /**
      * 0 新增，1 修改
      */
     public int FLAG = 0;
 
-    private Robot mRobot;
+    private CommUser mCommUser;
 
     @Override
     protected String initTitle() {
-        return getString(R.string.title_add_robot);
+        return getString(R.string.title_info);
     }
 
     @Override
     protected int initLayoutResId() {
-        return R.layout.activity_add_robot;
+        return R.layout.activity_info;
     }
 
     @Override
     protected void initView() {
-        iconLayout = findViewById(R.id.add_robot_icon_layout);
-        nameLayout = findViewById(R.id.add_robot_name_layout);
-        sexLayout = findViewById(R.id.add_robot_sex_layout);
-        welcomeLayout = findViewById(R.id.add_robot_welcome_layout);
-        bgLayout = findViewById(R.id.add_robot_bg_layout);
-        bgBlurLayout = findViewById(R.id.add_robot_bg_blur_layout);
-        iconIv = (ImageView) findViewById(R.id.add_robot_icon_iv);
-        bgIv = (ImageView) findViewById(R.id.add_robot_bg_iv);
-        bgBlurTb = (ToggleButton) findViewById(R.id.add_robot_bg_blur_tb);
-        nameTv = (TextView) findViewById(R.id.add_robot_name_tv);
-        nameArrow = findViewById(R.id.add_robot_name_arrow);
-        sexTv = (TextView) findViewById(R.id.add_robot_sex_tv);
-        welcomeTv = (TextView) findViewById(R.id.add_robot_welcome_tv);
-        saveTv = (TextView) findViewById(R.id.add_robot_save);
+        iconLayout = findViewById(R.id.info_icon_layout);
+        nameLayout = findViewById(R.id.info_name_layout);
+        sexLayout = findViewById(R.id.info_sex_layout);
+        welcomeLayout = findViewById(R.id.info_welcome_layout);
+        iconIv = (ImageView) findViewById(R.id.info_icon_iv);
+        nameTv = (TextView) findViewById(R.id.info_name_tv);
+        sexTv = (TextView) findViewById(R.id.info_sex_tv);
+        welcomeTv = (TextView) findViewById(R.id.info_welcome_tv);
+        saveTv = (TextView) findViewById(R.id.info_save);
     }
 
     @Override
     protected void initSettings() {
-        if (getIntent() != null && getIntent().hasExtra(Constant.INTENT_ROBOT)) {
-            mRobot = (Robot) getIntent().getSerializableExtra(Constant.INTENT_ROBOT);
-            if (mRobot != null) {
-                FLAG = 1;
-                setTitleTv(R.string.add_robot_title_robot);
-                saveTv.setText(R.string.save);
-                int resIcon = RobotUtil.getDefaultIconResId(mRobot);
-                Glide.with(this).load(mRobot.getIcon()).placeholder(resIcon).error(resIcon).into(iconIv);
-                iconIv.setTag(R.id.add_robot_icon_iv, mRobot.getIcon());
-                String name = RobotUtil.getString(mRobot.getName());
-                if(getString(R.string.mengmeng).equals(name)) {
-                    // 不能修改名字，名字与聊天消息对应，修改会找不到聊天消息
-                    nameLayout.setBackgroundResource(R.color.item_unselected2);
-                    nameLayout.setFocusable(false);
-                    nameLayout.setClickable(false);
-                    nameTv.setTextColor(getResources().getColor(R.color.text_l));
-                    nameArrow.setVisibility(View.GONE);
-                }
-                nameTv.setText(name);
-                sexTv.setText(RobotUtil.getSexText(mRobot.getSex()));
-                welcomeTv.setText(RobotUtil.getString(mRobot.getWelcome()));
-                Glide.with(this).load(mRobot.getBg()).into(bgIv);
-                bgIv.setTag(R.id.add_robot_bg_iv, mRobot.getBg());
-                if(mRobot.getBgblur() == 25) {
-                    bgBlurTb.setChecked(true);
-                }
+        if (getIntent() != null && getIntent().hasExtra("CommUser")) {
+            mCommUser = (CommUser) getIntent().getParcelableExtra("CommUser");
+            if (mCommUser != null) {
+                finish();
+                return;
             }
+            setTitleTv(R.string.add_robot_title_robot);
+            saveTv.setText(R.string.update);
+            int resIcon = R.mipmap.icon_me;
+            Glide.with(this).load(mCommUser.iconUrl).placeholder(resIcon).error(resIcon).into(iconIv);
+            iconIv.setTag(R.id.info_icon_iv, mCommUser);
+            String name = RobotUtil.getString(mCommUser.name);
+            nameTv.setText(name);
+            sexTv.setText(CommUserUtil.getSexText(mCommUser.gender));
+            welcomeTv.setText(CommUserUtil.getExtraString(mCommUser.extraData, "welcome"));
         }
     }
 
     @Override
     protected void initViewListener() {
         iconLayout.setOnClickListener(this);
-        if(/*FLAG != 1 */mRobot == null || !getString(R.string.mengmeng).equals(RobotUtil.getString(mRobot.getName()))) {
+        if(mCommUser == null || !getString(R.string.mengmeng).equals(CommUserUtil.getString(mCommUser.id))) {
             nameLayout.setOnClickListener(this);
+            sexLayout.setOnClickListener(this);
+            welcomeLayout.setOnClickListener(this);
+            saveTv.setOnClickListener(this);
+            saveTv.setVisibility(View.VISIBLE);
+        } else {
+            saveTv.setVisibility(View.GONE);
         }
-        sexLayout.setOnClickListener(this);
-        welcomeLayout.setOnClickListener(this);
-        bgLayout.setOnClickListener(this);
-        saveTv.setOnClickListener(this);
     }
 
     private static final int TAKE_PHOTO_FOR_ICON = 0;
-    private static final int TAKE_PHOTO_FOR_BG = 1;
     private int mFlag = TAKE_PHOTO_FOR_ICON;
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.add_robot_icon_layout:
+            case R.id.info_icon_layout:
                 toTakePhone(TAKE_PHOTO_FOR_ICON);
                 break;
-            case R.id.add_robot_name_layout:
-                ActivityUtil.toInputActivityForResult(this, R.string.add_robot_name, 20, 1,
-                        nameTv.getText().toString().trim(), getString(R.string.input_name_hint),  REQUEST_CODE_FOR_INPUT_NAME);
+            case R.id.info_name_layout:
+                ActivityUtil.toInputActivityForResult(this, R.string.info_name, 20, 1,
+                        nameTv.getText().toString().trim(), getString(R.string.info_input_name_hint),  REQUEST_CODE_FOR_INPUT_NAME);
                 break;
-            case R.id.add_robot_sex_layout:
-                ActivityUtil.toSexActivityForResult(this, R.string.add_robot_sex, true, RobotUtil.getSex(sexTv.getText().toString().trim()), REQUEST_CODE_FOR_INPUT_SEX);
+            case R.id.info_sex_layout:
+                ActivityUtil.toSexActivityForResult(this, R.string.add_robot_sex, false, RobotUtil.getSex(sexTv.getText().toString().trim()), REQUEST_CODE_FOR_INPUT_SEX);
                 break;
-            case R.id.add_robot_welcome_layout:
+            case R.id.info_welcome_layout:
                 ActivityUtil.toInputActivityForResult(this, R.string.add_robot_welcome, 30, 0,
-                        welcomeTv.getText().toString().trim(), getString(R.string.input_welcome_hint), REQUEST_CODE_FOR_INPUT_WELCOME);
+                        welcomeTv.getText().toString().trim(), getString(R.string.info_input_welcome_hint), REQUEST_CODE_FOR_INPUT_WELCOME);
                 break;
-            case R.id.add_robot_bg_layout:
-                toTakePhone(TAKE_PHOTO_FOR_BG);
-                break;
-            case R.id.add_robot_save:
+            case R.id.info_save:
                 int result = checkEmpty();
                 if (result == 0) {
-                    insertOrUpdate();
-                    finish(mRobot);
+                    boolean update = update();
+                    if(update) {
+                        showProgress(R.string.updateing);
+                        E7App.getCommunitySdk().updateUserProfile(mCommUser, new Listeners.CommListener() {
+                            @Override
+                            public void onStart() {
+                            }
+                            @Override
+                            public void onComplete(Response response) {
+                                dismissProgress();
+                                CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
+                                finish(mCommUser);
+                            }
+                        });
+                    } else {
+                        finish();
+                    }
                 } else {
                     TastyToastUtil.toast(this, result);
                 }
@@ -160,37 +159,36 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void finish(Robot robot) {
-        if(FLAG == 0) {
-            EventBusUtil.post(Constant.EVENT_BUS_REFRESH_RecyclerView_ADD_ROBOT, robot);
-        } else {
-            EventBusUtil.post(Constant.EVENT_BUS_REFRESH_RecyclerView_UPDATE_ROBOT, robot);
-        }
+    private void finish(CommUser commUser) {
+        EventBusUtil.post(Constant.EVENT_BUS_COMMUSER_MODIFY, commUser);
         Intent intent = new Intent();
-        intent.putExtra(Constant.INTENT_ROBOT, robot);
+        intent.putExtra("CommUser", commUser);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
 
-    private void insertOrUpdate() {
-        if (mRobot == null) {
-            mRobot = new Robot();
-            mRobot.setTime(System.currentTimeMillis());
-            mRobot.setBirthTime(mRobot.getTime());
-            mRobot.setScore(0);
+    private boolean update() {
+        if (mCommUser == null) {
+            return false;
         }
-        mRobot.setName(nameTv.getText().toString().trim());
-        mRobot.setWelcome(welcomeTv.getText().toString().trim());
-        mRobot.setIcon(String.valueOf(iconIv.getTag(R.id.add_robot_icon_iv)));
-        mRobot.setBg(String.valueOf(bgIv.getTag(R.id.add_robot_bg_iv)));
-        mRobot.setBgblur(bgBlurTb.isChecked() ? 25 : 0);
-        mRobot.setSex(RobotUtil.getSex(sexTv.getText().toString()));
-        if (FLAG == 0) {
-            long id = MessageDbHelper.getInstance(this).insertRobot(mRobot);
-            mRobot.setId((int) id);
-        } else {
-            MessageDbHelper.getInstance(this).updateRobot(mRobot);
+        boolean result = false;
+        // 头像单独修改 mCommUser.iconUrl = ;
+        String name = nameTv.getText().toString().trim();
+        if(!TextUtils.isEmpty(name) && !mCommUser.name.equals(mCommUser.name)) {
+            mCommUser.name = name;
+            result = true;
         }
+        String welcome = welcomeTv.getText().toString().trim();
+        if(welcome.equals(CommUserUtil.getExtraString(mCommUser.extraData, "welcome"))) {
+            CommUserUtil.setExtraString(mCommUser, "welcome", welcome);
+            result = true;
+        }
+        CommUser.Gender gender = CommUserUtil.getSex(sexTv.getText().toString().trim());
+        if(gender != mCommUser.gender) {
+            mCommUser.gender = CommUserUtil.getSex(sexTv.getText().toString().trim());
+            result = true;
+        }
+        return result;
     }
 
     private void toTakePhone(int flag) {
@@ -217,7 +215,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
      */
     private int checkEmpty() {
         if (nameTv.getText().toString().trim().isEmpty()) {
-            return R.string.add_robot_name_empty;
+            return R.string.info_name_empty;
         }
         return 0;
     }
@@ -264,15 +262,20 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void takeSuccess(TResult result) {
-        if (mFlag == 0) {
+        if (mFlag == TAKE_PHOTO_FOR_ICON) {
             String path = result.getImage().getCompressPath();
-            int resIcon = RobotUtil.getDefaultIconResId(mRobot);
-            Glide.with(this).load(path).placeholder(resIcon).error(resIcon).into(iconIv);
-            iconIv.setTag(R.id.add_robot_icon_iv, path);
-        } else {
-            String path = result.getImage().getOriginalPath();
-            Glide.with(this).load(path).into(bgIv);
-            bgIv.setTag(R.id.add_robot_bg_iv, path);
+            showProgress(R.string.updateing);
+            E7App.getCommunitySdk().updateUserProtrait(path, new Listeners.SimpleFetchListener<PortraitUploadResponse>() {
+                @Override
+                public void onComplete(PortraitUploadResponse portraitUploadResponse) {
+                    String mIconUrl = portraitUploadResponse.mIconUrl;
+                    Glide.with(InfoActivity.this).load(mIconUrl).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(iconIv);
+                    iconIv.setTag(R.id.info_icon_iv, mIconUrl);
+                    mCommUser.iconUrl = mIconUrl;
+                    CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
+                    dismissProgress();
+                }
+            });
         }
     }
 

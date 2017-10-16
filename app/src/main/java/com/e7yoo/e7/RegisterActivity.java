@@ -100,7 +100,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void register(String name, String pwd) {
-        showProgress();
+        showProgress(R.string.register_ing);
         CommUser user = new CommUser();
         user.id = name;
         user.name = getResources().getString(R.string.circle_name_default) + getName();
@@ -117,25 +117,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         return "" + count + Calendar.getInstance().get(Calendar.MINUTE) + Calendar.getInstance().get(Calendar.SECOND)
                 + mills.charAt(6)
                 + mills.charAt(4);
-    }
-
-    ProgressDialogEx progressDialogEx;
-    private void showProgress(){
-        progressDialogEx = ProgressDialogEx.show(RegisterActivity.this, "", getString(R.string.register_ing), true, 30 * 1000, new ProgressDialogEx.OnCancelListener2() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-            }
-            @Override
-            public void onAutoCancel(DialogInterface dialog) {
-            }
-        });
-    }
-
-    private void dismissProgress() {
-        if(!isFinishing() && progressDialogEx != null && progressDialogEx.isShowing()) {
-            progressDialogEx.dismiss();
-            progressDialogEx = null;
-        }
     }
 
     private LoginListener loginListener = new LoginListener() {

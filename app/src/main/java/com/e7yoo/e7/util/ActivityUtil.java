@@ -8,7 +8,9 @@ import android.os.Bundle;
 import com.e7yoo.e7.AddRobotActivity;
 import com.e7yoo.e7.ChatActivity;
 import com.e7yoo.e7.InputActivity;
+import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.PushMsgDetailsActivity;
+import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.game.GameActivity;
@@ -58,9 +60,11 @@ public class ActivityUtil {
         activity.startActivityForResult(intent, requestCode);
     }
 
-    public static void toSexActivityForResult(Activity activity, int titleResId, int requestCode) {
+    public static void toSexActivityForResult(Activity activity, int titleResId, boolean showUnkoneSex, int sex,int requestCode) {
         Intent intent = new Intent(activity, SexActivity.class);
         intent.putExtra(Constant.INTENT_TITLE_RES_ID, titleResId);
+        intent.putExtra(Constant.INTENT_SHOW_UNKNOW_SEX, showUnkoneSex);
+        intent.putExtra(Constant.INTENT_SEX, sex);
         activity.startActivityForResult(intent, requestCode);
     }
 
@@ -93,6 +97,17 @@ public class ActivityUtil {
         Class cls = isLandscape ? GameLandscapeActivity.class : GameActivity.class;
         Intent intent = new Intent(context, cls);
         intent.putExtra(GameActivity.INTENT_URL, gameInfo);
+        context.startActivity(intent);
+    }
+
+    public static void toLogin(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void toRegister(Context context, String name) {
+        Intent intent = new Intent(context, RegisterActivity.class);
+        intent.putExtra("name", name);
         context.startActivity(intent);
     }
 }

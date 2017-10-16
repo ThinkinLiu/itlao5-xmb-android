@@ -50,6 +50,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initSettings() {
+        setRightTv(View.VISIBLE, 0, R.string.register, this);
     }
 
     @Override
@@ -69,9 +70,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 login();
                 break;
             case R.id.login_register:
-                Intent intent = new Intent(this, RegisterActivity.class);
-                intent.putExtra("name", mNameEt.getText().toString());
-                ActivityUtil.toActivity(this, intent);
+            case R.id.register:
+                ActivityUtil.toRegister(this, mNameEt.getText().toString().trim());
                 break;
         }
     }
@@ -95,31 +95,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void login(String name, String pwd) {
-        showProgress();
+        showProgress(R.string.login_ing);
         CommUser user = new CommUser();
         user.id = name;
 
         // CommunitySDKImpl.getInstance().loginToWsq(this, user, loginListener, pwd);
         E7App.getCommunitySdk().loginByWsq(user, pwd, loginFetchListener);
-    }
-
-    ProgressDialogEx progressDialogEx;
-    private void showProgress(){
-        progressDialogEx = ProgressDialogEx.show(LoginActivity.this, "", getString(R.string.login_ing), true, 30 * 1000, new ProgressDialogEx.OnCancelListener2() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-            }
-            @Override
-            public void onAutoCancel(DialogInterface dialog) {
-            }
-        });
-    }
-
-    private void dismissProgress() {
-        if(!isFinishing() && progressDialogEx != null && progressDialogEx.isShowing()) {
-            progressDialogEx.dismiss();
-            progressDialogEx = null;
-        }
     }
 
     private LoginListener loginListener = new LoginListener() {

@@ -50,12 +50,12 @@
     <string name="sex_unknow">保密</string>
     <string name="input_name_hint">为您的萌伴取个名吧</string>
     <string name="input_welcome_hint">萌伴希望有一条帅气的个性签名哦</string>
-    <string name="sex_hint">您的萌伴是男是女，不会是中性吧^_^</string>
+    <string name="sex_hint">是男是女？不会是中性吧^_^</string>
     <string name="input_error">"萌萌"已经存在，换个更有爱的名字吧^_^</string>
 
 
     <string name="mine_login_hint">注册/登录</string>
-    <string name="mine_page">私人空间</string>
+    <string name="mine_page">个人空间</string>
     <string name="mine_msg">消息中心</string>
     <string name="mine_set">个性设置</string>
     <string name="mine_about">关于我们</string>
@@ -276,5 +276,13 @@
     <string name="register_name_hint">账号(邮箱):</string>
     <string name="register_pwd_hint">密码(6-18位):</string>
     <string name="register_pwd_two_hint">密码确认:</string>
+
+    <string name="title_info">个人信息</string>
+    <string name="info_name">个人信息</string>
+    <string name="info_name_empty">用户昵称不能为空</string>
+    <string name="update">修改</string>
+    <string name="updateing">提交中...</string>
+    <string name="info_input_name_hint">取个啥名字呢？</string>
+    <string name="info_input_welcome_hint">想一条帅气的个性签名吧</string>
 
 </resources>

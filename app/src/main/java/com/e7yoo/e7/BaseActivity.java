@@ -1,6 +1,7 @@
 package com.e7yoo.e7;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.SystemBarTintManager;
 import com.umeng.analytics.MobclickAgent;
 
@@ -324,5 +326,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onPause();
         MobclickAgent.onPause(this);
         MobclickAgent.onPageEnd(this.getClass().getSimpleName());
+    }
+
+
+
+    protected ProgressDialogEx progressDialogEx;
+    protected void showProgress(int loading){
+        progressDialogEx = ProgressDialogEx.show(BaseActivity.this, "", getString(loading), true, 30 * 1000, new ProgressDialogEx.OnCancelListener2() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+            }
+            @Override
+            public void onAutoCancel(DialogInterface dialog) {
+            }
+        });
+    }
+
+    protected void dismissProgress() {
+        if(!isFinishing() && progressDialogEx != null && progressDialogEx.isShowing()) {
+            progressDialogEx.dismiss();
+            progressDialogEx = null;
+        }
     }
 }

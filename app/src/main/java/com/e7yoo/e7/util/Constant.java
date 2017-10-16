@@ -20,7 +20,8 @@ public class Constant {
     public static final int EVENT_BUS_NET_jokeNew = 104;
     public static final int EVENT_BUS_CIRCLE_LOGIN = 1001;
     public static final int EVENT_BUS_CIRCLE_REGISTER = 1002;
-    public static final int EVENT_BUS_CIRCLE_LOGOUT = 1002;
+    public static final int EVENT_BUS_CIRCLE_LOGOUT = 1003;
+    public static final int EVENT_BUS_COMMUSER_MODIFY = 1004;
 
     public static final String FILE_ROBOT_LIST = "file_robot_list";
     public static final String FILE_FAVORITES_NEWS_LIST = "file_favorites_news_list";
@@ -32,6 +33,8 @@ public class Constant {
     public static final String INTENT_TEXT = "text";
     public static final String INTENT_HINT = "hint";
     public static final String INTENT_INT = "int";
+    public static final String INTENT_SHOW_UNKNOW_SEX = "show_unknow_sex";
+    public static final String INTENT_SEX = "sex";
 
 
     public static final String SP_IS_NEED_INIT_ROBOT = "is_need_init_robot";

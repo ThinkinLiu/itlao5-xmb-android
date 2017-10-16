@@ -21,6 +21,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
 import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.CommUserUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
@@ -44,12 +45,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onEventMainThread(Message msg) {
-        switch(msg.what) {
-            case Constant.EVENT_BUS_CIRCLE_LOGIN:
-            case Constant.EVENT_BUS_CIRCLE_LOGOUT:
-                initDatas();
-                break;
-        }
+
     }
 
     public static MineFragment newInstance() {
@@ -134,9 +130,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_icon:
-                ActivityUtil.toActivity(getActivity(), LoginActivity.class);
+                ActivityUtil.toLogin(getActivity());
                 break;
             case R.id.mine_page_layout:
+                if(CommonUtils.isLogin(getActivity())) {
+//                    ActivityUtil.toActivity(getActivity(), .class);
+                } else {
+                    ActivityUtil.toLogin(getActivity());
+                }
                 break;
             case R.id.mine_msg_layout:
                 ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
