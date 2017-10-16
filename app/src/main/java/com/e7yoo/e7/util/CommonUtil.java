@@ -2,6 +2,8 @@ package com.e7yoo.e7.util;
 
 import android.app.Activity;
 import android.graphics.Rect;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.DisplayMetrics;
 
 import com.e7yoo.e7.R;
@@ -80,5 +82,14 @@ public class CommonUtil {
 			}
 		}
         return statusBarHeight;
+	}
+
+	public static Spanned getHtmlStr(String str) {
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+			return Html.fromHtml(str, Html.FROM_HTML_MODE_COMPACT);
+		} else {
+			return (Html.fromHtml(str));
+		}
+
 	}
 }

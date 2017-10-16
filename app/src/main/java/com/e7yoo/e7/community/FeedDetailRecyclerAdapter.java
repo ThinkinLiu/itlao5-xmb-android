@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
+import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
@@ -142,11 +143,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         if(item.replyUser != null && !TextUtils.isEmpty(item.replyUser.name)) {
             reply = "回复 <font color= 'blue'>" + item.replyUser.name + "</font> ";
         }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            viewHolder.contentTv.setText(Html.fromHtml(reply + item.text, Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            viewHolder.contentTv.setText(Html.fromHtml(reply + item.text));
-        }
+        viewHolder.contentTv.setText(CommonUtil.getHtmlStr(reply + item.text));
         CircleGvAdapterUtil.setGridView(mContext, viewHolder.gridView, item.imageUrls);
         viewHolder.timeTv.setText(TimeUtil.formatFeedTime(item.createTime));
         viewHolder.shareTv.setVisibility(View.GONE);

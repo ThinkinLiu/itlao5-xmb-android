@@ -95,7 +95,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             String name = RobotUtil.getString(mCommUser.name);
             nameTv.setText(name);
             sexTv.setText(CommUserUtil.getSexText(mCommUser.gender));
-            welcomeTv.setText(CommUserUtil.getExtraString(mCommUser.extraData, "welcome"));
+            welcomeTv.setText(CommUserUtil.getExtraString(mCommUser, "welcome"));
         }
     }
 
@@ -165,7 +165,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             result = true;
         }
         String welcome = welcomeTv.getText().toString().trim();
-        if(welcome.equals(CommUserUtil.getExtraString(mCommUser.extraData, "welcome"))) {
+        if(welcome.equals(CommUserUtil.getExtraString(mCommUser, "welcome"))) {
             CommUserUtil.setExtraString(mCommUser, "welcome", welcome);
             result = true;
         }

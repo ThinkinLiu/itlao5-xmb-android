@@ -111,11 +111,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     private void initDatas(CommUser commUser) {
         if(CommonUtils.isLogin(getActivity())) {
-            //if(commUser == null) {
-                mUser = CommonUtils.getLoginUser(getActivity());
-//            } else {
-//                mUser = commUser;
-//            }
+            mUser = CommonUtils.getLoginUser(getActivity());
+        } else {
+            mUser = null;
         }
         if(mUser != null && !TextUtils.isEmpty(mUser.id)) {
             // 用户名在MainActivity中设置（setTitleText方法）

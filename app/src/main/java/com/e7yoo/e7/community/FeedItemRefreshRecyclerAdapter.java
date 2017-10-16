@@ -2,6 +2,7 @@ package com.e7yoo.e7.community;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.umeng.comm.core.beans.FeedItem;
 
@@ -43,7 +45,16 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
             FeedItem item = (FeedItem) mDatas.get(position);
             if (item != null) {
                 setUser(viewHolderFeedItem, item);
-                viewHolderFeedItem.contentTv.setText(item.text);
+                String content = "";
+                if(item.topics != null) {
+                    for(int i = 0; i < item.topics.size(); i++) {
+                        if(item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
+                            content = content + "<font color= 'blue'>" + item.topics.get(i).name + "</font> ";
+                        }
+                    }
+                }
+                content = content + item.text;
+                viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content));
                 CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages());
                 viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
                 viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));

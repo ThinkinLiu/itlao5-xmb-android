@@ -8,27 +8,47 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.Robot;
 import com.umeng.comm.core.beans.CommUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Administrator on 2017/9/6.
  */
 
 public class CommUserUtil {
 
-    public static String getExtraString(Bundle bundle, String key) {
-        if(bundle == null || !bundle.containsKey(key)) {
+    public static String getExtraString(CommUser commUser, String key) {
+        if(commUser == null || TextUtils.isEmpty(commUser.customField)) {
             return "";
         }
-        return bundle.getString(key);
+        try {
+            return new JSONObject(commUser.customField).getString(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public static void setExtraString(CommUser commUser, String key, String value) {
         if(commUser == null) {
             return;
         }
-        if(commUser.extraData == null) {
+        if(TextUtils.isEmpty(commUser.customField)) {
             commUser.extraData = new Bundle();
         }
-        commUser.extraData.putString(key, value);
+        JSONObject jo;
+        try {
+            jo = new JSONObject(commUser.customField);
+        } catch (Exception e) {
+            e.printStackTrace();
+            jo = new JSONObject();
+        }
+        try {
+            jo.put(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        commUser.customField = jo.toString();
     }
 
     public static String getString(String text) {
