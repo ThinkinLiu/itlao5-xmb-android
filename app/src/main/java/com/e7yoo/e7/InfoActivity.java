@@ -32,6 +32,7 @@ import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.Response;
@@ -223,7 +224,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                 case REQUEST_CODE_FOR_INPUT_WELCOME:
                     if(data != null && data.hasExtra(Constant.INTENT_TEXT)) {
                         String welcome = data.getStringExtra(Constant.INTENT_TEXT);
-                        nameTv.setText(welcome);
+                        welcomeTv.setText(welcome);
                         CommUserUtil.setExtraString(mCommUser, "welcome", welcome);
                         updateUserProfile();
                     }
@@ -251,12 +252,16 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                 @Override
                 public void onComplete(PortraitUploadResponse portraitUploadResponse) {
                     String mIconUrl = portraitUploadResponse.mIconUrl;
-                    Glide.with(InfoActivity.this).load(mIconUrl).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(iconIv);
-                    iconIv.setTag(R.id.info_icon_iv, mIconUrl);
-                    mCommUser.iconUrl = mIconUrl;
-                    CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
-                    dismissProgress();
-                    hasUpdate = true;
+                    if(portraitUploadResponse.errCode == ErrorCode.NO_ERROR && !TextUtils.isEmpty(mIconUrl)) {
+                        Glide.with(InfoActivity.this).load(mIconUrl).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(iconIv);
+                        iconIv.setTag(R.id.info_icon_iv, mIconUrl);
+                        mCommUser.iconUrl = mIconUrl;
+                        CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
+                        dismissProgress();
+                        hasUpdate = true;
+                    } else {
+                        TastyToastUtil.toast(InfoActivity.this, R.string.update_icon_failed);
+                    }
                 }
             });
         }
@@ -312,8 +317,12 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onComplete(Response response) {
                 dismissProgress();
-                CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
-                hasUpdate = true;
+                if(response.errCode == ErrorCode.NO_ERROR) {
+                    CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
+                    hasUpdate = true;
+                } else {
+                    TastyToastUtil.toast(InfoActivity.this, R.string.update_failed);
+                }
             }
         });
     }

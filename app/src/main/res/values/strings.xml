@@ -285,5 +285,7 @@
     <string name="info_input_name_hint">取个啥名字呢？</string>
     <string name="info_input_welcome_hint">想一条帅气的个性签名吧</string>
     <string name="logout">退出登录</string>
+    <string name="update_failed">修改失败</string>
+    <string name="update_icon_failed">头像修改失败</string>
 
 </resources>
