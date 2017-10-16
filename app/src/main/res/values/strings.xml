@@ -284,5 +284,6 @@
     <string name="updateing">提交中...</string>
     <string name="info_input_name_hint">取个啥名字呢？</string>
     <string name="info_input_welcome_hint">想一条帅气的个性签名吧</string>
+    <string name="logout">退出登录</string>
 
 </resources>

@@ -33,6 +33,7 @@ import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
 import com.umeng.comm.core.utils.CommonUtils;
@@ -47,7 +48,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     private View iconLayout, nameLayout, sexLayout, welcomeLayout;
     private ImageView iconIv;
     private TextView nameTv, sexTv, welcomeTv;
-    private TextView saveTv;
+    private TextView logoutTv;
     /**
      * 0 新增，1 修改
      */
@@ -75,19 +76,18 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         nameTv = (TextView) findViewById(R.id.info_name_tv);
         sexTv = (TextView) findViewById(R.id.info_sex_tv);
         welcomeTv = (TextView) findViewById(R.id.info_welcome_tv);
-        saveTv = (TextView) findViewById(R.id.info_save);
+        logoutTv = (TextView) findViewById(R.id.info_logout_tv);
     }
 
     @Override
     protected void initSettings() {
         if (getIntent() != null && getIntent().hasExtra("CommUser")) {
             mCommUser = (CommUser) getIntent().getParcelableExtra("CommUser");
-            if (mCommUser != null) {
+            if (mCommUser == null) {
                 finish();
                 return;
             }
             setTitleTv(R.string.add_robot_title_robot);
-            saveTv.setText(R.string.update);
             int resIcon = R.mipmap.icon_me;
             Glide.with(this).load(mCommUser.iconUrl).placeholder(resIcon).error(resIcon).into(iconIv);
             iconIv.setTag(R.id.info_icon_iv, mCommUser);
@@ -105,10 +105,10 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             nameLayout.setOnClickListener(this);
             sexLayout.setOnClickListener(this);
             welcomeLayout.setOnClickListener(this);
-            saveTv.setOnClickListener(this);
-            saveTv.setVisibility(View.VISIBLE);
+            logoutTv.setOnClickListener(this);
+            logoutTv.setVisibility(View.VISIBLE);
         } else {
-            saveTv.setVisibility(View.GONE);
+            logoutTv.setVisibility(View.GONE);
         }
     }
 
@@ -132,38 +132,23 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                 ActivityUtil.toInputActivityForResult(this, R.string.add_robot_welcome, 30, 0,
                         welcomeTv.getText().toString().trim(), getString(R.string.info_input_welcome_hint), REQUEST_CODE_FOR_INPUT_WELCOME);
                 break;
-            case R.id.info_save:
-                int result = checkEmpty();
-                if (result == 0) {
-                    boolean update = update();
-                    if(update) {
-                        showProgress(R.string.updateing);
-                        E7App.getCommunitySdk().updateUserProfile(mCommUser, new Listeners.CommListener() {
-                            @Override
-                            public void onStart() {
-                            }
-                            @Override
-                            public void onComplete(Response response) {
-                                dismissProgress();
-                                CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
-                                finish(mCommUser);
-                            }
-                        });
-                    } else {
-                        finish();
-                    }
-                } else {
-                    TastyToastUtil.toast(this, result);
-                }
+            case R.id.info_logout_tv:
+                logout();
                 break;
         }
     }
 
-    private void finish(CommUser commUser) {
-        EventBusUtil.post(Constant.EVENT_BUS_COMMUSER_MODIFY, commUser);
-        Intent intent = new Intent();
-        intent.putExtra("CommUser", commUser);
-        setResult(Activity.RESULT_OK, intent);
+    private void logout() {
+        CommonUtils.cleanCurrentUserCache(this);
+        E7App.getCommunitySdk().logout(this, new LoginListener() {
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onComplete(int i, CommUser commUser) {
+            }
+        });
+        EventBusUtil.post(Constant.EVENT_BUS_CIRCLE_LOGOUT);
         finish();
     }
 
@@ -208,18 +193,6 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         this.mFlag = flag;
     }
 
-    /**
-     * 检查输入框内容是否合法，合法则返回0，否则返回需要toast的stringID
-     *
-     * @return
-     */
-    private int checkEmpty() {
-        if (nameTv.getText().toString().trim().isEmpty()) {
-            return R.string.info_name_empty;
-        }
-        return 0;
-    }
-
     private InvokeParam invokeParam;
     private TakePhoto takePhoto;
 
@@ -241,17 +214,26 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             switch(requestCode) {
                 case REQUEST_CODE_FOR_INPUT_NAME:
                     if(data != null && data.hasExtra(Constant.INTENT_TEXT)) {
-                        nameTv.setText(data.getStringExtra(Constant.INTENT_TEXT));
+                        String name = data.getStringExtra(Constant.INTENT_TEXT);
+                        nameTv.setText(name);
+                        mCommUser.name = name;
+                        updateUserProfile();
                     }
                     return;
                 case REQUEST_CODE_FOR_INPUT_WELCOME:
                     if(data != null && data.hasExtra(Constant.INTENT_TEXT)) {
-                        welcomeTv.setText(data.getStringExtra(Constant.INTENT_TEXT));
+                        String welcome = data.getStringExtra(Constant.INTENT_TEXT);
+                        nameTv.setText(welcome);
+                        CommUserUtil.setExtraString(mCommUser, "welcome", welcome);
+                        updateUserProfile();
                     }
                     return;
                 case REQUEST_CODE_FOR_INPUT_SEX:
                     if(data != null && data.hasExtra(Constant.INTENT_INT)) {
-                        sexTv.setText(RobotUtil.getSexText(data.getIntExtra(Constant.INTENT_INT, 0)));
+                        String sex = RobotUtil.getSexText(data.getIntExtra(Constant.INTENT_INT, 0));
+                        sexTv.setText(sex);
+                        mCommUser.gender = CommUserUtil.getSex(sex);
+                        updateUserProfile();
                     }
                     return;
             }
@@ -274,6 +256,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                     mCommUser.iconUrl = mIconUrl;
                     CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
                     dismissProgress();
+                    hasUpdate = true;
                 }
             });
         }
@@ -316,5 +299,30 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
         }
         return takePhoto;
+    }
+
+    private boolean hasUpdate = false;
+
+    private void updateUserProfile() {
+        showProgress(R.string.updateing);
+        E7App.getCommunitySdk().updateUserProfile(mCommUser, new Listeners.CommListener() {
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onComplete(Response response) {
+                dismissProgress();
+                CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
+                hasUpdate = true;
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(hasUpdate) {
+            EventBusUtil.post(Constant.EVENT_BUS_COMMUSER_MODIFY, mCommUser);
+        }
+        super.onBackPressed();
     }
 }

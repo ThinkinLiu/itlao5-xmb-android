@@ -214,14 +214,14 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/info_save"
+                android:id="@+id/info_logout_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_4x"
                 android:background="@drawable/rounded_corners_tag_green"
                 android:gravity="center"
                 android:padding="@dimen/space_3x"
-                android:text="@string/add"
+                android:text="@string/logout"
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_2xl" />
         </LinearLayout>

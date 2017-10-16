@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.e7yoo.e7.AddRobotActivity;
 import com.e7yoo.e7.ChatActivity;
+import com.e7yoo.e7.InfoActivity;
 import com.e7yoo.e7.InputActivity;
 import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.PushMsgDetailsActivity;
@@ -18,6 +19,7 @@ import com.e7yoo.e7.game.GameLandscapeActivity;
 import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
+import com.umeng.comm.core.beans.CommUser;
 
 /**
  * Created by Administrator on 2017/8/31.
@@ -108,6 +110,12 @@ public class ActivityUtil {
     public static void toRegister(Context context, String name) {
         Intent intent = new Intent(context, RegisterActivity.class);
         intent.putExtra("name", name);
+        context.startActivity(intent);
+    }
+
+    public static void toCommUserInfo(Context context, CommUser commUser) {
+        Intent intent = new Intent(context, InfoActivity.class);
+        intent.putExtra("CommUser", commUser);
         context.startActivity(intent);
     }
 }
