@@ -46,6 +46,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onEventMainThread(Message msg) {
+        switch (msg.what) {
+            case Constant.EVENT_BUS_CIRCLE_LOGIN:
+            case Constant.EVENT_BUS_CIRCLE_LOGOUT:
+            case Constant.EVENT_BUS_COMMUSER_MODIFY:
+                initDatas();
+                break;
+        }
 
     }
 
