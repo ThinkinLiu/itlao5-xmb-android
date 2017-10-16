@@ -50,7 +50,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case Constant.EVENT_BUS_CIRCLE_LOGIN:
             case Constant.EVENT_BUS_CIRCLE_LOGOUT:
             case Constant.EVENT_BUS_COMMUSER_MODIFY:
-                initDatas();
+                if(msg.obj != null && msg.obj instanceof CommUser) {
+                    initDatas((CommUser) msg.obj);
+                } else {
+                    initDatas(null);
+                }
                 break;
         }
 
@@ -102,12 +106,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // ((BaseActivity) getActivity()).hintTitle();
-        initDatas();
+        initDatas(null);
     }
 
-    private void initDatas() {
+    private void initDatas(CommUser commUser) {
         if(CommonUtils.isLogin(getActivity())) {
-            mUser = CommonUtils.getLoginUser(getActivity());
+            //if(commUser == null) {
+                mUser = CommonUtils.getLoginUser(getActivity());
+//            } else {
+//                mUser = commUser;
+//            }
         }
         if(mUser != null && !TextUtils.isEmpty(mUser.id)) {
             // 用户名在MainActivity中设置（setTitleText方法）

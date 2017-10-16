@@ -22,8 +22,11 @@ public class CommUserUtil {
     }
 
     public static void setExtraString(CommUser commUser, String key, String value) {
-        if(commUser == null || commUser.extraData == null) {
+        if(commUser == null) {
             return;
+        }
+        if(commUser.extraData == null) {
+            commUser.extraData = new Bundle();
         }
         commUser.extraData.putString(key, value);
     }

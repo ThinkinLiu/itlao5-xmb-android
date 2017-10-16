@@ -196,6 +196,16 @@ public class MainActivity extends BaseActivity {
                     }
                 }
                 break;
+            case Constant.EVENT_BUS_CIRCLE_LOGIN:
+            case Constant.EVENT_BUS_CIRCLE_LOGOUT:
+            case Constant.EVENT_BUS_COMMUSER_MODIFY:
+                if (!isFinishing() && fragments != null && fragments.size() > 0) {
+                    Fragment fragment = fragments.get(fragments.size() - 1);
+                    if (fragment != null && fragment instanceof BaseFragment) {
+                        ((BaseFragment) fragment).onEventMainThread(msg);
+                    }
+                }
+                break;
         }
     }
 

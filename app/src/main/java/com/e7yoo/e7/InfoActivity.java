@@ -316,13 +316,13 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             }
             @Override
             public void onComplete(Response response) {
-                dismissProgress();
                 if(response.errCode == ErrorCode.NO_ERROR) {
                     CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
                     hasUpdate = true;
                 } else {
                     TastyToastUtil.toast(InfoActivity.this, R.string.update_failed);
                 }
+                dismissProgress();
             }
         });
     }
