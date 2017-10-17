@@ -129,7 +129,16 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
     private void setViewTypeFeeditem(BaseViewHolder viewHolderFeedItem, FeedItem item) {
         viewHolderFeedItem.contentTv.setMaxLines(1000);
-        viewHolderFeedItem.contentTv.setText(item.text);
+        String content = "";
+        if(item.topics != null) {
+            for(int i = 0; i < item.topics.size(); i++) {
+                if(item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
+                    content = content + "<font color= 'blue'>" + item.topics.get(i).name + "</font> ";
+                }
+            }
+        }
+        content = content + item.text;
+        viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content));
         CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages());
         viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
         viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));

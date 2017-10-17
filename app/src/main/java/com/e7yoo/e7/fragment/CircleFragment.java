@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.e7yoo.e7.R;
@@ -18,6 +19,8 @@ import com.e7yoo.e7.community.HotFeedsFragmentFeed;
 import com.e7yoo.e7.community.RealtimeFeedsFragment;
 import com.e7yoo.e7.community.RecomFeedsFragment;
 import com.e7yoo.e7.community.TopicListFragment;
+import com.e7yoo.e7.util.ActivityUtil;
+import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.ArrayList;
 
@@ -27,6 +30,7 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
+    protected ImageView mPostIv;
 
     public CircleFragment() {
         // Required empty public constructor
@@ -58,6 +62,7 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
             mFollowedTv = mRootView.findViewById(R.id.circle_followed);
             mPlateTv = mRootView.findViewById(R.id.circle_plate);
             mViewPager = mRootView.findViewById(R.id.circle_viewpager);
+            mPostIv = mRootView.findViewById(R.id.circle_post);
         }
         return mRootView;
     }
@@ -79,6 +84,7 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
         mHotTv.setOnClickListener(this);
         mFollowedTv.setOnClickListener(this);
         mPlateTv.setOnClickListener(this);
+        mPostIv.setOnClickListener(this);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -124,7 +130,26 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
             case R.id.circle_plate:
                 setSelectedTv(mPlateTv);
                 mViewPager.setCurrentItem(4);
+            case R.id.circle_post:
+                toPost();
                 break;
+        }
+    }
+
+
+    public void setPostIvVisibility(int visibility) {
+        if(mPostIv != null) {
+            mPostIv.setVisibility(visibility);
+        }
+    }
+
+    protected void toPost() {
+        if(getActivity() != null && !isDetached()) {
+            if(CommonUtils.isLogin(getActivity())) {
+                ActivityUtil.toPostActivity(getActivity());
+            } else {
+                ActivityUtil.toLogin(getActivity());
+            }
         }
     }
 

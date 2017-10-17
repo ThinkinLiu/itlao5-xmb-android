@@ -287,5 +287,6 @@
     <string name="logout">退出登录</string>
     <string name="update_failed">修改失败</string>
     <string name="update_icon_failed">头像修改失败</string>
+    <string name="post">发布</string>
 
 </resources>

@@ -10,6 +10,7 @@ import com.e7yoo.e7.ChatActivity;
 import com.e7yoo.e7.InfoActivity;
 import com.e7yoo.e7.InputActivity;
 import com.e7yoo.e7.LoginActivity;
+import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.PushMsgDetailsActivity;
 import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
@@ -116,6 +117,11 @@ public class ActivityUtil {
     public static void toCommUserInfo(Context context, CommUser commUser) {
         Intent intent = new Intent(context, InfoActivity.class);
         intent.putExtra("CommUser", commUser);
+        context.startActivity(intent);
+    }
+
+    public static void toPostActivity(Context context) {
+        Intent intent = new Intent(context, PostActivity.class);
         context.startActivity(intent);
     }
 }

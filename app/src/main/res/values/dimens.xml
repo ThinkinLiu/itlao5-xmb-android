@@ -28,6 +28,8 @@
 
     <dimen name="item_feed_item_icon">36dp</dimen>
 
+    <dimen name="post_icon">60dp</dimen>
+
     <dimen name="item_comment_icon">32dp</dimen>
     <!-- item_feed_item_icon + space + item_comment_icon + space_2x -->
     <dimen name="feed_detail_comment_divider_left_padding">80dp</dimen>

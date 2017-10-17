@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.e7yoo.e7.PostActivity">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <EditText
+        android:id="@+id/input_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/space_6x"
+        android:layout_marginLeft="@dimen/space_4x"
+        android:layout_marginRight="@dimen/space_4x"
+        android:background="@drawable/rounded_corners_tag_white"
+        android:hint="@string/input_hint"
+        android:maxLength="20"
+        android:maxLines="4"
+        android:paddingTop="@dimen/space_2x"
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingRight="@dimen/space_4x"
+        android:paddingBottom="@dimen/space_2x"
+        android:text=""
+        android:textColor="@color/text"
+        android:textColorHint="@color/text_l"
+        android:textSize="@dimen/size_xl" />
+
+    <TextView
+        android:id="@+id/input_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/space_3x"
+        android:layout_marginLeft="@dimen/space_6x"
+        android:text=""
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_m" />
+</LinearLayout>
