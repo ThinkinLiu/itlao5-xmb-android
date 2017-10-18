@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.util.TimeUtil;
@@ -125,7 +126,9 @@ public class PushMsgRefreshRecyclerAdapter extends RecyclerAdapter {
             if(TextUtils.isEmpty(icon)) {
                 viewHolderPushMsg.itemMsgIcon.setVisibility(View.GONE);
             } else {
-                Glide.with(mContext).load(icon).placeholder(R.mipmap.log_e7yoo_transport).into(viewHolderPushMsg.itemMsgIcon);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.log_e7yoo_transport);
+                Glide.with(mContext).load(icon).apply(options).into(viewHolderPushMsg.itemMsgIcon);
                 viewHolderPushMsg.itemMsgIcon.setVisibility(View.VISIBLE);
             }
             String title = mMsgs.get(position).getTitle();

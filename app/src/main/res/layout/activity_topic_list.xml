@@ -7,13 +7,13 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context="com.e7yoo.e7.community.TopicDetailActivity">
+    tools:context="com.e7yoo.e7.community.TopicListActivity">
     <include
         android:id="@+id/titleBar"
         layout="@layout/titlebar" />
 
     <FrameLayout
-        android:id="@+id/topic_detail_layout"
+        android:id="@+id/topic_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </FrameLayout>

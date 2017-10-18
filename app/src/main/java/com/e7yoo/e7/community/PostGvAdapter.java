@@ -1,17 +1,16 @@
 package com.e7yoo.e7.community;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.model.GridItem;
 import com.umeng.comm.core.beans.ImageItem;
 
 import java.util.ArrayList;
@@ -21,23 +20,23 @@ import java.util.List;
  * Created by Administrator on 2017/10/10.
  */
 
-public class FeedItemGvAdapter extends BaseAdapter {
-    private List<ImageItem> mDatas = new ArrayList<>();
+public class PostGvAdapter extends BaseAdapter {
+    private ArrayList<String> mDatas = new ArrayList<>();
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private boolean mShowAdd;
-    public FeedItemGvAdapter(Context context, List<ImageItem> datas, boolean... showAdd) {
+    public PostGvAdapter(Context context, List<String> datas) {
         mLayoutInflater = LayoutInflater.from(context);
         mContext = context;
         if(datas != null && datas.size() > 0) {
             mDatas.addAll(datas);
         }
-        if(showAdd != null && showAdd.length > 0) {
-            this.mShowAdd = showAdd[0];
-        }
     }
 
-    public void refreshDatas(List<ImageItem> datas) {
+    public ArrayList<String> getDatas() {
+        return mDatas;
+    }
+
+    public void refreshDatas(List<String> datas) {
         mDatas.clear();
         if(datas != null && datas.size() > 0) {
             mDatas.addAll(datas);
@@ -47,11 +46,11 @@ public class FeedItemGvAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mDatas.size() >= 9 ? 9 : mDatas.size() + (mShowAdd ? 1 : 0);
+        return mDatas.size() >= 9 ? 9 : mDatas.size() + 1;
     }
 
     @Override
-    public ImageItem getItem(int i) {
+    public String getItem(int i) {
         return mDatas.size() > i ? mDatas.get(i) : null;
     }
 
@@ -71,14 +70,14 @@ public class FeedItemGvAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        final ImageItem item = getItem(i);
-        if(item != null) {
+        final String str = getItem(i);
+        if(!TextUtils.isEmpty(str)) {
             RequestOptions options = new RequestOptions();
             options.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
-            Glide.with(mContext).load(item.thumbnail)
+            Glide.with(mContext).load(str)
                     .apply(options).into(holder.iv);
         } else {
-            holder.iv.setImageResource(mShowAdd ? R.mipmap.circle_img_add : 0);
+            Glide.with(mContext).load(R.mipmap.circle_img_add).into(holder.iv);
         }
         return view;
     }

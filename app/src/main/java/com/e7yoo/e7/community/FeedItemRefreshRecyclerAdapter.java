@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
@@ -66,12 +67,12 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void setUser(ViewHolderFeedItem viewHolderFeedItem, FeedItem item) {
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.log_e7yoo_transport)
+                .error(R.mipmap.log_e7yoo_transport);
         Glide.with(mContext)
                 .load(item.creator.iconUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.mipmap.log_e7yoo_transport)
-                .error(R.mipmap.log_e7yoo_transport)
-                .override(124, 124)
+                .apply(options)
                 .into(viewHolderFeedItem.userIcon);
         int sexIcon = R.mipmap.sex_unknow_selected;
         switch (item.creator.gender) {

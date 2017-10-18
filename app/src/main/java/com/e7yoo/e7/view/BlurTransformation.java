@@ -19,6 +19,8 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.target.Target;
 
+import java.security.MessageDigest;
+
 /**
  * Georgia Blur Transformation
  * <p>
@@ -36,6 +38,11 @@ public class BlurTransformation extends BitmapTransformation {
     private float mSampling = DEFAULT_SAMPLING;
     private float mRadius;
     private int mColor;
+
+    @Override
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
+
+    }
 
     public static class Builder {
 
@@ -195,12 +202,12 @@ public class BlurTransformation extends BitmapTransformation {
      *
      * @return A string that uniquely identifies this transformation.
      */
-    @Override
+    /*@Override
     public String getId() {
         StringBuilder sb = new StringBuilder(ID);
         sb
                 .append('-').append(mRadius)
                 .append('-').append(mColor);
         return sb.toString();
-    }
+    }*/
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.TastyToastUtil;
@@ -34,50 +35,60 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
     @Override
     protected void setHolderView(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ViewHolderTopic) {
+        if (holder instanceof ViewHolderTopic) {
             final ViewHolderTopic viewHolder = (ViewHolderTopic) holder;
             final Topic item = (Topic) mDatas.get(position);
             if (item != null) {
-                Glide.with(mContext)
-                        .load(item.icon)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                RequestOptions options = new RequestOptions();
+                options.diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.log_e7yoo_transport)
                         .error(R.mipmap.log_e7yoo_transport)
-                        .override(124, 124)
+                        .override(124, 124);
+                Glide.with(mContext)
+                        .load(item.icon)
+                        .apply(options)
                         .into(viewHolder.topicIcon);
                 viewHolder.nameTv.setText(item.name.replace("#", ""));
                 viewHolder.descTv.setText(item.desc);
-                if(item.isFocused) {
-                    viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
-                    viewHolder.attentionIv.setOnClickListener(null);
+                if (mContext instanceof TopicListActivity) {
+                    viewHolder.attentionIv.setVisibility(View.GONE);
                 } else {
-                    viewHolder.attentionIv.setImageResource(R.drawable.circle_attention_selector);
-                    viewHolder.attentionIv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            item.isFocused = true;
-                            viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
-                            viewHolder.attentionIv.setOnClickListener(null);
-                            E7App.getCommunitySdk().followTopic(item, new Listeners.SimpleFetchListener<Response>() {
-                                @Override
-                                public void onComplete(Response response) {
-                                    switch (response.errCode) {
-                                        case ErrorCode.NO_ERROR:
-                                            break;
-                                        case ErrorCode.UNLOGIN_ERROR:
-                                            TastyToastUtil.toast(mContext, R.string.circle_no_login);
-                                        default:
-                                            item.isFocused = false;
-                                            notifyDataSetChanged();
-                                            break;
-                                    }
-                                }
-                            });
-                        }
-                    });
+                    initAttentionIv(viewHolder, item);
                 }
             }
             addClickListener(viewHolder.itemView, position);
+        }
+    }
+
+    private void initAttentionIv(final ViewHolderTopic viewHolder, final Topic item) {
+        if (item.isFocused) {
+            viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
+            viewHolder.attentionIv.setOnClickListener(null);
+        } else {
+            viewHolder.attentionIv.setImageResource(R.drawable.circle_attention_selector);
+            viewHolder.attentionIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    item.isFocused = true;
+                    viewHolder.attentionIv.setImageResource(R.mipmap.circle_attentioned);
+                    viewHolder.attentionIv.setOnClickListener(null);
+                    E7App.getCommunitySdk().followTopic(item, new Listeners.SimpleFetchListener<Response>() {
+                        @Override
+                        public void onComplete(Response response) {
+                            switch (response.errCode) {
+                                case ErrorCode.NO_ERROR:
+                                    break;
+                                case ErrorCode.UNLOGIN_ERROR:
+                                    TastyToastUtil.toast(mContext, R.string.circle_no_login);
+                                default:
+                                    item.isFocused = false;
+                                    notifyDataSetChanged();
+                                    break;
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -85,7 +96,7 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mOnItemClickListener != null) {
+                if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(view, position);
                 }
             }
@@ -93,7 +104,7 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if(mOnItemLongClickListener != null) {
+                if (mOnItemLongClickListener != null) {
                     return mOnItemLongClickListener.onItemLongClick(view, position);
                 }
                 return false;
@@ -101,23 +112,23 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         });
     }
 
-    /**
-     * 消息item
-     */
-    public static class ViewHolderTopic extends RecyclerView.ViewHolder {
+/**
+ * 消息item
+ */
+public static class ViewHolderTopic extends RecyclerView.ViewHolder {
 
-        public ImageView topicIcon;
-        public TextView nameTv;
-        public TextView descTv;
-        public ImageView attentionIv;
+    public ImageView topicIcon;
+    public TextView nameTv;
+    public TextView descTv;
+    public ImageView attentionIv;
 
-        public ViewHolderTopic(View view) {
-            super(view);
-            topicIcon = view.findViewById(R.id.item_topic_icon);
-            nameTv = view.findViewById(R.id.item_topic_name);
-            descTv = view.findViewById(R.id.item_topic_desc);
-            attentionIv = view.findViewById(R.id.item_topic_attention);
-        }
+    public ViewHolderTopic(View view) {
+        super(view);
+        topicIcon = view.findViewById(R.id.item_topic_icon);
+        nameTv = view.findViewById(R.id.item_topic_name);
+        descTv = view.findViewById(R.id.item_topic_desc);
+        attentionIv = view.findViewById(R.id.item_topic_attention);
     }
+}
 
 }

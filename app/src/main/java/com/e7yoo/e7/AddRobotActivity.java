@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
@@ -89,7 +90,9 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
                 setTitleTv(R.string.add_robot_title_robot);
                 saveTv.setText(R.string.save);
                 int resIcon = RobotUtil.getDefaultIconResId(mRobot);
-                Glide.with(this).load(mRobot.getIcon()).placeholder(resIcon).error(resIcon).into(iconIv);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(resIcon).error(resIcon);
+                Glide.with(this).load(mRobot.getIcon()).apply(options).into(iconIv);
                 iconIv.setTag(R.id.add_robot_icon_iv, mRobot.getIcon());
                 String name = RobotUtil.getString(mRobot.getName());
                 if(getString(R.string.mengmeng).equals(name)) {
@@ -267,7 +270,9 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         if (mFlag == 0) {
             String path = result.getImage().getCompressPath();
             int resIcon = RobotUtil.getDefaultIconResId(mRobot);
-            Glide.with(this).load(path).placeholder(resIcon).error(resIcon).into(iconIv);
+            RequestOptions options = new RequestOptions();
+            options.placeholder(resIcon).error(resIcon);
+            Glide.with(this).load(path).apply(options).into(iconIv);
             iconIv.setTag(R.id.add_robot_icon_iv, path);
         } else {
             String path = result.getImage().getOriginalPath();

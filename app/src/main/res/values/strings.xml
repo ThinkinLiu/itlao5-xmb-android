@@ -288,5 +288,11 @@
     <string name="update_failed">修改失败</string>
     <string name="update_icon_failed">头像修改失败</string>
     <string name="post">发布</string>
+    <string name="post_topic_hint">选个话题吧...</string>
+    <string name="post_content_hint">想分享点啥？</string>
+    <string name="post_topic_empty">选个主题吧</string>
+    <string name="post_content_empty">你想说点啥呢</string>
+    <string name="post_failed">发布失败</string>
+    <string name="posting">发布中...</string>
 
 </resources>

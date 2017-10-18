@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -14,35 +15,75 @@
         android:id="@+id/titleBar"
         layout="@layout/titlebar" />
 
+    <LinearLayout
+        android:id="@+id/post_topic_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_selector"
+        android:orientation="horizontal"
+        android:padding="@dimen/space_3x">
+
+        <TextView
+            android:id="@+id/post_topic_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/space"
+            android:layout_marginRight="@dimen/space_4x"
+            android:gravity="center_vertical"
+            android:hint="@string/post_topic_hint"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textColor="@color/text"
+            android:textColorHint="@color/text_l"
+            android:textSize="@dimen/size_xl" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textColor="@color/text_h"
+            android:textSize="@dimen/size_xl" />
+
+        <ImageView
+            android:layout_width="@dimen/array"
+            android:layout_height="@dimen/array"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+    </LinearLayout>
+
     <EditText
-        android:id="@+id/input_edit"
+        android:id="@+id/post_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/space_6x"
-        android:layout_marginLeft="@dimen/space_4x"
-        android:layout_marginRight="@dimen/space_4x"
         android:background="@drawable/rounded_corners_tag_white"
-        android:hint="@string/input_hint"
-        android:maxLength="20"
-        android:maxLines="4"
-        android:paddingTop="@dimen/space_2x"
+        android:gravity="top|left"
+        android:hint="@string/post_content_hint"
+        android:maxLength="300"
+        android:maxLines="5"
+        android:minLines="5"
+        android:paddingBottom="@dimen/space_2x"
         android:paddingLeft="@dimen/space_4x"
         android:paddingRight="@dimen/space_4x"
-        android:paddingBottom="@dimen/space_2x"
+        android:paddingTop="@dimen/space_2x"
         android:text=""
         android:textColor="@color/text"
         android:textColorHint="@color/text_l"
         android:textSize="@dimen/size_xl" />
 
-    <TextView
-        android:id="@+id/input_hint"
+    <com.e7yoo.e7.view.CircleGridView
+        android:id="@+id/post_gv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/space_3x"
-        android:layout_marginLeft="@dimen/space_6x"
-        android:text=""
-        android:textColor="@color/text_l"
-        android:textSize="@dimen/size_m" />
+        android:horizontalSpacing="@dimen/space"
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingRight="@dimen/space_4x"
+        android:paddingTop="@dimen/space"
+        android:verticalSpacing="@dimen/space"
+        android:numColumns="4" />
 </LinearLayout>

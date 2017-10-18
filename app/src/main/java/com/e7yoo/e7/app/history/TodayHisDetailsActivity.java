@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.TodayHisEntity;
@@ -53,12 +54,14 @@ public class TodayHisDetailsActivity extends BaseActivity implements OnClickList
 
 	@Override
 	protected void initSettings() {
-			Glide.with(this).load(entity.getPic())
-					.override((int) getResources().getDimension(R.dimen.list_news_width),
-							(int) getResources().getDimension(R.dimen.list_news_height))
-					.centerCrop().placeholder(R.mipmap.log_e7yoo_transport).into(iv);
-			des.setText(entity.getDes());
-			content.setText("　　" + entity.getContent().replace("\n", "\n\n　　"));
+		RequestOptions options = new RequestOptions();
+		options.override((int) getResources().getDimension(R.dimen.list_news_width),
+				(int) getResources().getDimension(R.dimen.list_news_height))
+				.centerCrop().placeholder(R.mipmap.log_e7yoo_transport);
+		Glide.with(this).load(entity.getPic())
+				.apply(options).into(iv);
+		des.setText(entity.getDes());
+		content.setText("　　" + entity.getContent().replace("\n", "\n\n　　"));
 
 	}
 
@@ -72,7 +75,9 @@ public class TodayHisDetailsActivity extends BaseActivity implements OnClickList
 		switch (v.getId()) {
 		case R.id.pic:
 			if(iv_big.getVisibility() == View.GONE) {
-				Glide.with(this).load(entity.getPic()).placeholder(R.mipmap.log_e7yoo_transport).into(iv_big);
+				RequestOptions options = new RequestOptions();
+				options.placeholder(R.mipmap.log_e7yoo_transport);
+				Glide.with(this).load(entity.getPic()).apply(options).into(iv_big);
 				iv_big.setVisibility(View.VISIBLE);
 			}
 			break;

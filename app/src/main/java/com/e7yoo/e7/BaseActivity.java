@@ -337,7 +337,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected ProgressDialogEx progressDialogEx;
     protected void showProgress(int loading){
-        progressDialogEx = ProgressDialogEx.show(BaseActivity.this, "", getString(loading), true, 30 * 1000, new ProgressDialogEx.OnCancelListener2() {
+        showProgress(loading, 30 * 1000);
+    }
+    protected void showProgress(int loading, int time){
+        progressDialogEx = ProgressDialogEx.show(BaseActivity.this, "", getString(loading), true, time, new ProgressDialogEx.OnCancelListener2() {
             @Override
             public void onCancel(DialogInterface dialog) {
             }

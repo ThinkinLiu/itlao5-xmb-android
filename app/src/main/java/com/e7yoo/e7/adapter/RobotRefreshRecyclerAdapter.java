@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.util.DebugUtil;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.Robot;
@@ -78,7 +79,9 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
             ViewHolderRobot viewHolderRobot = (ViewHolderRobot) holder;
             int resIcon = RobotUtil.getDefaultIconResId(robot);
             if(robot.getIcon() != null) {
-                Glide.with(mContext).load(robot.getIcon()).placeholder(resIcon).error(resIcon).into(viewHolderRobot.robotIcon);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(resIcon).error(resIcon);
+                Glide.with(mContext).load(robot.getIcon()).apply(options).into(viewHolderRobot.robotIcon);
             } else {
                 viewHolderRobot.robotIcon.setImageResource(resIcon);
             }

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.TodayHisEntity;
@@ -49,10 +50,12 @@ public class PushMsgDetailsActivity extends BaseActivity implements OnClickListe
 		if (getIntent() != null) {
 			entity = (PushMsg) getIntent().getSerializableExtra("PushMsg");
 			if(entity != null) {
+				RequestOptions options = new RequestOptions();
+				options.override((int) getResources().getDimension(R.dimen.list_news_width),
+						(int) getResources().getDimension(R.dimen.list_news_height))
+						.centerCrop().placeholder(R.mipmap.log_e7yoo_transport);
 				Glide.with(this).load(entity.getContent_pic_url())
-						.override((int) getResources().getDimension(R.dimen.list_news_width),
-								(int) getResources().getDimension(R.dimen.list_news_height))
-						.centerCrop().placeholder(R.mipmap.log_e7yoo_transport).into(iv);
+						.apply(options).into(iv);
 				title.setText(entity.getTitle());
 				content.setText("　　" + entity.getContent().replace("\n", "\n\n　　"));
 				if(!TextUtils.isEmpty(entity.getContent_url())) {
@@ -81,7 +84,9 @@ public class PushMsgDetailsActivity extends BaseActivity implements OnClickListe
 		switch (v.getId()) {
 		case R.id.pic:
 			if(iv_big.getVisibility() == View.GONE) {
-				Glide.with(this).load(entity.getContent_pic_url()).placeholder(R.mipmap.log_e7yoo_transport).into(iv_big);
+				RequestOptions options = new RequestOptions();
+				options.placeholder(R.mipmap.log_e7yoo_transport);
+				Glide.with(this).load(entity.getContent_pic_url()).apply(options).into(iv_big);
 				iv_big.setVisibility(View.VISIBLE);
 			}
 			break;

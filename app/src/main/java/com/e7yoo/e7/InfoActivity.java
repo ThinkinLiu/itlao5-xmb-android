@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
@@ -90,7 +91,9 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             }
             setTitleTv(R.string.add_robot_title_robot);
             int resIcon = R.mipmap.icon_me;
-            Glide.with(this).load(mCommUser.iconUrl).placeholder(resIcon).error(resIcon).into(iconIv);
+            RequestOptions options = new RequestOptions();
+            options.placeholder(resIcon).error(resIcon);
+            Glide.with(this).load(mCommUser.iconUrl).apply(options).into(iconIv);
             iconIv.setTag(R.id.info_icon_iv, mCommUser);
             String name = RobotUtil.getString(mCommUser.name);
             nameTv.setText(name);
@@ -253,7 +256,9 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                 public void onComplete(PortraitUploadResponse portraitUploadResponse) {
                     String mIconUrl = portraitUploadResponse.mIconUrl;
                     if(portraitUploadResponse.errCode == ErrorCode.NO_ERROR && !TextUtils.isEmpty(mIconUrl)) {
-                        Glide.with(InfoActivity.this).load(mIconUrl).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(iconIv);
+                        RequestOptions options = new RequestOptions();
+                        options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+                        Glide.with(InfoActivity.this).load(mIconUrl).apply(options).into(iconIv);
                         iconIv.setTag(R.id.info_icon_iv, mIconUrl);
                         mCommUser.iconUrl = mIconUrl;
                         CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);

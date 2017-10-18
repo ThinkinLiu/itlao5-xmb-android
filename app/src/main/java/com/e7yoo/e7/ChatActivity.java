@@ -31,6 +31,8 @@ import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
@@ -228,9 +230,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             if(!TextUtils.isEmpty(mRobot.getBg())) {
                 int bgblur = mRobot.getBgblur();
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && bgblur > 0) {
-                    Glide.with(this).load(mRobot.getBg()).crossFade(1000).bitmapTransform(new BlurTransformation(this, bgblur)).into(bgImage);
+                    RequestOptions options = new RequestOptions();
+                    options.bitmapTransform(new BlurTransformation(this, bgblur));
+                    Glide.with(this).load(mRobot.getBg()).apply(options).transition(DrawableTransitionOptions.withCrossFade(1000)).into(bgImage);
                 } else {
-                    Glide.with(this).load(mRobot.getBg()).crossFade(1000).into(bgImage);
+                    Glide.with(this).load(mRobot.getBg()).transition(DrawableTransitionOptions.withCrossFade(1000)).into(bgImage);
                 }
             }
             if(mRvAdapter != null) {
@@ -866,7 +870,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_ZYJ);
                 } else if(msg.getUrl().startsWith(MsgUrlType.gif)) {
                     // Gif需要使用source缓存策略，参考http://blog.csdn.net/u010316858/article/details/49665107
-                    Glide.with(ChatActivity.this).load(msg.getUrl().replace(MsgUrlType.gif, "")).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(bigPic);
+                    RequestOptions options = new RequestOptions();
+                    options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                    Glide.with(ChatActivity.this).asGif().load(msg.getUrl().replace(MsgUrlType.gif, "")).apply(options).into(bigPic);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_GIF);
                 } else if(msg.getUrl().startsWith(MsgUrlType.big_pic)) {
                     Glide.with(ChatActivity.this).load(msg.getUrl().replace(MsgUrlType.big_pic, "")).into(bigPic);

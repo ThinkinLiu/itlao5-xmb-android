@@ -56,4 +56,19 @@
         <item name="android:windowEnterAnimation">@anim/share_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/share_dialog_out</item>
     </style>
+
+
+
+
+    <style name="actionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@android:color/primary_text_light</item>
+        <item name="actionBarSize">@dimen/titlebar_height</item>
+    </style>
+
+    <style name="customTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="actionBarTheme">@style/actionBarTheme</item>
+        <item name="colorPrimary">@color/titlebar_bg</item>
+        <item name="actionBarSize">@dimen/titlebar_height</item>
+        <item name="colorPrimaryDark">#CCa500</item>
+    </style>
 </resources>

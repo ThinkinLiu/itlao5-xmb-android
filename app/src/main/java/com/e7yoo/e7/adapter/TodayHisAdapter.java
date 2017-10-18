@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.TodayHisEntity;
 import com.e7yoo.e7.util.CommonUtil;
@@ -79,10 +80,12 @@ public class TodayHisAdapter extends BaseAdapter implements HeaderAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		TodayHisEntity entity = mTodayHisEntity.get(position);
+		RequestOptions options = new RequestOptions();
+		options.override((int) mContext.getResources().getDimension(R.dimen.list_news_width),
+				(int) mContext.getResources().getDimension(R.dimen.list_news_height))
+				.centerCrop().placeholder(R.mipmap.log_e7yoo_transport);
 		Glide.with(mContext).load(entity.getPic())
-				.override((int) mContext.getResources().getDimension(R.dimen.list_news_width),
-						(int) mContext.getResources().getDimension(R.dimen.list_news_height))
-				.centerCrop().placeholder(R.mipmap.log_e7yoo_transport).into(holder.picIv);
+				.apply(options).into(holder.picIv);
 		holder.titleTv.setText(entity.getTitle());
 		holder.authorTv.setText("");
 		String lunar = entity.getLunar();

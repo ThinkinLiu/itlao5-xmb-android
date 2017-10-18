@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.model.PrivateMsg;
@@ -159,7 +161,9 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             }
             viewHolderSend.itemMsgContent.setText(mMsgs.get(position).getContent());
             if(mMe != null && mMe.getIcon() != null) {
-                Glide.with(mContext).load(mRobot.getIcon()).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(viewHolderSend.itemMsgIcon);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+                Glide.with(mContext).load(mRobot.getIcon()).apply(options).into(viewHolderSend.itemMsgIcon);
             } else {
                 viewHolderSend.itemMsgIcon.setImageResource(R.mipmap.icon_me);
             }
@@ -183,7 +187,9 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             viewHolderRev.itemMsgContent.setText(mMsgs.get(position).getContent());
             int resIcon = RobotUtil.getDefaultIconResId(mRobot);
             if(mRobot != null && mRobot.getIcon() != null) {
-                Glide.with(mContext).load(mRobot.getIcon()).placeholder(resIcon).error(resIcon).into(viewHolderRev.itemMsgIcon);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(resIcon).error(resIcon);
+                Glide.with(mContext).load(mRobot.getIcon()).apply(options).into(viewHolderRev.itemMsgIcon);
             } else {
                 viewHolderRev.itemMsgIcon.setImageResource(resIcon);
             }

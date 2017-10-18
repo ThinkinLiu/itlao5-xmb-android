@@ -15,12 +15,14 @@ import com.e7yoo.e7.PushMsgDetailsActivity;
 import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
+import com.e7yoo.e7.community.TopicListActivity;
 import com.e7yoo.e7.game.GameActivity;
 import com.e7yoo.e7.game.GameLandscapeActivity;
 import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
 import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.beans.Topic;
 
 /**
  * Created by Administrator on 2017/8/31.
@@ -123,5 +125,11 @@ public class ActivityUtil {
     public static void toPostActivity(Context context) {
         Intent intent = new Intent(context, PostActivity.class);
         context.startActivity(intent);
+    }
+
+    public static void toTopicListActivityForResult(Activity activity, Topic topic, int requestCode) {
+        Intent intent = new Intent(activity, TopicListActivity.class);
+        intent.putExtra("Topic", topic);
+        activity.startActivityForResult(intent, requestCode);
     }
 }

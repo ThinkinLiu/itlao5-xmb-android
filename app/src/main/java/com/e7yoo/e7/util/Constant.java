@@ -22,6 +22,7 @@ public class Constant {
     public static final int EVENT_BUS_CIRCLE_REGISTER = 1002;
     public static final int EVENT_BUS_CIRCLE_LOGOUT = 1003;
     public static final int EVENT_BUS_COMMUSER_MODIFY = 1004;
+    public static final int EVENT_BUS_POST_FEED_SUCCESS= 1005;
 
     public static final String FILE_ROBOT_LIST = "file_robot_list";
     public static final String FILE_FAVORITES_NEWS_LIST = "file_favorites_news_list";

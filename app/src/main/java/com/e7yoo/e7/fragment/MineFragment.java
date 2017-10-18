@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.AboutActivity;
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.InfoActivity;
@@ -117,7 +118,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         }
         if(mUser != null && !TextUtils.isEmpty(mUser.id)) {
             // 用户名在MainActivity中设置（setTitleText方法）
-            Glide.with(getActivity()).load(mUser.iconUrl).placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me).into(mHeadIconIv);
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+            Glide.with(getActivity()).load(mUser.iconUrl).apply(options).into(mHeadIconIv);
             mine_label.setText(mUser.name);
         } else {
             mHeadIconIv.setImageResource(R.mipmap.icon_me);

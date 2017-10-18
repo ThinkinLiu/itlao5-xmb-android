@@ -1,5 +1,6 @@
 package com.e7yoo.e7.community;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
 import android.view.View;
@@ -33,9 +34,16 @@ public class TopicListFragment extends ListFragment {
             @Override
             public void onItemClick(View view, int position) {
                 if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof Topic) {
-                    Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
-                    intent.putExtra("Topic", (Topic) mRvAdapter.getItem(position));
-                    ActivityUtil.toActivity(getActivity(), intent);
+                    if(getActivity() instanceof TopicListActivity) {
+                        Intent intent = new Intent();
+                        intent.putExtra("Topic", (Topic) mRvAdapter.getItem(position));
+                        getActivity().setResult(Activity.RESULT_OK, intent);
+                        getActivity().finish();
+                    } else {
+                        Intent intent = new Intent(getActivity(), TopicDetailActivity.class);
+                        intent.putExtra("Topic", (Topic) mRvAdapter.getItem(position));
+                        ActivityUtil.toActivity(getActivity(), intent);
+                    }
                 }
             }
         });
