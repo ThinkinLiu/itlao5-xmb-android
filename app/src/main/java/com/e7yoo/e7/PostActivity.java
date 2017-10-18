@@ -1,20 +1,14 @@
 package com.e7yoo.e7;
 
-import android.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -23,33 +17,21 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.Poi;
-import com.e7yoo.e7.community.FeedItemGvAdapter;
 import com.e7yoo.e7.community.PostGvAdapter;
-import com.e7yoo.e7.service.E7Service;
+import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.Loc;
 import com.e7yoo.e7.util.TastyToastUtil;
-import com.jph.takephoto.app.TakePhoto;
-import com.jph.takephoto.app.TakePhotoImpl;
-import com.jph.takephoto.model.InvokeParam;
-import com.jph.takephoto.model.TContextWrap;
-import com.jph.takephoto.model.TResult;
-import com.jph.takephoto.permission.InvokeListener;
-import com.jph.takephoto.permission.PermissionManager;
-import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
-import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.beans.Topic;
-import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
-import com.umeng.comm.core.sdkmanager.ImagePickerManager;
+import com.umeng.comm.core.nets.responses.ImageResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,15 +140,19 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                     if(mBDLocation != null) {
                         feedItem.locationAddr = mBDLocation.getAddrStr();
                     }
-                    if (mGvAdapter.getDatas() != null) {
+                    /*if (mGvAdapter.getDatas() != null) {
                         for (String url : mGvAdapter.getDatas()) {
                             if(!TextUtils.isEmpty(url)) {
                                 // 图片地址
                                 feedItem.imageUrls.add(new ImageItem("", "", url));
                             }
                         }
+                    }*/
+                    if(Net.isNetWorkConnected(this)) {
+                        uploadImg(feedItem, mGvAdapter.getDatas(), 0);
+                    } else {
+                        TastyToastUtil.toast(this, R.string.net_no);
                     }
-                    post(feedItem);
                 }
                 break;
             case R.id.post_topic_layout:
@@ -258,12 +244,45 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    private void uploadImg(final FeedItem feedItem, final List<String> path, final int position) {
+        if(position == 0) {
+            showProgress(R.string.posting, 2 * 60 * 1000);
+        }
+        if(path == null || position >= path.size()) {
+            post(feedItem);
+            return;
+        } else if(TextUtils.isEmpty(path.get(position))) {
+            uploadImg(feedItem, path, position + 1);
+            return;
+        }
+        E7App.getCommunitySdk().uploadImage(path.get(position), new Listeners.SimpleFetchListener<ImageResponse>() {
+            @Override
+            public void onComplete(ImageResponse imageResponse) {
+                if(imageResponse == null || imageResponse.result == null) {
+                    TastyToastUtil.toast(PostActivity.this, R.string.post_failed);
+                    dismissProgress();
+                    return;
+                }
+                if(feedItem.imageUrls == null) {
+                    feedItem.imageUrls = new ArrayList<>();
+                }
+                feedItem.imageUrls.add(imageResponse.result);
+                uploadImg(feedItem, path, position + 1);
+            }
+        });
+    }
+
     private void post(final FeedItem feedItem) {
-        showProgress(R.string.posting, 2 * 60 * 1000);
         E7App.getCommunitySdk().postFeed(feedItem, new Listeners.SimpleFetchListener<FeedItemResponse>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
             @Override
             public void onComplete(FeedItemResponse feedItemResponse) {
                 if(feedItemResponse.errCode == 0 && feedItemResponse.result != null) {
+                    TastyToastUtil.toast(PostActivity.this, R.string.post_success);
                     EventBusUtil.post(Constant.EVENT_BUS_POST_FEED_SUCCESS, feedItemResponse.result);
                     finish();
                 } else {

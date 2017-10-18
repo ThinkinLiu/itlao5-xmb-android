@@ -294,6 +294,7 @@
     <string name="post_content_hint">想分享点啥？</string>
     <string name="post_topic_empty">选个主题吧</string>
     <string name="post_content_empty">你想说点啥呢</string>
+    <string name="post_success">发布成功</string>
     <string name="post_failed">发布失败</string>
     <string name="posting">发布中...</string>
     <string name="post_loc">所在位置</string>

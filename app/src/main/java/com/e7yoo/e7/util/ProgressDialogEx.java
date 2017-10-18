@@ -119,7 +119,7 @@ public class ProgressDialogEx implements DialogInterface {
                 }
     		} catch (Exception e) {
     		}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
     }
 
