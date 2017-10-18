@@ -23,6 +23,7 @@ import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Topic;
+import com.umeng.comm.core.utils.CommonUtils;
 
 /**
  * Created by Administrator on 2017/8/31.
@@ -122,8 +123,9 @@ public class ActivityUtil {
         context.startActivity(intent);
     }
 
-    public static void toPostActivity(Context context) {
+    public static void toPostActivity(Context context, Topic topic) {
         Intent intent = new Intent(context, PostActivity.class);
+        intent.putExtra("Topic", topic);
         context.startActivity(intent);
     }
 
@@ -131,5 +133,13 @@ public class ActivityUtil {
         Intent intent = new Intent(activity, TopicListActivity.class);
         intent.putExtra("Topic", topic);
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    public static void toPostOrLogin(Activity activity, Topic topic) {
+        if(CommonUtils.isLogin(activity)) {
+            ActivityUtil.toPostActivity(activity, topic);
+        } else {
+            ActivityUtil.toLogin(activity);
+        }
     }
 }

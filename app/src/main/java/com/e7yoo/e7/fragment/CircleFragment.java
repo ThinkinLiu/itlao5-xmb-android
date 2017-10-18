@@ -130,8 +130,11 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
             case R.id.circle_plate:
                 setSelectedTv(mPlateTv);
                 mViewPager.setCurrentItem(4);
+                break;
             case R.id.circle_post:
-                toPost();
+                if(getActivity() != null) {
+                    ActivityUtil.toPostOrLogin(getActivity(), null);
+                }
                 break;
         }
     }
@@ -140,16 +143,6 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     public void setPostIvVisibility(int visibility) {
         if(mPostIv != null) {
             mPostIv.setVisibility(visibility);
-        }
-    }
-
-    protected void toPost() {
-        if(getActivity() != null && !isDetached()) {
-            if(CommonUtils.isLogin(getActivity())) {
-                ActivityUtil.toPostActivity(getActivity());
-            } else {
-                ActivityUtil.toLogin(getActivity());
-            }
         }
     }
 

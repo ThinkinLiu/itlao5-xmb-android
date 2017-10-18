@@ -66,24 +66,36 @@ public class PostGvAdapter extends BaseAdapter {
             holder = new ViewHolder();
             view = mLayoutInflater.inflate(R.layout.item_feed_item_gv, null, false);
             holder.iv = view.findViewById(R.id.item_feed_item_gv_iv);
+            holder.deleteIv = view.findViewById(R.id.item_feed_item_gv_delete_iv);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
         final String str = getItem(i);
-        if(!TextUtils.isEmpty(str)) {
+        if(str != null) {
             RequestOptions options = new RequestOptions();
             options.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
             Glide.with(mContext).load(str)
                     .apply(options).into(holder.iv);
+            holder.deleteIv.setVisibility(View.VISIBLE);
+            holder.deleteIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDatas.remove(i);
+                    notifyDataSetChanged();
+                }
+            });
         } else {
             Glide.with(mContext).load(R.mipmap.circle_img_add).into(holder.iv);
+            holder.deleteIv.setVisibility(View.GONE);
+            holder.deleteIv.setOnClickListener(null);
         }
         return view;
     }
 
     class ViewHolder{
         ImageView iv;
+        ImageView deleteIv;
     }
 
 }

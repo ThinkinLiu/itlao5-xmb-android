@@ -53,7 +53,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected String initTitle() {
-        return getString(R.string.post);
+        return getString(R.string.title_post);
     }
 
     @Override
@@ -83,9 +83,9 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         mImgGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(mGvAdapter != null && mGvAdapter.getItem(position) == null) {
+                if(mGvAdapter != null) {
                     if(mGvAdapter.getItem(position) == null) {
-                        photoPicker();
+                        photoPicker(mGvAdapter.getDatas());
                     } else {
                         photoPreview(mGvAdapter.getDatas(), position);
                     }
@@ -94,12 +94,13 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-    private void photoPicker() {
+    private void photoPicker(ArrayList<String> photoPaths) {
         PhotoPicker.builder()
                 .setPhotoCount(9)
                 .setShowCamera(true)
                 .setShowGif(true)
-                .setPreviewEnabled(false)
+                .setPreviewEnabled(true)
+                .setSelected(photoPaths)
                 .start(PostActivity.this, PhotoPicker.REQUEST_CODE);
     }
 

@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.Topic;
 
@@ -14,9 +17,10 @@ import com.umeng.comm.core.beans.Topic;
  * Created by andy on 2017/10/11.
  */
 
-public class TopicDetailActivity extends BaseActivity {
+public class TopicDetailActivity extends BaseActivity implements View.OnClickListener {
     private FragmentManager manager;
     private Topic mTopic;
+    protected ImageView mPostIv;
 
     @Override
     protected String initTitle() {
@@ -30,7 +34,7 @@ public class TopicDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        mPostIv = (ImageView) findViewById(R.id.circle_post);
     }
 
     @Override
@@ -57,7 +61,7 @@ public class TopicDetailActivity extends BaseActivity {
 
     @Override
     protected void initViewListener() {
-
+        mPostIv.setOnClickListener(this);
     }
 
 
@@ -65,5 +69,14 @@ public class TopicDetailActivity extends BaseActivity {
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.topic_detail_layout, fragment);
         transaction.commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.circle_post:
+                ActivityUtil.toPostOrLogin(this, mTopic);
+                break;
+        }
     }
 }
