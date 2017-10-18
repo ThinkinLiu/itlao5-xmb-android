@@ -238,7 +238,10 @@ public class MainActivity extends BaseActivity {
             Manifest.permission.INSTALL_PACKAGES,
             Manifest.permission.REQUEST_DELETE_PACKAGES,
             Manifest.permission.REQUEST_INSTALL_PACKAGES,
-            Manifest.permission.PACKAGE_USAGE_STATS
+            Manifest.permission.PACKAGE_USAGE_STATS,
+
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
 
     String NOTIFY_PERMISSIONS[] = {

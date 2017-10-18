@@ -145,6 +145,8 @@
     <string name="dialog_latlng_hint_title">提示</string>
     <string name="dialog_file_hint">您禁止了文件读写权限，将会影响聊天记录及语音功能的正常使用</string>
     <string name="dialog_file_hint_title">提示</string>
+    <string name="dialog_location_hint">您禁止了定位权限，将无法获取您的当前位置</string>
+    <string name="dialog_location_hint_title">提示</string>
     <string name="chat_voice_tv">按住 说话</string>
     <string name="chat_voice_tv_end">松开 发送</string>
     <string name="chat_voice_tv_cancel">松开 取消发送</string>
@@ -294,5 +296,6 @@
     <string name="post_content_empty">你想说点啥呢</string>
     <string name="post_failed">发布失败</string>
     <string name="posting">发布中...</string>
+    <string name="post_loc">所在位置</string>
 
 </resources>

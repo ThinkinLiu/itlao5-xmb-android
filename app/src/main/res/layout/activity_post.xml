@@ -90,4 +90,20 @@
         android:paddingRight="@dimen/space_10x"
         android:paddingTop="@dimen/space_2x"
         android:verticalSpacing="@dimen/space" />
+
+    <TextView
+        android:id="@+id/post_loc_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/circle_location_selector"
+        android:drawablePadding="@dimen/space_2x"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/space_2x"
+        android:paddingLeft="@dimen/space_5x"
+        android:paddingRight="@dimen/space_5x"
+        android:paddingTop="@dimen/space_2x"
+        android:text="@string/post_loc"
+        android:textColor="@color/text_selector"
+        android:textSize="@dimen/size_l" />
 </LinearLayout>

@@ -1,22 +1,37 @@
 package com.e7yoo.e7;
 
+import android.*;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.Poi;
 import com.e7yoo.e7.community.FeedItemGvAdapter;
 import com.e7yoo.e7.community.PostGvAdapter;
+import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
+import com.e7yoo.e7.util.Loc;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
@@ -48,6 +63,10 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     private EditText mInputEt;
     private GridView mImgGv;
     private PostGvAdapter mGvAdapter;
+    private TextView mLocationTv;
+    private BDLocation mBDLocation;
+
+    private Loc mLoc;
 
     public static final int REQUEST_TO_TOPIC_LIST = 100;
 
@@ -67,6 +86,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         mTopicTv = (TextView) findViewById(R.id.post_topic_tv);
         mInputEt = (EditText) findViewById(R.id.post_edit);
         mImgGv = (GridView) findViewById(R.id.post_gv);
+        mLocationTv = (TextView) findViewById(R.id.post_loc_tv);
     }
 
     @Override
@@ -75,6 +95,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         initTopic(getIntent());
         mGvAdapter = new PostGvAdapter(this, null);
         mImgGv.setAdapter(mGvAdapter);
+        Loc.getInstance(mLoc).startLocation(myListener);
     }
 
     @Override
@@ -92,6 +113,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         });
+        mLocationTv.setOnClickListener(this);
     }
 
     private void photoPicker(ArrayList<String> photoPaths) {
@@ -132,6 +154,10 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                     // 发表的用户
                     feedItem.creator = CommConfig.getConfig().loginedUser;
                     feedItem.type = feedItem.creator.permisson == CommUser.Permisson.ADMIN ? 1 : 0;
+                    feedItem.location = getLocation();
+                    if(mBDLocation != null) {
+                        feedItem.locationAddr = mBDLocation.getAddrStr();
+                    }
                     if (mGvAdapter.getDatas() != null) {
                         for (String url : mGvAdapter.getDatas()) {
                             if(!TextUtils.isEmpty(url)) {
@@ -150,7 +176,44 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                     ActivityUtil.toTopicListActivityForResult(this, null, REQUEST_TO_TOPIC_LIST);
                 }
                 break;
+            case R.id.post_loc_tv:
+                try {
+                    initPermission();
+                    if(mBDLocation == null || TextUtils.isEmpty(mBDLocation.getAddrStr())) {
+                        Loc.getInstance(mLoc).startLocation(myListener);
+                    } else {
+                        mLocationTv.setSelected(true);
+                        mLocationTv.setText(mBDLocation.getAddrStr());
+                    }
+                } catch(Throwable e) {
+                    Loc.getInstance(mLoc).startLocation(myListener);
+                }
+                break;
         }
+    }
+
+    private Location getLocation() {
+        if(mBDLocation == null) {
+            return null;
+        }
+        Location loc = null;
+        switch (mBDLocation.getLocType()) {
+            case BDLocation.TypeNetWorkLocation:
+            if(loc == null) {
+                loc = new Location(LocationManager.NETWORK_PROVIDER);
+            }
+            case BDLocation.TypeGpsLocation:
+            if(loc == null) {
+                loc = new Location(LocationManager.GPS_PROVIDER);
+            }
+            case BDLocation.TypeOffLineLocation:
+            if(loc == null) {
+                loc = new Location(LocationManager.PASSIVE_PROVIDER);
+            }
+        }
+        loc.setLatitude(mBDLocation.getLatitude());
+        loc.setLongitude(mBDLocation.getLongitude());
+        return loc;
     }
 
     private Topic checkTopic() {
@@ -172,7 +235,6 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    int i  =1;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -223,4 +285,100 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    private BDLocationListener myListener = new BDLocationListener() {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if(location != null) {
+                int locType = location.getLocType();
+                switch (locType) {
+                    case BDLocation.TypeNetWorkLocation:
+                    case BDLocation.TypeGpsLocation:
+                    case BDLocation.TypeOffLineLocation:
+                        mBDLocation = location;
+                        if(!TextUtils.isEmpty(location.getAddrStr())) {
+                            mLocationTv.setSelected(true);
+                            mLocationTv.setText(mBDLocation.getAddrStr());
+                        }
+                        Loc.getInstance(mLoc).stopLocation();
+                        break;
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        if(mLoc != null) {
+            Loc.getInstance(mLoc).stopLocation();
+            mLoc = null;
+        }
+        super.onDestroy();
+    }
+
+
+
+
+    String PERMISSIONS[] = {
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    String NOTIFY_PERMISSIONS[] = {
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+    /**
+     * android 6.0 以上需要动态申请权限
+     */
+    private void initPermission() {
+
+        ArrayList<String> toApplyList = new ArrayList<String>();
+
+        for (String perm : PERMISSIONS) {
+            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
+                toApplyList.add(perm);
+                // 进入到这里代表没有权限.
+            }
+        }
+        String tmpList[] = new String[toApplyList.size()];
+        if (!toApplyList.isEmpty()) {
+            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 123:
+                if (permissions == null || grantResults == null || permissions.length != grantResults.length) {
+                    return;
+                }
+                for (int i = 0; i < permissions.length; i++) {
+                    String permission = permissions[i];
+                    if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED
+                            && isNeedNotify(permission)) {
+                        CheckPermissionUtil.AskForPermission(PostActivity.this, R.string.dialog_location_hint_title, R.string.dialog_location_hint);
+                        return;
+                    }
+                }
+                break;
+        }
+    }
+
+    private boolean isNeedNotify(String permission) {
+        for(String p : NOTIFY_PERMISSIONS) {
+            if(p.equals(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
 }
