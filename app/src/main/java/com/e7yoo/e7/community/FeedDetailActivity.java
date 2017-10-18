@@ -64,7 +64,7 @@ public class FeedDetailActivity extends BaseActivity {
         mRvAdapter.refreshData(mFeedItem, mFeedItem.comments);
 
         E7App.getCommunitySdk().fetchFeedWithId(mFeedItem.id, mFetchListener);
-        mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
+        mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         E7App.getCommunitySdk().fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
     }
 
@@ -106,12 +106,12 @@ public class FeedDetailActivity extends BaseActivity {
                 mComments = commentResponse.result;
                 mRvAdapter.refreshComments(commentResponse.result);
                 if(commentResponse.result.size() > 0) {
-                    mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+                    mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
                 } else {
-                    mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
+                    mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
                 }
             } else {
-                mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
+                mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
             }
         }
     };
@@ -126,9 +126,9 @@ public class FeedDetailActivity extends BaseActivity {
                 mNextPageUrl = commentResponse.nextPageUrl;
                 mComments = commentResponse.result;
                 mRvAdapter.addItemBottom(commentResponse.result);
-                mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+                mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
             } else {
-                mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
+                mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more_comment, false);
             }
         }
     };
@@ -141,7 +141,7 @@ public class FeedDetailActivity extends BaseActivity {
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if (isNeedLoadMore(newState)) {
-                    mRvAdapter.setFooter(FeedItemRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
+                    mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                     if(mNextPageUrl == null) {
                         E7App.getCommunitySdk().fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
                     } else {
@@ -160,8 +160,8 @@ public class FeedDetailActivity extends BaseActivity {
 
             private boolean isNeedLoadMore(int newState) {
                 return !isFinishing() && newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mRvAdapter.getItemCount()
-                        && mRvAdapter.getFooter() != FeedItemRefreshRecyclerAdapter.FooterType.LOADING
-                        && mRvAdapter.getFooter() != FeedItemRefreshRecyclerAdapter.FooterType.NO_MORE;
+                        && mRvAdapter.getFooter() != FeedDetailRecyclerAdapter.FooterType.LOADING
+                        && mRvAdapter.getFooter() != FeedDetailRecyclerAdapter.FooterType.NO_MORE;
             }
         });
 

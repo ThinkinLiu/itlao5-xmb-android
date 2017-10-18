@@ -87,7 +87,7 @@
         android:numColumns="4"
         android:paddingBottom="@dimen/space_2x"
         android:paddingLeft="@dimen/space_5x"
-        android:paddingRight="@dimen/space_5x"
+        android:paddingRight="@dimen/space_10x"
         android:paddingTop="@dimen/space_2x"
         android:verticalSpacing="@dimen/space" />
 </LinearLayout>

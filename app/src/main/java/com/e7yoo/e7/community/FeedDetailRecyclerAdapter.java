@@ -1,11 +1,13 @@
 package com.e7yoo.e7.community;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.util.CommonUtil;
@@ -20,8 +23,12 @@ import com.e7yoo.e7.util.TimeUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.ImageItem;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import me.iwf.photopicker.PhotoPreview;
 
 /**
  * Created by Administrator on 2017/9/25.
@@ -60,7 +67,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         notifyDataSetChanged();
     }
 
-    public FeedDetailRecyclerAdapter(Context context) {
+    public FeedDetailRecyclerAdapter(Activity context) {
         super(context);
     }
 
@@ -142,7 +149,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         }
         content = content + item.text;
         viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content));
-        CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages());
+        CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages(), mGvItemClick);
         viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
         viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
         viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));
@@ -156,12 +163,37 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             reply = "回复 <font color= 'blue'>" + item.replyUser.name + "</font> ";
         }
         viewHolder.contentTv.setText(CommonUtil.getHtmlStr(reply + item.text));
-        CircleGvAdapterUtil.setGridView(mContext, viewHolder.gridView, item.imageUrls);
+        CircleGvAdapterUtil.setGridView(mContext, viewHolder.gridView, item.imageUrls, mGvItemClick);
         viewHolder.timeTv.setText(TimeUtil.formatFeedTime(item.createTime));
         viewHolder.shareTv.setVisibility(View.GONE);
         viewHolder.commentTv.setVisibility(View.GONE);
         viewHolder.praiseTv.setText(String.format("%-3d", item.likeCount));
     }
+
+    private AdapterView.OnItemClickListener mGvItemClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if(parent != null && parent.getAdapter() != null && parent.getAdapter() instanceof FeedItemGvAdapter) {
+                FeedItemGvAdapter adapter = (FeedItemGvAdapter) parent.getAdapter();
+                ArrayList<String> images = new ArrayList<>();
+                for(ImageItem imageItem : adapter.getDatas()) {
+                    if(imageItem != null && imageItem.originImageUrl != null) {
+                        images.add(imageItem.originImageUrl);
+                    }
+                }
+                if(images.size() > 0) {
+                    if(position >= images.size()) {
+                        position = images.size() - 1;
+                    }
+                    PhotoPreview.builder()
+                            .setPhotos(images)
+                            .setCurrentItem(position)
+                            .setShowDeleteButton(false)
+                            .start(mContext);
+                }
+            }
+        }
+    };
 
     private void addClickListener(View view, final int position) {
         view.setOnClickListener(new View.OnClickListener() {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_corners_tag_white"
-    android:padding="@dimen/space_2x">
+    android:padding="@dimen/space_2x" >
     <com.e7yoo.e7.view.CircleImageView
         android:id="@+id/item_feed_item_icon"
         android:layout_width="@dimen/item_feed_item_icon"
@@ -58,7 +58,8 @@
         android:layout_below="@id/item_feed_item_content"
         android:layout_marginTop="@dimen/space"
         android:horizontalSpacing="@dimen/space"
-        android:verticalSpacing="@dimen/space"/>
+        android:verticalSpacing="@dimen/space"
+        android:focusable="false"/>
 
     <TextView
         android:id="@+id/item_feed_item_time"

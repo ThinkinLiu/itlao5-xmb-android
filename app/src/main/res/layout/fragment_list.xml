@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.e7yoo.e7.community.ListFragment">
+    tools:context="com.e7yoo.e7.community.ListFragment" >
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/list_sr_layout"
         android:layout_width="match_parent"

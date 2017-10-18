@@ -1,5 +1,6 @@
 package com.e7yoo.e7.community;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,7 +24,7 @@ import com.umeng.comm.core.nets.Response;
  */
 public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
-    public TopicRefreshRecyclerAdapter(Context context) {
+    public TopicRefreshRecyclerAdapter(Activity context) {
         super(context);
     }
 

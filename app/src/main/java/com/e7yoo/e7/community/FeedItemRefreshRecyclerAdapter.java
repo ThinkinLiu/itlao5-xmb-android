@@ -1,11 +1,13 @@
 package com.e7yoo.e7.community;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,6 +21,7 @@ import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
+import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.FeedItem;
 
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ import java.util.List;
  */
 public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
-    public FeedItemRefreshRecyclerAdapter(Context context) {
+    public FeedItemRefreshRecyclerAdapter(Activity context) {
         super(context);
     }
 
@@ -56,12 +59,13 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 }
                 content = content + item.text;
                 viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content));
-                CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages());
+                CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages(), null);
                 viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
                 viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
                 viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));
                 viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount));
             }
+            addItemClickForGridView(viewHolderFeedItem.gridView, viewHolderFeedItem.itemView, position);
             addClickListener(viewHolderFeedItem.itemView, position);
         }
     }
@@ -88,6 +92,38 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         }
         viewHolderFeedItem.sexIcon.setImageResource(sexIcon);
         viewHolderFeedItem.usernameTv.setText(item.creator.name);
+    }
+
+    private void addItemClickForGridView(GridView gridView, final View mView, final int mPosition) {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(mView, mPosition);
+                }
+            }
+        });
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if(mOnItemLongClickListener != null) {
+                    return mOnItemLongClickListener.onItemLongClick(mView, mPosition);
+                }
+                return false;
+            }
+        });
+        if(gridView instanceof CircleGridView) {
+            ((CircleGridView) gridView).setOnTouchInvalidPositionListener(new CircleGridView.OnTouchInvalidPositionListener() {
+                @Override
+                public boolean onTouchInvalidPosition(int motionEvent) {
+                    if(mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(mView, mPosition);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private void addClickListener(View view, final int position) {

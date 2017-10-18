@@ -60,6 +60,10 @@ public class FeedItemGvAdapter extends BaseAdapter {
         return i;
     }
 
+    public List<ImageItem> getDatas() {
+        return mDatas;
+    }
+
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder holder = null;

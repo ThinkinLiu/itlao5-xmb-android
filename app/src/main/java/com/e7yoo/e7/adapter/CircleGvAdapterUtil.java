@@ -1,6 +1,8 @@
 package com.e7yoo.e7.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.e7yoo.e7.community.FeedItemGvAdapter;
@@ -13,20 +15,24 @@ import java.util.List;
 
 public class CircleGvAdapterUtil {
 
-    public static void setGridView(Context context, GridView gridView, List iamges) {
+    public static FeedItemGvAdapter setGridView(Activity context, GridView gridView, List iamges, AdapterView.OnItemClickListener onItemClickListener) {
+        FeedItemGvAdapter feedItemGvAdapter;
         int size = iamges.size();
         if (size == 0) {
-            gridView.setAdapter(null);
+            feedItemGvAdapter = null;
         } else if (size == 1) {
             gridView.setNumColumns(3);
-            gridView.setAdapter(new FeedItemGvAdapter(context, iamges));
+            feedItemGvAdapter = new FeedItemGvAdapter(context, iamges);
         } else if (size == 4) {
             gridView.setNumColumns(3);
             iamges.add(2, null);
-            gridView.setAdapter(new FeedItemGvAdapter(context, iamges));
+            feedItemGvAdapter = new FeedItemGvAdapter(context, iamges);
         } else {
             gridView.setNumColumns(3);
-            gridView.setAdapter(new FeedItemGvAdapter(context, iamges));
+            feedItemGvAdapter = new FeedItemGvAdapter(context, iamges);
         }
+        gridView.setAdapter(feedItemGvAdapter);
+        gridView.setOnItemClickListener(onItemClickListener);
+        return feedItemGvAdapter;
     }
 }

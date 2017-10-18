@@ -1,5 +1,6 @@
 package com.e7yoo.e7.community;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,9 +30,9 @@ public abstract class ListRefreshRecyclerAdapter extends RecyclerAdapter {
     /** 用于Footer的文字显示，<= 0 时不显示GONE */
     private int mFooterStringId = 0;
     private static final int FOOTER_COUNT = 1;
-    protected Context mContext;
+    protected Activity mContext;
 
-    public ListRefreshRecyclerAdapter(Context context) {
+    public ListRefreshRecyclerAdapter(Activity context) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         // DebugUtil.setDatas(mDatas, 1, true);
