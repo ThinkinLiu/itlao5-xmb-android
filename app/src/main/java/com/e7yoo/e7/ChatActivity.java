@@ -55,6 +55,7 @@ import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.BdVoiceUtil;
 import com.e7yoo.e7.util.CheckPermissionUtil;
+import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.GameInfoUtil;
@@ -68,6 +69,7 @@ import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.TtsUtils;
 import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.view.BlurTransformation;
+import com.umeng.comm.core.utils.CommonUtils;
 
 import org.json.JSONObject;
 
@@ -169,7 +171,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot, null);
+        if(CommonUtils.isLogin(this)) {
+            mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot, CommonUtils.getLoginUser(this));
+        } else {
+            mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot, null);
+        }
         mRecyclerView.setAdapter(mRvAdapter);
         mHomeSRLayout.setColorSchemeResources(R.color.titlebar_bg);
 

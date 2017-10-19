@@ -21,6 +21,7 @@ import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.util.DebugUtil;
 import com.e7yoo.e7.util.RobotUtil;
 import com.e7yoo.e7.util.TimeUtil;
+import com.umeng.comm.core.beans.CommUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +45,13 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private static final int FOOTER_COUNT = 1;
     private Robot mRobot;
     private Context mContext;
-    private Me mMe;
+    private CommUser mCommUser;
 
-    public MsgRefreshRecyclerAdapter(Context context, Robot robot, Me me) {
+    public MsgRefreshRecyclerAdapter(Context context, Robot robot, CommUser commUser) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mRobot = robot;
-        this.mMe = me;
+        this.mCommUser = commUser;
         DebugUtil.setDatas(mMsgs, 1, true);
     }
 
@@ -59,8 +60,8 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         notifyDataSetChanged();
     }
 
-    public void refreshMe(Me me) {
-        mMe = me;
+    public void refreshMe(CommUser commUser) {
+        mCommUser = commUser;
         notifyDataSetChanged();
     }
 
@@ -160,10 +161,10 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderSend.itemMsgTime.setBackgroundResource(0);
             }
             viewHolderSend.itemMsgContent.setText(mMsgs.get(position).getContent());
-            if(mMe != null && mMe.getIcon() != null) {
+            if(mCommUser != null && TextUtils.isEmpty(mCommUser.iconUrl)) {
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-                Glide.with(mContext).load(mRobot.getIcon()).apply(options).into(viewHolderSend.itemMsgIcon);
+                Glide.with(mContext).load(mCommUser.iconUrl).apply(options).into(viewHolderSend.itemMsgIcon);
             } else {
                 viewHolderSend.itemMsgIcon.setImageResource(R.mipmap.icon_me);
             }

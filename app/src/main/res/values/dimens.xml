@@ -55,4 +55,5 @@
     <dimen name="item_push_msg_icon_width">54dp</dimen>
     <dimen name="item_push_msg_icon_height">42dp</dimen>
     <dimen name="item_push_msg_point">12dp</dimen>
+    <dimen name="feed_detail_input_pic">80dp</dimen>
 </resources>

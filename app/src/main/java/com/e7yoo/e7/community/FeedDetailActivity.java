@@ -1,5 +1,7 @@
 package com.e7yoo.e7.community;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -8,28 +10,34 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.E7App;
+import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.beans.CommConfig;
-import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.CommentResponse;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
+import com.umeng.comm.core.nets.responses.ImageResponse;
 import com.umeng.comm.core.nets.responses.PostCommentResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.iwf.photopicker.PhotoPicker;
+import me.iwf.photopicker.PhotoPreview;
 
 /**
  * Created by andy on 2017/10/11.
@@ -44,6 +52,13 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
 
     private EditText mReplyEt;
     private ImageView mReplyIv;
+    private ImageView mReplySend;
+
+    private ImageView mReplyPicIv;
+
+    private Comment mReplyComment;
+
+    private ArrayList<String> mImgs;
 
     @Override
     protected String initTitle() {
@@ -59,7 +74,10 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     protected void initView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.feed_detail_rv);
         mReplyEt = (EditText) findViewById(R.id.feed_detail_input_edit);
-        mReplyIv = (ImageView) findViewById(R.id.feed_detail_input_send);
+        mReplyIv = (ImageView) findViewById(R.id.feed_detail_input_img);
+        mReplySend = (ImageView) findViewById(R.id.feed_detail_input_send);
+
+        mReplyPicIv = (ImageView) findViewById(R.id.feed_detail_input_pic);
     }
 
     @Override
@@ -84,6 +102,25 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         E7App.getCommunitySdk().fetchFeedWithId(mFeedItem.id, mFetchListener);
         mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         E7App.getCommunitySdk().fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
+
+        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(mRvAdapter.getItem(position) instanceof Comment) {
+                    Comment comment = (Comment) mRvAdapter.getItem(position);
+                    if(comment.creator != null && !TextUtils.isEmpty(comment.creator.name)) {
+                        mReplyComment = comment;
+                        mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), comment.creator.name));
+                    } else {
+                        mReplyComment = null;
+                        mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
+                    }
+                } else if(mRvAdapter.getItem(position) instanceof FeedItem) {
+                    mReplyComment = null;
+                    mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
+                }
+            }
+        });
     }
 
     private RecyclerViewDivider getDivider() {
@@ -102,6 +139,9 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     protected void initViewListener() {
         initLoadMoreListener();
         mReplyIv.setOnClickListener(this);
+        mReplySend.setOnClickListener(this);
+
+        mReplyPicIv.setOnClickListener(this);
     }
 
     private Listeners.FetchListener<FeedItemResponse> mFetchListener = new Listeners.FetchListener<FeedItemResponse>() {
@@ -189,6 +229,12 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.feed_detail_input_img:
+                mReplyPicIv.setVisibility(View.VISIBLE);
+                if(mImgs == null || mImgs.size() == 0) {
+                    photoPicker(mImgs);
+                }
+                break;
             case R.id.feed_detail_input_send:
                 String text = mReplyEt.getText().toString().trim();
                 if(text.length() == 0) {
@@ -205,18 +251,33 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     }
                 }
                 break;
+            case R.id.feed_detail_input_pic:
+                if(mImgs == null || mImgs.size() == 0) {
+                    photoPicker(mImgs);
+                } else {
+                    photoPreview(mImgs, 0);
+                }
+                break;
         }
     }
 
-    private void reply(String text) {
-        showProgress(R.string.feed_detail_reply_ing);
+    private Comment getReplyComment(String text) {
         Comment comment = new Comment();
-        // comment.replyCommentId = null;
-        // comment.replyUser = null;
         comment.creator = CommConfig.getConfig().loginedUser;
         comment.feedId = mFeedItem.id;
         comment.text = text;
-        // comment.imageUrls = new ArrayList<>();
+        if(mReplyComment != null) {
+            comment.replyCommentId = mReplyComment.id;
+            comment.replyUser = mReplyComment.creator;
+        }
+        return comment;
+    }
+
+    private void reply(String text) {
+        replyImg(getReplyComment(text), mImgs, 0);
+    }
+
+    private void replyText(Comment comment) {
         E7App.getCommunitySdk().postCommentforResult(comment, new Listeners.FetchListener<PostCommentResponse>() {
             @Override
             public void onStart() {
@@ -225,11 +286,105 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             public void onComplete(PostCommentResponse postCommentResponse) {
                 if(postCommentResponse.errCode == ErrorCode.NO_ERROR && postCommentResponse.getComment() != null && !TextUtils.isEmpty(postCommentResponse.getComment().id)) {
                     mRvAdapter.addComment(postCommentResponse.getComment());
+                    mReplyComment = null;
+                    mReplyEt.setText("");
+                    mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
+                    mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
+                    Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyIv);
+                    mImgs = new ArrayList<>();
+                    mReplyPicIv.setImageResource(R.mipmap.feed_detail_input_img);
                 } else {
                     TastyToastUtil.toast(FeedDetailActivity.this, R.string.feed_detail_reply_failed);
                 }
                 dismissProgress();
             }
         });
+    }
+
+    private void replyImg(final Comment comment, final List<String> path, final int position) {
+        if(position == 0) {
+            showProgress(R.string.feed_detail_reply_ing);
+        }
+        if(path == null || position >= path.size()) {
+            replyText(comment);
+            return;
+        } else if(TextUtils.isEmpty(path.get(position))) {
+            replyImg(comment, path, position + 1);
+            return;
+        }
+        E7App.getCommunitySdk().uploadImage(path.get(position), new Listeners.SimpleFetchListener<ImageResponse>() {
+            @Override
+            public void onComplete(ImageResponse imageResponse) {
+                if(imageResponse == null || imageResponse.result == null) {
+                    TastyToastUtil.toast(FeedDetailActivity.this, R.string.feed_detail_reply_failed);
+                    dismissProgress();
+                    return;
+                }
+                if(comment.imageUrls == null) {
+                    comment.imageUrls = new ArrayList<>();
+                }
+                comment.imageUrls.add(imageResponse.result);
+                replyImg(comment, path, position + 1);
+            }
+        });
+    }
+
+    private void photoPicker(ArrayList<String> photoPaths) {
+        PhotoPicker.builder()
+                .setPhotoCount(1)
+                .setShowCamera(true)
+                .setShowGif(true)
+                .setPreviewEnabled(true)
+                .setSelected(photoPaths)
+                .start(FeedDetailActivity.this, PhotoPicker.REQUEST_CODE);
+    }
+
+    private void photoPreview(ArrayList<String> photoPaths, int position) {
+        PhotoPreview.builder()
+                .setPhotos(photoPaths)
+                .setCurrentItem(position)
+                .setShowDeleteButton(true)
+                .start(FeedDetailActivity.this, PhotoPreview.REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case PhotoPicker.REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        ArrayList<String> photos =
+                                data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                        mImgs = photos;
+                        setPic();
+                    }
+                }
+                break;
+            case PhotoPreview.REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        ArrayList<String> photos =
+                                data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                        mImgs = photos;
+                        setPic();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setPic() {
+        if(mImgs == null || mImgs.size() == 0) {
+            Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyPicIv);
+            mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
+        } else {
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
+            Glide.with(FeedDetailActivity.this).load(mImgs.get(0)).apply(options).into(mReplyPicIv);
+            mReplyIv.setImageResource(R.mipmap.feed_detail_input_img_selected);
+        }
     }
 }

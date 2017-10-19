@@ -298,9 +298,10 @@
     <string name="post_failed">发布失败</string>
     <string name="posting">发布中...</string>
     <string name="post_loc">所在位置</string>
-    <string name="feed_detail_input_edit_hint">你怎么看...</string>
+    <string name="feed_detail_input_edit_hint">评论帖子...</string>
     <string name="circle_feed_detail_reply_empty">你想说点啥呢？</string>
     <string name="feed_detail_reply_ing">评论发布中...</string>
     <string name="feed_detail_reply_failed">评论失败</string>
+    <string name="feed_detail_input_edit_hint_reply_comment">回复 %s:</string>
 
 </resources>
