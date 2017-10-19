@@ -19,12 +19,14 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/feed_detail_input_layout"
         android:layout_below="@id/titleBar" />
+
     <LinearLayout
         android:id="@+id/feed_detail_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
+        android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/feed_detail_input_edit_layout"
             android:layout_width="match_parent"
@@ -45,10 +47,10 @@
                 android:hint="@string/feed_detail_input_edit_hint"
                 android:maxLength="30"
                 android:maxLines="4"
-                android:paddingLeft="@dimen/space_2x"
-                android:paddingTop="@dimen/space_2x"
                 android:paddingBottom="@dimen/space_2x"
+                android:paddingLeft="@dimen/space_2x"
                 android:paddingRight="@dimen/space_10x"
+                android:paddingTop="@dimen/space_2x"
                 android:text=""
                 android:textColor="@color/text"
                 android:textColorHint="@color/text_l"
@@ -58,14 +60,14 @@
                 android:id="@+id/feed_detail_input_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/feed_detail_input_edit"
+                android:layout_alignTop="@id/feed_detail_input_edit"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@id/feed_detail_input_edit"
-                android:layout_marginTop="@id/feed_detail_input_edit"
+                android:layout_marginRight="@dimen/space_2x"
                 android:layout_toLeftOf="@+id/feed_detail_input_send"
                 android:adjustViewBounds="true"
                 android:padding="@dimen/space"
-                android:layout_marginRight="@dimen/space_2x"
                 android:src="@mipmap/feed_detail_input_img" />
 
             <ImageView
@@ -84,11 +86,11 @@
             android:id="@+id/feed_detail_input_pic"
             android:layout_width="@dimen/feed_detail_input_pic"
             android:layout_height="@dimen/feed_detail_input_pic"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/space_3x"
+            android:layout_marginTop="@dimen/space_3x"
             android:adjustViewBounds="true"
             android:src="@mipmap/circle_img_add"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/space_3x"
-            android:layout_marginBottom="@dimen/space_3x"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

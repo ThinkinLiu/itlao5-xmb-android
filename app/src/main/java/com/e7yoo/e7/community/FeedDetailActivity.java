@@ -230,14 +230,18 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.feed_detail_input_img:
-                mReplyPicIv.setVisibility(View.VISIBLE);
-                if(mImgs == null || mImgs.size() == 0) {
-                    photoPicker(mImgs);
+                if(mReplyPicIv.getVisibility() == View.VISIBLE) {
+                    mReplyPicIv.setVisibility(View.GONE);
+                } else {
+                    mReplyPicIv.setVisibility(View.VISIBLE);
+                    if (mImgs == null || mImgs.size() == 0) {
+                        photoPicker(mImgs);
+                    }
                 }
                 break;
             case R.id.feed_detail_input_send:
                 String text = mReplyEt.getText().toString().trim();
-                if(text.length() == 0) {
+                if(text.length() == 0 && (mImgs == null || mImgs.size() == 0 || TextUtils.isEmpty(mImgs.get(0)))) {
                     TastyToastUtil.toast(this, R.string.circle_feed_detail_reply_empty);
                 } else {
                     if(Net.isNetWorkConnected(this)) {
