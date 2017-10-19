@@ -64,6 +64,7 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
                 viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));
                 viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount));
+                viewHolderFeedItem.praiseTv.setSelected(item.isLiked);
             }
             addItemClickForGridView(viewHolderFeedItem.gridView, viewHolderFeedItem.itemView, position);
             addClickListener(viewHolderFeedItem.itemView, position);

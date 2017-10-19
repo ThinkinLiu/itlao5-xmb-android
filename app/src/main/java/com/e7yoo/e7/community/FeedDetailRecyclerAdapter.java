@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
@@ -24,6 +25,9 @@ import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.ImageItem;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.responses.SimpleResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,15 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         mDatas.clear();
         mDatas.add(item);
         mDatas.addAll(commentList);
+        notifyDataSetChanged();
+    }
+
+    public void addComment(Comment comment) {
+        int num = 0;
+        if(mDatas.size() > 0 && mDatas.get(0) instanceof  FeedItem) {
+            num = 1;
+        }
+        mDatas.add(num, comment);
         notifyDataSetChanged();
     }
 
@@ -137,7 +150,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolderFeedItem.usernameTv.setText(item.name);
     }
 
-    private void setViewTypeFeeditem(BaseViewHolder viewHolderFeedItem, FeedItem item) {
+    private void setViewTypeFeeditem(final BaseViewHolder viewHolderFeedItem, final FeedItem item) {
         viewHolderFeedItem.contentTv.setMaxLines(1000);
         String content = "";
         if(item.topics != null) {
@@ -154,9 +167,23 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
         viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));
         viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount));
+        viewHolderFeedItem.praiseTv.setSelected(item.isLiked);
+        viewHolderFeedItem.praiseTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(item.isLiked) {
+                    viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount - 1));
+                    viewHolderFeedItem.praiseTv.setSelected(!item.isLiked);
+                } else {
+                    viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount + 1));
+                    viewHolderFeedItem.praiseTv.setSelected(!item.isLiked);
+                }
+                likeFeed(viewHolderFeedItem, item);
+            }
+        });
     }
 
-    private void setViewTypeComment(BaseViewHolder viewHolder, Comment item) {
+    private void setViewTypeComment(final BaseViewHolder viewHolder, final Comment item) {
         viewHolder.contentTv.setMaxLines(1000);
         String reply = "";
         if(item.replyUser != null && !TextUtils.isEmpty(item.replyUser.name)) {
@@ -168,6 +195,75 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolder.shareTv.setVisibility(View.GONE);
         viewHolder.commentTv.setVisibility(View.GONE);
         viewHolder.praiseTv.setText(String.format("%-3d", item.likeCount));
+        viewHolder.praiseTv.setSelected(item.liked);
+        viewHolder.praiseTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(item.liked) {
+                    viewHolder.praiseTv.setText(String.format("%-3d", item.likeCount - 1));
+                    viewHolder.praiseTv.setSelected(!item.liked);
+                } else {
+                    viewHolder.praiseTv.setText(String.format("%-3d", item.likeCount + 1));
+                    viewHolder.praiseTv.setSelected(!item.liked);
+                }
+                likeComment(viewHolder, item);
+            }
+        });
+    }
+
+    private void likeFeed(final BaseViewHolder viewHolder, final FeedItem item) {
+        if(item.isLiked) {
+            E7App.getCommunitySdk().postUnLike(item.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
+                @Override
+                public void onComplete(SimpleResponse simpleResponse) {
+                    if(simpleResponse.errCode == ErrorCode.NO_ERROR) {
+                        item.isLiked = false;
+                        item.likeCount--;
+                        viewHolder.praiseTv.setText(String.format("%-3d", item.likeCount));
+                        viewHolder.praiseTv.setSelected(item.isLiked);
+                    }
+                }
+            });
+        } else {
+            E7App.getCommunitySdk().postLike(item.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
+                @Override
+                public void onComplete(SimpleResponse simpleResponse) {
+                    if(simpleResponse.errCode == ErrorCode.NO_ERROR) {
+                        item.isLiked = true;
+                        item.likeCount++;
+                        viewHolder.praiseTv.setText(String.format("%-3d", item.likeCount));
+                        viewHolder.praiseTv.setSelected(item.isLiked);
+                    }
+                }
+            });
+        }
+    }
+
+    private void likeComment(final BaseViewHolder viewHolder, final Comment comment) {
+        E7App.getCommunitySdk().likeComment(comment, new Listeners.FetchListener<SimpleResponse>() {
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onComplete(SimpleResponse simpleResponse) {
+                if(simpleResponse.errCode == ErrorCode.NO_ERROR) {
+                    if(simpleResponse.mJsonObject != null) {
+                        int addScroe = simpleResponse.mJsonObject.optInt("add_score", 0);
+                        if(addScroe == 0) {
+                        } else if(addScroe > 0) {
+                            comment.liked = true;
+                            comment.likeCount++;
+                        } else {
+                            comment.liked = false;
+                            comment.likeCount--;
+                        }
+                        viewHolder.praiseTv.setText(String.format("%-3d", comment.likeCount));
+                        viewHolder.praiseTv.setSelected(comment.liked);
+                    }
+                }
+            }
+        });
+
     }
 
     private AdapterView.OnItemClickListener mGvItemClick = new AdapterView.OnItemClickListener() {
