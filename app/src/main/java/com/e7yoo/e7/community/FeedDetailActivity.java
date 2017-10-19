@@ -109,18 +109,41 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 if(mRvAdapter.getItem(position) instanceof Comment) {
                     Comment comment = (Comment) mRvAdapter.getItem(position);
                     if(comment.creator != null && !TextUtils.isEmpty(comment.creator.name)) {
-                        mReplyComment = comment;
+                        if(mReplyComment != comment) {
+                            clearReplyInput(comment, 0);
+                        }
                         mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), comment.creator.name));
                     } else {
-                        mReplyComment = null;
+                        if(mReplyComment != null) {
+                            clearReplyInput(null, 0);
+                        }
                         mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
                     }
                 } else if(mRvAdapter.getItem(position) instanceof FeedItem) {
-                    mReplyComment = null;
+                    if(mReplyComment != null) {
+                        clearReplyInput(null, 0);
+                    }
                     mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
                 }
             }
         });
+    }
+
+    /**
+     *
+     * @param comment
+     * @param hintStrId <= 0 时不改变原值
+     */
+    private void clearReplyInput(Comment comment, int hintStrId) {
+        mReplyEt.setText("");
+        if(hintStrId > 0) {
+            mReplyEt.setHint(hintStrId);
+        }
+        if(mImgs != null) {
+            mImgs.clear();
+        }
+        mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
+        Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyPicIv);
     }
 
     private RecyclerViewDivider getDivider() {
@@ -290,13 +313,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             public void onComplete(PostCommentResponse postCommentResponse) {
                 if(postCommentResponse.errCode == ErrorCode.NO_ERROR && postCommentResponse.getComment() != null && !TextUtils.isEmpty(postCommentResponse.getComment().id)) {
                     mRvAdapter.addComment(postCommentResponse.getComment());
-                    mReplyComment = null;
-                    mReplyEt.setText("");
-                    mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
-                    mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
-                    Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyIv);
-                    mImgs = new ArrayList<>();
-                    mReplyPicIv.setImageResource(R.mipmap.feed_detail_input_img);
+                    clearReplyInput(null, R.string.feed_detail_input_edit_hint);
                 } else {
                     TastyToastUtil.toast(FeedDetailActivity.this, R.string.feed_detail_reply_failed);
                 }
