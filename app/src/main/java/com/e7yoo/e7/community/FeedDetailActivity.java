@@ -143,6 +143,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             mImgs.clear();
         }
         mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
+        mReplyPicIv.setVisibility(View.GONE);
         Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyPicIv);
     }
 
@@ -161,6 +162,14 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initViewListener() {
         initLoadMoreListener();
+        mReplyEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus && mReplyPicIv.getVisibility() == View.VISIBLE) {
+                    mReplyPicIv.setVisibility(View.GONE);
+                }
+            }
+        });
         mReplyIv.setOnClickListener(this);
         mReplySend.setOnClickListener(this);
 

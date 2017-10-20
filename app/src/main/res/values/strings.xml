@@ -303,5 +303,10 @@
     <string name="feed_detail_reply_ing">评论发布中...</string>
     <string name="feed_detail_reply_failed">评论失败</string>
     <string name="feed_detail_input_edit_hint_reply_comment">回复 %s:</string>
+    <string name="circle_space">个人主页</string>
+    <string name="item_user_name_hint">昵称</string>
+    <string name="item_user_info_hint">暂未获取到用户信息</string>
+    <string name="item_user_label_hint">这家伙很懒，什么都没留下</string>
+    <string name="item_user_info">帖子 %1$d　|　关注 %2$d　|　粉丝 %3$d</string>
 
 </resources>

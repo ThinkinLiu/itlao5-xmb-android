@@ -49,6 +49,10 @@
     <dimen name="add_robot_icon">48dp</dimen>
 
     <dimen name="mine_icon">110dp</dimen>
+    <dimen name="mine_sex_icon">20dp</dimen>
+
+    <dimen name="space_icon">96dp</dimen>
+    <dimen name="space_sex_icon">20dp</dimen>
 
     <dimen name="list_news_width">120dp</dimen>
     <dimen name="list_news_height">90dp</dimen>

@@ -24,9 +24,7 @@ public abstract class FeedListFragment extends ListFragment {
             @Override
             public void onItemClick(View view, int position) {
                 if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof FeedItem) {
-                    Intent intent = new Intent(getActivity(), FeedDetailActivity.class);
-                    intent.putExtra("FeedItem", (FeedItem) mRvAdapter.getItem(position));
-                    ActivityUtil.toActivity(getActivity(), intent);
+                    ActivityUtil.toFeedDetail(getActivity(), (FeedItem) mRvAdapter.getItem(position));
                 }
             }
         });

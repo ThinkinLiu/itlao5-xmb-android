@@ -42,4 +42,6 @@
     <color name="bottom_navigation_color_backgroud">#90ff02</color>
     <color name="backgroud">#eeeeee</color>
 
+    <color name="yellow">#fdb201</color>
+    <color name="yellow_trans">#88fdb201</color>
 </resources>

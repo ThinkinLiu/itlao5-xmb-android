@@ -21,6 +21,7 @@ import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.PushMsgActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
+import com.e7yoo.e7.community.SpaceActivity;
 import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommUserUtil;
@@ -154,11 +155,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.mine_page_layout:
-                if(CommonUtils.isLogin(getActivity())) {
-//                    ActivityUtil.toActivity(getActivity(), .class);
-                } else {
-                    ActivityUtil.toLogin(getActivity());
-                }
+                ActivityUtil.toSpace(getActivity(), mUser, true);
                 break;
             case R.id.mine_msg_layout:
                 ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);

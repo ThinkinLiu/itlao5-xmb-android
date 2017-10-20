@@ -15,6 +15,8 @@ import com.e7yoo.e7.PushMsgDetailsActivity;
 import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
+import com.e7yoo.e7.community.FeedDetailActivity;
+import com.e7yoo.e7.community.SpaceActivity;
 import com.e7yoo.e7.community.TopicListActivity;
 import com.e7yoo.e7.game.GameActivity;
 import com.e7yoo.e7.game.GameLandscapeActivity;
@@ -22,6 +24,7 @@ import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
 import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.utils.CommonUtils;
 
@@ -138,6 +141,22 @@ public class ActivityUtil {
     public static void toPostOrLogin(Activity activity, Topic topic) {
         if(CommonUtils.isLogin(activity)) {
             ActivityUtil.toPostActivity(activity, topic);
+        } else {
+            ActivityUtil.toLogin(activity);
+        }
+    }
+
+    public static void toFeedDetail(Activity activity, FeedItem feedItem) {
+        Intent intent = new Intent(activity, FeedDetailActivity.class);
+        intent.putExtra("FeedItem", feedItem);
+        ActivityUtil.toActivity(activity, intent);
+    }
+
+    public static void toSpace(Activity activity, CommUser commUser, boolean checkLogin) {
+        if(!checkLogin || CommonUtils.isLogin(activity)) {
+            Intent intent = new Intent(activity, SpaceActivity.class);
+            intent.putExtra("CommUser", commUser);
+            ActivityUtil.toActivity(activity, intent);
         } else {
             ActivityUtil.toLogin(activity);
         }
