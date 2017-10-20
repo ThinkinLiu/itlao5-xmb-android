@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:background="@color/titlebar_bg"
     android:gravity="center"
+    android:paddingBottom="@dimen/space_2x"
     android:paddingLeft="@dimen/space_2x"
-    android:paddingRight="@dimen/space_2x"
-    android:paddingBottom="@dimen/space_2x">
+    android:paddingRight="@dimen/space_2x">
 
     <com.e7yoo.e7.view.CircleImageView
         android:id="@+id/item_user_icon"
@@ -43,9 +43,10 @@
         android:layout_below="@id/item_user_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/space_2x"
-        android:singleLine="true"
+        android:gravity="center_horizontal"
         android:hint="@string/item_user_info_hint"
-        android:textColor="@color/white_translucent"
+        android:singleLine="true"
+        android:textColor="@color/white"
         android:textColorHint="@color/white_translucent"
         android:textSize="@dimen/size_l" />
 
@@ -56,8 +57,9 @@
         android:layout_below="@id/item_user_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/space"
-        android:singleLine="true"
+        android:gravity="center_horizontal"
         android:hint="@string/item_user_info_hint"
+        android:singleLine="true"
         android:textColor="@color/white_translucent"
         android:textColorHint="@color/white_translucent"
         android:textSize="@dimen/size_s" />
@@ -69,8 +71,9 @@
         android:layout_below="@id/item_user_info"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/space"
-        android:singleLine="true"
+        android:gravity="center_horizontal"
         android:hint="@string/item_user_label_hint"
+        android:singleLine="true"
         android:textColor="@color/white"
         android:textColorHint="@color/white_translucent"
         android:textSize="@dimen/size_m" />

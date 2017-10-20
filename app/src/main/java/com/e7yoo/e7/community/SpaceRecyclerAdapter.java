@@ -19,6 +19,7 @@ import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.util.CommUserUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
+import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
@@ -112,6 +113,7 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 setViewTypeFeedItem(viewHolderFeedItem, item);
             }
             addClickListener(viewHolderFeedItem.itemView, position);
+            addItemClickForGridView(viewHolderFeedItem.gridView, viewHolderFeedItem.itemView, position);
         } else if(holder instanceof ViewHolderUser) {
             ViewHolderUser viewHolderUser = (ViewHolderUser) holder;
             CommUser item = (CommUser) mDatas.get(position);
@@ -200,6 +202,38 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolder.nameTv.setText(user.name);
         viewHolder.infoTv.setText(String.format(mContext.getString(R.string.item_user_info), user.feedCount, user.followCount, user.fansCount));
         viewHolder.lableTv.setText(CommUserUtil.getExtraString(user, "welcome"));
+    }
+
+    private void addItemClickForGridView(GridView gridView, final View mView, final int mPosition) {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(mView, mPosition);
+                }
+            }
+        });
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if(mOnItemLongClickListener != null) {
+                    return mOnItemLongClickListener.onItemLongClick(mView, mPosition);
+                }
+                return false;
+            }
+        });
+        if(gridView instanceof CircleGridView) {
+            ((CircleGridView) gridView).setOnTouchInvalidPositionListener(new CircleGridView.OnTouchInvalidPositionListener() {
+                @Override
+                public boolean onTouchInvalidPosition(int motionEvent) {
+                    if(mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(mView, mPosition);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private void likeFeed(final BaseViewHolder viewHolder, final FeedItem item) {
