@@ -4,23 +4,46 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.e7yoo.e7.BaseActivity;
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.e7yoo.e7.view.RecyclerViewDivider;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.responses.FeedsResponse;
+import com.umeng.comm.core.nets.responses.ProfileResponse;
+import com.umeng.comm.core.nets.responses.TopicItemResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by andy on 2017/10/11.
  */
 
 public class TopicDetailActivity extends BaseActivity implements View.OnClickListener {
-    private FragmentManager manager;
     private Topic mTopic;
     protected ImageView mPostIv;
+    private RecyclerView mRecyclerView;
+    private TopicDetailRecyclerAdapter mRvAdapter;
+
+    private String mNextPageUrl;
+
+    private List<FeedItem> mFeedItemList = new ArrayList<>();
 
     @Override
     protected String initTitle() {
@@ -35,6 +58,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initView() {
         mPostIv = (ImageView) findViewById(R.id.circle_post);
+        mRecyclerView = (RecyclerView) findViewById(R.id.topic_detail_rv);
     }
 
     @Override
@@ -48,27 +72,57 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
             return;
         }
         setTitleTv(mTopic.name.replace("#", ""));
-        manager = getSupportFragmentManager();
-        TopicFeedsFragment fragment = TopicFeedsFragment.newInstance();
-        Bundle args = fragment.getArguments();
-        if(args == null) {
-            args = new Bundle();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+        mRecyclerView.addItemDecoration(getDivider());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRvAdapter = new TopicDetailRecyclerAdapter(this);
+        mRecyclerView.setAdapter(mRvAdapter);
+
+        mRvAdapter.refreshData(mTopic, mFeedItemList);
+
+        loadTopicInfo();
+        mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
+        loadNetFeed(true);
+
+        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof FeedItem) {
+                    ActivityUtil.toFeedDetail(TopicDetailActivity.this, (FeedItem) mRvAdapter.getItem(position));
+                }
+            }
+        });
+    }
+
+    private void loadTopicInfo() {
+        E7App.getCommunitySdk().fetchTopicWithId(mTopic.id, topicFetchListener);
+    }
+
+    private void loadNetFeed(boolean refresh) {
+        if(mNextPageUrl == null || refresh) {
+            E7App.getCommunitySdk().fetchTopicFeed(mTopic.id, firstFeedFetchListener);
+        } else {
+            E7App.getCommunitySdk().fetchNextPageData(mNextPageUrl, FeedsResponse.class, feedFetchListener);
         }
-        args.putParcelable("Topic", mTopic);
-        fragment.setArguments(args);
-        replaceFragment(fragment);
+    }
+
+    private RecyclerViewDivider getDivider() {
+        RecyclerViewDivider divider = new RecyclerViewDivider(
+                this, LinearLayoutManager.VERTICAL,
+                0,
+                ContextCompat.getColor(this, R.color.backgroud),
+                false,
+                0,
+                true,
+                getResources().getDimensionPixelOffset(R.dimen.item_robot_divider));
+        return divider;
     }
 
     @Override
     protected void initViewListener() {
         mPostIv.setOnClickListener(this);
-    }
-
-
-    private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.topic_detail_layout, fragment);
-        transaction.commit();
     }
 
     @Override
@@ -79,4 +133,48 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+    private Listeners.FetchListener<FeedsResponse> firstFeedFetchListener = new Listeners.FetchListener<FeedsResponse>() {
+        @Override
+        public void onStart() {
+        }
+        @Override
+        public void onComplete(FeedsResponse feedsResponse) {
+            if(feedsResponse.errCode == ErrorCode.NO_ERROR && feedsResponse.result != null && feedsResponse.result.size() > 0) {
+                mNextPageUrl = feedsResponse.nextPageUrl;
+                mRvAdapter.refreshFeedItems(feedsResponse.result);
+                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_up_load_more, false);
+            } else {
+                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
+            }
+        }
+    };
+
+    private Listeners.FetchListener<FeedsResponse> feedFetchListener = new Listeners.FetchListener<FeedsResponse>() {
+        @Override
+        public void onStart() {
+        }
+        @Override
+        public void onComplete(FeedsResponse feedsResponse) {
+            if(feedsResponse.errCode == ErrorCode.NO_ERROR && feedsResponse.result != null && feedsResponse.result.size() > 0) {
+                mNextPageUrl = feedsResponse.nextPageUrl;
+                mRvAdapter.addItemBottom(feedsResponse.result);
+                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+            } else {
+                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
+            }
+        }
+    };
+
+    private Listeners.FetchListener<TopicItemResponse> topicFetchListener = new Listeners.FetchListener<TopicItemResponse>() {
+        @Override
+        public void onStart() {
+        }
+        @Override
+        public void onComplete(TopicItemResponse topicItemResponse) {
+            if (topicItemResponse.errCode == ErrorCode.NO_ERROR && topicItemResponse.result != null && !TextUtils.isEmpty(topicItemResponse.result.id)) {
+                mTopic = topicItemResponse.result;
+                mRvAdapter.refreshTopic(mTopic);
+            }
+        }
+    };
 }

@@ -12,11 +12,12 @@
         android:id="@+id/titleBar"
         layout="@layout/titlebar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/topic_detail_rv"
+    <FrameLayout
+        android:id="@+id/topic_feeds_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/titleBar" />
+        android:layout_below="@id/titleBar" >
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/circle_post"

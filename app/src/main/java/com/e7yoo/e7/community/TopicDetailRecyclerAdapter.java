@@ -21,9 +21,9 @@ import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.CommUser;
-import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.ImageItem;
+import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.SimpleResponse;
@@ -36,12 +36,12 @@ import me.iwf.photopicker.PhotoPreview;
 /**
  * Created by Administrator on 2017/9/25.
  */
-public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
-    private static final int VIEW_TYPE_USER = 100;
+public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
+    private static final int VIEW_TYPE_TOPIC = 100;
 
-    public void refreshData(CommUser commUser, List<FeedItem> feedItemList) {
+    public void refreshData(Topic topic, List<FeedItem> feedItemList) {
         mDatas.clear();
-        mDatas.add(commUser);
+        mDatas.add(topic);
         mDatas.addAll(feedItemList);
         notifyDataSetChanged();
     }
@@ -55,38 +55,38 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
         notifyDataSetChanged();
     }
 
-    public void refreshCommUser(CommUser commUser) {
+    public void refreshTopic(Topic topic) {
         if(mDatas.size() > 0) {
-            if(mDatas.get(0) instanceof  CommUser) {
-                mDatas.set(0, commUser);
+            if(mDatas.get(0) instanceof  Topic) {
+                mDatas.set(0, topic);
                 return;
             }
         }
-        mDatas.add(0, commUser);
+        mDatas.add(0, topic);
         notifyDataSetChanged();
     }
 
     public void refreshFeedItems(List<FeedItem> feedItemList) {
-        CommUser commUser = null;
-        if(mDatas.size() > 0 && mDatas.get(0) instanceof  CommUser) {
-            commUser = (CommUser) mDatas.get(0);
+        Topic topic = null;
+        if(mDatas.size() > 0 && mDatas.get(0) instanceof  Topic) {
+            topic = (Topic) mDatas.get(0);
         }
         mDatas.clear();
-        if(commUser != null) {
-            mDatas.add(commUser);
+        if(topic != null) {
+            mDatas.add(topic);
         }
         mDatas.addAll(feedItemList);
         notifyDataSetChanged();
     }
 
-    public SpaceRecyclerAdapter(Activity context) {
+    public TopicDetailRecyclerAdapter(Activity context) {
         super(context);
     }
 
     @Override
     public int initItemViewType(int position) {
-        if(getItem(position) instanceof CommUser) {
-            return VIEW_TYPE_USER;
+        if(getItem(position) instanceof Topic) {
+            return VIEW_TYPE_TOPIC;
         } else {
             return super.initItemViewType(position);
         }
@@ -94,9 +94,9 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
     @Override
     protected RecyclerView.ViewHolder initViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == VIEW_TYPE_USER) {
-            View view = mInflater.inflate(R.layout.item_user, parent, false);
-            return new ViewHolderUser(view);
+        if(viewType == VIEW_TYPE_TOPIC) {
+            View view = mInflater.inflate(R.layout.item_topic_detail, parent, false);
+            return new ViewHolderTopic(view);
         } else {
             View view = mInflater.inflate(R.layout.item_feed_item, parent, false);
             return new ViewHolderFeedItem(view);
@@ -114,11 +114,11 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
             }
             addClickListener(viewHolderFeedItem.itemView, position);
             addItemClickForGridView(viewHolderFeedItem.gridView, viewHolderFeedItem.itemView, position);
-        } else if(holder instanceof ViewHolderUser) {
-            ViewHolderUser viewHolderUser = (ViewHolderUser) holder;
-            CommUser item = (CommUser) mDatas.get(position);
+        } else if(holder instanceof ViewHolderTopic) {
+            ViewHolderTopic viewHolderUser = (ViewHolderTopic) holder;
+            Topic item = (Topic) mDatas.get(position);
             if(item != null) {
-                setViewTypeUser(viewHolderUser, item);
+                setViewTypeTopic(viewHolderUser, item);
             }
         }
     }
@@ -182,26 +182,13 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
         });
     }
 
-    private void setViewTypeUser(final ViewHolderUser viewHolder, final CommUser user) {
+    private void setViewTypeTopic(final ViewHolderTopic viewHolder, final Topic topic) {
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-        Glide.with(mContext).load(user.iconUrl).apply(options).into(viewHolder.userIcon);
-        int sex = R.mipmap.sex_unknow;
-        switch (user.gender) {
-            case FEMALE:
-                sex = R.mipmap.sex_female_selected;
-                break;
-            case MALE:
-                sex = R.mipmap.sex_male_selected;
-                break;
-            default:
-                sex = R.mipmap.sex_unknow_selected;
-                break;
-        }
-        Glide.with(mContext).load(sex).apply(options).into(viewHolder.sexIcon);
-        viewHolder.nameTv.setText(user.name);
-        viewHolder.infoTv.setText(mContext.getString(R.string.item_user_info, user.feedCount, user.followCount, user.fansCount));
-        viewHolder.lableTv.setText(CommUserUtil.getExtraString(user, "welcome"));
+        options.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
+        Glide.with(mContext).load(topic.icon).apply(options).into(viewHolder.userIcon);
+        viewHolder.nameTv.setText(topic.name);
+        viewHolder.infoTv.setText(mContext.getString(R.string.topic_detail_info, topic.feedCount, topic.fansCount));
+        viewHolder.descTv.setText(topic.desc);
     }
 
     private void addItemClickForGridView(GridView gridView, final View mView, final int mPosition) {
@@ -350,20 +337,18 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
     /**
      * 消息item
      */
-    public static class ViewHolderUser extends RecyclerView.ViewHolder {
+    public static class ViewHolderTopic extends RecyclerView.ViewHolder {
         public ImageView userIcon;
-        public ImageView sexIcon;
         public TextView nameTv;
         public TextView infoTv;
-        public TextView lableTv;
+        public TextView descTv;
 
-        public ViewHolderUser(View view) {
+        public ViewHolderTopic(View view) {
             super(view);
-            userIcon = view.findViewById(R.id.item_user_icon);
-            sexIcon = view.findViewById(R.id.item_user_sex);
-            nameTv = view.findViewById(R.id.item_user_name);
-            infoTv = view.findViewById(R.id.item_user_info);
-            lableTv = view.findViewById(R.id.item_user_label);
+            userIcon = view.findViewById(R.id.item_topic_detail_icon);
+            nameTv = view.findViewById(R.id.item_topic_detail_name);
+            infoTv = view.findViewById(R.id.item_topic_detail_info);
+            descTv = view.findViewById(R.id.item_topic_detail_desc);
         }
     }
 }

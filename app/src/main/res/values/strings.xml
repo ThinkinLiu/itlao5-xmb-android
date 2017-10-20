@@ -308,5 +308,6 @@
     <string name="item_user_info_hint">暂未获取到用户信息</string>
     <string name="item_user_label_hint">这家伙很懒，什么都没留下</string>
     <string name="item_user_info">帖子 %1$d　|　关注 %2$d　|　粉丝 %3$d</string>
+    <string name="topic_detail_info">帖子 %1$d　｜　关注 %2$d</string>
 
 </resources>

@@ -17,7 +17,6 @@
         android:id="@+id/space_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/feed_detail_input_layout"
         android:layout_below="@id/titleBar" />
 
 </RelativeLayout>

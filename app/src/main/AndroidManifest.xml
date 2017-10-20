@@ -401,6 +401,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".community.TopicFeedsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
