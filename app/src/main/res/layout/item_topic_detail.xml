@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_topic_detail_name"
-        android:layout_above="@id/item_topic_detail_desc"
+        android:layout_above="@+id/item_topic_detail_desc"
         android:layout_marginBottom="@dimen/space"
         android:includeFontPadding="false"
         android:text="@string/mengmeng"
