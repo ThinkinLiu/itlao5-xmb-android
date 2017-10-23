@@ -18,6 +18,7 @@ import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.Response;
+import com.umeng.comm.core.utils.CommonUtils;
 
 /**
  * Created by Administrator on 2017/9/25.
@@ -61,7 +62,7 @@ public class UserRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void initAttentionIv(final ViewHolderUser viewHolder, final CommUser item) {
-        if("社区管理员".equals(item.name)) {
+        if("社区管理员".equals(item.name) || CommonUtils.isMyself(item)) {
             viewHolder.attentionIv.setImageResource(0);
             viewHolder.attentionIv.setOnClickListener(null);
             return;
