@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Activity基类
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    protected View rootView;
     private View titleView;
     private TextView leftTv;
     private TextView titleTv;
@@ -193,6 +194,20 @@ public abstract class BaseActivity extends AppCompatActivity {
             rightTv.setText(textResId);
         }
         rightTv.setOnClickListener(onClickListener);
+    }
+
+    public void setRightTvTag(int tag) {
+        if(rightTv == null) {
+            return;
+        }
+        rightTv.setTag(R.id.titlebar_right_tv, tag);
+    }
+
+    public int getRightTvTag() {
+        if(rightTv == null || rightTv.getTag() == null) {
+            return 0;
+        }
+        return (int) rightTv.getTag();
     }
 
     /**

@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
+import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommUserUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
@@ -123,7 +124,7 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         }
     }
 
-    private void setUser(BaseViewHolder viewHolderFeedItem, CommUser item) {
+    private void setUser(BaseViewHolder viewHolderFeedItem, final CommUser item) {
         RequestOptions options = new RequestOptions();
         options.diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.mipmap.log_e7yoo_transport)
@@ -133,6 +134,12 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 .load(item.iconUrl)
                 .apply(options)
                 .into(viewHolderFeedItem.userIcon);
+        viewHolderFeedItem.userIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtil.toSpace(mContext, item, false);
+            }
+        });
         int sexIcon;
         switch (item.gender) {
             case FEMALE:

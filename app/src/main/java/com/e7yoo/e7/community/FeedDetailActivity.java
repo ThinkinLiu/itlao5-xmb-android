@@ -18,15 +18,23 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.EventBusUtil;
+import com.e7yoo.e7.util.PopupWindowUtil;
+import com.e7yoo.e7.util.ProgressDialogEx;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.CommentResponse;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
@@ -72,6 +80,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initView() {
+        rootView = findViewById(R.id.root_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.feed_detail_rv);
         mReplyEt = (EditText) findViewById(R.id.feed_detail_input_edit);
         mReplyIv = (ImageView) findViewById(R.id.feed_detail_input_img);
@@ -89,6 +98,11 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             TastyToastUtil.toast(this, R.string.circle_feed_not_exist);
             finish();
             return;
+        }
+        if(CommonUtils.isMyself(mFeedItem.creator)) {
+            setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
+        } else {
+            setRightTv(View.VISIBLE, R.mipmap.title_right_post, 0, this);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -294,7 +308,68 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     photoPreview(mImgs, 0);
                 }
                 break;
+            case R.id.titlebar_right_tv:
+                if(CommonUtils.isMyself(mFeedItem.creator)) {
+                    showMore();
+                } else {
+                    toPost();
+                }
+                break;
         }
+    }
+
+    private void showMore() {
+        ArrayList<TextSet> textSets = new ArrayList<>();
+        textSets.add(new TextSet(R.string.feed_detail_title_right_post, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toPost();
+            }
+        }));
+        textSets.add(new TextSet(R.string.feed_detail_title_right_delete, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toDelete();
+            }
+        }));
+        PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
+    }
+
+    private void toPost() {
+        Topic topic = mFeedItem != null && mFeedItem.topics != null && mFeedItem.topics.size() > 0 ? mFeedItem.topics.get(0) : null;
+        ActivityUtil.toPostOrLogin(this, topic);
+    }
+
+    private void toDelete() {
+        ArrayList<TextSet> textSets = new ArrayList<>();
+        textSets.add(new TextSet(R.string.feed_detail_title_right_delete, true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete();
+            }
+        }));
+        PopupWindowUtil.showPopWindow(this, rootView, R.string.feed_detail_title_right_delete_hint, textSets, true);
+    }
+
+    private void delete() {
+        showProgress(R.string.deleting);
+        E7App.getCommunitySdk().deleteFeed(mFeedItem.id, new Listeners.CommListener() {
+            @Override
+            public void onStart() {
+
+            }
+            @Override
+            public void onComplete(Response response) {
+                dismissProgress();
+                if(response.errCode == ErrorCode.NO_ERROR) {
+                    TastyToastUtil.toast(FeedDetailActivity.this, R.string.delete_success);
+                    EventBusUtil.post(Constant.EVENT_BUS_DELETE_FEED_SUCCESS, mFeedItem != null ? mFeedItem.id : null);
+                    finish();
+                } else {
+                    TastyToastUtil.toast(FeedDetailActivity.this, R.string.delete_failed);
+                }
+            }
+        });
     }
 
     private Comment getReplyComment(String text) {

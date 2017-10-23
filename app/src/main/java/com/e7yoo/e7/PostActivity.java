@@ -77,7 +77,8 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         initTopic(getIntent());
         mGvAdapter = new PostGvAdapter(this, null);
         mImgGv.setAdapter(mGvAdapter);
-        Loc.getInstance(mLoc).startLocation(myListener);
+        mLoc = Loc.getInstance(mLoc);
+        mLoc.startLocation(myListener);
     }
 
     @Override

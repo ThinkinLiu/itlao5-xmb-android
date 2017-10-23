@@ -17,10 +17,12 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommUserUtil;
 import com.e7yoo.e7.util.CommonUtil;
+import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.beans.CommConfig;
@@ -69,6 +71,7 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initView() {
+        rootView = findViewById(R.id.root_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.space_rv);
     }
 
@@ -84,6 +87,12 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
                 finish();
                 return;
             }
+        }
+        if(CommonUtils.isMyself(mCommUser)) {
+            setRightTv(View.VISIBLE, R.mipmap.title_right_friend, 0, this);
+        } else {
+            setRightTv(View.GONE);
+            // setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -170,7 +179,16 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.titlebar_right_tv:
+                if(CommonUtils.isMyself(mCommUser)) {
+                    toFriend();
+                }
+                break;
         }
+    }
+
+    private void toFriend() {
+        ActivityUtil.toFriend(this, false);
     }
 
     private void photoPicker(ArrayList<String> photoPaths) {

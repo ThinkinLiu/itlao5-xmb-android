@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.e7yoo.e7.AddRobotActivity;
 import com.e7yoo.e7.ChatActivity;
+import com.e7yoo.e7.FriendActivity;
 import com.e7yoo.e7.InfoActivity;
 import com.e7yoo.e7.InputActivity;
 import com.e7yoo.e7.LoginActivity;
@@ -156,6 +157,15 @@ public class ActivityUtil {
         if(!checkLogin || CommonUtils.isLogin(activity)) {
             Intent intent = new Intent(activity, SpaceActivity.class);
             intent.putExtra("CommUser", commUser);
+            ActivityUtil.toActivity(activity, intent);
+        } else {
+            ActivityUtil.toLogin(activity);
+        }
+    }
+
+    public static void toFriend(Activity activity, boolean checkLogin) {
+        if(!checkLogin || CommonUtils.isLogin(activity)) {
+            Intent intent = new Intent(activity, FriendActivity.class);
             ActivityUtil.toActivity(activity, intent);
         } else {
             ActivityUtil.toLogin(activity);

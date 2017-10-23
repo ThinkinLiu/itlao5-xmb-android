@@ -309,5 +309,19 @@
     <string name="item_user_label_hint">这家伙很懒，什么都没留下</string>
     <string name="item_user_info">帖子 %1$d　|　关注 %2$d　|　粉丝 %3$d</string>
     <string name="topic_detail_info">帖子 %1$d　｜　关注 %2$d</string>
+    <string name="feed_detail_title_right_post">发帖</string>
+    <string name="feed_detail_title_right_delete">删除</string>
+    <string name="feed_detail_title_right_delete_hint">删除后无法恢复，确认删除</string>
+    <string name="delete_failed">删除失败</string>
+    <string name="delete_success">删除成功</string>
+    <string name="deleting">正在删除...</string>
+    <string name="title_user_recommended">好友推荐</string>
+    <string name="title_user_attention">我的关注</string>
+    <string name="title_user_fans">我的粉丝</string>
+    <string name="friend_top_recommended">推荐</string>
+    <string name="friend_top_attention">关注</string>
+    <string name="friend_top_fans">粉丝</string>
+    <string name="cancel_follow_failed">取消关注失败</string>
+    <string name="follow_failed">关注失败</string>
 
 </resources>
