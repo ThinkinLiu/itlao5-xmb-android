@@ -40,6 +40,7 @@
             android:id="@+id/friend_top_attention"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_4x"
             android:background="@drawable/rounded_corners_circle_text"
             android:gravity="center"
             android:paddingBottom="@dimen/space_half"
