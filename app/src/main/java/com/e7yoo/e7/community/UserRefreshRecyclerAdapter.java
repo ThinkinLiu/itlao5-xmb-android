@@ -52,7 +52,7 @@ public class UserRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 Glide.with(mContext)
                         .load(item.iconUrl)
                         .apply(options)
-                        .into(viewHolder.topicIcon);
+                        .into(viewHolder.userIcon);
                 viewHolder.nameTv.setText(item.name);
                 viewHolder.descTv.setText(CommUserUtil.getExtraString(item, "welcome"));
                 initAttentionIv(viewHolder, item);
@@ -160,14 +160,14 @@ public class UserRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
  */
 public static class ViewHolderUser extends RecyclerView.ViewHolder {
 
-    public ImageView topicIcon;
+    public ImageView userIcon;
     public TextView nameTv;
     public TextView descTv;
     public ImageView attentionIv;
 
     public ViewHolderUser(View view) {
         super(view);
-        topicIcon = view.findViewById(R.id.item_list_user_icon);
+        userIcon = view.findViewById(R.id.item_list_user_icon);
         nameTv = view.findViewById(R.id.item_list_user_name);
         descTv = view.findViewById(R.id.item_list_user_desc);
         attentionIv = view.findViewById(R.id.item_list_user_attention);
