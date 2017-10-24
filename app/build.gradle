@@ -33,10 +33,11 @@ android {
         applicationId "com.e7yoo.e7"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 61
-        versionName "3.0.1"
+        versionCode 62
+        versionName "3.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi'
@@ -85,6 +86,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.android.support:multidex:1.0.1'
 
     compile 'me.iwf.photopicker:PhotoPicker:0.9.10@aar'
 

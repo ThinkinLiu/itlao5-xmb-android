@@ -1,6 +1,6 @@
 package com.e7yoo.e7;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.e7yoo.e7.util.OsUtil;
@@ -16,7 +16,7 @@ import cn.jpush.android.api.JPushInterface;
  * Created by Administrator on 2017/8/30.
  */
 
-public class E7App extends Application {
+public class E7App extends MultiDexApplication {
 
     public static E7App mApp;
     @Override
