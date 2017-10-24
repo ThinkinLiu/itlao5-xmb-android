@@ -155,23 +155,23 @@ public class UserRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         });
     }
 
-/**
- * 消息item
- */
-public static class ViewHolderUser extends RecyclerView.ViewHolder {
+    /**
+     * 消息item
+     */
+    public static class ViewHolderUser extends RecyclerView.ViewHolder {
 
-    public ImageView userIcon;
-    public TextView nameTv;
-    public TextView descTv;
-    public ImageView attentionIv;
+        public ImageView userIcon;
+        public TextView nameTv;
+        public TextView descTv;
+        public ImageView attentionIv;
 
-    public ViewHolderUser(View view) {
-        super(view);
-        userIcon = view.findViewById(R.id.item_list_user_icon);
-        nameTv = view.findViewById(R.id.item_list_user_name);
-        descTv = view.findViewById(R.id.item_list_user_desc);
-        attentionIv = view.findViewById(R.id.item_list_user_attention);
+        public ViewHolderUser(View view) {
+            super(view);
+            userIcon = view.findViewById(R.id.item_list_user_icon);
+            nameTv = view.findViewById(R.id.item_list_user_name);
+            descTv = view.findViewById(R.id.item_list_user_desc);
+            attentionIv = view.findViewById(R.id.item_list_user_attention);
+        }
     }
-}
 
 }

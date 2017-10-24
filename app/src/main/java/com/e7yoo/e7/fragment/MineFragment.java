@@ -18,6 +18,7 @@ import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.InfoActivity;
 import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.MainActivity;
+import com.e7yoo.e7.MsgActivity;
 import com.e7yoo.e7.PushMsgActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
@@ -127,7 +128,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             mHeadIconIv.setImageResource(R.mipmap.icon_me);
             mine_label.setText(R.string.mine_label_hint);
         }
-        if(PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0) > 0) {
+        if(PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0) > 0
+                || (mUser != null && mUser.unReadCount > 0)) {
             mineMsgPoint.setVisibility(View.VISIBLE);
         } else {
             mineMsgPoint.setVisibility(View.GONE);
@@ -158,13 +160,17 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 ActivityUtil.toSpace(getActivity(), mUser, true);
                 break;
             case R.id.mine_msg_layout:
-                ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
-                PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
-                mineMsgPoint.setVisibility(View.GONE);
-                try {
-                    ShortCutUtils.deleteShortCut(getContext(), MainActivity.class);
-                } catch (Throwable e) {
-                    e.printStackTrace();
+                if(CommonUtils.isLogin(getActivity()) && mUser != null) {
+                    ActivityUtil.toActivity(getActivity(), MsgActivity.class);
+                } else {
+                    ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
+                    PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
+                    mineMsgPoint.setVisibility(View.GONE);
+                    try {
+                        ShortCutUtils.deleteShortCut(getContext(), MainActivity.class);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case R.id.mine_set_layout:

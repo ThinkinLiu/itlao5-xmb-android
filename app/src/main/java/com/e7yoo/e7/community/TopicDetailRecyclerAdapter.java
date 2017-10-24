@@ -154,6 +154,18 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         }
         viewHolderFeedItem.sexIcon.setImageResource(sexIcon);
         viewHolderFeedItem.usernameTv.setText(item.name);
+        addIconClick(viewHolderFeedItem.userIcon, item);
+    }
+
+    private void addIconClick(View view, final CommUser commUser) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(commUser != null) {
+                    ActivityUtil.toSpace(mContext, commUser, false);
+                }
+            }
+        });
     }
 
     private void setViewTypeFeedItem(final BaseViewHolder viewHolderFeedItem, final FeedItem item) {

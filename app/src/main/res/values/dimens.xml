@@ -28,6 +28,8 @@
 
     <dimen name="item_feed_item_icon">36dp</dimen>
 
+    <dimen name="item_friend_msg_icon">42dp</dimen>
+
     <dimen name="topic_detail_icon">90dp</dimen>
 
     <dimen name="post_icon">60dp</dimen>
@@ -37,6 +39,9 @@
     <dimen name="feed_detail_comment_divider_left_padding">80dp</dimen>
 
     <dimen name="login_icon_width">100dp</dimen>
+
+    <dimen name="item_comment_list_icon">42dp</dimen>
+    <dimen name="item_comment_list_feed_icon">48dp</dimen>
 
     <dimen name="size_xs">12dp</dimen>
     <dimen name="size_s">13dp</dimen>
@@ -60,6 +65,7 @@
     <dimen name="list_news_height">90dp</dimen>
     <dimen name="item_push_msg_icon_width">54dp</dimen>
     <dimen name="item_push_msg_icon_height">42dp</dimen>
-    <dimen name="item_push_msg_point">12dp</dimen>
+    <dimen name="item_push_msg_point">8dp</dimen>
     <dimen name="feed_detail_input_pic">80dp</dimen>
+    <dimen name="item_unfriend_msg_point">20dp</dimen>
 </resources>

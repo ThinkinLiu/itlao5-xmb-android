@@ -19,6 +19,7 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
+import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.umeng.comm.core.beans.CommUser;
@@ -148,6 +149,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         }
         viewHolderFeedItem.sexIcon.setImageResource(sexIcon);
         viewHolderFeedItem.usernameTv.setText(item.name);
+        addIconClick(viewHolderFeedItem.userIcon, item);
     }
 
     private void setViewTypeFeeditem(final BaseViewHolder viewHolderFeedItem, final FeedItem item) {
@@ -290,6 +292,18 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             }
         }
     };
+
+
+    private void addIconClick(View view, final CommUser commUser) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(commUser != null) {
+                    ActivityUtil.toSpace(mContext, commUser, false);
+                }
+            }
+        });
+    }
 
     private void addClickListener(View view, final int position) {
         view.setOnClickListener(new View.OnClickListener() {

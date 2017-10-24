@@ -19,9 +19,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.view.CircleGridView;
+import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
 
 import java.util.ArrayList;
@@ -93,6 +95,18 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         }
         viewHolderFeedItem.sexIcon.setImageResource(sexIcon);
         viewHolderFeedItem.usernameTv.setText(item.creator.name);
+        addIconClick(viewHolderFeedItem.userIcon, item.creator);
+    }
+
+    private void addIconClick(View view, final CommUser commUser) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(commUser != null) {
+                    ActivityUtil.toSpace(mContext, commUser, false);
+                }
+            }
+        });
     }
 
     private void addItemClickForGridView(GridView gridView, final View mView, final int mPosition) {
