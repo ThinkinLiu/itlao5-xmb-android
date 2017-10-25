@@ -325,5 +325,18 @@
     <string name="follow_failed">关注失败</string>
     <string name="push_msg">推送消息</string>
     <string name="comment_msg">评论和赞</string>
+    <string name="circle_chat_error">获取聊天记录失败</string>
+    <string name="circle_chat_error_nomore">没有更多聊天记录</string>
+    <string name="circle_chat_error_no">暂无聊天记录</string>
+    <string name="title_circle_chat">私聊</string>
+    <string name="title_circle_chat_empty">还没输入内容哦...你想聊点啥呢</string>
+    <string name="circle_chat_send_failed">发送失败</string>
+    <string name="space_title_right_chat">私聊</string>
+    <string name="space_title_right_un_attention">取消关注</string>
+    <string name="space_title_right_attention">关注</string>
+    <string name="space_title_right_spam">举报</string>
+    <string name="attention_failed">关注失败</string>
+    <string name="attention_cancel_failed">取消关注失败</string>
+    <string name="forget_pwd_name_empty">请输入要找回密码的用户名</string>
 
 </resources>

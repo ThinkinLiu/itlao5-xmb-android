@@ -1,8 +1,5 @@
 package com.e7yoo.e7;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -10,20 +7,16 @@ import android.widget.TextView;
 
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
-import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
-import com.umeng.comm.core.impl.CommunitySDKImpl;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.responses.LoginResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.core.utils.ResFinder;
-import com.umeng.comm.core.utils.ToastMsg;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     CommUser mCommUser;

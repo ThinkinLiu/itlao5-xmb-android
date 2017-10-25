@@ -101,7 +101,8 @@
             android:padding="@dimen/space_3x"
             android:text="@string/login_forget_pwd"
             android:textColor="@color/text"
-            android:textSize="@dimen/size_xl" />
+            android:textSize="@dimen/size_xl"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/login_register"

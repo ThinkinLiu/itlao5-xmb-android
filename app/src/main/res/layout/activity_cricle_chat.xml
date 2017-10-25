@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    tools:context="com.e7yoo.e7.CircleChatActivity">
+
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/circle_chat_sr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/circle_chat_input_layout"
+        android:layout_below="@id/titleBar"
+        android:scrollbars="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/circle_chat_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/circle_chat_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/chat_input_edit_bg"
+        android:padding="@dimen/space_2x">
+
+        <EditText
+            android:id="@+id/circle_chat_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/space_2x"
+            android:layout_marginRight="@dimen/space_2x"
+            android:layout_toLeftOf="@+id/circle_chat_send"
+            android:background="@drawable/rounded_corners_tag_white"
+            android:gravity="center_vertical"
+            android:hint="@string/chat_input_edit_hint"
+            android:maxLength="30"
+            android:maxLines="4"
+            android:padding="@dimen/space_2x"
+            android:text=""
+            android:textColor="@color/text"
+            android:textColorHint="@color/text_l"
+            android:textSize="@dimen/size_m" />
+
+        <ImageView
+            android:id="@+id/circle_chat_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:padding="@dimen/space"
+            android:src="@mipmap/chat_send" />
+    </RelativeLayout>
+
+</RelativeLayout>

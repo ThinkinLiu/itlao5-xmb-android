@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.e7yoo.e7.AddRobotActivity;
 import com.e7yoo.e7.ChatActivity;
+import com.e7yoo.e7.CircleChatActivity;
 import com.e7yoo.e7.FriendActivity;
 import com.e7yoo.e7.InfoActivity;
 import com.e7yoo.e7.InputActivity;
@@ -166,6 +167,16 @@ public class ActivityUtil {
     public static void toFriend(Activity activity, boolean checkLogin) {
         if(!checkLogin || CommonUtils.isLogin(activity)) {
             Intent intent = new Intent(activity, FriendActivity.class);
+            ActivityUtil.toActivity(activity, intent);
+        } else {
+            ActivityUtil.toLogin(activity);
+        }
+    }
+
+    public static void toCircleChat(Activity activity, CommUser commUser, boolean checkLogin) {
+        if(!checkLogin || CommonUtils.isLogin(activity)) {
+            Intent intent = new Intent(activity, CircleChatActivity.class);
+            intent.putExtra("targetCommUser", commUser);
             ActivityUtil.toActivity(activity, intent);
         } else {
             ActivityUtil.toLogin(activity);

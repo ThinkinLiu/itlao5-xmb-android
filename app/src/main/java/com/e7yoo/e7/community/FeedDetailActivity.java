@@ -92,7 +92,11 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initSettings() {
         if(getIntent() != null && getIntent().hasExtra("FeedItem")) {
-            mFeedItem = getIntent().getParcelableExtra("FeedItem");
+            try {
+                mFeedItem = getIntent().getParcelableExtra("FeedItem");
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
         if(mFeedItem == null || mFeedItem.id == null) {
             TastyToastUtil.toast(this, R.string.circle_feed_not_exist);

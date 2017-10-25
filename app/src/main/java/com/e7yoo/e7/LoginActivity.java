@@ -18,6 +18,7 @@ import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.responses.LoginResponse;
+import com.umeng.comm.core.nets.responses.SimpleResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.core.utils.ResFinder;
 
@@ -67,7 +68,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 login();
                 break;
             case R.id.login_forget_pwd:
-                login();
+                forgetPwd();
                 break;
             case R.id.login_register:
             case R.id.register:
@@ -92,6 +93,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             return R.string.login_error_empty;
         }
         return 0;
+    }
+
+    private void forgetPwd() {
+        String name = mNameEt.getText().toString().trim();
+        if(TextUtils.isEmpty(name)) {
+            TastyToastUtil.toast(this, R.string.forget_pwd_name_empty);
+            return;
+        }
+        E7App.getCommunitySdk().forgetPWD(name, new Listeners.FetchListener<SimpleResponse>() {
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onComplete(SimpleResponse simpleResponse) {
+                System.out.print("");
+            }
+        });
     }
 
     private void login(String name, String pwd) {

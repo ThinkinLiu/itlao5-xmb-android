@@ -32,12 +32,14 @@ import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.CommentResponse;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 import com.umeng.comm.core.nets.responses.PostCommentResponse;
 import com.umeng.comm.core.nets.responses.ProfileResponse;
+import com.umeng.comm.core.nets.responses.SimpleResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -91,8 +93,7 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
         if(CommonUtils.isMyself(mCommUser)) {
             setRightTv(View.VISIBLE, R.mipmap.title_right_friend, 0, this);
         } else {
-            setRightTv(View.GONE);
-            // setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
+            setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -182,13 +183,110 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
             case R.id.titlebar_right_tv:
                 if(CommonUtils.isMyself(mCommUser)) {
                     toFriend();
+                } else {
+                    toMenu();
+                }
+                break;
+            case R.id.titlebar_title_tv:
+                long nowTime = System.currentTimeMillis();
+                if(num >= 4) {
+                    showChat = true;
+                } else if(nowTime - lastTime < 5000) {
+                    num++;
+                } else {
+                    num = 0;
+                    lastTime = nowTime;
                 }
                 break;
         }
     }
 
+    private int num = 0;
+    private long lastTime = 0;
+
     private void toFriend() {
         ActivityUtil.toFriend(this, false);
+    }
+
+    private boolean showChat = false;
+    private void toMenu() {
+        ArrayList<TextSet> textSets = new ArrayList<>();
+        if(mCommUser.isFollowed) {
+            if(showChat) {
+                textSets.add(new TextSet(R.string.space_title_right_chat, false, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toChat();
+                    }
+                }));
+            }
+            textSets.add(new TextSet(R.string.space_title_right_un_attention, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toAttention(false);
+                }
+            }));
+            PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
+        } else {
+            textSets.add(new TextSet(R.string.space_title_right_attention, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toAttention(true);
+                }
+            }));
+            textSets.add(new TextSet(R.string.space_title_right_spam, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toSpam();
+                }
+            }));
+        }
+        PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
+    }
+
+    private void toChat() {
+        ActivityUtil.toCircleChat(this, mCommUser, false);
+    }
+
+    private void toAttention(boolean b) {
+        if(b) {
+            E7App.getCommunitySdk().followUser(mCommUser, new Listeners.SimpleFetchListener<Response>() {
+                @Override
+                public void onComplete(Response response) {
+                    if(response.errCode == ErrorCode.NO_ERROR) {
+
+                    } else {
+                        TastyToastUtil.toast(SpaceActivity.this, R.string.attention_failed);
+                        mCommUser.isFollowed = false;
+                    }
+                }
+            });
+            mCommUser.isFollowed = true;
+        } else {
+            E7App.getCommunitySdk().cancelFollowUser(mCommUser, new Listeners.SimpleFetchListener<Response>() {
+                @Override
+                public void onComplete(Response response) {
+                    if(response.errCode == ErrorCode.NO_ERROR) {
+
+                    } else {
+                        TastyToastUtil.toast(SpaceActivity.this, R.string.attention_cancel_failed);
+                        mCommUser.isFollowed = true;
+                    }
+                }
+            });
+            mCommUser.isFollowed = false;
+        }
+    }
+
+    private void toSpam() {
+        E7App.getCommunitySdk().spamUser(mCommUser.id, new Listeners.FetchListener<SimpleResponse>() {
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onComplete(SimpleResponse simpleResponse) {
+            }
+        });
     }
 
     private void photoPicker(ArrayList<String> photoPaths) {
