@@ -324,6 +324,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                 if(response.errCode == ErrorCode.NO_ERROR) {
                     CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
                     hasUpdate = true;
+                } else if(response.errCode == ErrorCode.ERR_CODE_USER_NAME_ILLEGAL_CHAR) {
+                    TastyToastUtil.toast(InfoActivity.this, R.string.update_user_name_illegal);
                 } else {
                     TastyToastUtil.toast(InfoActivity.this, R.string.update_failed);
                 }
