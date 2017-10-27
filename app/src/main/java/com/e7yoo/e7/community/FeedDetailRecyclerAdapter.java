@@ -122,6 +122,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             setViewTypeComment(viewHolderComment, item);
             viewHolderComment.hint.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
             viewHolderComment.divide.setVisibility(position < mDatas.size() - 1 ? View.VISIBLE : View.GONE);
+            addClickListener(viewHolderComment.itemView, position);
         }
     }
 
