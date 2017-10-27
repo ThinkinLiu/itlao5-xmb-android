@@ -86,7 +86,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         mLoc = Loc.getInstance(mLoc);
         mLoc.startLocation(myListener);
 
-        loadFeedCache();
+        loadFeedCache(CommConfig.getConfig().loginedUser.id);
     }
 
     @Override
@@ -293,7 +293,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                 if(feedItemResponse.errCode == 0 && feedItemResponse.result != null) {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_success);
                     EventBusUtil.post(Constant.EVENT_BUS_POST_FEED_SUCCESS, feedItemResponse.result);
-                    clearFeedCache();
+                    clearFeedCache(CommConfig.getConfig().loginedUser.id);
                     finish();
                 } else {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_failed);
@@ -414,53 +414,62 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        cacheFeed();
+        cacheFeed(CommConfig.getConfig().loginedUser.id);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(cacheFeed()) {
+        if(cacheFeed(CommConfig.getConfig().loginedUser.id)) {
             TastyToastUtil.toast(this, R.string.post_back_cache_feed);
         }
     }
 
-    private boolean cacheFeed() {
+    private boolean cacheFeed(String userId) {
+        if(TextUtils.isEmpty(userId)) {
+            return false;
+        }
         String text = mInputEt.getText().toString().trim();
         if(text != null) {
-            PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT, text);
+            PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, text);
         }
         ArrayList list = mGvAdapter.getDatas();
         if(list != null && list.size() > 0) {
-            PreferenceUtil.commitStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC, new HashSet<String>(list));
+            PreferenceUtil.commitStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId, new HashSet<String>(list));
         }
         if(text != null || (list != null && list.size() > 0)) {
             // 有内容时，才考虑保存帖子主题
             Object object = mTopicTv.getTag(R.id.post_topic_tv);
             if(object != null && object instanceof Topic) {
-                PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC, new Gson().toJson((Topic) mTopicTv.getTag(R.id.post_topic_tv)));
+                PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC + userId, new Gson().toJson((Topic) mTopicTv.getTag(R.id.post_topic_tv)));
             }
             return true;
         }
         return false;
     }
 
-    private void clearFeedCache() {
-        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT);
-        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC);
-        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC);
+    private void clearFeedCache(String userId) {
+        if(TextUtils.isEmpty(userId)) {
+            return;
+        }
+        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId);
+        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId);
+        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC + userId);
     }
 
-    private void loadFeedCache() {
-        String text = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT, "");
+    private void loadFeedCache(String userId) {
+        if(TextUtils.isEmpty(userId)) {
+            return;
+        }
+        String text = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, "");
         mInputEt.setText(text);
-        String topic = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT, "");
+        String topic = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, "");
         if(!CommonUtil.isEmpty(topic)) {
             Topic topicT = new Gson().fromJson(topic, Topic.class);
             mTopicTv.setText(topicT.name);
             mTopicTv.setTag(R.id.post_topic_tv, topicT);
         }
-        Set<String> set = PreferenceUtil.getStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC, null);
+        Set<String> set = PreferenceUtil.getStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId, null);
         if(set != null && set.size() > 0) {
             ArrayList<String> strings = new ArrayList<String>();
             strings.addAll(set);
