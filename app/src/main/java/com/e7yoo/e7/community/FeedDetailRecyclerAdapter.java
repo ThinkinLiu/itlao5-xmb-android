@@ -22,6 +22,7 @@ import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
+import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
@@ -114,6 +115,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 setUser(viewHolderFeedItem, item.creator);
                 setViewTypeFeeditem(viewHolderFeedItem, item);
             }
+            addItemClickForGridView(viewHolderFeedItem.gridView, viewHolderFeedItem.itemView, position);
             addClickListener(viewHolderFeedItem.itemView, position);
         } else if(holder instanceof ViewHolderComment) {
             ViewHolderComment viewHolderComment = (ViewHolderComment) holder;
@@ -122,6 +124,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             setViewTypeComment(viewHolderComment, item);
             viewHolderComment.hint.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
             viewHolderComment.divide.setVisibility(position < mDatas.size() - 1 ? View.VISIBLE : View.GONE);
+            addItemClickForGridView(viewHolderComment.gridView, viewHolderComment.itemView, position);
             addClickListener(viewHolderComment.itemView, position);
         }
     }
@@ -304,6 +307,21 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 }
             }
         });
+    }
+
+    private void addItemClickForGridView(GridView gridView, final View mView, final int mPosition) {
+        if(gridView instanceof CircleGridView) {
+            ((CircleGridView) gridView).setOnTouchInvalidPositionListener(new CircleGridView.OnTouchInvalidPositionListener() {
+                @Override
+                public boolean onTouchInvalidPosition(int motionEvent) {
+                    if(mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(mView, mPosition);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private void addClickListener(View view, final int position) {

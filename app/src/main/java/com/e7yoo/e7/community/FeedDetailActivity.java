@@ -42,6 +42,7 @@ import com.umeng.comm.core.nets.responses.PostCommentResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.iwf.photopicker.PhotoPicker;
@@ -67,6 +68,9 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     private Comment mReplyComment;
 
     private ArrayList<String> mImgs;
+
+    private HashMap<String, String> mContentMap = new HashMap<>();
+    private HashMap<String, ArrayList<String>> mImgMap = new HashMap<>();
 
     @Override
     protected String initTitle() {
@@ -128,18 +132,18 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     Comment comment = (Comment) mRvAdapter.getItem(position);
                     if(comment.creator != null && !TextUtils.isEmpty(comment.creator.name)) {
                         if(mReplyComment != comment) {
-                            clearReplyInput(comment, 0);
+                            clearReplyInput(comment, 0, false);
                         }
                         mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), comment.creator.name));
                     } else {
                         if(mReplyComment != null) {
-                            clearReplyInput(null, 0);
+                            clearReplyInput(null, 0, false);
                         }
                         mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
                     }
                 } else if(mRvAdapter.getItem(position) instanceof FeedItem) {
                     if(mReplyComment != null) {
-                        clearReplyInput(null, 0);
+                        clearReplyInput(null, 0, false);
                     }
                     mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
                 }
@@ -152,18 +156,49 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
      * @param comment
      * @param hintStrId <= 0 时不改变原值
      */
-    private void clearReplyInput(Comment comment, int hintStrId) {
+    private void clearReplyInput(Comment comment, int hintStrId, boolean deleteCache) {
+        resetInputCache(comment, deleteCache);
         mReplyComment = comment;
-        mReplyEt.setText("");
+        // mReplyEt.setText("");
         if(hintStrId > 0) {
             mReplyEt.setHint(hintStrId);
         }
-        if(mImgs != null) {
+        /*if(mImgs != null) {
             mImgs.clear();
-        }
-        mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
+        }*/
+        setPic();
+        // mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
         mReplyPicIv.setVisibility(View.GONE);
-        Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyPicIv);
+        // Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyPicIv);
+    }
+
+    private void resetInputCache(Comment comment, boolean deleteCache) {
+        if(deleteCache) {
+            if(mReplyComment != null) {
+                mContentMap.remove(mReplyComment.id);
+                mImgMap.remove(mReplyComment.id);
+            } else {
+                mContentMap.remove(mFeedItem.id);
+                mImgMap.remove(mFeedItem.id);
+            }
+        } else {
+            if (mReplyComment != null) {
+                mContentMap.put(mReplyComment.id, mReplyEt.getText().toString().trim());
+                mImgMap.put(mReplyComment.id, mImgs);
+            } else {
+                mContentMap.put(mFeedItem.id, mReplyEt.getText().toString().trim());
+                mImgMap.put(mFeedItem.id, mImgs);
+            }
+            if (comment != null) {
+                String text = mContentMap.get(comment.id);
+                mReplyEt.setText(text == null ? "" : text);
+                mImgs = mImgMap.get(comment.id);
+            } else {
+                String text = mContentMap.get(mFeedItem.id);
+                mReplyEt.setText(text == null ? "" : text);
+                mImgs = mImgMap.get(mFeedItem.id);
+            }
+        }
     }
 
     private RecyclerViewDivider getDivider() {
@@ -402,7 +437,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             public void onComplete(PostCommentResponse postCommentResponse) {
                 if(postCommentResponse.errCode == ErrorCode.NO_ERROR && postCommentResponse.getComment() != null && !TextUtils.isEmpty(postCommentResponse.getComment().id)) {
                     mRvAdapter.addComment(postCommentResponse.getComment());
-                    clearReplyInput(null, R.string.feed_detail_input_edit_hint);
+                    clearReplyInput(null, R.string.feed_detail_input_edit_hint, true);
                 } else {
                     TastyToastUtil.toast(FeedDetailActivity.this, R.string.feed_detail_reply_failed);
                 }
