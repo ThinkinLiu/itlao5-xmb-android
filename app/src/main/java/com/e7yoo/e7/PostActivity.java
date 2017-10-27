@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,10 +22,13 @@ import com.e7yoo.e7.community.PostGvAdapter;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CheckPermissionUtil;
+import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.Loc;
+import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.google.gson.Gson;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
@@ -34,7 +38,9 @@ import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
@@ -79,6 +85,8 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         mImgGv.setAdapter(mGvAdapter);
         mLoc = Loc.getInstance(mLoc);
         mLoc.startLocation(myListener);
+
+        loadFeedCache();
     }
 
     @Override
@@ -285,6 +293,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                 if(feedItemResponse.errCode == 0 && feedItemResponse.result != null) {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_success);
                     EventBusUtil.post(Constant.EVENT_BUS_POST_FEED_SUCCESS, feedItemResponse.result);
+                    clearFeedCache();
                     finish();
                 } else {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_failed);
@@ -400,5 +409,62 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        cacheFeed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(cacheFeed()) {
+            TastyToastUtil.toast(this, R.string.post_back_cache_feed);
+        }
+    }
+
+    private boolean cacheFeed() {
+        String text = mInputEt.getText().toString().trim();
+        if(text != null) {
+            PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT, text);
+        }
+        ArrayList list = mGvAdapter.getDatas();
+        if(list != null && list.size() > 0) {
+            PreferenceUtil.commitStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC, new HashSet<String>(list));
+        }
+        if(text != null || (list != null && list.size() > 0)) {
+            // 有内容时，才考虑保存帖子主题
+            Object object = mTopicTv.getTag(R.id.post_topic_tv);
+            if(object != null && object instanceof Topic) {
+                PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC, new Gson().toJson((Topic) mTopicTv.getTag(R.id.post_topic_tv)));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void clearFeedCache() {
+        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT);
+        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC);
+        PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC);
+    }
+
+    private void loadFeedCache() {
+        String text = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT, "");
+        mInputEt.setText(text);
+        String topic = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT, "");
+        if(!CommonUtil.isEmpty(topic)) {
+            Topic topicT = new Gson().fromJson(topic, Topic.class);
+            mTopicTv.setText(topicT.name);
+            mTopicTv.setTag(R.id.post_topic_tv, topicT);
+        }
+        Set<String> set = PreferenceUtil.getStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC, null);
+        if(set != null && set.size() > 0) {
+            ArrayList<String> strings = new ArrayList<String>();
+            strings.addAll(set);
+            mGvAdapter.refreshDatas(strings);
+        }
     }
 }

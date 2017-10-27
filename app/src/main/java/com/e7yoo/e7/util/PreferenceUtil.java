@@ -3,9 +3,13 @@ package com.e7yoo.e7.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 
 import com.e7yoo.e7.E7App;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 public class PreferenceUtil {
     private static SharedPreferences mSharedPreferences = null;
@@ -29,6 +33,18 @@ public class PreferenceUtil {
         mEditor = mSharedPreferences.edit();
         mEditor.clear();
         mEditor.commit();
+    }
+
+    public static void commitStringSet(String key, Set<String> value) {
+        init(E7App.mApp);
+        mEditor = mSharedPreferences.edit();
+        mEditor.putStringSet(key, value);
+        mEditor.commit();
+    }
+
+    public static Set<String> getStringSet(String key, Set<String> faillValue) {
+        init(E7App.mApp);
+        return mSharedPreferences.getStringSet(key, faillValue);
     }
 
     public static void commitString(String key, String value) {
