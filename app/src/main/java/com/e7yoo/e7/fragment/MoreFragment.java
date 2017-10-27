@@ -14,6 +14,7 @@ import com.e7yoo.e7.app.findphone.FindPhoneActivity;
 import com.e7yoo.e7.app.history.TodayHisActivity;
 import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.app.news.NewsActivity;
+import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.util.ActivityUtil;
 
 public class MoreFragment extends BaseFragment implements View.OnClickListener {

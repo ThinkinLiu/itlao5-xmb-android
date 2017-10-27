@@ -129,8 +129,8 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     private void setUser(BaseViewHolder viewHolderFeedItem, CommUser item) {
         RequestOptions options = new RequestOptions();
         options.diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.mipmap.log_e7yoo_transport)
-                .error(R.mipmap.log_e7yoo_transport)
+                .placeholder(R.mipmap.icon_me)
+                .error(R.mipmap.icon_me)
                 .override(124, 124);
         Glide.with(mContext)
                 .load(item.iconUrl)

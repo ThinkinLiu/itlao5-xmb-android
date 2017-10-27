@@ -75,8 +75,8 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
     private void setUser(ViewHolderFeedItem viewHolderFeedItem, FeedItem item) {
         RequestOptions options = new RequestOptions();
-        options.placeholder(R.mipmap.log_e7yoo_transport)
-                .error(R.mipmap.log_e7yoo_transport);
+        options.placeholder(R.mipmap.icon_me)
+                .error(R.mipmap.icon_me);
         Glide.with(mContext)
                 .load(item.creator.iconUrl)
                 .apply(options)

@@ -153,6 +153,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
      * @param hintStrId <= 0 时不改变原值
      */
     private void clearReplyInput(Comment comment, int hintStrId) {
+        mReplyComment = comment;
         mReplyEt.setText("");
         if(hintStrId > 0) {
             mReplyEt.setHint(hintStrId);
