@@ -428,10 +428,10 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
 
     private void toShare() {
         String title = mFeedItem.topics != null && mFeedItem.topics.get(0) != null && mFeedItem.topics.get(0).name != null
-                ? mFeedItem.topics.get(0).name : getResources().getString(R.string.mengquanfenxiang);
+                ? getResources().getString(R.string.mengquanfenxiang2) + mFeedItem.topics.get(0).name : getResources().getString(R.string.mengquanfenxiang);
         String text = mFeedItem.text;
-        if(text.length() > 20) {
-            text = text.substring(0, 20);
+        if(text.length() > 30) {
+            text = text.substring(0, 30);
         }
         String img = mFeedItem.getImages() != null && mFeedItem.getImages().size() > 0
                 && mFeedItem.getImages().get(0) != null ? mFeedItem.getImages().get(0).thumbnail : null;

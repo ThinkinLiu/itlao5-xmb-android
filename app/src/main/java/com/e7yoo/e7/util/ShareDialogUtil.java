@@ -12,6 +12,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.GridView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.Target;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.model.GridItem;
@@ -21,6 +24,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import cn.jiguang.share.android.api.JShareInterface;
 import cn.jiguang.share.android.api.PlatActionListener;
@@ -164,7 +168,12 @@ public class ShareDialogUtil {
                 } else {
                     if(share_imagePath.startsWith("http")) {
                         if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
+                            /*String cachePath = getImagePathFromGlideCache(share_imagePath);
+                            if(!TextUtils.isEmpty(cachePath)) {
+                                shareParams.setImagePath(cachePath);
+                            } else {*/
                             shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
+                            /*}*/
                         } else {
                             shareParams.setImageUrl(share_imagePath);
                         }
@@ -211,5 +220,29 @@ public class ShareDialogUtil {
             e.printStackTrace();
         }
         return "";
+    }
+
+    /**
+     * 需要在子线程
+     * @param url
+     * @return
+     */
+    private static String getImagePathFromGlideCache(String url) {
+        FutureTarget<File> futureTarget = Glide.with(context).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+        try {
+            File cacheFile = futureTarget.get();
+            String path = cacheFile.getAbsolutePath();
+            return path;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            CrashReport.postCatchedException(e);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            CrashReport.postCatchedException(e);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            CrashReport.postCatchedException(e);
+        }
+        return null;
     }
 }
