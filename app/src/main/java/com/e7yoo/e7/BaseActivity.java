@@ -56,6 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dismissProgress();
         EventBus.getDefault().unregister(this);
     }
 
@@ -348,13 +349,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         MobclickAgent.onPageEnd(this.getClass().getSimpleName());
     }
 
-
-
     protected ProgressDialogEx progressDialogEx;
     protected void showProgress(int loading){
         showProgress(loading, 30 * 1000);
     }
     protected void showProgress(int loading, int time){
+        dismissProgress();
         progressDialogEx = ProgressDialogEx.show(BaseActivity.this, "", getString(loading), true, time, new ProgressDialogEx.OnCancelListener2() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -368,8 +368,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void dismissProgress() {
         if(!isFinishing() && progressDialogEx != null && progressDialogEx.isShowing()) {
             progressDialogEx.dismiss();
-            progressDialogEx = null;
         }
+        progressDialogEx = null;
     }
 
     @Override

@@ -87,7 +87,9 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         mLoc = Loc.getInstance(mLoc);
         mLoc.startLocation(myListener);
 
-        loadFeedCache(CommConfig.getConfig().loginedUser.id);
+        if(CommConfig.getConfig().loginedUser != null) {
+            loadFeedCache(CommConfig.getConfig().loginedUser.id);
+        }
     }
 
     @Override
@@ -294,7 +296,9 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                 if(feedItemResponse.errCode == 0 && feedItemResponse.result != null) {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_success);
                     EventBusUtil.post(Constant.EVENT_BUS_POST_FEED_SUCCESS, feedItemResponse.result);
-                    clearFeedCache(CommConfig.getConfig().loginedUser.id);
+                    if(CommConfig.getConfig().loginedUser != null) {
+                        clearFeedCache(CommConfig.getConfig().loginedUser.id);
+                    }
                     finish();
                 } else {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_failed);
@@ -415,13 +419,15 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        cacheFeed(CommConfig.getConfig().loginedUser.id);
+        if(CommConfig.getConfig().loginedUser != null) {
+            cacheFeed(CommConfig.getConfig().loginedUser.id);
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(cacheFeed(CommConfig.getConfig().loginedUser.id)) {
+        if(CommConfig.getConfig().loginedUser != null && cacheFeed(CommConfig.getConfig().loginedUser.id)) {
             TastyToastUtil.toast(this, R.string.post_back_cache_feed);
         }
     }
