@@ -1,7 +1,5 @@
 package com.e7yoo.e7;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,16 +10,15 @@ import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.OsUtil;
-import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.responses.LoginResponse;
 import com.umeng.comm.core.nets.responses.SimpleResponse;
-import com.umeng.comm.core.nets.uitls.MD5Util;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.core.utils.ResFinder;
 
@@ -140,6 +137,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             if (commUser != null && !TextUtils.isEmpty(commUser.id) && i == ErrorCode.NO_ERROR) {
                 mCommUser = commUser;
                 CommonUtils.saveLoginUserInfo(LoginActivity.this, mCommUser);
+                CommConfig.getConfig().setCurrentUser(mCommUser);
                 finish(true);
             } else {
                 switch (i) {
@@ -179,6 +177,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             if (loginedUser != null && !TextUtils.isEmpty(loginedUser.id) && loginResponse.errCode == ErrorCode.NO_ERROR) {
                 mCommUser = loginResponse.result;
                 CommonUtils.saveLoginUserInfo(LoginActivity.this, mCommUser);
+                CommConfig.getConfig().setCurrentUser(mCommUser);
                 finish(true);
             } else {
                 switch (loginResponse.errCode) {
