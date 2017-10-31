@@ -72,7 +72,7 @@ public class GameInfoUtil {
         gameInfo.setIcon("http://imga3.5054399.com/upload_pic/2015/11/23/4399_15592890967.jpg");
         gameInfo.setUmengKey(UmengUtil.GAME_JXMT);
         gameInfos.add(gameInfo);
-        gameInfo = new GameInfo(context.getString(R.string.game_h5_water), context.getString(R.string.game_h5_water_content), 2, "http://h.4399.com/play/191276.htm", null);
+        gameInfo = new GameInfo(context.getString(R.string.game_h5_water), context.getString(R.string.game_h5_water_content), 1, "http://h.4399.com/play/191276.htm", null);
         gameInfo.setShare_title(context.getString(R.string.game_h5_water_share));
         gameInfo.setShare_content(context.getString(R.string.game_h5_water_share_content));
         gameInfo.setIcon("http://imga2.5054399.com/upload_pic/2017/9/18/4399_09084820108.jpg");
