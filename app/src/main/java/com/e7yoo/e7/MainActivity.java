@@ -32,6 +32,11 @@ import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.umeng.comm.core.beans.CommConfig;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.responses.MsgCountResponse;
+import com.umeng.comm.core.utils.CommonUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -84,6 +89,7 @@ public class MainActivity extends BaseActivity {
         UpdateHelper.getInstance().init(getApplicationContext(), getResources().getColor(R.color.titlebar_bg));/*Color.parseColor("#459F47"));*/
         UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
 
+        EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
     }
 
     private void initRobot() {
@@ -206,6 +212,9 @@ public class MainActivity extends BaseActivity {
                     }
                 }
                 break;
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG:
+                getUnReadMsg();
+                break;
         }
     }
 
@@ -303,5 +312,46 @@ public class MainActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+    }
+
+    private void getUnReadMsg() {
+        if(!CommonUtils.isLogin(MainActivity.this)) {
+            getUnReadMsgDelay(10000);
+            return;
+        }
+        E7App.getCommunitySdk().fetchUnReadMessageCount(new Listeners.FetchListener<MsgCountResponse>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onComplete(MsgCountResponse msgCountResponse) {
+                if(msgCountResponse != null && msgCountResponse.errCode == ErrorCode.NO_ERROR) {
+                    if(CommonUtils.isLogin(MainActivity.this) && CommConfig.getConfig().loginedUser != null) {
+                        CommConfig.getConfig().loginedUser.unReadCount = Integer.getInteger(msgCountResponse.count,
+                                CommConfig.getConfig().loginedUser.unReadCount);
+                    } else {
+                        getUnReadMsgDelay(10000);
+                    }
+                } else {
+                    getUnReadMsgDelay(10000);
+                }
+            }
+        });
+    }
+
+    private void getUnReadMsgDelay(final long millis) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(millis);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
+            }
+        }).start();
     }
 }

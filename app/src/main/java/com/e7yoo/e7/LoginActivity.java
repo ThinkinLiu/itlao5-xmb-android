@@ -209,6 +209,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void finish(boolean login) {
         if(login) {
             EventBusUtil.post(Constant.EVENT_BUS_CIRCLE_LOGIN);
+            EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
         }
         finish();
     }
