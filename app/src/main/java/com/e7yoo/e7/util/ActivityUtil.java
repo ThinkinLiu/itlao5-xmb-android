@@ -17,6 +17,7 @@ import com.e7yoo.e7.PushMsgDetailsActivity;
 import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
+import com.e7yoo.e7.community.CollectFeedListActivity;
 import com.e7yoo.e7.community.FeedDetailActivity;
 import com.e7yoo.e7.community.SpaceActivity;
 import com.e7yoo.e7.community.TopicListActivity;
@@ -177,6 +178,15 @@ public class ActivityUtil {
         if(!checkLogin || CommonUtils.isLogin(activity)) {
             Intent intent = new Intent(activity, CircleChatActivity.class);
             intent.putExtra("targetCommUser", commUser);
+            ActivityUtil.toActivity(activity, intent);
+        } else {
+            ActivityUtil.toLogin(activity);
+        }
+    }
+
+    public static void toCollect(Activity activity, boolean checkLogin) {
+        if(!checkLogin || CommonUtils.isLogin(activity)) {
+            Intent intent = new Intent(activity, CollectFeedListActivity.class);
             ActivityUtil.toActivity(activity, intent);
         } else {
             ActivityUtil.toLogin(activity);

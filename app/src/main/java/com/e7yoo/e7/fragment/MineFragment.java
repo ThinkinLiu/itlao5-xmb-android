@@ -37,8 +37,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private View mRootView;
     private ImageView mHeadIconIv;
     private TextView mine_label;
-    private View mSpaceLayout, mMsgLayout, mSetLayout, mAboutLayout;
-    private TextView mineMsgPoint;
+    private View mSpaceLayout, mMsgLayout, mCollectLayout, mSetLayout, mAboutLayout;
+    private TextView mineMsgPoint, mCollectPoint;
     // private Me mMe;
     private CommUser mUser;
 
@@ -92,15 +92,18 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mine_label = mRootView.findViewById(R.id.mine_label);
         mSpaceLayout = mRootView.findViewById(R.id.mine_page_layout);
         mMsgLayout = mRootView.findViewById(R.id.mine_msg_layout);
+        mCollectLayout = mRootView.findViewById(R.id.mine_collect_layout);
         mSetLayout = mRootView.findViewById(R.id.mine_set_layout);
         mAboutLayout = mRootView.findViewById(R.id.mine_about_layout);
         mineMsgPoint = mRootView.findViewById(R.id.mine_msg_point);
+        mCollectPoint = mRootView.findViewById(R.id.mine_collect_point);
     }
 
     private void initListener() {
         mHeadIconIv.setOnClickListener(this);
         mSpaceLayout.setOnClickListener(this);
         mMsgLayout.setOnClickListener(this);
+        mCollectLayout.setOnClickListener(this);
         mSetLayout.setOnClickListener(this);
         mAboutLayout.setOnClickListener(this);
     }
@@ -134,6 +137,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         } else {
             mineMsgPoint.setVisibility(View.GONE);
         }
+        mCollectPoint.setVisibility(View.GONE);
     }
 
     @Override
@@ -172,6 +176,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                         e.printStackTrace();
                     }
                 }
+                break;
+            case R.id.mine_collect_layout:
+                ActivityUtil.toCollect(getActivity(), true);
                 break;
             case R.id.mine_set_layout:
                 ActivityUtil.toActivity(getActivity(), SettingsActivity.class);

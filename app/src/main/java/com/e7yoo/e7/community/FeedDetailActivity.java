@@ -39,6 +39,7 @@ import com.umeng.comm.core.nets.responses.CommentResponse;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 import com.umeng.comm.core.nets.responses.PostCommentResponse;
+import com.umeng.comm.core.nets.responses.SimpleResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -110,7 +111,8 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         if(CommonUtils.isMyself(mFeedItem.creator)) {
             setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
         } else {
-            setRightTv(View.VISIBLE, R.mipmap.title_right_post, 0, this);
+            setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
+            // setRightTv(View.VISIBLE, R.mipmap.title_right_post, 0, this);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -351,15 +353,16 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.titlebar_right_tv:
                 if(CommonUtils.isMyself(mFeedItem.creator)) {
-                    showMore();
+                    showMore(true);
                 } else {
-                    toPost();
+                    showMore(false);
+                    // toPost();
                 }
                 break;
         }
     }
 
-    private void showMore() {
+    private void showMore(boolean isMe) {
         ArrayList<TextSet> textSets = new ArrayList<>();
         textSets.add(new TextSet(R.string.feed_detail_title_right_post, false, new View.OnClickListener() {
             @Override
@@ -367,18 +370,72 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 toPost();
             }
         }));
-        textSets.add(new TextSet(R.string.feed_detail_title_right_delete, false, new View.OnClickListener() {
+        if(!mFeedItem.isCollected) {
+            textSets.add(new TextSet(R.string.feed_detail_title_right_collect, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toCollect();
+                }
+            }));
+        } else {
+            textSets.add(new TextSet(R.string.feed_detail_title_right_collect_cancel, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toCancelCollect();
+                }
+            }));
+        }
+        textSets.add(new TextSet(R.string.feed_detail_title_right_share, false, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toDelete();
+                toShare();
             }
         }));
+        if(isMe) {
+            textSets.add(new TextSet(R.string.feed_detail_title_right_delete, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toDelete();
+                }
+            }));
+        }
         PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
     }
 
     private void toPost() {
         Topic topic = mFeedItem != null && mFeedItem.topics != null && mFeedItem.topics.size() > 0 ? mFeedItem.topics.get(0) : null;
         ActivityUtil.toPostOrLogin(this, topic);
+    }
+
+    private void toCollect() {
+        mFeedItem.isCollected = true;
+        E7App.getCommunitySdk().favoriteFeed(mFeedItem.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
+            @Override
+            public void onComplete(SimpleResponse simpleResponse) {
+
+            }
+        });
+    }
+
+    private void toCancelCollect() {
+        mFeedItem.isCollected = false;
+        E7App.getCommunitySdk().cancelFavoriteFeed(mFeedItem.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
+            @Override
+            public void onComplete(SimpleResponse simpleResponse) {
+            }
+        });
+    }
+
+    private void toShare() {
+        String title = mFeedItem.topics != null && mFeedItem.topics.get(0) != null && mFeedItem.topics.get(0).name != null
+                ? mFeedItem.topics.get(0).name : getResources().getString(R.string.mengquanfenxiang);
+        String text = mFeedItem.text;
+        if(text.length() > 20) {
+            text = text.substring(0, 20);
+        }
+        String img = mFeedItem.getImages() != null && mFeedItem.getImages().size() > 0
+                && mFeedItem.getImages().get(0) != null ? mFeedItem.getImages().get(0).thumbnail : null;
+        ShareDialogUtil.show(this, mFeedItem.shareLink, title, text, img);
     }
 
     private void toDelete() {

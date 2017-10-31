@@ -344,5 +344,11 @@
     <string name="forget_pwd_name_empty">请输入要找回密码的用户名</string>
     <string name="update_user_name_illegal">用户名含有非法字符</string>
     <string name="post_back_cache_feed">已为你缓存未发送的帖子</string>
+    <string name="feed_detail_title_right_share">分享</string>
+    <string name="feed_detail_title_right_collect">收藏</string>
+    <string name="mengquanfenxiang">来自【小萌伴】”萌圈“的分享</string>
+    <string name="feed_detail_title_right_collect_cancel">取消收藏</string>
+    <string name="mine_collect">我的收藏</string>
+    <string name="title_circle_collect">我的收藏</string>
 
 </resources>
