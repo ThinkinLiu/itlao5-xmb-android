@@ -181,6 +181,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 mContentMap.remove(mFeedItem.id);
                 mImgMap.remove(mFeedItem.id);
             }
+            mReplyEt.setText("");
         } else {
             if (mReplyComment != null) {
                 mContentMap.put(mReplyComment.id, mReplyEt.getText().toString().trim());
@@ -460,7 +461,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         E7App.getCommunitySdk().uploadImage(path.get(position), new Listeners.SimpleFetchListener<ImageResponse>() {
             @Override
             public void onComplete(ImageResponse imageResponse) {
-                if(imageResponse == null || imageResponse.result == null) {
+                if(imageResponse.errCode != ErrorCode.NO_ERROR || imageResponse == null || imageResponse.result == null) {
                     TastyToastUtil.toast(FeedDetailActivity.this, R.string.feed_detail_reply_failed);
                     dismissProgress();
                     return;

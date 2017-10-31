@@ -72,6 +72,7 @@ public class TopicListFragment extends ListFragment {
     protected void saveDataToDb(List<Topic> topics) {
         DatabaseAPI mDatabaseAPI = DatabaseAPI.getInstance();
         // mDatabaseAPI.getFeedDBAPI().clearRecommendFeed();
+        mDatabaseAPI.getTopicDBAPI().deleteAllTopics();
         mDatabaseAPI.getTopicDBAPI().saveTopicsToDB(topics);
     }
 

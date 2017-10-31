@@ -46,7 +46,7 @@
                 android:layout_toLeftOf="@+id/feed_detail_input_send"
                 android:background="@drawable/rounded_corners_tag_white"
                 android:hint="@string/feed_detail_input_edit_hint"
-                android:maxLength="30"
+                android:maxLength="300"
                 android:maxLines="4"
                 android:paddingBottom="@dimen/space_2x"
                 android:paddingLeft="@dimen/space_2x"

@@ -34,6 +34,7 @@ import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
+import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
@@ -270,7 +271,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         E7App.getCommunitySdk().uploadImage(path.get(position), new Listeners.SimpleFetchListener<ImageResponse>() {
             @Override
             public void onComplete(ImageResponse imageResponse) {
-                if(imageResponse == null || imageResponse.result == null) {
+                if(imageResponse.errCode != ErrorCode.NO_ERROR || imageResponse == null || imageResponse.result == null) {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_failed);
                     dismissProgress();
                     return;
