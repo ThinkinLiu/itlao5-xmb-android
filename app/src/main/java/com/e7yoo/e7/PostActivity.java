@@ -29,6 +29,7 @@ import com.e7yoo.e7.util.Loc;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.google.gson.Gson;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
@@ -426,24 +427,28 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private boolean cacheFeed(String userId) {
-        if(TextUtils.isEmpty(userId)) {
-            return false;
-        }
-        String text = mInputEt.getText().toString().trim();
-        if(text != null) {
-            PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, text);
-        }
-        ArrayList list = mGvAdapter.getDatas();
-        if(list != null && list.size() > 0) {
-            PreferenceUtil.commitStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId, new HashSet<String>(list));
-        }
-        if(text != null || (list != null && list.size() > 0)) {
-            // 有内容时，才考虑保存帖子主题
-            Object object = mTopicTv.getTag(R.id.post_topic_tv);
-            if(object != null && object instanceof Topic) {
-                PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC + userId, new Gson().toJson((Topic) mTopicTv.getTag(R.id.post_topic_tv)));
+        try {
+            if(TextUtils.isEmpty(userId)) {
+                return false;
             }
-            return true;
+            String text = mInputEt.getText().toString().trim();
+            if(text != null) {
+                PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, text);
+            }
+            ArrayList list = mGvAdapter.getDatas();
+            if(list != null && list.size() > 0) {
+                PreferenceUtil.commitStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId, new HashSet<String>(list));
+            }
+            if(text != null || (list != null && list.size() > 0)) {
+                // 有内容时，才考虑保存帖子主题
+                Object object = mTopicTv.getTag(R.id.post_topic_tv);
+                if(object != null && object instanceof Topic) {
+                    PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC + userId, new Gson().toJson(object));
+                }
+                return true;
+            }
+        } catch (Throwable e) {
+            CrashReport.postCatchedException(e);
         }
         return false;
     }
@@ -458,22 +463,26 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void loadFeedCache(String userId) {
-        if(TextUtils.isEmpty(userId)) {
-            return;
-        }
-        String text = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, "");
-        mInputEt.setText(text);
-        String topic = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, "");
-        if(!CommonUtil.isEmpty(topic)) {
-            Topic topicT = new Gson().fromJson(topic, Topic.class);
-            mTopicTv.setText(topicT.name);
-            mTopicTv.setTag(R.id.post_topic_tv, topicT);
-        }
-        Set<String> set = PreferenceUtil.getStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId, null);
-        if(set != null && set.size() > 0) {
-            ArrayList<String> strings = new ArrayList<String>();
-            strings.addAll(set);
-            mGvAdapter.refreshDatas(strings);
+        try {
+            if(TextUtils.isEmpty(userId)) {
+                return;
+            }
+            String text = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, "");
+            mInputEt.setText(text);
+            String topic = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, "");
+            if(!CommonUtil.isEmpty(topic)) {
+                Topic topicT = new Gson().fromJson(topic, Topic.class);
+                mTopicTv.setText(topicT.name);
+                mTopicTv.setTag(R.id.post_topic_tv, topicT);
+            }
+            Set<String> set = PreferenceUtil.getStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId, null);
+            if(set != null && set.size() > 0) {
+                ArrayList<String> strings = new ArrayList<String>();
+                strings.addAll(set);
+                mGvAdapter.refreshDatas(strings);
+            }
+        } catch (Throwable e) {
+            CrashReport.postCatchedException(e);
         }
     }
 }
