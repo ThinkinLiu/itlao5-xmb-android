@@ -98,7 +98,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     @Override
     protected RecyclerView.ViewHolder initViewHolder(ViewGroup parent, int viewType) {
         if(viewType == VIEW_TYPE_FEEDITEM) {
-            View view = mInflater.inflate(R.layout.item_feed_item, parent, false);
+            View view = mInflater.inflate(R.layout.item_feed_item_detail, parent, false);
             return new ViewHolderFeedItem(view);
         } else {
             View view = mInflater.inflate(R.layout.item_comment, parent, false);
