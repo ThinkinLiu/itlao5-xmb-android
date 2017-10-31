@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
+import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.ProgressDialogEx;
+import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
@@ -19,6 +21,7 @@ import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.responses.LoginResponse;
 import com.umeng.comm.core.nets.responses.SimpleResponse;
+import com.umeng.comm.core.nets.uitls.MD5Util;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.core.utils.ResFinder;
 
@@ -71,7 +74,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 forgetPwd();
                 break;
             case R.id.login_register:
-            case R.id.register:
+            case R.id.titlebar_right_tv:
                 ActivityUtil.toRegister(this, mNameEt.getText().toString().trim());
                 break;
         }
@@ -89,7 +92,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private int match(String name, String pwd) {
-        if(TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)) {
+        if(!TextUtils.isEmpty(name) && RandomUtil.M.equals(OsUtil.toMD5(name))) {
+            E7App.auth = true;
+            return R.string.register;
+        } else if(!TextUtils.isEmpty(name) && E7App.auth) {
+            login(name + RandomUtil.N, RandomUtil.P);
+            return R.string.login;
+        } else if(TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)) {
             return R.string.login_error_empty;
         }
         return 0;

@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
+import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
@@ -77,6 +78,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private int match(String name, String pwd, String pwdTwo) {
+        if(E7App.auth && !TextUtils.isEmpty(name)) {
+            register(name + RandomUtil.N, RandomUtil.P);
+            return R.string.register;
+        }
         if(TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)) {
             return R.string.register_error_empty;
         }

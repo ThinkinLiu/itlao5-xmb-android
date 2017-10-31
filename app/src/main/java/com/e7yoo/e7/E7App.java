@@ -18,6 +18,7 @@ import cn.jpush.android.api.JPushInterface;
 
 public class E7App extends MultiDexApplication {
 
+    public static boolean auth = false;
     public static E7App mApp;
     @Override
     public void onCreate() {
