@@ -1,6 +1,5 @@
 package com.e7yoo.e7.community;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.E7App;
-import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.model.TextSet;
@@ -24,7 +22,6 @@ import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PopupWindowUtil;
-import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
@@ -161,17 +158,11 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     private void clearReplyInput(Comment comment, int hintStrId, boolean deleteCache) {
         resetInputCache(comment, deleteCache);
         mReplyComment = comment;
-        // mReplyEt.setText("");
         if(hintStrId > 0) {
             mReplyEt.setHint(hintStrId);
         }
-        /*if(mImgs != null) {
-            mImgs.clear();
-        }*/
         setPic();
-        // mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
         mReplyPicIv.setVisibility(View.GONE);
-        // Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyPicIv);
     }
 
     private void resetInputCache(Comment comment, boolean deleteCache) {
@@ -184,6 +175,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 mImgMap.remove(mFeedItem.id);
             }
             mReplyEt.setText("");
+            mImgs = null;
         } else {
             if (mReplyComment != null) {
                 mContentMap.put(mReplyComment.id, mReplyEt.getText().toString().trim());

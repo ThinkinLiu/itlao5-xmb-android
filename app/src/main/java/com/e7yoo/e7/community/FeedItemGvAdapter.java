@@ -1,6 +1,7 @@
 package com.e7yoo.e7.community;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
