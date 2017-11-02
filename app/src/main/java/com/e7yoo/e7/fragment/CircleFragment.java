@@ -91,7 +91,7 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     private boolean isFirstShow = true;
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if(isVisibleToUser && isFirstShow) {
+        if(isVisibleToUser && isFirstShow && mViewPager != null) {
             isFirstShow = false;
             mViewPager.setAdapter(mViewPagerAdapter);
         }
