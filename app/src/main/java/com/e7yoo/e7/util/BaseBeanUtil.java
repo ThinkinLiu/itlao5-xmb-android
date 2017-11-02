@@ -1,44 +1,47 @@
 package com.e7yoo.e7.util;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.model.Robot;
+import com.umeng.comm.core.beans.BaseBean;
 import com.umeng.comm.core.beans.CommUser;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2017/9/6.
  */
 
-public class CommUserUtil {
+public class BaseBeanUtil {
+    public static final String WELCOME = "welcome";
+    public static final String TEXT_MORE = "text_more";
 
-    public static String getExtraString(CommUser commUser, String key) {
-        if(commUser == null || TextUtils.isEmpty(commUser.customField)) {
+    public static String getExtraString(BaseBean baseBean, String key) {
+        if(baseBean == null || TextUtils.isEmpty(baseBean.customField)) {
             return "";
         }
         try {
-            return new JSONObject(commUser.customField).getString(key);
+            return new JSONObject(baseBean.customField).getString(key);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
 
-    public static void setExtraString(CommUser commUser, String key, String value) {
-        if(commUser == null) {
+    /**
+     * 注意customField长度限制为0-50；
+     * @param baseBean
+     * @param key
+     * @param value
+     */
+    public static void setExtraString(BaseBean baseBean, String key, String value) {
+        if(baseBean == null) {
             return;
-        }
-        if(TextUtils.isEmpty(commUser.customField)) {
-            commUser.extraData = new Bundle();
         }
         JSONObject jo;
         try {
-            jo = new JSONObject(commUser.customField);
+            jo = new JSONObject(baseBean.customField);
         } catch (Exception e) {
             e.printStackTrace();
             jo = new JSONObject();
@@ -48,7 +51,7 @@ public class CommUserUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        commUser.customField = jo.toString();
+        baseBean.customField = jo.toString();
     }
 
     public static String getString(String text) {

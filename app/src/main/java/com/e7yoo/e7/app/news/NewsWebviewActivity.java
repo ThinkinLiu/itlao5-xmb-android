@@ -38,6 +38,8 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 	public final static String INTENT_FROM_PUSH_MSG = "from_push_msg";
 	/** 聊天列表  */
 	public final static String INTENT_FROM_CHAT_MSG = "from_chat_msg";
+	/** 帖子详情  */
+	public final static String INTENT_FROM_FEED_DETAILS = "from_feed_details";
 	/** 来源 */
 	public final static String INTENT_FROM = "from";
 	private ImageView loadingIv;

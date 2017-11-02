@@ -55,4 +55,5 @@ public class UmengUtil {
     public static final String GAME_SHARE = "3_game_share";
     public static final String ABOUT_SHARE = "3_about_share";
     public static final String ABOUT_LIKE = "3_about_like";
+    public static final String FEED_DETAILS = "3_feed_details";
 }

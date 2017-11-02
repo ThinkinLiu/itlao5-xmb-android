@@ -12,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.util.CommUserUtil;
+import com.e7yoo.e7.util.BaseBeanUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
@@ -54,7 +54,7 @@ public class UserRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                         .apply(options)
                         .into(viewHolder.userIcon);
                 viewHolder.nameTv.setText(item.name);
-                viewHolder.descTv.setText(CommUserUtil.getExtraString(item, "welcome"));
+                viewHolder.descTv.setText(BaseBeanUtil.getExtraString(item, BaseBeanUtil.WELCOME));
                 initAttentionIv(viewHolder, item);
             }
             addClickListener(viewHolder.itemView, position);

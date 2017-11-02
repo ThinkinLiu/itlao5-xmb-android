@@ -17,7 +17,6 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.CommUserUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.view.CircleGridView;
@@ -169,7 +168,6 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void setViewTypeFeedItem(final BaseViewHolder viewHolderFeedItem, final FeedItem item) {
-        viewHolderFeedItem.contentTv.setMaxLines(1000);
         String content = "";
         if(item.topics != null) {
             for(int i = 0; i < item.topics.size(); i++) {

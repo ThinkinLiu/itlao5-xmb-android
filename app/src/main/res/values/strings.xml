@@ -292,14 +292,17 @@
     <string name="info_input_welcome_hint">想一条帅气的个性签名吧</string>
     <string name="logout">退出登录</string>
     <string name="update_failed">修改失败</string>
+    <string name="update_icon_upload_failed">头像上传失败</string>
     <string name="update_icon_failed">头像修改失败</string>
     <string name="title_post">帖子</string>
     <string name="post_topic_hint">选个话题吧...</string>
     <string name="post_content_hint">想分享点啥？</string>
+    <string name="post_content_url">原文url（选填，限制30字符，请使用短链接）</string>
     <string name="post_topic_empty">选个主题吧</string>
     <string name="post_content_empty">你想说点啥呢</string>
     <string name="post_success">发布成功</string>
     <string name="post_failed">发布失败</string>
+    <string name="post_failed_img">发布失败(图片%1$s上传失败)</string>
     <string name="posting">发布中...</string>
     <string name="post_loc">所在位置</string>
     <string name="feed_detail_input_edit_hint">评论帖子...</string>
@@ -351,5 +354,8 @@
     <string name="mine_collect">我的收藏</string>
     <string name="title_circle_collect">我的收藏</string>
     <string name="mengquanfenxiang2">【小萌伴】</string>
+    <string name="feed_detail_more_open">全部详情</string>
+    <string name="feed_detail_more_close">收起详情</string>
+    <string name="feed_detail_url">了解更多</string>
 
 </resources>

@@ -17,12 +17,11 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.CommUserUtil;
+import com.e7yoo.e7.util.BaseBeanUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.CommUser;
-import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.constants.ErrorCode;
@@ -127,8 +126,8 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
     private void setUser(BaseViewHolder viewHolderFeedItem, CommUser item) {
         RequestOptions options = new RequestOptions();
         options.diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.mipmap.log_e7yoo_transport)
-                .error(R.mipmap.log_e7yoo_transport)
+                .placeholder(R.mipmap.icon_me)
+                .error(R.mipmap.icon_me)
                 .override(124, 124);
         Glide.with(mContext)
                 .load(item.iconUrl)
@@ -163,7 +162,6 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void setViewTypeFeedItem(final BaseViewHolder viewHolderFeedItem, final FeedItem item) {
-        viewHolderFeedItem.contentTv.setMaxLines(1000);
         String content = "";
         if(item.topics != null) {
             for(int i = 0; i < item.topics.size(); i++) {
@@ -214,7 +212,7 @@ public class SpaceRecyclerAdapter extends ListRefreshRecyclerAdapter {
         Glide.with(mContext).load(sex).apply(options).into(viewHolder.sexIcon);
         viewHolder.nameTv.setText(user.name);
         viewHolder.infoTv.setText(mContext.getString(R.string.item_user_info, user.feedCount, user.followCount, user.fansCount));
-        viewHolder.lableTv.setText(CommUserUtil.getExtraString(user, "welcome"));
+        viewHolder.lableTv.setText(BaseBeanUtil.getExtraString(user, BaseBeanUtil.WELCOME));
     }
 
     private void addItemClickForGridView(GridView gridView, final View mView, final int mPosition) {

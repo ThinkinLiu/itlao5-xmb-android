@@ -35,6 +35,7 @@
 
     <color name="blue">#007bff</color>
     <color name="red">#ff0000</color>
+    <color name="blue_1296db">#1296db</color>
 
     <color name="bottom_navigation_color_checked">#459f47</color>
     <!--<color name="bottom_navigation_color_checked">#35ac55</color>-->

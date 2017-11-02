@@ -21,6 +21,7 @@ import com.baidu.location.BDLocationListener;
 import com.e7yoo.e7.community.PostGvAdapter;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.BaseBeanUtil;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
@@ -39,6 +40,8 @@ import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,6 +58,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     private PostGvAdapter mGvAdapter;
     private TextView mLocationTv;
     private BDLocation mBDLocation;
+    private EditText mUrlEt;
 
     private Loc mLoc;
 
@@ -77,6 +81,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         mInputEt = (EditText) findViewById(R.id.post_edit);
         mImgGv = (GridView) findViewById(R.id.post_gv);
         mLocationTv = (TextView) findViewById(R.id.post_loc_tv);
+        mUrlEt = (EditText) findViewById(R.id.post_url);
     }
 
     @Override
@@ -91,6 +96,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         if(CommConfig.getConfig().loginedUser != null) {
             loadFeedCache(CommConfig.getConfig().loginedUser.id);
         }
+        mInputEt.setVisibility(E7App.auth ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -145,7 +151,17 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                     FeedItem feedItem = new FeedItem();
                     feedItem.topics = new ArrayList<>();
                     feedItem.topics.add(topic);
+                    /*if(text.length() > 300) {
+                        feedItem.text = text.substring(0, 200);
+                        BaseBeanUtil.setExtraString(feedItem, BaseBeanUtil.TEXT_MORE, text.substring(200));
+                        feedItem.media_type = 2;
+                    } else {*/
                     feedItem.text = text;
+                    /*}*/
+                    String url = mUrlEt.getText().toString().trim();
+                    if(!TextUtils.isEmpty(url)) {
+                        BaseBeanUtil.setExtraString(feedItem, BaseBeanUtil.TEXT_MORE, url);
+                    }
                     // 发表的用户
                     feedItem.creator = CommConfig.getConfig().loginedUser;
                     feedItem.type = feedItem.creator.permisson == CommUser.Permisson.ADMIN ? 1 : 0;
@@ -271,8 +287,9 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         E7App.getCommunitySdk().uploadImage(path.get(position), new Listeners.SimpleFetchListener<ImageResponse>() {
             @Override
             public void onComplete(ImageResponse imageResponse) {
-                if(imageResponse.errCode != ErrorCode.NO_ERROR || imageResponse == null || imageResponse.result == null) {
-                    TastyToastUtil.toast(PostActivity.this, R.string.post_failed);
+                if(imageResponse.errCode != ErrorCode.NO_ERROR || imageResponse == null || imageResponse.result == null
+                        || TextUtils.isEmpty(imageResponse.result.originImageUrl)) {
+                    TastyToastUtil.toast(PostActivity.this, R.string.post_failed_img, position);
                     dismissProgress();
                     return;
                 }

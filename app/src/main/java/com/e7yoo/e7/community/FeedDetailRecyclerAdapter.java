@@ -19,10 +19,14 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
+import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.BaseBeanUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
+import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.view.CircleGridView;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
@@ -30,6 +34,9 @@ import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.SimpleResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +121,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             if (item != null) {
                 setUser(viewHolderFeedItem, item.creator);
                 setViewTypeFeeditem(viewHolderFeedItem, item);
+                setViewRichContent(viewHolderFeedItem, item);
             }
             addItemClickForGridView(viewHolderFeedItem.gridView, viewHolderFeedItem.itemView, position);
             addClickListener(viewHolderFeedItem.itemView, position);
@@ -127,6 +135,69 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             addItemClickForGridView(viewHolderComment.gridView, viewHolderComment.itemView, position);
             addClickListener(viewHolderComment.itemView, position);
         }
+    }
+
+    private void setViewRichContent(ViewHolderFeedItem viewHolderFeedItem, FeedItem item) {
+        final String more = BaseBeanUtil.getExtraString(item, BaseBeanUtil.TEXT_MORE);
+        if(TextUtils.isEmpty(more) || more.trim().length() < 5) {
+            viewHolderFeedItem.urlTv.setVisibility(View.GONE);
+            viewHolderFeedItem.urlTv.setOnClickListener(null);
+            return;
+        }
+        viewHolderFeedItem.urlTv.setVisibility(View.VISIBLE);
+        viewHolderFeedItem.urlTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String url = more.startsWith("http://") || more.startsWith("https://") ? more : "http://" + more;
+                ActivityUtil.toNewsWebviewActivity(mContext, url, NewsWebviewActivity.INTENT_FROM_FEED_DETAILS);
+                UmengUtil.onEvent(UmengUtil.FEED_DETAILS);
+            }
+        });
+        /* String more = BaseBeanUtil.getExtraString(item, BaseBeanUtil.TEXT_MORE);
+        if(!TextUtils.isEmpty(more)) {
+            viewHolderFeedItem.moreContentTv.setText(CommonUtil.getHtmlStr(more));
+            setMore(viewHolderFeedItem, false);
+            return;
+        } else {
+            viewHolderFeedItem.moreContentTv.setText("");
+            setMore(viewHolderFeedItem, null);
+        }*/
+    }
+
+    /**
+     *
+     * @param viewHolderFeedItem
+     * @param open true,当前是展开状态， false,当前是收起状态， null,按钮不可见
+     */
+    private void setMore(final ViewHolderFeedItem viewHolderFeedItem, Boolean open) {
+        /*if(open == null) {
+            viewHolderFeedItem.moreContentTv.setVisibility(View.GONE);
+            viewHolderFeedItem.moreLayout.setOnClickListener(null);
+            viewHolderFeedItem.moreTv.setVisibility(View.GONE);
+        } else if(open) {
+            viewHolderFeedItem.moreLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setMore(viewHolderFeedItem, false);
+                }
+            });
+            viewHolderFeedItem.moreContentTv.setVisibility(View.VISIBLE);
+            viewHolderFeedItem.moreTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.feed_detail_more_close, 0, 0, 0);
+            viewHolderFeedItem.moreTv.setText(R.string.feed_detail_more_open);
+            viewHolderFeedItem.moreTv.setVisibility(View.VISIBLE);
+        } else {
+            viewHolderFeedItem.moreLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setMore(viewHolderFeedItem, true);
+                }
+            });
+            viewHolderFeedItem.moreContentTv.setVisibility(View.GONE);
+            viewHolderFeedItem.moreLayout.setOnClickListener(null);
+            viewHolderFeedItem.moreTv.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.feed_detail_more_open, 0, 0, 0);
+            viewHolderFeedItem.moreTv.setText(R.string.feed_detail_more_close);
+            viewHolderFeedItem.moreTv.setVisibility(View.VISIBLE);
+        }*/
     }
 
     private void setUser(BaseViewHolder viewHolderFeedItem, CommUser item) {
@@ -366,6 +437,10 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
      * 消息item
      */
     public static class ViewHolderFeedItem extends BaseViewHolder {
+        /*public TextView moreContentTv;
+        public View moreLayout;
+        public TextView moreTv;*/
+        public TextView urlTv;
 
 
         public ViewHolderFeedItem(View view) {
@@ -379,6 +454,12 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             shareTv = view.findViewById(R.id.item_feed_item_share);
             commentTv = view.findViewById(R.id.item_feed_item_comment);
             praiseTv = view.findViewById(R.id.item_feed_item_praise);
+
+            /*moreContentTv = view.findViewById(R.id.item_feed_item_content_more);
+            moreLayout = view.findViewById(R.id.item_feed_item_more_layout);
+            moreTv = view.findViewById(R.id.item_feed_item_more);*/
+
+            urlTv = view.findViewById(R.id.item_feed_item_url);
         }
     }
 

@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.CommUserUtil;
+import com.e7yoo.e7.util.BaseBeanUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
@@ -37,10 +37,12 @@ import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.nets.Response;
+import com.umeng.comm.core.nets.responses.ImageResponse;
 import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class InfoActivity extends BaseActivity implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener {
 
@@ -97,15 +99,15 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             iconIv.setTag(R.id.info_icon_iv, mCommUser);
             String name = RobotUtil.getString(mCommUser.name);
             nameTv.setText(name);
-            sexTv.setText(CommUserUtil.getSexText(mCommUser.gender));
-            welcomeTv.setText(CommUserUtil.getExtraString(mCommUser, "welcome"));
+            sexTv.setText(BaseBeanUtil.getSexText(mCommUser.gender));
+            welcomeTv.setText(BaseBeanUtil.getExtraString(mCommUser, BaseBeanUtil.WELCOME));
         }
     }
 
     @Override
     protected void initViewListener() {
         iconLayout.setOnClickListener(this);
-        if(mCommUser == null || !getString(R.string.mengmeng).equals(CommUserUtil.getString(mCommUser.id))) {
+        if(mCommUser == null || !getString(R.string.mengmeng).equals(BaseBeanUtil.getString(mCommUser.id))) {
             nameLayout.setOnClickListener(this);
             sexLayout.setOnClickListener(this);
             welcomeLayout.setOnClickListener(this);
@@ -168,13 +170,13 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             result = true;
         }
         String welcome = welcomeTv.getText().toString().trim();
-        if(welcome.equals(CommUserUtil.getExtraString(mCommUser, "welcome"))) {
-            CommUserUtil.setExtraString(mCommUser, "welcome", welcome);
+        if(!welcome.equals(BaseBeanUtil.getExtraString(mCommUser, BaseBeanUtil.WELCOME))) {
+            BaseBeanUtil.setExtraString(mCommUser, BaseBeanUtil.WELCOME, welcome);
             result = true;
         }
-        CommUser.Gender gender = CommUserUtil.getSex(sexTv.getText().toString().trim());
+        CommUser.Gender gender = BaseBeanUtil.getSex(sexTv.getText().toString().trim());
         if(gender != mCommUser.gender) {
-            mCommUser.gender = CommUserUtil.getSex(sexTv.getText().toString().trim());
+            mCommUser.gender = BaseBeanUtil.getSex(sexTv.getText().toString().trim());
             result = true;
         }
         return result;
@@ -228,7 +230,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                     if(data != null && data.hasExtra(Constant.INTENT_TEXT)) {
                         String welcome = data.getStringExtra(Constant.INTENT_TEXT);
                         welcomeTv.setText(welcome);
-                        CommUserUtil.setExtraString(mCommUser, "welcome", welcome);
+                        BaseBeanUtil.setExtraString(mCommUser, BaseBeanUtil.WELCOME, welcome);
                         updateUserProfile();
                     }
                     return;
@@ -236,7 +238,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                     if(data != null && data.hasExtra(Constant.INTENT_INT)) {
                         String sex = RobotUtil.getSexText(data.getIntExtra(Constant.INTENT_INT, 0));
                         sexTv.setText(sex);
-                        mCommUser.gender = CommUserUtil.getSex(sex);
+                        mCommUser.gender = BaseBeanUtil.getSex(sex);
                         updateUserProfile();
                     }
                     return;
@@ -250,26 +252,45 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     public void takeSuccess(TResult result) {
         if (mFlag == TAKE_PHOTO_FOR_ICON) {
             String path = result.getImage().getCompressPath();
-            showProgress(R.string.updateing);
-            E7App.getCommunitySdk().updateUserProtrait(path, new Listeners.SimpleFetchListener<PortraitUploadResponse>() {
-                @Override
-                public void onComplete(PortraitUploadResponse portraitUploadResponse) {
-                    String mIconUrl = portraitUploadResponse.mIconUrl;
-                    if(portraitUploadResponse.errCode == ErrorCode.NO_ERROR && !TextUtils.isEmpty(mIconUrl)) {
-                        RequestOptions options = new RequestOptions();
-                        options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-                        Glide.with(InfoActivity.this).load(mIconUrl).apply(options).into(iconIv);
-                        iconIv.setTag(R.id.info_icon_iv, mIconUrl);
-                        mCommUser.iconUrl = mIconUrl;
-                        CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
-                        dismissProgress();
-                        hasUpdate = true;
-                    } else {
-                        TastyToastUtil.toast(InfoActivity.this, R.string.update_icon_failed);
-                    }
-                }
-            });
+            uploadImg(path);
         }
+    }
+
+    private void uploadImg(String path) {
+        showProgress(R.string.updateing);
+        E7App.getCommunitySdk().uploadImage(path, new Listeners.SimpleFetchListener<ImageResponse>() {
+            @Override
+            public void onComplete(ImageResponse imageResponse) {
+                if(imageResponse.errCode != ErrorCode.NO_ERROR || imageResponse == null || imageResponse.result == null
+                        || TextUtils.isEmpty(imageResponse.result.originImageUrl)) {
+                    TastyToastUtil.toast(InfoActivity.this, R.string.update_icon_upload_failed);
+                    dismissProgress();
+                    return;
+                }
+                updateUserProtrait(imageResponse.result.originImageUrl);
+            }
+        });
+    }
+
+    private void updateUserProtrait(String path) {
+        E7App.getCommunitySdk().updateUserProtrait(path, new Listeners.SimpleFetchListener<PortraitUploadResponse>() {
+            @Override
+            public void onComplete(PortraitUploadResponse portraitUploadResponse) {
+                String mIconUrl = portraitUploadResponse.mIconUrl;
+                if(portraitUploadResponse.errCode == ErrorCode.NO_ERROR && !TextUtils.isEmpty(mIconUrl)) {
+                    RequestOptions options = new RequestOptions();
+                    options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+                    Glide.with(InfoActivity.this).load(mIconUrl).apply(options).into(iconIv);
+                    iconIv.setTag(R.id.info_icon_iv, mIconUrl);
+                    mCommUser.iconUrl = mIconUrl;
+                    CommonUtils.saveLoginUserInfo(InfoActivity.this, mCommUser);
+                    hasUpdate = true;
+                } else {
+                    TastyToastUtil.toast(InfoActivity.this, R.string.update_icon_failed);
+                }
+                dismissProgress();
+            }
+        });
     }
 
     @Override
