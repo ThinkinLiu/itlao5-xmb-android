@@ -34,14 +34,14 @@ import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 
-import org.json.JSONObject;
-
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -59,6 +59,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     private TextView mLocationTv;
     private BDLocation mBDLocation;
     private EditText mUrlEt;
+    private EditText mPicUrlEt;
 
     private Loc mLoc;
 
@@ -82,6 +83,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         mImgGv = (GridView) findViewById(R.id.post_gv);
         mLocationTv = (TextView) findViewById(R.id.post_loc_tv);
         mUrlEt = (EditText) findViewById(R.id.post_url);
+        mPicUrlEt = (EditText) findViewById(R.id.post_net_pic_url);
     }
 
     @Override
@@ -96,7 +98,8 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         if(CommConfig.getConfig().loginedUser != null) {
             loadFeedCache(CommConfig.getConfig().loginedUser.id);
         }
-        mInputEt.setVisibility(E7App.auth ? View.VISIBLE : View.GONE);
+        mUrlEt.setVisibility(E7App.auth ? View.VISIBLE : View.GONE);
+        mPicUrlEt.setVisibility(E7App.auth ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -303,6 +306,35 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void post(final FeedItem feedItem) {
+        if(feedItem.imageUrls == null) {
+            feedItem.imageUrls = new ArrayList<>();
+        }
+        String picUrl = mPicUrlEt.getText().toString().trim();
+        String[] urls = picUrl.split("\n");
+        int i = 0;
+        int urlsSize = urls.length;
+        ImageItem imageItem;
+        while(i < urlsSize && feedItem.imageUrls.size() < 9) {
+            if(!TextUtils.isEmpty(urls[i].trim())) {
+                // 第一张原图，第二张缩略图，第三张大图（大缩略图）
+                String[] picUrls = urls[i].split("|||");
+                int picUrlsSize = picUrls.length;
+                switch (picUrlsSize) {
+                    case 1:
+                        imageItem = new ImageItem(picUrls[0], picUrls[0], picUrls[0]);
+                        break;
+                    case 2:
+                        imageItem = new ImageItem(picUrls[1], picUrls[1], picUrls[0]);
+                        break;
+                    case 3:
+                    default:
+                        imageItem = new ImageItem(picUrls[1], picUrls[2], picUrls[0]);
+                        break;
+                }
+                feedItem.imageUrls.add(imageItem);
+            }
+            i += 1;
+        }
         E7App.getCommunitySdk().postFeed(feedItem, new Listeners.SimpleFetchListener<FeedItemResponse>() {
             @Override
             public void onStart() {
@@ -451,30 +483,40 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private boolean cacheFeed(String userId) {
+        boolean cacheTopic = false;
         try {
             if(TextUtils.isEmpty(userId)) {
-                return false;
+                return cacheTopic;
             }
             String text = mInputEt.getText().toString().trim();
-            if(text != null) {
+            if(text.length() > 0) {
                 PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, text);
+                cacheTopic = true;
+            } else {
+                PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId);
             }
             ArrayList list = mGvAdapter.getDatas();
             if(list != null && list.size() > 0) {
                 PreferenceUtil.commitStringSet(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId, new HashSet<String>(list));
+                cacheTopic = true;
+            } else {
+                PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_PISC + userId);
             }
-            if(text != null || (list != null && list.size() > 0)) {
+            if(cacheTopic) {
                 // 有内容时，才考虑保存帖子主题
                 Object object = mTopicTv.getTag(R.id.post_topic_tv);
                 if(object != null && object instanceof Topic) {
                     PreferenceUtil.commitString(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC + userId, new Gson().toJson(object));
+                } else {
+                    PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC + userId);
                 }
-                return true;
+            } else {
+                PreferenceUtil.removeKey(Constant.PREFERENCE_CIRCLE_POST_FEED_TOPIC + userId);
             }
         } catch (Throwable e) {
             CrashReport.postCatchedException(e);
         }
-        return false;
+        return cacheTopic;
     }
 
     private void clearFeedCache(String userId) {

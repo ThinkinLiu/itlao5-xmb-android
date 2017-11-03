@@ -129,5 +129,24 @@
             android:textColor="@color/text"
             android:textColorHint="@color/text_l"
             android:textSize="@dimen/size_xl" />
+
+        <EditText
+            android:id="@+id/post_net_pic_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3x"
+            android:background="@color/white"
+            android:gravity="top|left"
+            android:hint="@string/post_net_pic_url"
+            android:maxLength="300"
+            android:maxLines="9"
+            android:paddingBottom="@dimen/space_2x"
+            android:paddingLeft="@dimen/space_5x"
+            android:paddingRight="@dimen/space_5x"
+            android:paddingTop="@dimen/space_2x"
+            android:text=""
+            android:textColor="@color/text"
+            android:textColorHint="@color/text_l"
+            android:textSize="@dimen/size_xl" />
     </LinearLayout>
 </ScrollView>

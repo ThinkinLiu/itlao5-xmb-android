@@ -288,7 +288,7 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
         PhotoPreview.builder()
                 .setPhotos(photoPaths)
                 .setCurrentItem(position)
-                .setShowDeleteButton(true)
+                .setShowDeleteButton(false)
                 .start(SpaceActivity.this, PhotoPreview.REQUEST_CODE);
     }
 

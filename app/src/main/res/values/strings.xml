@@ -357,5 +357,7 @@
     <string name="feed_detail_more_open">全部详情</string>
     <string name="feed_detail_more_close">收起详情</string>
     <string name="feed_detail_url">了解更多</string>
+    <string name="post_net_pic_url">网络图片(可与本地图片混用，最多九张，不同图片地址需换行
+        \n ps:一张图片最多可以配置三个地址，在同一行以"|||"分隔，第一张原图，第二张缩略图，第三张大图（大缩略图）)</string>
 
 </resources>
