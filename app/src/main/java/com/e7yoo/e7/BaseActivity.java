@@ -366,8 +366,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void dismissProgress() {
-        if(!isFinishing() && progressDialogEx != null && progressDialogEx.isShowing()) {
-            progressDialogEx.dismiss();
+        try {
+            if(progressDialogEx != null && progressDialogEx.isShowing()) {
+                progressDialogEx.dismiss();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         progressDialogEx = null;
     }

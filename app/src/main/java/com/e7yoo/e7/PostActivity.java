@@ -292,7 +292,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
             public void onComplete(ImageResponse imageResponse) {
                 if(imageResponse.errCode != ErrorCode.NO_ERROR || imageResponse == null || imageResponse.result == null
                         || TextUtils.isEmpty(imageResponse.result.originImageUrl)) {
-                    TastyToastUtil.toast(PostActivity.this, R.string.post_failed_img, position);
+                    TastyToastUtil.toast(PostActivity.this, R.string.post_failed_img, position + 1);
                     dismissProgress();
                     return;
                 }
