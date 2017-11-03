@@ -105,6 +105,9 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             finish();
             return;
         }
+        mImgs = new ArrayList<>();
+        mContentMap = new HashMap<>();
+        mImgMap = new HashMap<>();
         if(CommonUtils.isMyself(mFeedItem.creator)) {
             setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
         } else {
@@ -315,7 +318,8 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     mReplyPicIv.setVisibility(View.GONE);
                 } else {
                     mReplyPicIv.setVisibility(View.VISIBLE);
-                    if (mImgs == null || mImgs.size() == 0) {
+                    if (mImgs == null || mImgs.size() == 0 || TextUtils.isEmpty(mImgs.get(0))) {
+                        mImgs = new ArrayList<>();
                         photoPicker(mImgs);
                     }
                 }
@@ -337,7 +341,8 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.feed_detail_input_pic:
-                if(mImgs == null || mImgs.size() == 0) {
+                if(mImgs == null || mImgs.size() == 0 || TextUtils.isEmpty(mImgs.get(0))) {
+                    mImgs = new ArrayList<>();
                     photoPicker(mImgs);
                 } else {
                     photoPreview(mImgs, 0);
@@ -471,6 +476,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             comment.replyCommentId = mReplyComment.id;
             comment.replyUser = mReplyComment.creator;
         }
+        comment.imageUrls = new ArrayList<>();
         return comment;
     }
 
@@ -518,7 +524,9 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 if(comment.imageUrls == null) {
                     comment.imageUrls = new ArrayList<>();
                 }
-                comment.imageUrls.add(imageResponse.result);
+                if(!TextUtils.isEmpty(imageResponse.result.originImageUrl)) {
+                    comment.imageUrls.add(imageResponse.result);
+                }
                 replyImg(comment, path, position + 1);
             }
         });
@@ -531,7 +539,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 .setShowGif(true)
                 .setPreviewEnabled(true)
                 .setSelected(photoPaths)
-                .start(FeedDetailActivity.this, PhotoPicker.REQUEST_CODE);
+                .start(FeedDetailActivity.this, REQUEST_CODE_PICKER);
     }
 
     private void photoPreview(ArrayList<String> photoPaths, int position) {
@@ -539,14 +547,19 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 .setPhotos(photoPaths)
                 .setCurrentItem(position)
                 .setShowDeleteButton(true)
-                .start(FeedDetailActivity.this, PhotoPreview.REQUEST_CODE);
+                .start(FeedDetailActivity.this, REQUEST_CODE_PREVIEW);
     }
 
+    /**
+     * 使用这两个code，将回复与帖子图片预览分开，防止预览图片返回后进入onActivityResult影响到回帖
+     */
+    private static final int REQUEST_CODE_PICKER = 999;
+    private static final int REQUEST_CODE_PREVIEW = 998;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case PhotoPicker.REQUEST_CODE:
+            case REQUEST_CODE_PICKER:
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         ArrayList<String> photos =
@@ -556,7 +569,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     }
                 }
                 break;
-            case PhotoPreview.REQUEST_CODE:
+            case REQUEST_CODE_PREVIEW:
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         ArrayList<String> photos =
@@ -572,7 +585,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setPic() {
-        if(mImgs == null || mImgs.size() == 0) {
+        if(mImgs == null || mImgs.size() == 0 || TextUtils.isEmpty(mImgs.get(0))) {
             Glide.with(FeedDetailActivity.this).load(R.mipmap.circle_img_add).into(mReplyPicIv);
             mReplyIv.setImageResource(R.mipmap.feed_detail_input_img);
         } else {
