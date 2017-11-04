@@ -29,6 +29,7 @@ import com.e7yoo.e7.model.Robot;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.Like;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.utils.CommonUtils;
 
@@ -154,6 +155,13 @@ public class ActivityUtil {
         Intent intent = new Intent(activity, FeedDetailActivity.class);
         intent.putExtra("FeedItem", feedItem);
         intent.putExtra("FeedItemComment", comment);
+        ActivityUtil.toActivity(activity, intent);
+    }
+
+    public static void toFeedDetail(Activity activity, FeedItem feedItem, Like like) {
+        Intent intent = new Intent(activity, FeedDetailActivity.class);
+        intent.putExtra("FeedItem", feedItem);
+        intent.putExtra("Like", like);
         ActivityUtil.toActivity(activity, intent);
     }
 

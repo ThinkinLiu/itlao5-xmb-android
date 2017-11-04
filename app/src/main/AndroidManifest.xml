@@ -450,6 +450,12 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".PraiseListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".CircleChatActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"

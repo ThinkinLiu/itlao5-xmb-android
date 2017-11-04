@@ -331,7 +331,8 @@
     <string name="cancel_follow_failed">取消关注失败</string>
     <string name="follow_failed">关注失败</string>
     <string name="push_msg">推送消息</string>
-    <string name="comment_msg">评论和赞</string>
+    <string name="comment_msg">收到的评论</string>
+    <string name="praise_msg">收到的赞</string>
     <string name="circle_chat_error">获取聊天记录失败</string>
     <string name="circle_chat_error_nomore">没有更多聊天记录</string>
     <string name="circle_chat_error_no">暂无聊天记录</string>
@@ -359,5 +360,6 @@
     <string name="feed_detail_url">了解更多</string>
     <string name="post_net_pic_url">网络图片(可与本地图片混用，最多九张，不同图片地址需换行
         \n ps:一张图片最多可以配置三个地址，在同一行以"|||"分隔，第一张原图，第二张缩略图，第三张大图（大缩略图）)</string>
+    <string name="praise_msg_content">%s 赞了你❤</string>
 
 </resources>

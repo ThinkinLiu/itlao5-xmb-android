@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.CommentListActivity;
 import com.e7yoo.e7.MainActivity;
+import com.e7yoo.e7.PraiseListActivity;
 import com.e7yoo.e7.PushMsgActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PushMsg;
@@ -44,7 +45,7 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
     private static final int VIEW_TYPE_CIRCLE_MSG = 1;
     private static final int VIEW_TYPE_FRIEND_MSG = 2;
     private static final int VIEW_TYPE_FOOTER = 10;
-    private static final int COUNT_UN_FRIEND_MSG = 2;
+    private static final int COUNT_UN_FRIEND_MSG = 3;
     /** 用于Footer的类型 */
     private FooterType mFooterType = FooterType.DEFAULT;
     /** 用于Footer的类型 */
@@ -148,7 +149,7 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
                         }
                     }
                 });
-            } else {
+            } else if(position == 1)  {
                 viewHolderUnFriendMsg.itemMsgBottom.setVisibility(View.VISIBLE);
                 viewHolderUnFriendMsg.itemMsgTitle.setText(R.string.comment_msg);
                 int count = CommConfig.getConfig().loginedUser.unReadCount;
@@ -159,6 +160,19 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
                         ActivityUtil.toActivity(mContext, CommentListActivity.class);
                         CommConfig.getConfig().loginedUser.unReadCount = 0;
                         viewHolderUnFriendMsg.itemMsgPoint.setVisibility(View.GONE);
+                    }
+                });
+            } else {
+                viewHolderUnFriendMsg.itemMsgBottom.setVisibility(View.VISIBLE);
+                viewHolderUnFriendMsg.itemMsgTitle.setText(R.string.praise_msg);
+                int count = 0;//CommConfig.getConfig().loginedUser.unReadCount;
+                setCount(count, viewHolderUnFriendMsg.itemMsgPoint);
+                viewHolderUnFriendMsg.itemMsgLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ActivityUtil.toActivity(mContext, PraiseListActivity.class);
+                        /*CommConfig.getConfig().loginedUser.unReadCount = 0;
+                        viewHolderUnFriendMsg.itemMsgPoint.setVisibility(View.GONE);*/
                     }
                 });
             }
@@ -261,7 +275,7 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
             itemViewType = VIEW_TYPE_FOOTER;
         } else if(position == 0) {
             itemViewType = VIEW_TYPE_PUSH_MSG;
-        } else if(position == 1) {
+        } else if(position > 0 && position < COUNT_UN_FRIEND_MSG) {
             itemViewType = VIEW_TYPE_CIRCLE_MSG;
         } else {
             itemViewType = VIEW_TYPE_FRIEND_MSG;

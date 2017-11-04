@@ -28,6 +28,7 @@ import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.Like;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
@@ -54,8 +55,10 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     private RecyclerView mRecyclerView;
     private FeedDetailRecyclerAdapter mRvAdapter;
     private FeedItem mFeedItem;
-    /** 评论与赞列表跳转时，带的评论Comment */
+    /** 评论列表跳转时，带的评论Comment */
     private FeedItem mFeedItemComment;
+    /** 赞列表跳转时，带的赞Like */
+    private Like mLike;
     private List<Comment> mComments;
     private String mNextPageUrl;
 
@@ -105,6 +108,13 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         if(getIntent() != null && getIntent().hasExtra("FeedItemComment")) {
             try {
                 mFeedItemComment = getIntent().getParcelableExtra("FeedItemComment");
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+        if(getIntent() != null && getIntent().hasExtra("Like")) {
+            try {
+                mLike = getIntent().getParcelableExtra("Like");
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -167,6 +177,14 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             comment.creator = mFeedItemComment.creator;
             clearReplyInput(comment, 0, false);
             mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), mFeedItemComment.creator.name));
+        }
+        if(mLike != null && mLike.id != null &&
+                mLike.creator != null && mLike.creator.name != null) {
+            Comment comment = new Comment();
+            comment.id = mLike.id;
+            comment.creator = mLike.creator;
+            clearReplyInput(comment, 0, false);
+            mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), mLike.creator.name));
         }
     }
 

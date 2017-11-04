@@ -27,6 +27,7 @@ import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.Like;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,28 +51,52 @@ public class CommentListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapte
     protected void setHolderView(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ViewHolderComment) {
             ViewHolderComment viewHolderComment = (ViewHolderComment) holder;
-            FeedItem item = (FeedItem) mDatas.get(position);
-            if (item != null) {
-                RequestOptions options = new RequestOptions();
-                options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-                Glide.with(mContext).load(item.creator.iconUrl).apply(options).into(viewHolderComment.userIcon);
-                viewHolderComment.nameTv.setText(item.creator.name);
-                String text = item.imageUrls != null && item.imageUrls.size() > 0 ? "[图片] " : "";
-                text = text + item.text == null ? "" : item.text;
-                viewHolderComment.contentTv.setText(text);
-                viewHolderComment.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
-                if(item.sourceFeed.imageUrls != null && item.sourceFeed.imageUrls.size() > 0) {
-                    RequestOptions options2 = new RequestOptions();
-                    options2.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
-                    Glide.with(mContext).load(item.sourceFeed.imageUrls.get(0).thumbnail).apply(options2).into(viewHolderComment.feedPicIv);
-                    viewHolderComment.feedContentTv.setText("");
-                } else {
-                    viewHolderComment.feedPicIv.setImageResource(0);
-                    viewHolderComment.feedContentTv.setText(item.sourceFeed.text);
+
+            if(mDatas.get(position) instanceof FeedItem) {
+                FeedItem item = (FeedItem) mDatas.get(position);
+                if (item != null) {
+                    RequestOptions options = new RequestOptions();
+                    options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+                    Glide.with(mContext).load(item.creator.iconUrl).apply(options).into(viewHolderComment.userIcon);
+                    viewHolderComment.nameTv.setText(item.creator.name);
+                    String text = item.imageUrls != null && item.imageUrls.size() > 0 ? "[图片] " : "";
+                    text = text + item.text == null ? "" : item.text;
+                    viewHolderComment.contentTv.setText(text);
+                    viewHolderComment.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
+                    if(item.sourceFeed.imageUrls != null && item.sourceFeed.imageUrls.size() > 0) {
+                        RequestOptions options2 = new RequestOptions();
+                        options2.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
+                        Glide.with(mContext).load(item.sourceFeed.imageUrls.get(0).thumbnail).apply(options2).into(viewHolderComment.feedPicIv);
+                        viewHolderComment.feedContentTv.setText("");
+                    } else {
+                        viewHolderComment.feedPicIv.setImageResource(0);
+                        viewHolderComment.feedContentTv.setText(item.sourceFeed.text);
+                    }
+                    addIconClick(viewHolderComment.userIcon, item.creator);
                 }
-                addIconClick(viewHolderComment.userIcon, item.creator);
+                addClickListener(viewHolderComment.itemView, position);
+            } else if(mDatas.get(position) instanceof Like) {
+                Like item = (Like) mDatas.get(position);
+                if (item != null) {
+                    RequestOptions options = new RequestOptions();
+                    options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+                    Glide.with(mContext).load(item.creator.iconUrl).apply(options).into(viewHolderComment.userIcon);
+                    viewHolderComment.nameTv.setText(item.creator.name);
+                    viewHolderComment.contentTv.setText(String.format(mContext.getString(R.string.praise_msg_content), item.creator.name));
+                    viewHolderComment.timeTv.setText(TimeUtil.formatFeedTime(item.createTime));
+                    if(item.feedItem.imageUrls != null && item.feedItem.imageUrls.size() > 0) {
+                        RequestOptions options2 = new RequestOptions();
+                        options2.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
+                        Glide.with(mContext).load(item.feedItem.imageUrls.get(0).thumbnail).apply(options2).into(viewHolderComment.feedPicIv);
+                        viewHolderComment.feedContentTv.setText("");
+                    } else {
+                        viewHolderComment.feedPicIv.setImageResource(0);
+                        viewHolderComment.feedContentTv.setText(item.feedItem.text);
+                    }
+                    addIconClick(viewHolderComment.userIcon, item.creator);
+                }
+                addClickListener(viewHolderComment.itemView, position);
             }
-            addClickListener(viewHolderComment.itemView, position);
         }
     }
 

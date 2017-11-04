@@ -20,6 +20,8 @@ public class E7App extends MultiDexApplication {
 
     public static boolean auth = false;
     public static E7App mApp;
+    public static int comment_count = 0;
+    public static int praise_count = 0;
     @Override
     public void onCreate() {
         super.onCreate();
