@@ -309,32 +309,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         if(feedItem.imageUrls == null) {
             feedItem.imageUrls = new ArrayList<>();
         }
-        String picUrl = mPicUrlEt.getText().toString().trim();
-        String[] urls = picUrl.split("\n");
-        int i = 0;
-        int urlsSize = urls.length;
-        ImageItem imageItem;
-        while(i < urlsSize && feedItem.imageUrls.size() < 9) {
-            if(!TextUtils.isEmpty(urls[i].trim())) {
-                // 第一张原图，第二张缩略图，第三张大图（大缩略图）
-                String[] picUrls = urls[i].split("|||");
-                int picUrlsSize = picUrls.length;
-                switch (picUrlsSize) {
-                    case 1:
-                        imageItem = new ImageItem(picUrls[0], picUrls[0], picUrls[0]);
-                        break;
-                    case 2:
-                        imageItem = new ImageItem(picUrls[1], picUrls[1], picUrls[0]);
-                        break;
-                    case 3:
-                    default:
-                        imageItem = new ImageItem(picUrls[1], picUrls[2], picUrls[0]);
-                        break;
-                }
-                feedItem.imageUrls.add(imageItem);
-            }
-            i += 1;
-        }
+        setmPicUrlByEt(feedItem);
         E7App.getCommunitySdk().postFeed(feedItem, new Listeners.SimpleFetchListener<FeedItemResponse>() {
             @Override
             public void onStart() {
@@ -356,6 +331,53 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                 dismissProgress();
             }
         });
+    }
+
+    private void setmPicUrlByEt(FeedItem feedItem) {
+        String picUrl = mPicUrlEt.getText().toString().trim();
+        int type = 0; // 依次输入缩略图，原图，大缩略图url
+        String start = "xmb";
+        if(picUrl.startsWith(start)) {
+            picUrl = picUrl.substring(start.length());
+            type = 1; // 仅替换原图url
+        }
+        String[] urls = picUrl.split("\n");
+        int i = 0;
+        int urlsSize = urls.length;
+        ImageItem imageItem;
+        String urlI;
+        while(i < urlsSize && feedItem.imageUrls.size() < 9) {
+            urlI = urls[i].trim();
+            if(!TextUtils.isEmpty(urlI)) {
+                switch (type) {
+                    case 1:
+                        if(feedItem.imageUrls.get(i) != null) {
+                            feedItem.imageUrls.get(i).originImageUrl = urlI;
+                        }
+                        break;
+                    case 0:
+                    default:
+                        // 第一张原图，第二张缩略图，第三张大图（大缩略图）
+                        String[] picUrls = urlI.split("|||");
+                        int picUrlsSize = picUrls.length;
+                        switch (picUrlsSize) {
+                            case 1:
+                                imageItem = new ImageItem(picUrls[0], picUrls[0], picUrls[0]);
+                                break;
+                            case 2:
+                                imageItem = new ImageItem(picUrls[1], picUrls[1], picUrls[0]);
+                                break;
+                            case 3:
+                            default:
+                                imageItem = new ImageItem(picUrls[1], picUrls[2], picUrls[0]);
+                                break;
+                        }
+                        feedItem.imageUrls.add(imageItem);
+                        break;
+                }
+            }
+            i += 1;
+        }
     }
 
     private void initTopic(Intent data) {
