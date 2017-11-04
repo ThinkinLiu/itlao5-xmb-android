@@ -211,7 +211,6 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
                     toAttention(false);
                 }
             }));
-            PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
         } else {
             textSets.add(new TextSet(R.string.space_title_right_attention, false, new View.OnClickListener() {
                 @Override

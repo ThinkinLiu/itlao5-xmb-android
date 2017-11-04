@@ -73,7 +73,7 @@ public class CommentListActivity extends BaseActivity {
             if(comment == null || comment.sourceFeed == null) {
                 return;
             }
-            ActivityUtil.toFeedDetail(CommentListActivity.this, comment.sourceFeed);
+            ActivityUtil.toFeedDetail(CommentListActivity.this, comment.sourceFeed, comment);
         }
     };
 

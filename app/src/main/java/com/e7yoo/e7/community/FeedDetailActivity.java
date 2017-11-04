@@ -54,6 +54,8 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     private RecyclerView mRecyclerView;
     private FeedDetailRecyclerAdapter mRvAdapter;
     private FeedItem mFeedItem;
+    /** 评论与赞列表跳转时，带的评论Comment */
+    private FeedItem mFeedItemComment;
     private List<Comment> mComments;
     private String mNextPageUrl;
 
@@ -100,6 +102,13 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 e.printStackTrace();
             }
         }
+        if(getIntent() != null && getIntent().hasExtra("FeedItemComment")) {
+            try {
+                mFeedItemComment = getIntent().getParcelableExtra("FeedItemComment");
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
         if(mFeedItem == null || mFeedItem.id == null) {
             TastyToastUtil.toast(this, R.string.circle_feed_not_exist);
             finish();
@@ -133,7 +142,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 if(mRvAdapter.getItem(position) instanceof Comment) {
                     Comment comment = (Comment) mRvAdapter.getItem(position);
                     if(comment.creator != null && !TextUtils.isEmpty(comment.creator.name)) {
-                        if(mReplyComment != comment) {
+                        if(mReplyComment == null || !mReplyComment.id.equals(comment.id)) {
                             clearReplyInput(comment, 0, false);
                         }
                         mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), comment.creator.name));
@@ -151,6 +160,14 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 }
             }
         });
+        if(mFeedItemComment != null && mFeedItemComment.id != null &&
+                mFeedItemComment.creator != null && mFeedItemComment.creator.name != null) {
+            Comment comment = new Comment();
+            comment.id = mFeedItemComment.id;
+            comment.creator = mFeedItemComment.creator;
+            clearReplyInput(comment, 0, false);
+            mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), mFeedItemComment.creator.name));
+        }
     }
 
     /**

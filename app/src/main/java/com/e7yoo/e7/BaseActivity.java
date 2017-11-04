@@ -48,9 +48,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             initTitleBar(title);
         }
         initView();
+        EventBus.getDefault().register(this);
         initSettings();
         initViewListener();
-        EventBus.getDefault().register(this);
     }
 
     @Override
