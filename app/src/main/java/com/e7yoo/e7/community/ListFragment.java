@@ -169,6 +169,9 @@ public abstract class ListFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if(mRvAdapter != null) {
+            mRvAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
