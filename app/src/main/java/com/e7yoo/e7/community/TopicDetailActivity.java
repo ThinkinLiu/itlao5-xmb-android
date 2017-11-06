@@ -1,6 +1,7 @@
 package com.e7yoo.e7.community;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +19,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
@@ -32,6 +34,9 @@ import com.umeng.comm.core.nets.responses.FeedsResponse;
 import com.umeng.comm.core.nets.responses.ProfileResponse;
 import com.umeng.comm.core.nets.responses.TopicItemResponse;
 import com.umeng.comm.core.nets.responses.TopicResponse;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -269,5 +274,22 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
 
     private void toPost() {
         ActivityUtil.toPostOrLogin(this, mTopic);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Message msg) {
+        switch (msg.what) {
+            case Constant.EVENT_BUS_POST_FEED_SUCCESS:
+                if(msg.obj != null && msg.obj instanceof FeedItem) {
+                    mRvAdapter.addFeedItem((FeedItem) msg.obj);
+                }
+                break;
+            case Constant.EVENT_BUS_DELETE_FEED_SUCCESS:
+                if(msg.obj != null && msg.obj instanceof String && ((String) msg.obj).length() > 0) {
+                    mRvAdapter.remove((String) msg.obj);
+                }
+                break;
+        }
     }
 }

@@ -113,23 +113,23 @@ public class TopicRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         });
     }
 
-/**
- * 消息item
- */
-public static class ViewHolderTopic extends RecyclerView.ViewHolder {
+    /**
+     * 消息item
+     */
+    public static class ViewHolderTopic extends RecyclerView.ViewHolder {
 
-    public ImageView topicIcon;
-    public TextView nameTv;
-    public TextView descTv;
-    public ImageView attentionIv;
+        public ImageView topicIcon;
+        public TextView nameTv;
+        public TextView descTv;
+        public ImageView attentionIv;
 
-    public ViewHolderTopic(View view) {
-        super(view);
-        topicIcon = view.findViewById(R.id.item_topic_icon);
-        nameTv = view.findViewById(R.id.item_topic_name);
-        descTv = view.findViewById(R.id.item_topic_desc);
-        attentionIv = view.findViewById(R.id.item_topic_attention);
+        public ViewHolderTopic(View view) {
+            super(view);
+            topicIcon = view.findViewById(R.id.item_topic_icon);
+            nameTv = view.findViewById(R.id.item_topic_name);
+            descTv = view.findViewById(R.id.item_topic_desc);
+            attentionIv = view.findViewById(R.id.item_topic_attention);
+        }
     }
-}
 
 }

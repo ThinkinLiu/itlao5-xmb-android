@@ -127,7 +127,7 @@ public class TimeUtil {
 
 	public static boolean isToday(long milliseconds1) {
 		long milliseconds2 = System.currentTimeMillis();
-		if (Math.abs(milliseconds1 - milliseconds2) >= 24 * 60 * 60 * 1000) {
+		if (Math.abs(milliseconds1 - milliseconds2) >= 24 * 60 * 60 * 1000l) {
 			// 两者之差大于24小时则肯定不会是同一天
 			return false;
 		} else {
@@ -153,7 +153,7 @@ public class TimeUtil {
 	 * @return
 	 */
 	public static boolean isSameMinute(long milliseconds1, long milliseconds2) {
-		if (Math.abs(milliseconds1 - milliseconds2) >= 60 * 1000) {
+		if (Math.abs(milliseconds1 - milliseconds2) >= 60 * 1000l) {
 			// 两者之差大于60秒小时则肯定不会是同一分钟
 			return false;
 		} else {
@@ -179,7 +179,7 @@ public class TimeUtil {
 	 * @return
 	 */
 	public static boolean isSameYear(long milliseconds1, long milliseconds2) {
-		if (Math.abs(milliseconds1 - milliseconds2) >= 366 * 24 * 60 * 60 * 1000) {
+		if (Math.abs(milliseconds1 - milliseconds2) >= 366 * 24 * 60 * 60 * 1000l) {
 			// 两者之差大于366天则肯定不会是同一年
 			return false;
 		} else {
