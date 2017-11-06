@@ -214,6 +214,16 @@ public class MainActivity extends BaseActivity {
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG:
                 getUnReadMsg();
                 break;
+            case Constant.EVENT_BUS_POST_FEED_SUCCESS:
+            case Constant.EVENT_BUS_DELETE_FEED_SUCCESS:
+                if (!isFinishing() && fragments != null && fragments.size() > 0) {
+                    for(int i = 1; i < fragments.size(); i++) {
+                        if(fragments.get(i) != null && fragments.get(i) instanceof CircleFragment) {
+                            fragments.get(i).onEventMainThread(msg);
+                        }
+                    }
+                }
+                break;
         }
     }
 
