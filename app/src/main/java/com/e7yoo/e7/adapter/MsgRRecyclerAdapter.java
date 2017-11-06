@@ -150,7 +150,7 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
                     }
                 });
             } else if(position == 1)  {
-                viewHolderUnFriendMsg.itemMsgBottom.setVisibility(View.VISIBLE);
+                viewHolderUnFriendMsg.itemMsgBottom.setVisibility(View.GONE);
                 viewHolderUnFriendMsg.itemMsgTitle.setText(R.string.comment_msg);
                 int count = CommConfig.getConfig().loginedUser.unReadCount;
                 setCount(count, viewHolderUnFriendMsg.itemMsgPoint);

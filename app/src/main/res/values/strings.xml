@@ -330,7 +330,7 @@
     <string name="friend_top_fans">粉丝</string>
     <string name="cancel_follow_failed">取消关注失败</string>
     <string name="follow_failed">关注失败</string>
-    <string name="push_msg">推送消息</string>
+    <string name="push_msg">通知消息</string>
     <string name="comment_msg">收到的评论</string>
     <string name="praise_msg">收到的赞</string>
     <string name="circle_chat_error">获取聊天记录失败</string>
