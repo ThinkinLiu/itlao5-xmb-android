@@ -151,6 +151,12 @@ public class ActivityUtil {
         }
     }
 
+    public static void toFeedDetail(Activity activity, FeedItem feedItem) {
+        Intent intent = new Intent(activity, FeedDetailActivity.class);
+        intent.putExtra("FeedItem", feedItem);
+        ActivityUtil.toActivity(activity, intent);
+    }
+
     public static void toFeedDetail(Activity activity, FeedItem feedItem, FeedItem comment) {
         Intent intent = new Intent(activity, FeedDetailActivity.class);
         intent.putExtra("FeedItem", feedItem);
