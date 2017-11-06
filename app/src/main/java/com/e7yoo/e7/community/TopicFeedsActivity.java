@@ -19,6 +19,7 @@ import com.umeng.comm.core.beans.Topic;
 
 public class TopicFeedsActivity extends BaseActivity implements View.OnClickListener {
     private FragmentManager manager;
+    private TopicFeedsFragment fragment;
     private Topic mTopic;
     protected ImageView mPostIv;
 
@@ -49,7 +50,7 @@ public class TopicFeedsActivity extends BaseActivity implements View.OnClickList
         }
         setTitleTv(mTopic.name.replace("#", ""));
         manager = getSupportFragmentManager();
-        TopicFeedsFragment fragment = TopicFeedsFragment.newInstance();
+        fragment = TopicFeedsFragment.newInstance();
         Bundle args = fragment.getArguments();
         if(args == null) {
             args = new Bundle();
@@ -57,6 +58,14 @@ public class TopicFeedsActivity extends BaseActivity implements View.OnClickList
         args.putParcelable("Topic", mTopic);
         fragment.setArguments(args);
         replaceFragment(fragment);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(fragment != null) {
+            fragment.firstLoadData();
+        }
     }
 
     @Override

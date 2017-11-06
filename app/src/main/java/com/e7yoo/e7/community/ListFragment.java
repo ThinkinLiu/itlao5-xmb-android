@@ -81,6 +81,10 @@ public abstract class ListFragment extends BaseFragment {
 
     private boolean isFirstShow = true;
 
+    /**
+     * 这个只在FragmentPagerAdapter中调用
+     * @param isVisibleToUser
+     */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

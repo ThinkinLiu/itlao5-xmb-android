@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.e7yoo.e7.E7App;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
+import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 
 import java.util.List;

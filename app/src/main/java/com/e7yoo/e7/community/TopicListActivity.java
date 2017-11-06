@@ -16,6 +16,7 @@ import com.umeng.comm.core.beans.Topic;
 
 public class TopicListActivity extends BaseActivity {
     private FragmentManager manager;
+    private TopicListFragment fragment;
     private Topic mTopic;
 
     @Override
@@ -39,7 +40,7 @@ public class TopicListActivity extends BaseActivity {
             mTopic = getIntent().getParcelableExtra("Topic");
         }
         manager = getSupportFragmentManager();
-        TopicListFragment fragment = TopicListFragment.newInstance();
+        fragment = TopicListFragment.newInstance();
         Bundle args = fragment.getArguments();
         if(args == null) {
             args = new Bundle();
@@ -47,6 +48,14 @@ public class TopicListActivity extends BaseActivity {
         args.putParcelable("Topic", mTopic);
         fragment.setArguments(args);
         replaceFragment(fragment);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(fragment != null) {
+            fragment.firstLoadData();
+        }
     }
 
     @Override

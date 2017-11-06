@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if(!TextUtils.isEmpty(name) && RandomUtil.M.equals(OsUtil.toMD5(name))) {
             E7App.auth = true;
             return R.string.register;
-        } else if(!TextUtils.isEmpty(name) && E7App.auth) {
+        } else if(!TextUtils.isEmpty(name) && E7App.auth && TextUtils.isEmpty(pwd)) {
             login(name + RandomUtil.N, RandomUtil.P);
             return R.string.login;
         } else if(TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)) {

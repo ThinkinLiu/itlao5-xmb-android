@@ -14,12 +14,14 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
@@ -88,7 +90,7 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
         mRecyclerView.setAdapter(mRvAdapter);
 
         mRvAdapter.refreshData(mCommUser, mFeedItemList);
-
+        loadDbFeed();
         loadUserInfo();
         mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         loadNetFeed(true);
@@ -101,6 +103,23 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
                 }
             }
         });
+    }
+
+    private void loadDbFeed() {
+        DatabaseAPI mDatabaseAPI = DatabaseAPI.getInstance();
+        mDatabaseAPI.getFeedDBAPI().loadFavoritesFeed(new Listeners.SimpleFetchListener<List<FeedItem>>() {
+            @Override
+            public void onComplete(List<FeedItem> feedItems) {
+                if(mNextPageUrl == null) {
+                    mRvAdapter.refreshFeedItems(feedItems);
+                }
+            }
+        });
+    }
+
+    private void saveDbFeed(List<FeedItem> feedItems) {
+        DatabaseAPI mDatabaseAPI = DatabaseAPI.getInstance();
+        mDatabaseAPI.getFeedDBAPI().saveFeedsToDB(feedItems);
     }
 
     private void loadUserInfo() {
@@ -326,6 +345,7 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
                 mNextPageUrl = feedsResponse.nextPageUrl;
                 mRvAdapter.refreshFeedItems(feedsResponse.result);
                 mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_up_load_more, false);
+                saveDbFeed(feedsResponse.result);
             } else {
                 mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
             }

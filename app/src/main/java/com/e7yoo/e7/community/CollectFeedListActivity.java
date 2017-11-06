@@ -15,6 +15,7 @@ import com.umeng.comm.core.beans.Topic;
 
 public class CollectFeedListActivity extends BaseActivity {
     private FragmentManager manager;
+    private CollectFeedsFragment fragment;
 
     @Override
     protected String initTitle() {
@@ -34,13 +35,21 @@ public class CollectFeedListActivity extends BaseActivity {
     @Override
     protected void initSettings() {
         manager = getSupportFragmentManager();
-        CollectFeedsFragment fragment = CollectFeedsFragment.newInstance();
+        fragment = CollectFeedsFragment.newInstance();
         /*Bundle args = fragment.getArguments();
         if(args == null) {
             args = new Bundle();
         }
         fragment.setArguments(args);*/
         replaceFragment(fragment);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(fragment != null) {
+            fragment.firstLoadData();
+        }
     }
 
     @Override

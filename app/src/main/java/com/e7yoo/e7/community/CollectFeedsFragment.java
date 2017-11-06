@@ -43,6 +43,8 @@ public class CollectFeedsFragment extends FeedListFragment {
 
     @Override
     protected void saveDataToDb(List<FeedItem> feedItems) {
+        DatabaseAPI mDatabaseAPI = DatabaseAPI.getInstance();
+        mDatabaseAPI.getFeedDBAPI().saveFeedsToDB(feedItems);
     }
 
     @Override

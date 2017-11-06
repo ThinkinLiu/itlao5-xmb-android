@@ -6,7 +6,8 @@ import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
 import com.e7yoo.e7.util.OsUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.*;
+import com.umeng.comm.core.BuildConfig;
 import com.umeng.comm.core.impl.CommunityFactory;
 
 import cn.jiguang.share.android.api.JShareInterface;
@@ -20,8 +21,6 @@ public class E7App extends MultiDexApplication {
 
     public static boolean auth = false;
     public static E7App mApp;
-    public static int comment_count = 0;
-    public static int praise_count = 0;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,6 +28,7 @@ public class E7App extends MultiDexApplication {
         jPush();
         ali();
         bugly();
+        auth = "c51334ce1b84a1efd36e603b88185f9b".equals(OsUtil.getUdid(mApp)) && BuildConfig.DEBUG;
     }
 
     private void jPush() {
