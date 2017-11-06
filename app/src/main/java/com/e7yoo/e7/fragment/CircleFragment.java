@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class CircleFragment extends BaseFragment implements View.OnClickListener {
 
-    private TextView mAllTv, mRecomTv, mHotTv, mFollowedTv, mPlateTv;
+    private TextView mAllTv, mHotTv, mRecomTv, mFollowedTv, mPlateTv;
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
@@ -71,8 +71,8 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if(mViewPagerAdapter == null) {
             fragments.add(RealtimeFeedsFragment.newInstance());
-            fragments.add(RecomFeedsFragment.newInstance());
             fragments.add(HotFeedsFragmentFeed.newInstance());
+            fragments.add(RecomFeedsFragment.newInstance());
             fragments.add(FollowedFeedsFragment.newInstance());
             fragments.add(TopicListFragment.newInstance());
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
@@ -80,8 +80,8 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
         }
         mViewPager.addOnPageChangeListener(mOnPageChangeListener);
         mAllTv.setOnClickListener(this);
-        mRecomTv.setOnClickListener(this);
         mHotTv.setOnClickListener(this);
+        mRecomTv.setOnClickListener(this);
         mFollowedTv.setOnClickListener(this);
         mPlateTv.setOnClickListener(this);
         mPostIv.setOnClickListener(this);
@@ -115,12 +115,12 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
                 setSelectedTv(mAllTv);
                 mViewPager.setCurrentItem(0);
                 break;
-            case R.id.circle_recom:
-                setSelectedTv(mRecomTv);
-                mViewPager.setCurrentItem(1);
-                break;
             case R.id.circle_hot:
                 setSelectedTv(mHotTv);
+                mViewPager.setCurrentItem(1);
+                break;
+            case R.id.circle_recom:
+                setSelectedTv(mRecomTv);
                 mViewPager.setCurrentItem(2);
                 break;
             case R.id.circle_followed:
@@ -148,8 +148,8 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
 
     private void setSelectedTv(TextView view) {
         mAllTv.setSelected(view == mAllTv ? true : false);
-        mRecomTv.setSelected(view == mRecomTv ? true : false);
         mHotTv.setSelected(view == mHotTv ? true : false);
+        mRecomTv.setSelected(view == mRecomTv ? true : false);
         mFollowedTv.setSelected(view == mFollowedTv ? true : false);
         mPlateTv.setSelected(view == mPlateTv ? true : false);
     }
@@ -163,10 +163,10 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
         public void onPageSelected(int position) {
             switch (position) {
                 case 1:
-                    setSelectedTv(mRecomTv);
+                    setSelectedTv(mHotTv);
                     break;
                 case 2:
-                    setSelectedTv(mHotTv);
+                    setSelectedTv(mRecomTv);
                     break;
                 case 3:
                     setSelectedTv(mFollowedTv);

@@ -25,6 +25,7 @@ public class Constant {
     public static final int EVENT_BUS_POST_FEED_SUCCESS= 1005;
     public static final int EVENT_BUS_DELETE_FEED_SUCCESS= 1006;
     public static final int EVENT_BUS_REFRESH_UN_READ_MSG= 1007;
+    public static final int EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS= 1008;
 
     public static final String FILE_ROBOT_LIST = "file_robot_list";
     public static final String FILE_FAVORITES_NEWS_LIST = "file_favorites_news_list";

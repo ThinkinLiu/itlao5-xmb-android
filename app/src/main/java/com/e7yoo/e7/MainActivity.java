@@ -35,6 +35,7 @@ import com.sdsmdg.tastytoast.TastyToast;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.responses.MessageCountResponse;
 import com.umeng.comm.core.nets.responses.MsgCountResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
@@ -316,10 +317,20 @@ public class MainActivity extends BaseActivity {
 
     private void getUnReadMsg() {
         if(!CommonUtils.isLogin(MainActivity.this)) {
-            getUnReadMsgDelay(10000);
+            // getUnReadMsgDelay(10000);
             return;
         }
-        E7App.getCommunitySdk().fetchUnReadMessageCount(new Listeners.FetchListener<MsgCountResponse>() {
+        E7App.getCommunitySdk().fetchUserMessageCount(this, new Listeners.SimpleFetchListener<MessageCountResponse>() {
+            @Override
+            public void onComplete(MessageCountResponse messageCountResponse) {
+                if(messageCountResponse != null && messageCountResponse.errCode == ErrorCode.NO_ERROR) {
+                    EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS);
+                } else {
+                    getUnReadMsgDelay(10000);
+                }
+            }
+        });
+        /*E7App.getCommunitySdk().fetchUnReadMessageCount(new Listeners.FetchListener<MsgCountResponse>() {
             @Override
             public void onStart() {
 
@@ -338,7 +349,7 @@ public class MainActivity extends BaseActivity {
                     getUnReadMsgDelay(10000);
                 }
             }
-        });
+        });*/
     }
 
     private void getUnReadMsgDelay(final long millis) {
@@ -354,4 +365,5 @@ public class MainActivity extends BaseActivity {
             }
         }).start();
     }
+
 }

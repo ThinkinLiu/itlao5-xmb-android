@@ -152,27 +152,27 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
             } else if(position == 1)  {
                 viewHolderUnFriendMsg.itemMsgBottom.setVisibility(View.GONE);
                 viewHolderUnFriendMsg.itemMsgTitle.setText(R.string.comment_msg);
-                int count = CommConfig.getConfig().loginedUser.unReadCount;
+                int count = CommConfig.getConfig().mMessageCount.unReadCommentsCount;
                 setCount(count, viewHolderUnFriendMsg.itemMsgPoint);
                 viewHolderUnFriendMsg.itemMsgLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ActivityUtil.toActivity(mContext, CommentListActivity.class);
-                        CommConfig.getConfig().loginedUser.unReadCount = 0;
+                        CommConfig.getConfig().mMessageCount.unReadCommentsCount = 0;
                         viewHolderUnFriendMsg.itemMsgPoint.setVisibility(View.GONE);
                     }
                 });
             } else {
                 viewHolderUnFriendMsg.itemMsgBottom.setVisibility(View.VISIBLE);
                 viewHolderUnFriendMsg.itemMsgTitle.setText(R.string.praise_msg);
-                int count = 0;//CommConfig.getConfig().loginedUser.unReadCount;
+                int count = CommConfig.getConfig().mMessageCount.unReadLikesCount;
                 setCount(count, viewHolderUnFriendMsg.itemMsgPoint);
                 viewHolderUnFriendMsg.itemMsgLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ActivityUtil.toActivity(mContext, PraiseListActivity.class);
-                        /*CommConfig.getConfig().loginedUser.unReadCount = 0;
-                        viewHolderUnFriendMsg.itemMsgPoint.setVisibility(View.GONE);*/
+                        CommConfig.getConfig().mMessageCount.unReadLikesCount = 0;
+                        viewHolderUnFriendMsg.itemMsgPoint.setVisibility(View.GONE);
                     }
                 });
             }

@@ -23,6 +23,7 @@ import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
+import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.utils.CommonUtils;
 
@@ -51,6 +52,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 } else {
                     initDatas(null);
                 }
+                break;
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
+                setMsgPoint();
                 break;
         }
 
@@ -124,13 +128,30 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             mHeadIconIv.setImageResource(R.mipmap.icon_me);
             mine_label.setText(R.string.mine_label_hint);
         }
-        if(PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0) > 0
-                || (mUser != null && mUser.unReadCount > 0)) {
+        setMsgPoint();
+        mCollectPoint.setVisibility(View.GONE);
+    }
+
+    private void setMsgPoint() {
+        if(mineMsgPoint == null) {
+            return;
+        }
+        if(PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0) > 0) {
+            mineMsgPoint.setVisibility(View.VISIBLE);
+        } else if(CommConfig.getConfig().mMessageCount != null &&
+                (CommConfig.getConfig().mMessageCount.unReadCommentsCount > 0 || CommConfig.getConfig().mMessageCount.unReadLikesCount > 0)) {
             mineMsgPoint.setVisibility(View.VISIBLE);
         } else {
             mineMsgPoint.setVisibility(View.GONE);
         }
-        mCollectPoint.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+            setMsgPoint();
+        }
     }
 
     @Override

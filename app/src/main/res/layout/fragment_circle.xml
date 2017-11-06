@@ -28,21 +28,6 @@
             android:textSize="@dimen/size_l" />
 
         <TextView
-            android:id="@+id/circle_recom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_4x"
-            android:background="@drawable/rounded_corners_circle_text"
-            android:gravity="center"
-            android:paddingBottom="@dimen/space_half"
-            android:paddingLeft="@dimen/space_3x"
-            android:paddingRight="@dimen/space_3x"
-            android:paddingTop="@dimen/space_half"
-            android:text="@string/circle_recom"
-            android:textColor="@color/circle_text_selector"
-            android:textSize="@dimen/size_l" />
-
-        <TextView
             android:id="@+id/circle_hot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,6 +39,21 @@
             android:paddingRight="@dimen/space_3x"
             android:paddingTop="@dimen/space_half"
             android:text="@string/circle_hot"
+            android:textColor="@color/circle_text_selector"
+            android:textSize="@dimen/size_l" />
+
+        <TextView
+            android:id="@+id/circle_recom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_4x"
+            android:background="@drawable/rounded_corners_circle_text"
+            android:gravity="center"
+            android:paddingBottom="@dimen/space_half"
+            android:paddingLeft="@dimen/space_3x"
+            android:paddingRight="@dimen/space_3x"
+            android:paddingTop="@dimen/space_half"
+            android:text="@string/circle_recom"
             android:textColor="@color/circle_text_selector"
             android:textSize="@dimen/size_l" />
 
