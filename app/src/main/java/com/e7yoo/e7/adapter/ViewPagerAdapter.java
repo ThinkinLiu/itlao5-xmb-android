@@ -1,10 +1,10 @@
 package com.e7yoo.e7.adapter;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.e7yoo.e7.fragment.BaseFragment;
+import com.e7yoo.e7.fragment.CircleFragment;
 
 import java.util.ArrayList;
 
@@ -14,14 +14,14 @@ import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<Fragment> mFragmentList;
+    private ArrayList<BaseFragment> mFragmentList;
     private FragmentManager mFm;
 
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public ViewPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentList) {
+    public ViewPagerAdapter(FragmentManager fm, ArrayList<BaseFragment> fragmentList) {
         super(fm);
         mFm = fm;
         mFragmentList = fragmentList;
@@ -33,8 +33,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
-        return getCount() == 0 ? new Fragment() : mFragmentList.get(position % getCount());
+    public BaseFragment getItem(int position) {
+        return getCount() == 0 ? CircleFragment.newInstance() : mFragmentList.get(position % getCount());
     }
 
 }

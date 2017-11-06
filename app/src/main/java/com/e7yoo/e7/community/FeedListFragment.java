@@ -1,11 +1,12 @@
 package com.e7yoo.e7.community;
 
-import android.content.Intent;
+import android.os.Message;
 import android.view.View;
 
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.Constant;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
@@ -74,4 +75,14 @@ public abstract class FeedListFragment extends ListFragment {
         }
     };
 
+    @Override
+    public void onEventMainThread(Message msg) {
+        switch (msg.what) {
+            case Constant.EVENT_BUS_DELETE_FEED_SUCCESS:
+                if(msg.obj != null && msg.obj instanceof String && ((String) msg.obj).length() > 0) {
+                    mRvAdapter.remove((String) msg.obj);
+                }
+                break;
+        }
+    }
 }

@@ -361,5 +361,10 @@
     <string name="post_net_pic_url">网络图片(可与本地图片混用，最多九张，不同图片地址需换行
         \n ps:一张图片最多可以配置三个地址，在同一行以"|||"分隔，第一张原图，第二张缩略图，第三张大图（大缩略图）)</string>
     <string name="praise_msg_content">%s 赞了你❤</string>
+    <string name="topic_title_right_focus">关注</string>
+    <string name="topic_title_right_cancel_focus">取消关注</string>
+    <string name="space_title_right_share">分享</string>
+    <string name="space_title_right_post">发帖</string>
+    <string name="mengquanfenxiang_topic">关注精品，分享快乐</string>
 
 </resources>

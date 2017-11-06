@@ -32,11 +32,9 @@ import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
-import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.MessageCountResponse;
-import com.umeng.comm.core.nets.responses.MsgCountResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -51,7 +49,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 主页，萌圈，更多，我的
      */
-    private final ArrayList<Fragment> fragments = new ArrayList<>();
+    private final ArrayList<BaseFragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private BottomNavigationView navigation;
     private final int[] titleResIds = {R.string.title_home, R.string.title_circle, R.string.title_more, R.string.title_mine};

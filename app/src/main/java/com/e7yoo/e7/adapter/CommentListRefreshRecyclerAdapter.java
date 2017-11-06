@@ -79,6 +79,9 @@ public class CommentListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapte
                             viewHolderComment.feedPicIv.setImageResource(0);
                             viewHolderComment.feedContentTv.setText(item.feedItem.text);
                         }
+                    } else {
+                        viewHolderComment.feedPicIv.setImageResource(0);
+                        viewHolderComment.feedContentTv.setText("");
                     }
                     addIconClick(viewHolderComment.userIcon, item.creator);
                 }

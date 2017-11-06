@@ -16,7 +16,10 @@ import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.PopupWindowUtil;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.beans.CommUser;
@@ -24,9 +27,11 @@ import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 import com.umeng.comm.core.nets.responses.ProfileResponse;
 import com.umeng.comm.core.nets.responses.TopicItemResponse;
+import com.umeng.comm.core.nets.responses.TopicResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +77,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
             return;
         }
         setTitleTv(mTopic.name.replace("#", ""));
+        setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -129,7 +135,10 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.circle_post:
-                ActivityUtil.toPostOrLogin(this, mTopic);
+                toPost();
+                break;
+            case R.id.titlebar_right_tv:
+                toMenu();
                 break;
         }
     }
@@ -177,4 +186,88 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
             }
         }
     };
+
+
+    private void toMenu() {
+        ArrayList<TextSet> textSets = new ArrayList<>();
+        if(mTopic.isFocused) {
+            textSets.add(new TextSet(R.string.topic_title_right_cancel_focus, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toFocus(false);
+                }
+            }));
+        } else {
+            textSets.add(new TextSet(R.string.topic_title_right_focus, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toFocus(true);
+                }
+            }));
+        }
+        textSets.add(new TextSet(R.string.space_title_right_share, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toShare();
+            }
+        }));
+        textSets.add(new TextSet(R.string.space_title_right_post, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toPost();
+            }
+        }));
+        PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
+    }
+
+    private void toFocus(boolean focus) {
+        if(focus) {
+            mTopic.isFocused = false;
+            E7App.getCommunitySdk().cancelFollowTopic(mTopic, new Listeners.SimpleFetchListener<Response>() {
+                @Override
+                public void onComplete(Response response) {
+                    switch (response.errCode) {
+                        case ErrorCode.NO_ERROR:
+                            break;
+                        case ErrorCode.UNLOGIN_ERROR:
+                            TastyToastUtil.toast(TopicDetailActivity.this, R.string.circle_no_login);
+                        default:
+                            mTopic.isFocused = true;
+                            break;
+                    }
+                }
+            });
+        } else {
+            mTopic.isFocused = true;
+            E7App.getCommunitySdk().followTopic(mTopic, new Listeners.SimpleFetchListener<Response>() {
+                @Override
+                public void onComplete(Response response) {
+                    switch (response.errCode) {
+                        case ErrorCode.NO_ERROR:
+                            break;
+                        case ErrorCode.UNLOGIN_ERROR:
+                            TastyToastUtil.toast(TopicDetailActivity.this, R.string.circle_no_login);
+                        default:
+                            mTopic.isFocused = false;
+                            break;
+                    }
+                }
+            });
+        }
+    }
+
+    private void toShare() {
+        String title = getResources().getString(R.string.mengquanfenxiang_topic);
+        String text = getResources().getString(R.string.mengquanfenxiang2) + mTopic.name + mTopic.desc;
+        if(text.length() > 30) {
+            text = text.substring(0, 30);
+        }
+        String img = mTopic.icon != null && mTopic.icon.trim().length() > 0
+                ? mTopic.icon.trim() : null;
+        ShareDialogUtil.show(this, null, title, text, img);
+    }
+
+    private void toPost() {
+        ActivityUtil.toPostOrLogin(this, mTopic);
+    }
 }

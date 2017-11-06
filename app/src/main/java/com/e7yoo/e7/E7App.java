@@ -28,7 +28,7 @@ public class E7App extends MultiDexApplication {
         jPush();
         ali();
         bugly();
-        auth = "c51334ce1b84a1efd36e603b88185f9b".equals(OsUtil.getUdid(mApp)) && BuildConfig.DEBUG;
+        auth = "c51334ce1b84a1efd36e603b88185f9b".equals(OsUtil.getUdid(mApp));
     }
 
     private void jPush() {

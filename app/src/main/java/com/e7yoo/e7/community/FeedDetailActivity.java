@@ -444,7 +444,15 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         E7App.getCommunitySdk().favoriteFeed(mFeedItem.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
             @Override
             public void onComplete(SimpleResponse simpleResponse) {
-
+                switch (simpleResponse.errCode) {
+                    case ErrorCode.NO_ERROR:
+                        break;
+                    case ErrorCode.UNLOGIN_ERROR:
+                        TastyToastUtil.toast(FeedDetailActivity.this, R.string.circle_no_login);
+                    default:
+                        mFeedItem.isCollected = false;
+                        break;
+                }
             }
         });
     }
@@ -454,6 +462,15 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         E7App.getCommunitySdk().cancelFavoriteFeed(mFeedItem.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
             @Override
             public void onComplete(SimpleResponse simpleResponse) {
+                switch (simpleResponse.errCode) {
+                    case ErrorCode.NO_ERROR:
+                        break;
+                    case ErrorCode.UNLOGIN_ERROR:
+                        TastyToastUtil.toast(FeedDetailActivity.this, R.string.circle_no_login);
+                    default:
+                        mFeedItem.isCollected = true;
+                        break;
+                }
             }
         });
     }

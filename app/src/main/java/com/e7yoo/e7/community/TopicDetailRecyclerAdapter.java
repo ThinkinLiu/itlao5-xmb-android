@@ -18,6 +18,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommonUtil;
+import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.CommUser;
@@ -276,7 +277,11 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 ArrayList<String> images = new ArrayList<>();
                 for(ImageItem imageItem : adapter.getDatas()) {
                     if(imageItem != null && imageItem.originImageUrl != null) {
-                        images.add(imageItem.originImageUrl);
+                        if(imageItem.originImageUrl.contains(Constant.CIRCL_IMG_EXT)) {
+                            images.add(imageItem.originImageUrl.split(Constant.CIRCL_IMG_EXT)[1]);
+                        } else {
+                            images.add(imageItem.originImageUrl);
+                        }
                     }
                 }
                 if(images.size() > 0) {

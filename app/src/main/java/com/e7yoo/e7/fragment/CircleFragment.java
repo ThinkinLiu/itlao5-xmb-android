@@ -20,6 +20,7 @@ import com.e7yoo.e7.community.RealtimeFeedsFragment;
 import com.e7yoo.e7.community.RecomFeedsFragment;
 import com.e7yoo.e7.community.TopicListFragment;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.Constant;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 public class CircleFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView mAllTv, mHotTv, mRecomTv, mFollowedTv, mPlateTv;
-    private final ArrayList<Fragment> fragments = new ArrayList<>();
+    private final ArrayList<BaseFragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
     protected ImageView mPostIv;
@@ -38,7 +39,19 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onEventMainThread(Message msg) {
-
+        switch (msg.what) {
+            case Constant.EVENT_BUS_POST_FEED_SUCCESS:
+            case Constant.EVENT_BUS_DELETE_FEED_SUCCESS:
+                if(fragments != null) {
+                    int size = fragments.size() - 1; // 最后一个是话题，不需要接受EVENT_BUS_POST_FEED_SUCCESS和EVENT_BUS_DELETE_FEED_SUCCESS消息
+                    for(int i = 0; i < size; i++) {
+                        if (fragments.get(i) != null) {
+                            fragments.get(i).onEventMainThread(msg);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     public static CircleFragment newInstance() {

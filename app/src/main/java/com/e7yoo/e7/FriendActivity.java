@@ -1,13 +1,13 @@
 package com.e7yoo.e7;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
 import com.e7yoo.e7.adapter.ViewPagerAdapter;
 import com.e7yoo.e7.community.UserListFragment;
+import com.e7yoo.e7.fragment.BaseFragment;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class FriendActivity extends BaseActivity implements View.OnClickListener
     /**
      * 关注，粉丝
      */
-    private final ArrayList<Fragment> fragments = new ArrayList<>();
+    private final ArrayList<BaseFragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
 
     @Override

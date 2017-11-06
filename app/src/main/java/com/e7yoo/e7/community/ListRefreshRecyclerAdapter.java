@@ -3,6 +3,7 @@ package com.e7yoo.e7.community;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.umeng.comm.core.beans.BaseBean;
+import com.umeng.comm.core.beans.Comment;
+import com.umeng.comm.core.beans.FeedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,30 @@ public abstract class ListRefreshRecyclerAdapter extends RecyclerAdapter {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         // DebugUtil.setDatas(mDatas, 1, true);
+    }
+
+    /**
+     * 移除id对应的帖子or评论
+     * @param id BaseBean的id
+     */
+    public void remove(String id) {
+        if(TextUtils.isEmpty(id)) {
+            return;
+        }
+        int count = mDatas == null ? 0 : mDatas.size();
+        for(int i = 0; i < count; i++) {
+            if(mDatas.get(i) != null) {
+                if(mDatas.get(i) instanceof BaseBean) {
+                    if (id.equals(((BaseBean) mDatas.get(i)).id)) {
+                        mDatas.remove(i);
+                        notifyItemRemoved(i);
+                        notifyItemRangeChanged(i, getItemCount() - i);
+                        // notifyDataSetChanged();
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     public <T> void addItemTop(T newData) {

@@ -11,14 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.fragment.BaseFragment;
 import com.e7yoo.e7.net.Net;
-import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
-import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.List;
 

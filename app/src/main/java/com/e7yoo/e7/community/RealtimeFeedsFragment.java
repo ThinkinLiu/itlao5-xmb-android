@@ -3,6 +3,7 @@ package com.e7yoo.e7.community;
 import android.os.Message;
 
 import com.e7yoo.e7.E7App;
+import com.e7yoo.e7.util.Constant;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;
@@ -50,6 +51,14 @@ public class RealtimeFeedsFragment extends FeedListFragment {
 
     @Override
     public void onEventMainThread(Message msg) {
-
+        super.onEventMainThread(msg);
+        switch (msg.what) {
+            case Constant.EVENT_BUS_POST_FEED_SUCCESS:
+                if(msg.obj != null && msg.obj instanceof FeedItem) {
+                    mRvAdapter.addItemTop(msg.obj);
+                }
+                break;
+        }
     }
+
 }

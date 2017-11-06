@@ -41,6 +41,8 @@ import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 
+import org.w3c.dom.Text;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -318,7 +320,8 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onComplete(FeedItemResponse feedItemResponse) {
-                if(feedItemResponse.errCode == 0 && feedItemResponse.result != null) {
+                if(feedItemResponse.errCode == 0 && feedItemResponse.result != null
+                        && !TextUtils.isEmpty(feedItemResponse.result.id)) {
                     TastyToastUtil.toast(PostActivity.this, R.string.post_success);
                     EventBusUtil.post(Constant.EVENT_BUS_POST_FEED_SUCCESS, feedItemResponse.result);
                     if(CommConfig.getConfig().loginedUser != null) {
@@ -352,7 +355,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
                 switch (type) {
                     case 1:
                         if(feedItem.imageUrls.get(i) != null) {
-                            feedItem.imageUrls.get(i).originImageUrl = urlI;
+                            feedItem.imageUrls.get(i).originImageUrl = getUrl(feedItem.imageUrls.get(i).originImageUrl, urlI);
                         }
                         break;
                     case 0:
@@ -378,6 +381,17 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
             }
             i += 1;
         }
+    }
+
+    private String getUrl(String url, String url2) {
+        if(url == null) {
+            url = url2;
+        } else if(!url.contains("?")) {
+            url = url + "?" + Constant.CIRCL_IMG_EXT + url2;
+        } else {
+            url = url + "&" + Constant.CIRCL_IMG_EXT + url2;
+        }
+        return url;
     }
 
     private void initTopic(Intent data) {
