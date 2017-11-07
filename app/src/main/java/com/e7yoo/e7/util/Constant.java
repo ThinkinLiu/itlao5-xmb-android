@@ -6,7 +6,9 @@ package com.e7yoo.e7.util;
 
 public class Constant {
 
-    public static final String CIRCL_IMG_EXT = "xmb_ext=";
+    public static final String CIRCLE_IMG_EXT = "xmb_ext=";
+    public static final String CIRCLE_URL_TITLE = "x:b";
+    public static final String CIRCLE_URL_PIC = "xmb";
 
     public static final int NET_NO = -10000;
 

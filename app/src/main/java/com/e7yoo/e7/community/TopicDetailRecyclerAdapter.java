@@ -277,8 +277,8 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 ArrayList<String> images = new ArrayList<>();
                 for(ImageItem imageItem : adapter.getDatas()) {
                     if(imageItem != null && imageItem.originImageUrl != null) {
-                        if(imageItem.originImageUrl.contains(Constant.CIRCL_IMG_EXT)) {
-                            images.add(imageItem.originImageUrl.split(Constant.CIRCL_IMG_EXT)[1]);
+                        if(imageItem.originImageUrl.contains(Constant.CIRCLE_IMG_EXT)) {
+                            images.add(imageItem.originImageUrl.split(Constant.CIRCLE_IMG_EXT)[1]);
                         } else {
                             images.add(imageItem.originImageUrl);
                         }

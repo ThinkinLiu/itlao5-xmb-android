@@ -339,9 +339,8 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     private void setmPicUrlByEt(FeedItem feedItem) {
         String picUrl = mPicUrlEt.getText().toString().trim();
         int type = 0; // 依次输入缩略图，原图，大缩略图url
-        String start = "xmb";
-        if(picUrl.startsWith(start)) {
-            picUrl = picUrl.substring(start.length());
+        if(picUrl.startsWith(Constant.CIRCLE_URL_PIC)) {
+            picUrl = picUrl.substring(Constant.CIRCLE_URL_PIC.length());
             type = 1; // 仅替换原图url
         }
         String[] urls = picUrl.split("\n");
@@ -387,9 +386,9 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
         if(url == null) {
             url = url2;
         } else if(!url.contains("?")) {
-            url = url + "?" + Constant.CIRCL_IMG_EXT + url2;
+            url = url + "?" + Constant.CIRCLE_IMG_EXT + url2;
         } else {
-            url = url + "&" + Constant.CIRCL_IMG_EXT + url2;
+            url = url + "&" + Constant.CIRCLE_IMG_EXT + url2;
         }
         return url;
     }

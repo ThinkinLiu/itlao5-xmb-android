@@ -23,6 +23,7 @@ import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.BaseBeanUtil;
 import com.e7yoo.e7.util.CommonUtil;
+import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.view.CircleGridView;
@@ -138,17 +139,24 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void setViewRichContent(ViewHolderFeedItem viewHolderFeedItem, FeedItem item) {
-        final String more = BaseBeanUtil.getExtraString(item, BaseBeanUtil.TEXT_MORE);
+        String more = BaseBeanUtil.getExtraString(item, BaseBeanUtil.TEXT_MORE);
         if(TextUtils.isEmpty(more) || more.trim().length() < 5) {
             viewHolderFeedItem.urlTv.setVisibility(View.GONE);
             viewHolderFeedItem.urlTv.setOnClickListener(null);
             return;
         }
         viewHolderFeedItem.urlTv.setVisibility(View.VISIBLE);
+        if(more.trim().contains(Constant.CIRCLE_URL_TITLE)) {
+            String[] mores = more.split(Constant.CIRCLE_URL_TITLE, 2);
+            viewHolderFeedItem.urlTv.setText(mores[0]);
+            more = mores[1];
+        } else {
+            viewHolderFeedItem.urlTv.setText(R.string.feed_detail_url);
+        }
+        final String url = more.startsWith("http://") || more.startsWith("https://") ? more : "http://" + more;
         viewHolderFeedItem.urlTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String url = more.startsWith("http://") || more.startsWith("https://") ? more : "http://" + more;
                 ActivityUtil.toNewsWebviewActivity(mContext, url, NewsWebviewActivity.INTENT_FROM_FEED_DETAILS);
                 UmengUtil.onEvent(UmengUtil.FEED_DETAILS);
             }
