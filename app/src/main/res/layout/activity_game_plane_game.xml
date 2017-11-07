@@ -10,4 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/actionbar_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/about_share"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/space_2x"
+        android:layout_marginRight="@dimen/space_2x"
+        android:padding="@dimen/space_2x"
+        android:visibility="visible"
+        android:background="@color/titlebar_bg"
+        android:alpha="0.8"/>
+
 </RelativeLayout>

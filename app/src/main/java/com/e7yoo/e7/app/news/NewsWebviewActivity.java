@@ -1,7 +1,9 @@
 package com.e7yoo.e7.app.news;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -11,14 +13,18 @@ import com.e7yoo.e7.BaseWebviewActivity;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.NewsEntity;
+import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.util.AnimaUtils;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.FileUtil;
+import com.e7yoo.e7.util.PopupWindowUtil;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.webview.ReWebChomeClient;
 import com.e7yoo.e7.webview.ReWebViewClient;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 
@@ -84,10 +90,53 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 			finishAct();
 			break;
 		case R.id.titlebar_right_tv:
-			saveFavorites();
+			// saveFavorites();
 			break;
 		default:
 			break;
+		}
+	}
+
+	private void toMenu() {
+		ArrayList<TextSet> textSets = new ArrayList<>();
+		textSets.add(new TextSet(R.string.news_webview_share, false, new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				toShare();
+			}
+		}));
+		textSets.add(new TextSet(R.string.news_webview_open, false, new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				toOpen();
+			}
+		}));
+		PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
+	}
+
+	private void toShare() {
+		if(mWebView == null) {
+			return;
+		}
+		String url = mWebView.getUrl();
+		String title = mWebView.getTitle();
+		if(CommonUtil.isEmptyTrimNull(url)) {
+			TastyToast.makeText(this, getString(R.string.wangyefenxiang_no), TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
+			CrashReport.postCatchedException(new Throwable("wangyefenxiang_url_is_null"));
+			return;
+		}
+		ShareDialogUtil.show(this, url, null, getString(R.string.wangyefenxiang) + title, null);
+	}
+
+	private void toOpen() {
+		try {
+			Intent intent = new Intent();
+			intent.setAction("android.intent.action.VIEW");
+			Uri content_url = Uri.parse(mWebView.getUrl());
+			intent.setData(content_url);
+			startActivity(intent);
+		} catch (Throwable e) {
+			TastyToast.makeText(this, getString(R.string.url_open_failed), TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
 		}
 	}
 
@@ -95,6 +144,7 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 		String url = mWebView.getUrl();
 		if(CommonUtil.isEmptyTrimNull(url)) {
 			TastyToast.makeText(this, getString(R.string.favorites_fai), TastyToast.LENGTH_SHORT, TastyToast.DEFAULT);
+			return;
 		}
 		ArrayList<NewsEntity> news;
 		try {
@@ -177,6 +227,8 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 		} else {
 			finishAct();
 		}
+
+		setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
 	}
 
 	@Override

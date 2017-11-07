@@ -1,11 +1,15 @@
 package com.e7yoo.e7.game.game2048;
 
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.util.BitmapUtils;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 
 public class Game2048Activity extends BaseActivity implements OnClickListener {
@@ -44,7 +48,14 @@ public class Game2048Activity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void initViewListener() {
 		setLeftTvListener(this);
+		setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
 		tvChangeColumn.setOnClickListener(this);
+		gameView.setOnShareClickListener(new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				toShare();
+			}
+		});
 	}
 
 	public void setChangeColumn() {
@@ -101,9 +112,19 @@ public class Game2048Activity extends BaseActivity implements OnClickListener {
 			case R.id.change_column:
 				gameView.setColumn(gameView.getColumnCount() + 1);
 				break;
+			case R.id.titlebar_right_tv:
+				toShare();
+				break;
 			default:
 				break;
 		}
+	}
+
+	private void toShare() {
+		ShareDialogUtil.show(this, null,
+				getString(R.string.app_share_from),
+				getString(R.string.game_share_text, getString(R.string.gamelist_game2048), getScore() + ""),
+				ShareDialogUtil.SHARE_IMAGE_PATH_TAKE_SCREENSHOT);
 	}
 	
 	@Override

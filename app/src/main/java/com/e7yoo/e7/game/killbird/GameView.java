@@ -17,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.Random;
  */
 public class GameView extends SurfaceView implements Callback, Runnable {
 
+	private int stopWidth = 100;
 	//用于控制SurfaceView
 	private SurfaceHolder sfh;
 	//声明一个画笔
@@ -112,6 +114,7 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 	 */
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		stopWidth = context.getResources().getDimensionPixelOffset(R.dimen.space_10x);
 		//实例化程序
 		main=(KillBirdActivity) context;
 		//实例SurfaceHolder
@@ -545,13 +548,31 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 	 * 绘制暂停
 	 */
 	public void drawStop(Canvas canvas){
-		if (isEnd==true || isStart==false || mode==0) return;
-		if (isStop==false)canvas.drawBitmap(stop, new Rect(0,0,stop.getWidth(),stop.getHeight()),new Rect(screenW-50,0,screenW,50), paint);
+		if (isEnd==true || isStart==false || mode==0) {
+			onStopListener.onEnd();
+			return;
+		}
+		if (isStop==false) {
+			canvas.drawBitmap(stop, new Rect(0,0,stop.getWidth(),stop.getHeight()),new Rect(screenW-stopWidth,0,screenW,stopWidth), paint);
+			onStopListener.onStart();
+		}
 		if (isStop==true){
 			canvas.drawARGB(50, 0, 0, 0);
 			drawText("点击屏幕返回游戏",canvas,screenW/2,screenH/2,fontsize, Color.WHITE);
+			onStopListener.onStop();
 		}
-	
+
+	}
+
+	OnStopListener onStopListener;
+	public void setOnStopListener(OnStopListener onStopListener) {
+		this.onStopListener = onStopListener;
+	}
+
+	public interface OnStopListener{
+		void onStart();
+		void onStop();
+		void onEnd();
 	}
 	/**
 	 * 绘制文字
@@ -734,7 +755,7 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 				isStop=false;
 				return true;
 			}
-			if (!isEnd && isStart && screenW-50<=x && x<=screenW && y<=50){
+			if (!isEnd && isStart && screenW-stopWidth<=x && x<=screenW && y<=stopWidth){
 				isStop=true;
 				myDraw();
 				//main.showAD();

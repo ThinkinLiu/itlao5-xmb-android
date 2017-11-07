@@ -1,14 +1,16 @@
 package com.e7yoo.e7.game.plane;
 
-import android.os.Bundle;
+import android.view.View;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.util.ShareDialogUtil;
 
 
-public class PlaneGameActivity extends BaseActivity {
+public class PlaneGameActivity extends BaseActivity implements View.OnClickListener {
 
     private GameView gameView;
+    private View shareView;
 
 
     @Override
@@ -41,6 +43,8 @@ public class PlaneGameActivity extends BaseActivity {
     @Override
     protected void initView() {
         gameView = (GameView)findViewById(R.id.gameView);
+        shareView = findViewById(R.id.actionbar_share);
+        shareView.setVisibility(View.GONE);
     }
 
     @Override
@@ -64,6 +68,46 @@ public class PlaneGameActivity extends BaseActivity {
 
     @Override
     protected void initViewListener() {
+        shareView.setOnClickListener(this);
+        gameView.setOnStatusListener(new GameView.OnStatusListener() {
+            @Override
+            public void onStart() {
+                if(shareView != null) {
+                    shareView.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onPause() {
+                if(shareView != null) {
+                    shareView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onEnd() {
+                if(shareView != null) {
+                    shareView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.actionbar_share:
+                if(gameView != null) {
+                    toShare();
+                }
+                break;
+        }
+    }
+
+    private void toShare() {
+        ShareDialogUtil.show(this, null,
+                getString(R.string.app_share_from),
+                getString(R.string.game_share_text, getString(R.string.gamelist_plane), gameView.getScore() + ""),
+                ShareDialogUtil.SHARE_IMAGE_PATH_TAKE_SCREENSHOT);
     }
 }

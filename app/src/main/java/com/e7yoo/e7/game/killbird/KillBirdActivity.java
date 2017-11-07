@@ -3,17 +3,19 @@ package com.e7yoo.e7.game.killbird;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.HashMap;
 
 
-public class KillBirdActivity extends BaseActivity {
+public class KillBirdActivity extends BaseActivity implements View.OnClickListener {
 
     private SharedPreferences sp;
     private String game1="G1",game2="G2";
@@ -21,6 +23,7 @@ public class KillBirdActivity extends BaseActivity {
     private SoundPool soundp;
     private HashMap<String,Integer> soundm;
     private GameView gm;
+	private View shareView;
 	
     /**
      * 读取数据
@@ -120,16 +123,38 @@ public class KillBirdActivity extends BaseActivity {
 
 	@Override
 	protected void initView() {
-
+		gm = (GameView) findViewById(R.id.gameView);
+		shareView = findViewById(R.id.actionbar_share);
+		shareView.setVisibility(View.GONE);
 	}
 
 	@Override
 	protected void initSettings() {
-		gm=(GameView) findViewById(R.id.gameView);
 	}
 
 	@Override
 	protected void initViewListener() {
+		gm.setOnStopListener(new GameView.OnStopListener() {
+			@Override
+			public void onStart() {
+				if(shareView != null) {
+					shareView.setVisibility(View.GONE);
+				}
+			}
+			@Override
+			public void onStop() {
+				if(shareView != null) {
+					shareView.setVisibility(View.VISIBLE);
+				}
+			}
+			@Override
+			public void onEnd() {
+				if(shareView != null) {
+					shareView.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+		shareView.setOnClickListener(this);
 
 	}
 
@@ -164,7 +189,24 @@ public class KillBirdActivity extends BaseActivity {
     public void onRestart(){
     	gm.myDraw();
     	super.onRestart();  
-    }  
-    
-	
+    }
+
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.actionbar_share:
+				if(gm != null && gm.score != null) {
+					toShare();
+				}
+				break;
+		}
+	}
+
+	private void toShare() {
+		ShareDialogUtil.show(this, null,
+				getString(R.string.app_share_from),
+				getString(R.string.game_share_text, getString(R.string.gamelist_killbird), gm.score.get() + ""),
+				ShareDialogUtil.SHARE_IMAGE_PATH_TAKE_SCREENSHOT);
+	}
 }

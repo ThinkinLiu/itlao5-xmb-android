@@ -2,6 +2,7 @@ package com.e7yoo.e7.game.plane;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -126,11 +127,13 @@ public class GameView extends View {
     public void pause(){
         //将游戏设置为暂停状态
         status = STATUS_GAME_PAUSED;
+        mOnStatusListener.onPause();
     }
 
     private void resume(){
         //将游戏设置为运行状态
         status = STATUS_GAME_STARTED;
+        mOnStatusListener.onStart();
         postInvalidate();
     }
 
@@ -212,6 +215,7 @@ public class GameView extends View {
             if(combatAircraft.isDestroyed()){
                 //如果战斗机被击中销毁了，那么游戏结束
                 status = STATUS_GAME_OVER;
+                mOnStatusListener.onEnd();
             }
             //通过调用postInvalidate()方法使得View持续渲染，实现动态效果
             postInvalidate();
@@ -231,6 +235,7 @@ public class GameView extends View {
             combatAircraft.onDraw(canvas, paint, this);
         }
 
+        mOnStatusListener.onPause();
         //绘制Dialog，显示得分
         drawScoreDialog(canvas, "继续");
 
@@ -242,11 +247,23 @@ public class GameView extends View {
     //绘制结束状态的游戏
     private void drawGameOver(Canvas canvas){
         //Game Over之后只绘制弹出窗显示最终得分
+        mOnStatusListener.onEnd();
         drawScoreDialog(canvas, "重新开始");
 
         if(lastSingleClickTime > 0){
             postInvalidate();
         }
+    }
+
+    private OnStatusListener mOnStatusListener;
+    public void setOnStatusListener(OnStatusListener onStatusListener) {
+        mOnStatusListener = onStatusListener;
+    }
+
+    public interface OnStatusListener {
+        void onStart();
+        void onPause();
+        void onEnd();
     }
 
     private void drawScoreDialog(Canvas canvas, String operation){

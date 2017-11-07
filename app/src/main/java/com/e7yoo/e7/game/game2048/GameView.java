@@ -314,10 +314,21 @@ public class GameView extends GridLayout {
 					startGame();
 				}
 
+			}).setNegativeButton("分享战绩", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if(mOnClickListener != null) {
+						mOnClickListener.onClick(dialog, which);
+					}
+				}
 			}).show();
 		}
 	}
-	
+
+	private DialogInterface.OnClickListener mOnClickListener;
+	public void setOnShareClickListener(DialogInterface.OnClickListener onClickListener) {
+		mOnClickListener = onClickListener;
+	}
 
 	public void setColumn(int column) {
 		if(column > MAX_COLUMN) {

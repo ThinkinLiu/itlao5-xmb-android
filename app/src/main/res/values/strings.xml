@@ -366,5 +366,11 @@
     <string name="space_title_right_share">分享</string>
     <string name="space_title_right_post">发帖</string>
     <string name="mengquanfenxiang_topic">关注精品，分享快乐</string>
+    <string name="news_webview_share">分享到...</string>
+    <string name="news_webview_open">浏览器打开</string>
+    <string name="wangyefenxiang">【小萌伴】网页：</string>
+    <string name="wangyefenxiang_no">该网页无法分享</string>
+    <string name="url_open_failed">浏览器打开失败</string>
+    <string name="app_share_from">来自【小萌伴】的分享：</string>
 
 </resources>

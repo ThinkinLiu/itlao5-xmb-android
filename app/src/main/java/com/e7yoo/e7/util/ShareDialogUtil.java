@@ -1,8 +1,9 @@
 package com.e7yoo.e7.util;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -158,52 +159,66 @@ public class ShareDialogUtil {
             if(name != null) {
                 shareParams.setShareType(Platform.SHARE_WEBPAGE);
                 shareParams.setUrl(share_url);//必须
-                String imagePath = TextUtils.isEmpty(share_imagePath) ? getImagePath() : share_imagePath;
-                if(TextUtils.isEmpty(imagePath)) {
-                    if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
-                        shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
-                    } else {
-                        shareParams.setImageUrl("http://e7yoo.com/apk/logo_share.png");
-                    }
-                } else {
-                    if(share_imagePath.startsWith("http")) {
-                        if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
-                            /*String cachePath = getImagePathFromGlideCache(share_imagePath);
-                            if(!TextUtils.isEmpty(cachePath)) {
-                                shareParams.setImagePath(cachePath);
-                            } else {*/
-                            shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
-                            /*}*/
-                        } else {
-                            shareParams.setImageUrl(share_imagePath);
-                        }
-                    } else {
-                        shareParams.setImagePath(imagePath);
-                    }
-                }
-                JShareInterface.share(name, shareParams, new PlatActionListener() {
-                    @Override
-                    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
-                        Logs.isDebug();
-                    }
-
-                    @Override
-                    public void onError(Platform platform, int i, int i1, Throwable throwable) {
-                        Logs.isDebug();
-                        CrashReport.postCatchedException(throwable);
-                    }
-
-                    @Override
-                    public void onCancel(Platform platform, int i) {
-                        Logs.isDebug();
-
-                    }
-                });
+                setShareImg(name, shareParams);
+                share(name, shareParams);
             }
             dismiss();
         }
     };
+
+    public static final String SHARE_IMAGE_PATH_TAKE_SCREENSHOT = "ScreenShot";
+    private static void setShareImg(String name, ShareParams shareParams) {
+        if(SHARE_IMAGE_PATH_TAKE_SCREENSHOT.equals(share_imagePath)) {
+            if(context instanceof Activity) {
+                Bitmap bitmap = BitmapUtils.takeScreenShot((Activity) context);
+                if(bitmap != null) {
+                    shareParams.setImageData(bitmap);
+                    return;
+                }
+            }
+            share_imagePath = null;
+        }
+        String imagePath = TextUtils.isEmpty(share_imagePath) ? getImagePath() : share_imagePath;
+        if(TextUtils.isEmpty(imagePath)) {
+            if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
+                shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
+            } else {
+                shareParams.setImageUrl("http://e7yoo.com/apk/logo_share.png");
+            }
+        } else {
+            if(share_imagePath.startsWith("http")) {
+                if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
+                    shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
+                } else {
+                    shareParams.setImageUrl(share_imagePath);
+                }
+            } else {
+                shareParams.setImagePath(imagePath);
+            }
+        }
+    }
+
+    private static void share(String name, ShareParams shareParams) {
+        JShareInterface.share(name, shareParams, new PlatActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+
+                Logs.isDebug();
+            }
+
+            @Override
+            public void onError(Platform platform, int i, int i1, Throwable throwable) {
+                Logs.isDebug();
+                CrashReport.postCatchedException(throwable);
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                Logs.isDebug();
+
+            }
+        });
+    }
 
     private static String getImagePath() {
         try {
