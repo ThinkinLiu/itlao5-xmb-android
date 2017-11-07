@@ -1,6 +1,7 @@
 package com.e7yoo.e7.game.plane;
 
 import android.view.View;
+import android.view.WindowManager;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
@@ -28,6 +29,14 @@ public class PlaneGameActivity extends BaseActivity implements View.OnClickListe
             gameView.destroy();
         }
         gameView = null;
+    }
+
+    @Override
+    protected boolean initTheme() {
+        super.initTheme();
+        //隐去状态栏部分(电池等图标和一切修饰部分)
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        return true;
     }
 
     @Override
@@ -72,21 +81,21 @@ public class PlaneGameActivity extends BaseActivity implements View.OnClickListe
         gameView.setOnStatusListener(new GameView.OnStatusListener() {
             @Override
             public void onStart() {
-                if(shareView != null) {
+                if(shareView != null && shareView.getVisibility() == View.VISIBLE) {
                     shareView.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onPause() {
-                if(shareView != null) {
+                if(shareView != null && shareView.getVisibility() == View.GONE) {
                     shareView.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onEnd() {
-                if(shareView != null) {
+                if(shareView != null && shareView.getVisibility() == View.GONE) {
                     shareView.setVisibility(View.VISIBLE);
                 }
             }

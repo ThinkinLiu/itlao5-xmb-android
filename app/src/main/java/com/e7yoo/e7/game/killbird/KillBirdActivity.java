@@ -137,21 +137,36 @@ public class KillBirdActivity extends BaseActivity implements View.OnClickListen
 		gm.setOnStopListener(new GameView.OnStopListener() {
 			@Override
 			public void onStart() {
-				if(shareView != null) {
-					shareView.setVisibility(View.GONE);
-				}
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if(shareView != null && shareView.getVisibility() == View.VISIBLE) {
+							shareView.setVisibility(View.GONE);
+						}
+					}
+				});
 			}
 			@Override
 			public void onStop() {
-				if(shareView != null) {
-					shareView.setVisibility(View.VISIBLE);
-				}
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if(shareView != null && shareView.getVisibility() == View.GONE) {
+							shareView.setVisibility(View.VISIBLE);
+						}
+					}
+				});
 			}
 			@Override
 			public void onEnd() {
-				if(shareView != null) {
-					shareView.setVisibility(View.VISIBLE);
-				}
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if(shareView != null && shareView.getVisibility() == View.GONE) {
+							shareView.setVisibility(View.VISIBLE);
+						}
+					}
+				});
 			}
 		});
 		shareView.setOnClickListener(this);

@@ -239,6 +239,7 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 			if (screenW<=(int)temp.get(i).y) {
 				main.refresh(mode, score.get());
 				isEnd=true;
+				onStopListener.onEnd();
 				tbirdlist=new ArrayList<Bird>();
 				lockScreen();
 			}
@@ -392,6 +393,7 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 				if (mode==1) score.add(1);
 				if (mode==2) {
 					isEnd=true;
+					onStopListener.onEnd();
 					main.refresh(mode, score.get());
 				}
 			}else{
@@ -549,17 +551,14 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 	 */
 	public void drawStop(Canvas canvas){
 		if (isEnd==true || isStart==false || mode==0) {
-			onStopListener.onEnd();
 			return;
 		}
 		if (isStop==false) {
 			canvas.drawBitmap(stop, new Rect(0,0,stop.getWidth(),stop.getHeight()),new Rect(screenW-stopWidth,0,screenW,stopWidth), paint);
-			onStopListener.onStart();
 		}
 		if (isStop==true){
 			canvas.drawARGB(50, 0, 0, 0);
 			drawText("点击屏幕返回游戏",canvas,screenW/2,screenH/2,fontsize, Color.WHITE);
-			onStopListener.onStop();
 		}
 
 	}
@@ -753,10 +752,12 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			if (isStop==true){
 				isStop=false;
+				onStopListener.onStart();
 				return true;
 			}
 			if (!isEnd && isStart && screenW-stopWidth<=x && x<=screenW && y<=stopWidth){
 				isStop=true;
+				onStopListener.onStop();
 				myDraw();
 				//main.showAD();
 				return true;
