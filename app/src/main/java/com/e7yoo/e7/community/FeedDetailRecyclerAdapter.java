@@ -238,10 +238,13 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     private void setViewTypeFeeditem(final BaseViewHolder viewHolderFeedItem, final FeedItem item) {
         viewHolderFeedItem.contentTv.setMaxLines(1000);
         String content = "";
+        if(item.sourceFeed != null && item.sourceFeed.creator != null) {
+            content = content + "<font color= 'blue'> @" + item.sourceFeed.creator.name + " </font>\n----------\n";
+        }
         if(item.topics != null) {
             for(int i = 0; i < item.topics.size(); i++) {
                 if(item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
-                    content = content + "<font color= 'blue'>" + item.topics.get(i).name + "</font> ";
+                    content = content + "<font color= 'blue'>" + item.topics.get(i).name + " </font>";
                 }
             }
         }

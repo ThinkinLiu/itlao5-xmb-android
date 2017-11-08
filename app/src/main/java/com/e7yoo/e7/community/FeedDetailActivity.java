@@ -402,6 +402,12 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 toPost();
             }
         }));
+        textSets.add(new TextSet(R.string.feed_detail_title_right_forward, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toForward();
+            }
+        }));
         if(!mFeedItem.isCollected) {
             textSets.add(new TextSet(R.string.feed_detail_title_right_collect, false, new View.OnClickListener() {
                 @Override
@@ -437,6 +443,18 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     private void toPost() {
         Topic topic = mFeedItem != null && mFeedItem.topics != null && mFeedItem.topics.size() > 0 ? mFeedItem.topics.get(0) : null;
         ActivityUtil.toPostOrLogin(this, topic);
+    }
+
+    private void toForward() {
+        final FeedItem feedItem = new FeedItem();
+        feedItem.sourceFeed = mFeedItem;
+        feedItem.sourceFeedId = mFeedItem.id;
+        feedItem.text = getString(R.string.feed_detail_forward_text);
+        E7App.getCommunitySdk().forward(feedItem, new Listeners.SimpleFetchListener<FeedItemResponse>() {
+            @Override
+            public void onComplete(FeedItemResponse feedItemResponse) {
+            }
+        });
     }
 
     private void toCollect() {
