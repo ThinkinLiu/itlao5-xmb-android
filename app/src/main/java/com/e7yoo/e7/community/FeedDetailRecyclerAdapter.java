@@ -239,16 +239,25 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolderFeedItem.contentTv.setMaxLines(1000);
         String content = "";
         if(item.sourceFeed != null && item.sourceFeed.creator != null) {
-            content = content + "<font color= 'blue'> @" + item.sourceFeed.creator.name + " </font>\n----------\n";
-        }
-        if(item.topics != null) {
-            for(int i = 0; i < item.topics.size(); i++) {
-                if(item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
-                    content = content + "<font color= 'blue'>" + item.topics.get(i).name + " </font>";
+            content = item.text + "<font color= 'blue'> @" + item.sourceFeed.creator.name + " </font>\n----------\n";
+            if (item.sourceFeed.topics != null) {
+                for (int i = 0; i < item.sourceFeed.topics.size(); i++) {
+                    if (item.sourceFeed.topics.get(i) != null && !TextUtils.isEmpty(item.sourceFeed.topics.get(i).name)) {
+                        content = content + "<font color= 'blue'>" + item.sourceFeed.topics.get(i).name + " </font>";
+                    }
                 }
             }
+            content = content + item.sourceFeed.text;
+        } else {
+            if (item.topics != null) {
+                for (int i = 0; i < item.topics.size(); i++) {
+                    if (item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
+                        content = content + "<font color= 'blue'>" + item.topics.get(i).name + " </font>";
+                    }
+                }
+            }
+            content = content + item.text;
         }
-        content = content + item.text;
         viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content));
         CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages(), mGvItemClick);
         viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
