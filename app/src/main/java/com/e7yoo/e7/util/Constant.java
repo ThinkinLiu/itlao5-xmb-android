@@ -30,6 +30,9 @@ public class Constant {
     public static final int EVENT_BUS_DELETE_FEED_SUCCESS= 1006;
     public static final int EVENT_BUS_REFRESH_UN_READ_MSG= 1007;
     public static final int EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS= 1008;
+    public static final int EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ= 1009;
+    public static final int EVENT_BUS_REFRESH_UN_READ_MSG_LIKE_IS_READ= 1010;
+    public static final int EVENT_BUS_REFRESH_UN_READ_MSG_PUSH_IS_READ= 1011;
 
     public static final String FILE_ROBOT_LIST = "file_robot_list";
     public static final String FILE_FAVORITES_NEWS_LIST = "file_favorites_news_list";

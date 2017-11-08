@@ -10,11 +10,13 @@ import com.e7yoo.e7.adapter.CommentListRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
+import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Like;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedCommentResponse;
+import com.umeng.comm.core.nets.responses.LikeMeResponse;
 import com.umeng.comm.core.nets.responses.LikesResponse;
 
 import java.util.List;
@@ -82,36 +84,39 @@ public class PraiseListActivity extends BaseActivity {
     private void loadFriendMsg(boolean refresh) {
         mRvAdapter.setFooter(CommentListRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         if(refresh || mNextPageUrl == null) {
-            E7App.getCommunitySdk().fetchUserLikes(0, mFirstSimpleFetchListener);
+            E7App.getCommunitySdk().fetchLikedRecords(CommConfig.getConfig().loginedUser.id, mFirstLikeMeResponse);
         } else {
-            E7App.getCommunitySdk().fetchNextPageData(mNextPageUrl, LikesResponse.class, mFetchListener);
+            E7App.getCommunitySdk().fetchNextPageData(mNextPageUrl, LikeMeResponse.class, mFetchListener);
         }
     }
 
-    private Listeners.SimpleFetchListener<LikesResponse> mFirstSimpleFetchListener = new Listeners.SimpleFetchListener<LikesResponse>() {
-        @Override
-        public void onComplete(LikesResponse likesResponse) {
-            mRvAdapter.setFooter(CommentListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
-            if(likesResponse.errCode == ErrorCode.NO_ERROR && likesResponse.result != null
-                    && likesResponse.result.size() > 0) {
-                mNextPageUrl = likesResponse.nextPageUrl;
-                mDatas = likesResponse.result;
-                mRvAdapter.refreshData(likesResponse.result);
-            }
-        }
-    };
-
-    private Listeners.FetchListener<LikesResponse> mFetchListener = new Listeners.FetchListener<LikesResponse>() {
+    private Listeners.FetchListener<LikeMeResponse> mFirstLikeMeResponse = new Listeners.FetchListener<LikeMeResponse>() {
         @Override
         public void onStart() {
         }
         @Override
-        public void onComplete(LikesResponse likesResponse) {
-            if(likesResponse.errCode == ErrorCode.NO_ERROR && likesResponse.result != null
-                    && likesResponse.result.size() > 0) {
-                mNextPageUrl = likesResponse.nextPageUrl;
-                mDatas = likesResponse.result;
-                mRvAdapter.addItemBottom(likesResponse.result);
+        public void onComplete(LikeMeResponse likeMeResponse) {
+            mRvAdapter.setFooter(CommentListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+            if(likeMeResponse.errCode == ErrorCode.NO_ERROR && likeMeResponse.result != null
+                    && likeMeResponse.result.size() > 0) {
+                mNextPageUrl = likeMeResponse.nextPageUrl;
+                mDatas = likeMeResponse.likeArrayList;
+                mRvAdapter.refreshData(likeMeResponse.likeArrayList);
+            }
+        }
+    };
+
+    private Listeners.FetchListener<LikeMeResponse> mFetchListener = new Listeners.FetchListener<LikeMeResponse>() {
+        @Override
+        public void onStart() {
+        }
+        @Override
+        public void onComplete(LikeMeResponse likeMeResponse) {
+            if(likeMeResponse.errCode == ErrorCode.NO_ERROR && likeMeResponse.result != null
+                    && likeMeResponse.result.size() > 0) {
+                mNextPageUrl = likeMeResponse.nextPageUrl;
+                mDatas = likeMeResponse.likeArrayList;
+                mRvAdapter.addItemBottom(likeMeResponse.likeArrayList);
                 mRvAdapter.setFooter(CommentListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
             } else {
                 mRvAdapter.setFooter(CommentListRefreshRecyclerAdapter.FooterType.END, R.string.loading_no_more, false);

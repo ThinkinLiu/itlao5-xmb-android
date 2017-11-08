@@ -195,19 +195,21 @@ public class MainActivity extends BaseActivity {
             case Constant.EVENT_BUS_REFRESH_RecyclerView_UPDATE_ROBOT:
             case Constant.EVENT_BUS_REFRESH_RecyclerView_INIT_ROBOT:
                 if (!isFinishing() && fragments != null && fragments.size() > 0) {
-                    Fragment fragment = fragments.get(0);
-                    if (fragment != null && fragment instanceof BaseFragment) {
-                        ((BaseFragment) fragment).onEventMainThread(msg);
+                    if (fragments.get(0) != null) {
+                        fragments.get(0).onEventMainThread(msg);
                     }
                 }
                 break;
             case Constant.EVENT_BUS_CIRCLE_LOGIN:
             case Constant.EVENT_BUS_CIRCLE_LOGOUT:
             case Constant.EVENT_BUS_COMMUSER_MODIFY:
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ:
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_LIKE_IS_READ:
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_PUSH_IS_READ:
                 if (!isFinishing() && fragments != null && fragments.size() > 0) {
-                    Fragment fragment = fragments.get(fragments.size() - 1);
-                    if (fragment != null && fragment instanceof BaseFragment) {
-                        ((BaseFragment) fragment).onEventMainThread(msg);
+                    if (fragments.get(fragments.size() - 1) != null) {
+                        fragments.get(fragments.size() - 1).onEventMainThread(msg);
                     }
                 }
                 break;
@@ -220,6 +222,7 @@ public class MainActivity extends BaseActivity {
                     for(int i = 1; i < fragments.size(); i++) {
                         if(fragments.get(i) != null && fragments.get(i) instanceof CircleFragment) {
                             fragments.get(i).onEventMainThread(msg);
+                            break;
                         }
                     }
                 }

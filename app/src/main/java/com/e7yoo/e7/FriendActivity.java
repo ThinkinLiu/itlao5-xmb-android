@@ -77,14 +77,14 @@ public class FriendActivity extends BaseActivity implements View.OnClickListener
             public void onPageSelected(int position) {
                 switch (position) {
                     case 1:
-                        setSelectedTv(mAttentionTv, R.string.title_user_recommended);
+                        setSelectedTv(mAttentionTv, R.string.title_user_attention);
                         break;
                     case 2:
-                        setSelectedTv(mFansTv, R.string.title_user_attention);
+                        setSelectedTv(mFansTv, R.string.title_user_fans);
                         break;
                     case 0:
                     default:
-                        setSelectedTv(mRecommendedTv, R.string.title_user_fans);
+                        setSelectedTv(mRecommendedTv, R.string.title_user_recommended);
                         break;
                 }
             }
@@ -98,7 +98,7 @@ public class FriendActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.friend_top_recommended:
-                setSelectedTv(mAttentionTv, R.string.title_user_recommended);
+                setSelectedTv(mRecommendedTv, R.string.title_user_recommended);
                 mViewPager.setCurrentItem(0);
                 break;
             case R.id.friend_top_attention:
@@ -116,6 +116,6 @@ public class FriendActivity extends BaseActivity implements View.OnClickListener
         mRecommendedTv.setSelected(view == mRecommendedTv ? true : false);
         mAttentionTv.setSelected(view == mAttentionTv ? true : false);
         mFansTv.setSelected(view == mFansTv ? true : false);
-        setTitle(titleResId);
+        setTitleTv(titleResId);
     }
 }

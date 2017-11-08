@@ -2,6 +2,7 @@ package com.e7yoo.e7.community;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.e7yoo.e7.E7App;
@@ -22,6 +23,7 @@ public class UserListFragment extends ListFragment {
     public final static int FLAG_ATTENTION = 1;
     public final static int FLAG_FANS = 2;
     private int mFlag = FLAG_RECOMMENDED;
+    private int flag = -1;
     public static UserListFragment newInstance() {
         UserListFragment fragment = new UserListFragment();
         return fragment;
@@ -55,6 +57,7 @@ public class UserListFragment extends ListFragment {
 
     @Override
     protected void loadDataFromNet(boolean isRefresh, String nextPageUrl) {
+        System.out.println("-----"+mFlag+ ":" + this);
         switch (mFlag) {
             case FLAG_ATTENTION:
                 if(isRefresh || nextPageUrl == null) {
@@ -205,5 +208,10 @@ public class UserListFragment extends ListFragment {
     @Override
     public void onEventMainThread(Message msg) {
 
+    }
+
+    @Override
+    public void onAttachFragment(Fragment childFragment) {
+        super.onAttachFragment(childFragment);
     }
 }

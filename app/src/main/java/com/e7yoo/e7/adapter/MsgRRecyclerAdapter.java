@@ -21,6 +21,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
 import com.umeng.comm.core.CommentAPI;
@@ -147,6 +148,7 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
                         } catch (Throwable e) {
                             e.printStackTrace();
                         }
+                        EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG_PUSH_IS_READ);
                     }
                 });
             } else if(position == 1)  {
@@ -160,6 +162,7 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
                         ActivityUtil.toActivity(mContext, CommentListActivity.class);
                         CommConfig.getConfig().mMessageCount.unReadCommentsCount = 0;
                         viewHolderUnFriendMsg.itemMsgPoint.setVisibility(View.GONE);
+                        EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ);
                     }
                 });
             } else {
@@ -173,6 +176,7 @@ public class MsgRRecyclerAdapter extends RecyclerAdapter {
                         ActivityUtil.toActivity(mContext, PraiseListActivity.class);
                         CommConfig.getConfig().mMessageCount.unReadLikesCount = 0;
                         viewHolderUnFriendMsg.itemMsgPoint.setVisibility(View.GONE);
+                        EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG_LIKE_IS_READ);
                     }
                 });
             }

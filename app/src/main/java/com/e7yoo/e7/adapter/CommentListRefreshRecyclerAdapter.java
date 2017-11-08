@@ -48,14 +48,19 @@ public class CommentListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapte
                     text = text + item.text == null ? "" : item.text;
                     viewHolderComment.contentTv.setText(text);
                     viewHolderComment.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
-                    if(item.sourceFeed.imageUrls != null && item.sourceFeed.imageUrls.size() > 0) {
-                        RequestOptions options2 = new RequestOptions();
-                        options2.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
-                        Glide.with(mContext).load(item.sourceFeed.imageUrls.get(0).thumbnail).apply(options2).into(viewHolderComment.feedPicIv);
-                        viewHolderComment.feedContentTv.setText("");
+                    if(item.sourceFeed != null) {
+                        if (item.sourceFeed.imageUrls != null && item.sourceFeed.imageUrls.size() > 0) {
+                            RequestOptions options2 = new RequestOptions();
+                            options2.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
+                            Glide.with(mContext).load(item.sourceFeed.imageUrls.get(0).thumbnail).apply(options2).into(viewHolderComment.feedPicIv);
+                            viewHolderComment.feedContentTv.setText("");
+                        } else {
+                            viewHolderComment.feedPicIv.setImageResource(0);
+                            viewHolderComment.feedContentTv.setText(item.sourceFeed.text);
+                        }
                     } else {
                         viewHolderComment.feedPicIv.setImageResource(0);
-                        viewHolderComment.feedContentTv.setText(item.sourceFeed.text);
+                        viewHolderComment.feedContentTv.setText("");
                     }
                     addIconClick(viewHolderComment.userIcon, item.creator);
                 }

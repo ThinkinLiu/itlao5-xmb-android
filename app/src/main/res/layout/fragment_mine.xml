@@ -146,7 +146,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/space_2x"
                     android:layout_marginTop="@dimen/space_2x"
-                    android:background="@drawable/point" />
+                    android:background="@drawable/point"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_xs"
+                    android:gravity="center" />
                 <ImageView
                     android:layout_width="@dimen/array"
                     android:layout_height="@dimen/array"

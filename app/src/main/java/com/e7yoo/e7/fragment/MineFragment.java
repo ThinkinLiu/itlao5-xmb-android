@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.AboutActivity;
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.MsgActivity;
 import com.e7yoo.e7.PushMsgActivity;
@@ -23,6 +24,7 @@ import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.utils.CommonUtils;
@@ -54,6 +56,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ:
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_LIKE_IS_READ:
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_PUSH_IS_READ:
                 setMsgPoint();
                 break;
         }
@@ -133,16 +138,25 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void setMsgPoint() {
-        if(mineMsgPoint == null) {
-            return;
+        int count = PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
+        if(CommConfig.getConfig().mMessageCount != null) {
+            count += CommConfig.getConfig().mMessageCount.unReadCommentsCount + CommConfig.getConfig().mMessageCount.unReadLikesCount;
         }
-        if(PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0) > 0) {
-            mineMsgPoint.setVisibility(View.VISIBLE);
-        } else if(CommConfig.getConfig().mMessageCount != null &&
-                (CommConfig.getConfig().mMessageCount.unReadCommentsCount > 0 || CommConfig.getConfig().mMessageCount.unReadLikesCount > 0)) {
-            mineMsgPoint.setVisibility(View.VISIBLE);
-        } else {
-            mineMsgPoint.setVisibility(View.GONE);
+        try {
+            if(count > 0) {
+                if(mineMsgPoint != null) {
+                    mineMsgPoint.setText(String.valueOf(count > 99 ? 99 : count));
+                    mineMsgPoint.setVisibility(View.VISIBLE);
+                }
+                ShortCutUtils.addNumShortCut(E7App.mApp, MainActivity.class, true, String.valueOf(count));
+            } else {
+                if(mineMsgPoint != null) {
+                    mineMsgPoint.setVisibility(View.GONE);
+                }
+                ShortCutUtils.deleteShortCut(E7App.mApp, MainActivity.class);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 

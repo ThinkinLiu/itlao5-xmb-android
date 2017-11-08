@@ -85,7 +85,7 @@ public class CommonUtil {
 	}
 
 	public static Spanned getHtmlStr(String str) {
-		str = str.replace(" "," ").replace("\r\n","<br />").replace("\n","<br />");
+		str = str.replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;").replace("\r\n","<br />").replace("\n","<br />");
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
 			return Html.fromHtml(str, Html.FROM_HTML_MODE_COMPACT);
 		} else {
