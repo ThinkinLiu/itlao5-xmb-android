@@ -239,7 +239,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolderFeedItem.contentTv.setMaxLines(1000);
         String content = "";
         if(item.sourceFeed != null && item.sourceFeed.creator != null) {
-            content = item.text + "<font color= 'blue'> @" + item.sourceFeed.creator.name + " </font>\n----------\n";
+            content = item.text + "<font color= 'blue'> @" + item.sourceFeed.creator.name + " </font>\n\n--------------------\n";
             if (item.sourceFeed.topics != null) {
                 for (int i = 0; i < item.sourceFeed.topics.size(); i++) {
                     if (item.sourceFeed.topics.get(i) != null && !TextUtils.isEmpty(item.sourceFeed.topics.get(i).name)) {
