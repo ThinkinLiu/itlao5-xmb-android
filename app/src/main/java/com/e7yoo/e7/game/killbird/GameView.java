@@ -221,11 +221,14 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 				//canvas.drawColor(Color.WHITE);
 				//-----------利用填充画布指定的颜色分量，刷屏
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			// TODO: handle exception
 		} finally {
 			if (canvas != null)
-				sfh.unlockCanvasAndPost(canvas);
+				try {
+					sfh.unlockCanvasAndPost(canvas);
+				} catch (Throwable e) {
+				}
 		}
 	}
 	
