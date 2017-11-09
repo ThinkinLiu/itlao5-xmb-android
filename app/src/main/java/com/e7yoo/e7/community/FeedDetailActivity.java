@@ -180,11 +180,11 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         }
         if(mLike != null && mLike.id != null &&
                 mLike.creator != null && mLike.creator.name != null) {
-            Comment comment = new Comment();
+            /*Comment comment = new Comment();
             comment.id = mLike.id;
             comment.creator = mLike.creator;
             clearReplyInput(comment, 0, false);
-            mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), mLike.creator.name));
+            mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), mLike.creator.name));*/
         }
     }
 

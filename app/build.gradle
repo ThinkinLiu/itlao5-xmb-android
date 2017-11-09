@@ -33,7 +33,7 @@ android {
         applicationId "com.e7yoo.e7"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 62
+        versionCode 63
         versionName "3.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
