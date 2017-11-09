@@ -316,9 +316,11 @@
     <string name="item_user_label_hint">这家伙很懒，什么都没留下</string>
     <string name="item_user_info">帖子 %1$d　|　关注 %2$d　|　粉丝 %3$d</string>
     <string name="topic_detail_info">帖子 %1$d　｜　关注 %2$d</string>
-    <string name="feed_detail_title_right_post">发帖</string>
-    <string name="feed_detail_title_right_forward">转发</string>
-    <string name="feed_detail_title_right_delete">删除</string>
+    <string name="feed_detail_title_right_post">发布新帖</string>
+    <string name="feed_detail_title_right_forward">转发帖子</string>
+    <string name="feed_detail_title_right_follow">关注用户</string>
+    <string name="feed_detail_title_right_follow_cancel">取消关注</string>
+    <string name="feed_detail_title_right_delete">删除帖子</string>
     <string name="feed_detail_title_right_delete_hint">删除后无法恢复，确认删除</string>
     <string name="delete_failed">删除失败</string>
     <string name="delete_success">删除成功</string>
@@ -349,8 +351,8 @@
     <string name="forget_pwd_name_empty">请输入要找回密码的用户名</string>
     <string name="update_user_name_illegal">用户名含有非法字符</string>
     <string name="post_back_cache_feed">已为你缓存未发送的帖子</string>
-    <string name="feed_detail_title_right_share">分享</string>
-    <string name="feed_detail_title_right_collect">收藏</string>
+    <string name="feed_detail_title_right_share">分享给好友</string>
+    <string name="feed_detail_title_right_collect">收藏帖子</string>
     <string name="mengquanfenxiang">来自【小萌伴】“萌圈”的分享</string>
     <string name="feed_detail_title_right_collect_cancel">取消收藏</string>
     <string name="mine_collect">我的收藏</string>

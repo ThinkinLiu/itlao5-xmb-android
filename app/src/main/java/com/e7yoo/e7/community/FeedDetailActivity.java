@@ -408,6 +408,21 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                 toForward();
             }
         }));
+        if(mFeedItem.creator != null && !mFeedItem.creator.isFollowed) {
+            textSets.add(new TextSet(R.string.feed_detail_title_right_follow, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toFollow();
+                }
+            }));
+        } else {
+            textSets.add(new TextSet(R.string.feed_detail_title_right_follow_cancel, false, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toCancelFollow();
+                }
+            }));
+        }
         if(!mFeedItem.isCollected) {
             textSets.add(new TextSet(R.string.feed_detail_title_right_collect, false, new View.OnClickListener() {
                 @Override
@@ -457,6 +472,52 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         });
     }
 
+    private void toFollow() {
+        if(mFeedItem.creator == null) {
+            return;
+        }
+        mFeedItem.creator.isFollowed = true;
+        E7App.getCommunitySdk().followUser(mFeedItem.creator, new Listeners.SimpleFetchListener<Response>() {
+            @Override
+            public void onComplete(Response response) {
+                switch (response.errCode) {
+                    case ErrorCode.NO_ERROR:
+                        break;
+                    case ErrorCode.UNLOGIN_ERROR:
+                        TastyToastUtil.toast(FeedDetailActivity.this, R.string.circle_no_login);
+                    default:
+                        if(mFeedItem != null && mFeedItem.creator != null) {
+                            mFeedItem.creator.isFollowed = false;
+                        }
+                        break;
+                }
+            }
+        });
+    }
+
+    private void toCancelFollow() {
+        if(mFeedItem.creator == null) {
+            return;
+        }
+        mFeedItem.creator.isFollowed = false;
+        E7App.getCommunitySdk().cancelFollowUser(mFeedItem.creator, new Listeners.SimpleFetchListener<Response>() {
+            @Override
+            public void onComplete(Response response) {
+                switch (response.errCode) {
+                    case ErrorCode.NO_ERROR:
+                        break;
+                    case ErrorCode.UNLOGIN_ERROR:
+                        TastyToastUtil.toast(FeedDetailActivity.this, R.string.circle_no_login);
+                    default:
+                        if(mFeedItem != null && mFeedItem.creator != null) {
+                            mFeedItem.creator.isFollowed = true;
+                        }
+                        break;
+                }
+            }
+        });
+    }
+
     private void toCollect() {
         mFeedItem.isCollected = true;
         E7App.getCommunitySdk().favoriteFeed(mFeedItem.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
@@ -468,7 +529,9 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     case ErrorCode.UNLOGIN_ERROR:
                         TastyToastUtil.toast(FeedDetailActivity.this, R.string.circle_no_login);
                     default:
-                        mFeedItem.isCollected = false;
+                        if(mFeedItem != null) {
+                            mFeedItem.isCollected = false;
+                        }
                         break;
                 }
             }
@@ -486,7 +549,9 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
                     case ErrorCode.UNLOGIN_ERROR:
                         TastyToastUtil.toast(FeedDetailActivity.this, R.string.circle_no_login);
                     default:
-                        mFeedItem.isCollected = true;
+                        if(mFeedItem != null) {
+                            mFeedItem.isCollected = true;
+                        }
                         break;
                 }
             }
