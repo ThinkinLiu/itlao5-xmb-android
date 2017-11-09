@@ -20,7 +20,7 @@ import com.e7yoo.e7.util.PreferenceUtil;
 public class FlashLightActivity extends BaseActivity implements OnClickListener, IFlashControl {
 
     private ImageView flash_bg;
-    private View on_off, set;
+    private View on_off/*, set*/;
     private boolean isOpen = false;
     public static final String INTENT_FROM = "intent_from";
 
@@ -47,7 +47,8 @@ public class FlashLightActivity extends BaseActivity implements OnClickListener,
                     openFlash();
                 }
                 break;
-            case R.id.set:
+            /*case R.id.set:*/
+            case R.id.titlebar_right_tv:
                 startActivity(new Intent(this, FlashLightSetActivity.class));
                 break;
             default:
@@ -118,7 +119,7 @@ public class FlashLightActivity extends BaseActivity implements OnClickListener,
     protected void initView() {
         flash_bg = (ImageView) findViewById(R.id.flash_bg);
         on_off = findViewById(R.id.on_off);
-        set = findViewById(R.id.set);
+        /*set = findViewById(R.id.set);*/
     }
 
     @Override
@@ -145,8 +146,9 @@ public class FlashLightActivity extends BaseActivity implements OnClickListener,
 
     @Override
     protected void initViewListener() {
+        setRightTv(View.VISIBLE, R.mipmap.titlebar_right_set, 0, this);
         on_off.setOnClickListener(this);
-        set.setOnClickListener(this);
+        /*set.setOnClickListener(this);*/
     }
 
     @Override

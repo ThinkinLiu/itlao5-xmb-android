@@ -39,7 +39,7 @@
 	<include
 		android:id="@+id/titleBar"
 		layout="@layout/titlebar" />
-    <ImageView 
+    <!--<ImageView
         android:id="@+id/set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,6 +47,6 @@
         android:layout_alignParentBottom="true"
         android:padding="@dimen/space_3x"
         android:src="@mipmap/flashlight_set"
-        android:scaleType="center" />
+        android:scaleType="center" />-->
 
 </RelativeLayout>
