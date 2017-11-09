@@ -20,4 +20,16 @@
         android:layout_height="match_parent"
         android:layout_below="@id/titleBar" />
 
+    <TextView
+        android:id="@+id/space_new_msg_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleBar"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/size_m"
+        android:textColor="@color/white"
+        android:text="@string/new_fans_hint"
+        android:background="@drawable/pop_up_bg_red"
+        android:gravity="center"
+        android:layout_marginTop="-10dp"/>
 </RelativeLayout>

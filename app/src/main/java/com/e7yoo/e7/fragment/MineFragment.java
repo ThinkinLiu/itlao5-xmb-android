@@ -34,7 +34,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private ImageView mHeadIconIv;
     private TextView mine_label;
     private View mSpaceLayout, mMsgLayout, mCollectLayout, mSetLayout, mAboutLayout;
-    private TextView mineMsgPoint, mCollectPoint;
+    private TextView mPageHintTv;
+    private TextView mPagePoint, mineMsgPoint, mCollectPoint;
     // private Me mMe;
     private CommUser mUser;
 
@@ -97,6 +98,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mCollectLayout = mRootView.findViewById(R.id.mine_collect_layout);
         mSetLayout = mRootView.findViewById(R.id.mine_set_layout);
         mAboutLayout = mRootView.findViewById(R.id.mine_about_layout);
+        mPageHintTv = mRootView.findViewById(R.id.mine_page_hint);
+        mPagePoint = mRootView.findViewById(R.id.mine_page_point);
         mineMsgPoint = mRootView.findViewById(R.id.mine_msg_point);
         mCollectPoint = mRootView.findViewById(R.id.mine_collect_point);
     }
@@ -133,26 +136,50 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             mHeadIconIv.setImageResource(R.mipmap.icon_me);
             mine_label.setText(R.string.mine_label_hint);
         }
+        mPagePoint.setVisibility(View.GONE);
+        setPagePoint();
         setMsgPoint();
         mCollectPoint.setVisibility(View.GONE);
     }
 
+    private void setPagePoint() {
+        if(mPageHintTv == null/* || mPagePoint == null*/) {
+            return;
+        }
+        if(mUser != null && CommConfig.getConfig().mMessageCount != null
+                && CommConfig.getConfig().mMessageCount.newFansCount > 0) {
+            int count = CommConfig.getConfig().mMessageCount.newFansCount;
+            mPageHintTv.setText(getString(R.string.new_fans_hint_count, count));
+            // mineMsgPoint.setText(String.valueOf(count > 99 ? 99 : count));
+            // mPagePoint.setVisibility(View.VISIBLE);
+        } else {
+            mPageHintTv.setText("");
+            // mPagePoint.setVisibility(View.GONE);
+        }
+    }
+
     private void setMsgPoint() {
         int count = PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
-        if(CommConfig.getConfig().mMessageCount != null) {
+        if(mUser != null && CommConfig.getConfig().mMessageCount != null) {
             count += CommConfig.getConfig().mMessageCount.unReadCommentsCount + CommConfig.getConfig().mMessageCount.unReadLikesCount;
         }
+        if(count > 0) {
+            if(mineMsgPoint != null) {
+                mineMsgPoint.setText(String.valueOf(count > 99 ? 99 : count));
+                mineMsgPoint.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if(mineMsgPoint != null) {
+                mineMsgPoint.setVisibility(View.GONE);
+            }
+        }
         try {
+            if(mUser != null && CommConfig.getConfig().mMessageCount != null) {
+                count = count + CommConfig.getConfig().mMessageCount.newFansCount;
+            }
             if(count > 0) {
-                if(mineMsgPoint != null) {
-                    mineMsgPoint.setText(String.valueOf(count > 99 ? 99 : count));
-                    mineMsgPoint.setVisibility(View.VISIBLE);
-                }
                 ShortCutUtils.addNumShortCut(E7App.mApp, MainActivity.class, true, String.valueOf(count));
             } else {
-                if(mineMsgPoint != null) {
-                    mineMsgPoint.setVisibility(View.GONE);
-                }
                 ShortCutUtils.deleteShortCut(E7App.mApp, MainActivity.class);
             }
         } catch (Throwable e) {

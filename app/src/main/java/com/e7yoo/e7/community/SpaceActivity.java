@@ -7,6 +7,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.E7App;
@@ -18,6 +19,7 @@ import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
+import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.constants.ErrorCode;
@@ -40,6 +42,7 @@ import me.iwf.photopicker.PhotoPreview;
  */
 
 public class SpaceActivity extends BaseActivity implements View.OnClickListener {
+    private TextView mNewMsgHintTv;
     private RecyclerView mRecyclerView;
     private SpaceRecyclerAdapter mRvAdapter;
     private CommUser mCommUser;
@@ -61,6 +64,7 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void initView() {
         rootView = findViewById(R.id.root_layout);
+        mNewMsgHintTv = (TextView) findViewById(R.id.space_new_msg_hint);
         mRecyclerView = (RecyclerView) findViewById(R.id.space_rv);
     }
 
@@ -79,8 +83,14 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
         }
         if(CommonUtils.isMyself(mCommUser)) {
             setRightTv(View.VISIBLE, R.mipmap.title_right_friend, 0, this);
+            if(CommConfig.getConfig().mMessageCount != null && CommConfig.getConfig().mMessageCount.newFansCount > 0) {
+                mNewMsgHintTv.setVisibility(View.VISIBLE);
+            } else {
+                mNewMsgHintTv.setVisibility(View.GONE);
+            }
         } else {
             setRightTv(View.VISIBLE, R.mipmap.ic_menu_white_24dp, 0, this);
+            mNewMsgHintTv.setVisibility(View.GONE);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -94,15 +104,6 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
         loadUserInfo();
         mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         loadNetFeed(true);
-
-        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof FeedItem) {
-                    ActivityUtil.toFeedDetail(SpaceActivity.this, (FeedItem) mRvAdapter.getItem(position));
-                }
-            }
-        });
     }
 
     private void loadDbFeed() {
@@ -148,7 +149,16 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initViewListener() {
+        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(mRvAdapter.getItem(position) != null && mRvAdapter.getItem(position) instanceof FeedItem) {
+                    ActivityUtil.toFeedDetail(SpaceActivity.this, (FeedItem) mRvAdapter.getItem(position));
+                }
+            }
+        });
         initLoadMoreListener();
+        mNewMsgHintTv.setOnClickListener(this);
     }
 
     private void initLoadMoreListener() {
@@ -185,6 +195,7 @@ public class SpaceActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.titlebar_right_tv:
+            case R.id.space_new_msg_hint:
                 if(CommonUtils.isMyself(mCommUser)) {
                     toFriend();
                 } else {

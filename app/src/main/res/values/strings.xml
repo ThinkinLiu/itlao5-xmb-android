@@ -374,5 +374,7 @@
     <string name="url_open_failed">浏览器打开失败</string>
     <string name="app_share_from">来自【小萌伴】的分享：</string>
     <string name="feed_detail_forward_text">转发</string>
+    <string name="new_fans_hint">您有新的粉丝</string>
+    <string name="new_fans_hint_count">您有%1$d位新粉丝</string>
 
 </resources>

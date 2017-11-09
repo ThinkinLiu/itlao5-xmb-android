@@ -84,6 +84,7 @@
                     android:textSize="@dimen/size_xl" />
 
                 <TextView
+                    android:id="@+id/mine_page_hint"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center_vertical"
@@ -91,9 +92,20 @@
                     android:gravity="center_vertical|right"
                     android:includeFontPadding="false"
                     android:maxLines="1"
+                    android:text="@string/new_fans_hint_count"
                     android:textColor="@color/text_h"
                     android:textSize="@dimen/size_xl" />
-
+                <TextView
+                    android:id="@+id/mine_page_point"
+                    android:layout_width="@dimen/item_push_msg_point"
+                    android:layout_height="@dimen/item_push_msg_point"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/space_2x"
+                    android:layout_marginTop="@dimen/space_2x"
+                    android:background="@drawable/point"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_xs"
+                    android:gravity="center" />
                 <ImageView
                     android:layout_width="@dimen/array"
                     android:layout_height="@dimen/array"
