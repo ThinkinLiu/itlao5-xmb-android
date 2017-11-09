@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.e7yoo.e7.adapter.ViewPagerAdapter;
 import com.e7yoo.e7.fragment.BaseFragment;
@@ -32,6 +33,7 @@ import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.MessageCountResponse;
@@ -45,7 +47,7 @@ import java.util.ArrayList;
 /**
  * app主Activity
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 主页，萌圈，更多，我的
      */
@@ -53,6 +55,7 @@ public class MainActivity extends BaseActivity {
     private ViewPager mViewPager;
     private BottomNavigationView navigation;
     private final int[] titleResIds = {R.string.title_home, R.string.title_circle, R.string.title_more, R.string.title_mine};
+    private TextView mMinePoint;
 
     @Override
     protected int initLayoutResId() {
@@ -68,6 +71,28 @@ public class MainActivity extends BaseActivity {
     protected void initView() {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mMinePoint = (TextView) findViewById(R.id.mine_point);
+    }
+
+    public void showMinePoint() {
+        int count = PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
+        count = count + (
+                CommConfig.getConfig().mMessageCount != null ?
+                        CommConfig.getConfig().mMessageCount.unReadLikesCount +
+                                CommConfig.getConfig().mMessageCount.unReadCommentsCount +
+                                CommConfig.getConfig().mMessageCount.newFansCount
+                        : 0);
+        showMinePoint(count);
+    }
+
+    public void showMinePoint(int count) {
+        if(count > 0) {
+            mMinePoint.setText(String.valueOf(count > 99 ? 99 : count));
+            mMinePoint.setVisibility(View.VISIBLE);
+        } else {
+            mMinePoint.setText(String.valueOf(0));
+            mMinePoint.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -88,6 +113,7 @@ public class MainActivity extends BaseActivity {
         UpdateHelper.getInstance().init(getApplicationContext(), getResources().getColor(R.color.titlebar_bg));/*Color.parseColor("#459F47"));*/
         UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
 
+        showMinePoint();
         EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
     }
 
@@ -112,14 +138,15 @@ public class MainActivity extends BaseActivity {
     protected void initViewListener() {
         initViewPager(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mMinePoint.setOnClickListener(this);
     }
 
+    MenuItem prevMenuItem;
     /**
      * @param scrollable ViewPager的onTouch是否有效，ViewPager是否可滑动
      */
     private void initViewPager(final boolean scrollable) {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            MenuItem prevMenuItem;
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -173,12 +200,12 @@ public class MainActivity extends BaseActivity {
             return false;
         }
 
-        private void setItem(int position) {
-            mViewPager.setCurrentItem(position);
-            setTitleText(null, position);
-        }
-
     };
+
+    private void setItem(int position) {
+        mViewPager.setCurrentItem(position);
+        setTitleText(null, position);
+    }
 
     public void setTitleText(Me me, int position) {
         if(me != null && position == titleResIds.length - 1) {
@@ -200,10 +227,11 @@ public class MainActivity extends BaseActivity {
                     }
                 }
                 break;
+            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
+                showMinePoint();
             case Constant.EVENT_BUS_CIRCLE_LOGIN:
             case Constant.EVENT_BUS_CIRCLE_LOGOUT:
             case Constant.EVENT_BUS_COMMUSER_MODIFY:
-            case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ:
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_LIKE_IS_READ:
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_PUSH_IS_READ:
@@ -377,4 +405,21 @@ public class MainActivity extends BaseActivity {
         }).start();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.mine_point:
+                int position = titleResIds.length - 1;
+                setItem(position);
+                setTitleText(null, position);
+                if (prevMenuItem != null) {
+                    prevMenuItem.setChecked(false);
+                } else {
+                    navigation.getMenu().getItem(0).setChecked(false);
+                }
+                navigation.getMenu().getItem(position).setChecked(true);
+                prevMenuItem = navigation.getMenu().getItem(position);
+                break;
+        }
+    }
 }

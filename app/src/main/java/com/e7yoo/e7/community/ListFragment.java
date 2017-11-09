@@ -76,7 +76,7 @@ public abstract class ListFragment extends BaseFragment {
 
     protected abstract void addListener();
 
-    private boolean isFirstShow = true;
+    public boolean isFirstShow = true;
 
     /**
      * 这个只在FragmentPagerAdapter中调用

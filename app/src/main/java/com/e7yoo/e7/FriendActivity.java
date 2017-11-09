@@ -46,6 +46,7 @@ public class FriendActivity extends BaseActivity implements View.OnClickListener
         fragments.add(getUserListFragment(UserListFragment.FLAG_ATTENTION));
         fragments.add(getUserListFragment(UserListFragment.FLAG_FANS));
         setSelectedTv(mRecommendedTv, R.string.title_user_recommended);
+        mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
     }
 

@@ -137,7 +137,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             mine_label.setText(R.string.mine_label_hint);
         }
         mPagePoint.setVisibility(View.GONE);
-        setPagePoint();
         setMsgPoint();
         mCollectPoint.setVisibility(View.GONE);
     }
@@ -159,6 +158,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void setMsgPoint() {
+        setPagePoint();
         int count = PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
         if(mUser != null && CommConfig.getConfig().mMessageCount != null) {
             count += CommConfig.getConfig().mMessageCount.unReadCommentsCount + CommConfig.getConfig().mMessageCount.unReadLikesCount;
@@ -176,6 +176,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         try {
             if(mUser != null && CommConfig.getConfig().mMessageCount != null) {
                 count = count + CommConfig.getConfig().mMessageCount.newFansCount;
+            }
+            try {
+                ((MainActivity) getActivity()).showMinePoint(count);
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
             if(count > 0) {
                 ShortCutUtils.addNumShortCut(E7App.mApp, MainActivity.class, true, String.valueOf(count));
@@ -224,7 +229,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 } else {
                     ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
                     PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
-                    mineMsgPoint.setVisibility(View.GONE);
+                    setMsgPoint();
                     try {
                         ShortCutUtils.deleteShortCut(getContext(), MainActivity.class);
                     } catch (Throwable e) {

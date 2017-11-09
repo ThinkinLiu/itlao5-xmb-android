@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -14,12 +14,15 @@
     <include
         android:id="@+id/titleBar"
         layout="@layout/titlebar" />
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titleBar">
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navigation">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
@@ -36,6 +39,22 @@
         android:background="@color/backgroud"
         app:itemIconTint="@drawable/bottom_navigation_color_selector"
         app:itemTextColor="@drawable/bottom_navigation_color_selector"
-        app:menu="@menu/navigation" />
+        app:menu="@menu/navigation"
+        android:layout_alignParentBottom="true"/>
 
-</LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/mine_point"
+        android:layout_width="@dimen/item_main_mine_msg_point"
+        android:layout_height="@dimen/item_main_mine_msg_point"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/space_5x"
+        android:layout_marginBottom="@dimen/space_8x"
+        android:background="@drawable/point"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_5xs"
+        android:gravity="center" />
+
+</RelativeLayout>
