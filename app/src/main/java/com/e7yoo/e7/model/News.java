@@ -2,8 +2,8 @@ package com.e7yoo.e7.model;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+
+import com.e7yoo.e7.util.CommonUtil;
 
 public class News {
 	public static final String type_weixin = "微信精选";
@@ -13,17 +13,11 @@ public class News {
 	
 	@SuppressLint("DefaultLocale")
 	private static void init(Context context) {
-		try {
-			// 判断，如果umeng_channel是360store，则显示360首发标志
-			ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-			String msg = appInfo.metaData.getString("UMENG_CHANNEL");
-			if (!"bd".equals(msg.toLowerCase())) {
-				types = types_all;
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
+		if(CommonUtil.isChannel(context, "bd")) {
+			types = types_no_junshi;
+		} else {
+			types = types_all;
 		}
-		types = types_no_junshi;
 	}
 	
 	public static String[] getTypes(Context context) {

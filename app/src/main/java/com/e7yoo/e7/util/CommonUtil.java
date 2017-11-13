@@ -1,6 +1,9 @@
 package com.e7yoo.e7.util;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.text.Html;
 import android.text.Spanned;
@@ -92,5 +95,26 @@ public class CommonUtil {
 			return (Html.fromHtml(str));
 		}
 
+	}
+
+	public static boolean isChannel(Context context, String... channels) {
+		if(channels == null || channels.length <= 0) {
+			return false;
+		}
+		ApplicationInfo appInfo = null;
+		try {
+			appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		if(appInfo != null) {
+			String msg = appInfo.metaData.getString("UMENG_CHANNEL").toLowerCase();
+			for(String str : channels) {
+				if (str != null && str.equals(msg)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

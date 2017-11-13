@@ -80,6 +80,7 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/more_news_line"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/space_1dp"
                     android:background="@color/color_seperator" />

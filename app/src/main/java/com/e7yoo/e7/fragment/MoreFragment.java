@@ -16,9 +16,11 @@ import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.app.news.NewsActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.util.ActivityUtil;
+import com.e7yoo.e7.util.CommonUtil;
 
 public class MoreFragment extends BaseFragment implements View.OnClickListener {
     private View newsLayout, historyLayout, gameLayout, lightLayout, findPhoneLayout, taobaoLayout;
+    private View newsLine;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -44,6 +46,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         if (mRootView == null) {
             mRootView = inflater.inflate(R.layout.fragment_more, container, false);
+            newsLine = mRootView.findViewById(R.id.more_news_line);
             newsLayout = mRootView.findViewById(R.id.more_news_layout);
             historyLayout = mRootView.findViewById(R.id.more_history_layout);
             gameLayout = mRootView.findViewById(R.id.more_game_layout);
@@ -56,6 +59,13 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             lightLayout.setOnClickListener(this);
             findPhoneLayout.setOnClickListener(this);
             taobaoLayout.setOnClickListener(this);
+        }
+        if(CommonUtil.isChannel(getActivity(), "bd")) {
+            newsLine.setVisibility(View.GONE);
+            newsLayout.setVisibility(View.GONE);
+        } else {
+            newsLine.setVisibility(View.VISIBLE);
+            newsLayout.setVisibility(View.VISIBLE);
         }
         return mRootView;
     }
