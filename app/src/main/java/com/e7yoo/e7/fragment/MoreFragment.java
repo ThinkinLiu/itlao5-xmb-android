@@ -60,7 +60,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             findPhoneLayout.setOnClickListener(this);
             taobaoLayout.setOnClickListener(this);
         }
-        if(CommonUtil.isChannel(getActivity(), "bd")) {
+        if(CommonUtil.isChannel(getActivity(), "bd", "91", "hiapk")) {
             newsLine.setVisibility(View.GONE);
             newsLayout.setVisibility(View.GONE);
         } else {

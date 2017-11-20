@@ -32,4 +32,27 @@
         <item>4399.com/</item>
         <item>4399.com</item>
     </string-array>
+    <string-array name="adBlockDiv">
+        <item>J_interest_news</item>
+        <item>BAIDU_DUP_fp_wrapper</item>
+        <item>madzgu6e27</item>
+        <item>fasgsjbbzdh</item>
+        <item>xszh-toindex</item>
+        <item>container</item>
+        <item>pic_container</item>
+        <item>news_check</item>
+    </string-array>
+    <string-array name="adBlockDivClass">
+        <item>xszh-toindex</item>
+        <item>pswp</item>
+    </string-array>
+    <string-array name="adBlockSectionClass">
+        <item>gg-item</item>
+        <item>gg-item.news-gg-img1</item>
+        <item>gg-item.news-gg-img2</item>
+        <item>gg-item.news-gg-img3</item>
+        <item>gg-txt-wrap</item>
+        <item>gg-txt2-wrap</item>
+    </string-array>
+
 </resources>

@@ -9,6 +9,8 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.e7yoo.e7.E7App;
+
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -23,12 +25,12 @@ public class ReWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         //编写 javaScript方法  
-        String javascript =  "javascript:function hideOther() {" +  
+        /*String javascript =  "javascript:function hideOther() {" +
                 "document.getElementsByTagName('body')[0].innerHTML;" +  
-                /*"document.getElementsByTagName('section')[0].style.display='none';" +  
-                "document.getElementsByTagName('section')[0].remove();" +*/
-                /*"document.getElementsByTagName('interest-news')[0].style.display='none';" + */   
-                /*"document.getElementsByClassName('gg-item news-gg-img3')[0].style.display='none';" +
+                *//*"document.getElementsByTagName('section')[0].style.display='none';" +
+                "document.getElementsByTagName('section')[0].remove();" +*//*
+                *//*"document.getElementsByTagName('interest-news')[0].style.display='none';" + *//*
+                *//*"document.getElementsByClassName('gg-item news-gg-img3')[0].style.display='none';" +
                 "document.getElementsByClassName('gg-item news-gg-img3')[0].remove();" +  
                 "document.getElementsByClassName('gg-item news-gg-img1')[0].style.display='none';" +
                 "document.getElementsByClassName('gg-item news-gg-img1')[0].remove();" +  
@@ -39,8 +41,8 @@ public class ReWebViewClient extends WebViewClient {
                 "document.getElementsByClassName('bdgg-wrap')[0].style.display='none';" +
                 "document.getElementsByClassName('bdgg-wrap')[0].remove();" +
                 "document.getElementsByClassName('toapp-btn')[0].style.display='none';" +
-                "document.getElementsByClassName('toapp-btn')[0].remove();"+ */
-        		jsStrs("getElementsByClassName('gg-item news-gg-img3')")/* +
+                "document.getElementsByClassName('toapp-btn')[0].remove();"+ *//*
+        		jsStrs("getElementsByClassName('gg-item news-gg-img3')")*//* +
         		jsStr("getElementById('BAIDU_DUP_fp_wrapper')") +   
                 jsStr("getElementById('new_check')") +   
         		jsStr("getElementById('new_check').getElementById('J_interest_news')") +   
@@ -50,18 +52,19 @@ public class ReWebViewClient extends WebViewClient {
                 jsStrs("getElementById('new_check').getElementById('J_hot_news').getElementById('J_hn_list').getElementsByClassName('gg-item news-gg-img2')") +  
                 jsStrs("getElementById('new_check').getElementById('J_hot_news').getElementById('J_hn_list').getElementsByClassName('gg-item news-gg-img3')") +  
         		jsStrs("getElementById('new_check').getElementById('J_hot_news').getElementById('J_loading').getElementsByClassName('J-toapp toapp toapp-bottom')");
-                */
-                /* +  
+                *//*
+                *//* +
                 "var divs = document.getElementsByTagName('div');" +  
                 "var lastDiv = divs[divs.length-1];" +  
                 "lastDiv.remove();" +  
                 "document.getElementsByClassName('showme')[0].remove();" +  
-                "document.getElementsByClassName('nei-t3')[1].remove();}"*/;  
+                "document.getElementsByClassName('nei-t3')[1].remove();}"*//*;
         //创建方法  
-        view.loadUrl(javascript);  
+        view.loadUrl(javascript);  */
 
-        //加载方法  
-        view.loadUrl("javascript:hideOther();");
+        // 加载方法
+        // view.loadUrl("javascript:hideOther();");
+        view.loadUrl(ADFilterUtil.getClearAdDivJs(E7App.mApp));
     }
 
     /*private String jsStr(String jsClassName) {
@@ -87,6 +90,9 @@ public class ReWebViewClient extends WebViewClient {
     @SuppressLint("DefaultLocale")
 	@Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+        if (view != null && view.getContext() != null && !url.toLowerCase().contains("")) {
+            return new WebResourceResponse(null,null,null);
+        }
         if (view != null && view.getContext() != null && ADFilterUtil.hasAd(view.getContext(), url.toLowerCase())) {
             return new WebResourceResponse(null,null,null);
         }
