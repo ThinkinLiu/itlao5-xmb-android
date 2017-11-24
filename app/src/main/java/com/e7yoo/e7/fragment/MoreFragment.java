@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.e7yoo.e7.GameListActivity;
 import com.e7yoo.e7.R;
@@ -21,6 +22,9 @@ import com.e7yoo.e7.util.CommonUtil;
 public class MoreFragment extends BaseFragment implements View.OnClickListener {
     private View newsLayout, historyLayout, gameLayout, lightLayout, findPhoneLayout, taobaoLayout;
     private View newsLine;
+
+    private TextView newsTitleTv, gamesTitleTv, appsTitleTv;
+    private View newsRootLayout, gamesRootLayout, appsRootLayout;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -53,6 +57,12 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             lightLayout = mRootView.findViewById(R.id.more_light_layout);
             findPhoneLayout = mRootView.findViewById(R.id.more_findphone_layout);
             taobaoLayout = mRootView.findViewById(R.id.more_taobao_layout);
+            newsTitleTv = mRootView.findViewById(R.id.news_title_tv);
+            gamesTitleTv = mRootView.findViewById(R.id.games_title_tv);
+            appsTitleTv = mRootView.findViewById(R.id.apps_title_tv);
+            newsRootLayout = mRootView.findViewById(R.id.news_root_layout);
+            gamesRootLayout = mRootView.findViewById(R.id.games_root_layout);
+            appsRootLayout = mRootView.findViewById(R.id.apps_root_layout);
             newsLayout.setOnClickListener(this);
             historyLayout.setOnClickListener(this);
             gameLayout.setOnClickListener(this);
@@ -61,11 +71,15 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             taobaoLayout.setOnClickListener(this);
         }
         if(CommonUtil.isChannel(getActivity(), "bd", "91", "hiapk")) {
-            newsLine.setVisibility(View.GONE);
-            newsLayout.setVisibility(View.GONE);
+            /*newsLine.setVisibility(View.GONE);
+            newsLayout.setVisibility(View.GONE);*/
+            newsTitleTv.setVisibility(View.GONE);
+            newsRootLayout.setVisibility(View.GONE);
         } else {
-            newsLine.setVisibility(View.VISIBLE);
-            newsLayout.setVisibility(View.VISIBLE);
+            /*newsLine.setVisibility(View.VISIBLE);
+            newsLayout.setVisibility(View.VISIBLE);*/
+            newsTitleTv.setVisibility(View.VISIBLE);
+            newsRootLayout.setVisibility(View.VISIBLE);
         }
         return mRootView;
     }

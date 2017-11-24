@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/news_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -30,6 +31,7 @@
                 android:textSize="@dimen/size_xl" />
 
             <LinearLayout
+                android:id="@+id/news_root_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_3x"
@@ -127,6 +129,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/games_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -141,6 +144,7 @@
                 android:textSize="@dimen/size_xl" />
 
             <LinearLayout
+                android:id="@+id/games_root_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_3x"
@@ -192,6 +196,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/apps_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -206,6 +211,7 @@
                 android:textSize="@dimen/size_xl" />
 
             <LinearLayout
+                android:id="@+id/apps_root_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space_3x"
