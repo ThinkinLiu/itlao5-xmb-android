@@ -91,6 +91,7 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 			break;
 		case R.id.titlebar_right_tv:
 			// saveFavorites();
+			toMenu();
 			break;
 		default:
 			break;

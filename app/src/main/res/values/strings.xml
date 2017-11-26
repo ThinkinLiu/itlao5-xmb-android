@@ -378,5 +378,9 @@
     <string name="feed_detail_forward_text">转发</string>
     <string name="new_fans_hint">您有新的粉丝</string>
     <string name="new_fans_hint_count">您有%1$d位新粉丝</string>
+    <string name="feed_detail_content_share">分享</string>
+    <string name="feed_detail_content_praise">点赞</string>
+    <string name="feed_detail_content_comment">评论</string>
+    <string name="feed_detail_content_forward">转发</string>
 
 </resources>

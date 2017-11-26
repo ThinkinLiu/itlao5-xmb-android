@@ -20,6 +20,7 @@ import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
+import com.e7yoo.e7.community.listener.OnFeedClickListener;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.BaseBeanUtil;
 import com.e7yoo.e7.util.CommonUtil;
@@ -124,6 +125,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 setViewTypeFeeditem(viewHolderFeedItem, item);
                 setViewRichContent(viewHolderFeedItem, item);
             }
+            addFeedListener(viewHolderFeedItem, position, item);
             addItemClickForGridView(viewHolderFeedItem.gridView, viewHolderFeedItem.itemView, position);
             addClickListener(viewHolderFeedItem.itemView, position);
         } else if(holder instanceof ViewHolderComment) {
@@ -235,49 +237,57 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         addIconClick(viewHolderFeedItem.userIcon, item);
     }
 
-    private void setViewTypeFeeditem(final BaseViewHolder viewHolderFeedItem, final FeedItem item) {
+    private void setViewTypeFeeditem(final ViewHolderFeedItem viewHolderFeedItem, final FeedItem item) {
         viewHolderFeedItem.contentTv.setMaxLines(1000);
-        String content = "";
+        StringBuilder content = new StringBuilder("");
+        StringBuilder sourceContent = new StringBuilder("");
         if(item.sourceFeed != null && item.sourceFeed.creator != null) {
-            content = item.text + "<font color= 'blue'> @" + item.sourceFeed.creator.name + " </font>\n\n--------------------\n";
+            sourceContent.append("<font color= 'blue'>【转】： </font>");
+            content.append(item.text);
+            content.append("<font color= 'blue'> @");
+            content.append(item.sourceFeed.creator.name);
+            content.append(" </font>\n\n--------------------\n");
+            // sourceFeed只展示五行
+            sourceContent.append("<font color= 'blue'>【原文】： </font>");
             if (item.sourceFeed.topics != null) {
                 for (int i = 0; i < item.sourceFeed.topics.size(); i++) {
                     if (item.sourceFeed.topics.get(i) != null && !TextUtils.isEmpty(item.sourceFeed.topics.get(i).name)) {
-                        content = content + "<font color= 'blue'>" + item.sourceFeed.topics.get(i).name + " </font>";
+                        sourceContent.append("<font color= 'blue'>");
+                        sourceContent.append(item.sourceFeed.topics.get(i).name);
+                        sourceContent.append(" </font>");
                     }
                 }
             }
-            content = content + item.sourceFeed.text;
+            sourceContent.append(item.sourceFeed.text);
         } else {
             if (item.topics != null) {
                 for (int i = 0; i < item.topics.size(); i++) {
                     if (item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
-                        content = content + "<font color= 'blue'>" + item.topics.get(i).name + " </font>";
+                        content.append("<font color= 'blue'>");
+                        content.append(item.topics.get(i).name);
+                        content.append(" </font>");
                     }
                 }
             }
-            content = content + item.text;
+            content.append(item.text);
         }
-        viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content));
+        viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content.toString()));
+        viewHolderFeedItem.sourceContentTv.setText(CommonUtil.getHtmlStr(sourceContent.toString()));
         CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages(), mGvItemClick);
         viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
-        viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
-        viewHolderFeedItem.commentTv.setText(String.format("%-3d", item.commentCount));
-        viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount));
+        viewHolderFeedItem.share2Tv.setText(getDetailString(item.forwardCount, R.string.feed_detail_content_share));
+        viewHolderFeedItem.shareTv.setText(getDetailString(item.forwardCount, R.string.feed_detail_content_forward));
+        viewHolderFeedItem.commentTv.setText(getDetailString(item.commentCount, R.string.feed_detail_content_comment));
+        viewHolderFeedItem.praiseTv.setText(getDetailString(item.likeCount, R.string.feed_detail_content_praise));
         viewHolderFeedItem.praiseTv.setSelected(item.isLiked);
-        viewHolderFeedItem.praiseTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(item.isLiked) {
-                    viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount - 1));
-                    viewHolderFeedItem.praiseTv.setSelected(!item.isLiked);
-                } else {
-                    viewHolderFeedItem.praiseTv.setText(String.format("%-3d", item.likeCount + 1));
-                    viewHolderFeedItem.praiseTv.setSelected(!item.isLiked);
-                }
-                likeFeed(viewHolderFeedItem, item);
-            }
-        });
+    }
+
+    private String getDetailString(int count, int defaultStrId) {
+        if(count > 0) {
+            return String.format("%-3d", count);
+        } else {
+            return mContext.getString(defaultStrId);
+        }
     }
 
     private void setViewTypeComment(final BaseViewHolder viewHolder, final Comment item) {
@@ -400,6 +410,61 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         });
     }
 
+    private void addFeedListener(final ViewHolderFeedItem viewHolderFeedItem, final int position, final FeedItem feedItem) {
+        viewHolderFeedItem.sourceContentTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnFeedClickListener != null) {
+                    mOnFeedClickListener.onSourceFeedClick(position, feedItem);
+                }
+            }
+        });
+        viewHolderFeedItem.share2Tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnFeedClickListener != null) {
+                    mOnFeedClickListener.onShare2Click(position, feedItem);
+                }
+            }
+        });
+        viewHolderFeedItem.shareTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnFeedClickListener != null) {
+                    mOnFeedClickListener.onShareClick(position, feedItem);
+                }
+            }
+        });
+        viewHolderFeedItem.commentTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnFeedClickListener != null) {
+                    mOnFeedClickListener.onCommentClick(position, feedItem);
+                }
+            }
+        });
+        viewHolderFeedItem.praiseTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean result = false; // 是否已处理事件
+                if(mOnFeedClickListener != null) {
+                    result = mOnFeedClickListener.onPriseClick(position, feedItem);
+                }
+                if(result) {
+                    return;
+                }
+                if(feedItem.isLiked) {
+                    viewHolderFeedItem.praiseTv.setText(String.format("%-3d", feedItem.likeCount - 1));
+                    viewHolderFeedItem.praiseTv.setSelected(!feedItem.isLiked);
+                } else {
+                    viewHolderFeedItem.praiseTv.setText(String.format("%-3d", feedItem.likeCount + 1));
+                    viewHolderFeedItem.praiseTv.setSelected(!feedItem.isLiked);
+                }
+                likeFeed(viewHolderFeedItem, feedItem);
+            }
+        });
+    }
+
     private void addItemClickForGridView(GridView gridView, final View mView, final int mPosition) {
         if(gridView instanceof CircleGridView) {
             ((CircleGridView) gridView).setOnTouchInvalidPositionListener(new CircleGridView.OnTouchInvalidPositionListener() {
@@ -460,7 +525,9 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         /*public TextView moreContentTv;
         public View moreLayout;
         public TextView moreTv;*/
+        public TextView sourceContentTv;
         public TextView urlTv;
+        public TextView share2Tv;
 
 
         public ViewHolderFeedItem(View view) {
@@ -474,6 +541,8 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             shareTv = view.findViewById(R.id.item_feed_item_share);
             commentTv = view.findViewById(R.id.item_feed_item_comment);
             praiseTv = view.findViewById(R.id.item_feed_item_praise);
+            share2Tv = view.findViewById(R.id.item_feed_item_share2);
+            sourceContentTv = view.findViewById(R.id.item_feed_item_source_content);
 
             /*moreContentTv = view.findViewById(R.id.item_feed_item_content_more);
             moreLayout = view.findViewById(R.id.item_feed_item_more_layout);
@@ -504,5 +573,10 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             praiseTv = view.findViewById(R.id.item_comment_praise);
             divide = view.findViewById(R.id.divide);
         }
+    }
+
+    private OnFeedClickListener mOnFeedClickListener;
+    public void setOnFeedClickListener(OnFeedClickListener onFeedClickListener) {
+        mOnFeedClickListener = onFeedClickListener;
     }
 }

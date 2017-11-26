@@ -16,6 +16,7 @@ import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
+import com.e7yoo.e7.community.listener.OnFeedClickListener;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.ActivityUtil;
@@ -146,30 +147,6 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         mRvAdapter.setFooter(FeedDetailRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         E7App.getCommunitySdk().fetchFeedComments(mFeedItem.id, mSimpleFetchListener);
 
-        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if(mRvAdapter.getItem(position) instanceof Comment) {
-                    Comment comment = (Comment) mRvAdapter.getItem(position);
-                    if(comment.creator != null && !TextUtils.isEmpty(comment.creator.name)) {
-                        if(mReplyComment == null || !mReplyComment.id.equals(comment.id)) {
-                            clearReplyInput(comment, 0, false);
-                        }
-                        mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), comment.creator.name));
-                    } else {
-                        if(mReplyComment != null) {
-                            clearReplyInput(null, 0, false);
-                        }
-                        mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
-                    }
-                } else if(mRvAdapter.getItem(position) instanceof FeedItem) {
-                    if(mReplyComment != null) {
-                        clearReplyInput(null, 0, false);
-                    }
-                    mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
-                }
-            }
-        });
         if(mFeedItemComment != null && mFeedItemComment.id != null &&
                 mFeedItemComment.creator != null && mFeedItemComment.creator.name != null) {
             Comment comment = new Comment();
@@ -261,6 +238,75 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
         mReplySend.setOnClickListener(this);
 
         mReplyPicIv.setOnClickListener(this);
+
+        mRvAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(mRvAdapter.getItem(position) instanceof Comment) {
+                    Comment comment = (Comment) mRvAdapter.getItem(position);
+                    changeReply(comment);
+                } else if(mRvAdapter.getItem(position) instanceof FeedItem) {
+                    changeReply(null);
+                }
+            }
+        });
+        mRvAdapter.setOnFeedClickListener(new OnFeedClickListener() {
+            @Override
+            public boolean onSourceFeedClick(int position, FeedItem feedItem) {
+                if(feedItem != null && feedItem.sourceFeed != null && !TextUtils.isEmpty(feedItem.sourceFeed.id)) {
+                    toSourceFeed(feedItem);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onShare2Click(int position, FeedItem feedItem) {
+                toShare();
+                return true;
+            }
+
+            @Override
+            public boolean onShareClick(int position, FeedItem feedItem) {
+                toForward();
+                return true;
+            }
+
+            @Override
+            public boolean onCommentClick(int position, FeedItem feedItem) {
+                changeReply(null);
+                return true;
+            }
+
+            @Override
+            public boolean onPriseClick(int position, FeedItem feedItem) {
+                return false;
+            }
+        });
+    }
+
+    private void toSourceFeed(FeedItem sourceFeed) {
+        ActivityUtil.toFeedDetail(this, sourceFeed);
+    }
+
+    private void changeReply(Comment comment) {
+        if(comment != null) {
+            if(comment.creator != null && !TextUtils.isEmpty(comment.creator.name)) {
+                if(mReplyComment == null || !mReplyComment.id.equals(comment.id)) {
+                    clearReplyInput(comment, 0, false);
+                }
+                mReplyEt.setHint(String.format(getString(R.string.feed_detail_input_edit_hint_reply_comment), comment.creator.name));
+                return;
+            }
+        }
+        changeReplyFeed();
+    }
+
+    private void changeReplyFeed() {
+        if(mReplyComment != null) {
+            clearReplyInput(null, 0, false);
+        }
+        mReplyEt.setHint(R.string.feed_detail_input_edit_hint);
     }
 
     private Listeners.FetchListener<FeedItemResponse> mFetchListener = new Listeners.FetchListener<FeedItemResponse>() {
