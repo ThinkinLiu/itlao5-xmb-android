@@ -65,6 +65,8 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
 
     private Loc mLoc;
 
+    private boolean mNeedCache = true;
+
     public static final int REQUEST_TO_TOPIC_LIST = 100;
 
     @Override
@@ -394,8 +396,14 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initTopic(Intent data) {
+        mNeedCache = true;
         if(data == null) {
             return;
+        }
+        if(data.hasExtra("text")) {
+            // 从chatactivity
+            mInputEt.setText(data.getStringExtra("text"));
+            mNeedCache = false;
         }
         Topic topic = data.getParcelableExtra("Topic");
         if(topic != null) {
@@ -520,7 +528,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
     private boolean cacheFeed(String userId) {
         boolean cacheTopic = false;
         try {
-            if(TextUtils.isEmpty(userId)) {
+            if(!mNeedCache || TextUtils.isEmpty(userId)) {
                 return cacheTopic;
             }
             String text = mInputEt.getText().toString().trim();
@@ -565,7 +573,7 @@ public class PostActivity extends BaseActivity implements View.OnClickListener {
 
     private void loadFeedCache(String userId) {
         try {
-            if(TextUtils.isEmpty(userId)) {
+            if(!mNeedCache || TextUtils.isEmpty(userId)) {
                 return;
             }
             String text = PreferenceUtil.getString(Constant.PREFERENCE_CIRCLE_POST_FEED_TEXT + userId, "");

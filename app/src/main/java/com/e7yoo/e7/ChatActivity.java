@@ -2,6 +2,8 @@ package com.e7yoo.e7;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
@@ -49,6 +51,7 @@ import com.e7yoo.e7.model.GridItemClickListener;
 import com.e7yoo.e7.model.MsgUrlType;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
+import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.sql.MessageDbHelper;
@@ -61,6 +64,7 @@ import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.GameInfoUtil;
 import com.e7yoo.e7.util.JokeUtil;
 import com.e7yoo.e7.util.Logs;
+import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.PrivateMsgUtil;
 import com.e7yoo.e7.util.RandomUtil;
@@ -804,9 +808,65 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     RecyclerAdapter.OnItemLongClickListener mOnItemLongClickListener = new RecyclerAdapter.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(View view, int position) {
+            PrivateMsg msg = mRvAdapter != null ? mRvAdapter.getItem(position) : null;
+            if(msg != null) {
+                return toLongClick(position, msg);
+            }
             return false;
         }
     };
+
+    private boolean toLongClick(final int position, final PrivateMsg msg) {
+        ArrayList<TextSet> textSets = new ArrayList<>();
+        textSets.add(new TextSet(R.string.chat_long_click_clipboard, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toClipboard(msg.getContent());
+            }
+        }));
+        textSets.add(new TextSet(R.string.chat_long_click_share, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toShare(msg);
+            }
+        }));
+        textSets.add(new TextSet(R.string.chat_long_click_post, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toPost(msg);
+            }
+        }));
+        textSets.add(new TextSet(R.string.chat_long_click_delete, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toDelete(position, msg);
+            }
+        }));
+        PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
+        return false;
+    }
+
+    private void toClipboard(String text) {
+        ClipboardManager manager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        manager.setPrimaryClip(ClipData.newPlainText("label", text));
+        TastyToastUtil.toast(this, R.string.clipboard_hint);
+    }
+
+    private void toShare(PrivateMsg msg) {
+        ShareDialogUtil.show(this, null, getString(R.string.chat_long_click_share_title, mRobot != null ? mRobot.getName() : getString(R.string.mengmeng)), msg.getContent(), null);
+    }
+
+    private void toPost(PrivateMsg msg) {
+        boolean isLogin = ActivityUtil.toPostOrLogin(this, msg.getContent());
+        if(!isLogin) {
+            TastyToastUtil.toast(this, R.string.chat_to_post_login_hint);
+        }
+    }
+
+    private void toDelete(int position, PrivateMsg msg) {
+        MessageDbHelper.getInstance(this).deleteMessageInfo(msg.getId());
+        mRvAdapter.removeItem(position);
+    }
 
     MsgRefreshRecyclerAdapter.OnVoiceClickListener mOnVoiceClickListener = new MsgRefreshRecyclerAdapter.OnVoiceClickListener() {
         private int lastPosition = -1;

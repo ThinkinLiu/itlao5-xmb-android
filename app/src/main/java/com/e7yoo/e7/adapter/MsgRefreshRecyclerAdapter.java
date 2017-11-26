@@ -102,6 +102,14 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         notifyDataSetChanged();
     }
 
+    public void removeItem(int position) {
+        mMsgs.remove(position);
+        notifyItemRemoved(position);
+        if(position < getItemCount()) {
+            notifyItemRangeChanged(position, getItemCount() - position);
+        }
+    }
+
     public FooterType getFooter() {
         return mFooterType;
     }

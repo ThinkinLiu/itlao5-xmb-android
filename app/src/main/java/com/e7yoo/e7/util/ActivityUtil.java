@@ -14,6 +14,7 @@ import com.e7yoo.e7.InputActivity;
 import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.PushMsgDetailsActivity;
+import com.e7yoo.e7.R;
 import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
@@ -148,6 +149,22 @@ public class ActivityUtil {
             ActivityUtil.toPostActivity(activity, topic);
         } else {
             ActivityUtil.toLogin(activity);
+        }
+    }
+
+    public static void toPostActivity(Activity context, String text) {
+        Intent intent = new Intent(context, PostActivity.class);
+        intent.putExtra("text", text);
+        context.startActivity(intent);
+    }
+
+    public static boolean toPostOrLogin(Activity activity, String text) {
+        if(CommonUtils.isLogin(activity)) {
+            ActivityUtil.toPostActivity(activity, text);
+            return true;
+        } else {
+            ActivityUtil.toLogin(activity);
+            return false;
         }
     }
 
