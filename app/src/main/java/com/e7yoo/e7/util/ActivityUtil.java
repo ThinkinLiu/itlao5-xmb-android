@@ -152,15 +152,15 @@ public class ActivityUtil {
         }
     }
 
-    public static void toPostActivity(Activity context, String text) {
+    public static void toPostActivityText(Activity context, String text) {
         Intent intent = new Intent(context, PostActivity.class);
         intent.putExtra("text", text);
         context.startActivity(intent);
     }
 
-    public static boolean toPostOrLogin(Activity activity, String text) {
+    public static boolean toPostOrLoginText(Activity activity, String text) {
         if(CommonUtils.isLogin(activity)) {
-            ActivityUtil.toPostActivity(activity, text);
+            ActivityUtil.toPostActivityText(activity, text);
             return true;
         } else {
             ActivityUtil.toLogin(activity);

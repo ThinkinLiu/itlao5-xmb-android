@@ -147,6 +147,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initView() {
+        rootView = findViewById(R.id.root_layout);
         bgImage = (ImageView) findViewById(R.id.chat_background);
         mHomeSRLayout = (SwipeRefreshLayout) findViewById(R.id.chat_sr_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.chat_rv);
@@ -857,7 +858,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void toPost(PrivateMsg msg) {
-        boolean isLogin = ActivityUtil.toPostOrLogin(this, msg.getContent());
+        boolean isLogin = ActivityUtil.toPostOrLoginText(this, msg.getContent());
         if(!isLogin) {
             TastyToastUtil.toast(this, R.string.chat_to_post_login_hint);
         }
