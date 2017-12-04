@@ -254,7 +254,7 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public boolean onSourceFeedClick(int position, FeedItem feedItem) {
                 if(feedItem != null && feedItem.sourceFeed != null && !TextUtils.isEmpty(feedItem.sourceFeed.id)) {
-                    toSourceFeed(feedItem);
+                    toSourceFeed(feedItem.sourceFeed);
                     return true;
                 }
                 return false;

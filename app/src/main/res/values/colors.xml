@@ -42,6 +42,7 @@
     <color name="bottom_navigation_color_unchecked">#666666</color>
     <color name="bottom_navigation_color_backgroud">#90ff02</color>
     <color name="backgroud">#eeeeee</color>
+    <color name="backgroud_feedback_detail_source_feeditem">#eeeeee</color>
 
     <color name="yellow">#fdb201</color>
     <color name="yellow_trans">#88fdb201</color>

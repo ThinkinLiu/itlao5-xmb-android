@@ -141,7 +141,12 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     private void setViewRichContent(ViewHolderFeedItem viewHolderFeedItem, FeedItem item) {
-        String more = BaseBeanUtil.getExtraString(item, BaseBeanUtil.TEXT_MORE);
+        String more;
+        if(item.sourceFeed != null && item.sourceFeed.creator != null) {
+            more = BaseBeanUtil.getExtraString(item.sourceFeed, BaseBeanUtil.TEXT_MORE);
+        } else {
+            more = BaseBeanUtil.getExtraString(item, BaseBeanUtil.TEXT_MORE);
+        }
         if(TextUtils.isEmpty(more) || more.trim().length() < 5) {
             viewHolderFeedItem.urlTv.setVisibility(View.GONE);
             viewHolderFeedItem.urlTv.setOnClickListener(null);
@@ -242,11 +247,11 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         StringBuilder content = new StringBuilder("");
         StringBuilder sourceContent = new StringBuilder("");
         if(item.sourceFeed != null && item.sourceFeed.creator != null) {
-            sourceContent.append("<font color= 'blue'>【转】： </font>");
+            content.append("<font color= 'blue'>【转】： </font>");
             content.append(item.text);
             content.append("<font color= 'blue'> @");
             content.append(item.sourceFeed.creator.name);
-            content.append(" </font>\n\n--------------------\n");
+            /*content.append(" </font>\n\n--------------------\n");*/
             // sourceFeed只展示五行
             sourceContent.append("<font color= 'blue'>【原文】： </font>");
             if (item.sourceFeed.topics != null) {
@@ -272,7 +277,20 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             content.append(item.text);
         }
         viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content.toString()));
-        viewHolderFeedItem.sourceContentTv.setText(CommonUtil.getHtmlStr(sourceContent.toString()));
+        if(sourceContent.length() == 0) {
+            viewHolderFeedItem.sourceContentTv.setPadding(0, 0, 0, 0);
+            viewHolderFeedItem.sourceContentTv.setText("");
+            viewHolderFeedItem.gridView.setBackgroundResource(0);
+            viewHolderFeedItem.gridView.setPadding(0, 0, 0, 0);
+            viewHolderFeedItem.urlLayout.setBackgroundResource(0);
+        } else {
+            int padding = mContext.getResources().getDimensionPixelOffset(R.dimen.space_2x);
+            viewHolderFeedItem.sourceContentTv.setPadding(padding, padding, padding, padding);
+            viewHolderFeedItem.sourceContentTv.setText(CommonUtil.getHtmlStr(sourceContent.toString()));
+            viewHolderFeedItem.gridView.setBackgroundResource(R.color.backgroud);
+            viewHolderFeedItem.gridView.setPadding(padding, padding, padding, padding);
+            viewHolderFeedItem.urlLayout.setBackgroundResource(R.color.backgroud);
+        }
         CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages(), mGvItemClick);
         viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
         viewHolderFeedItem.share2Tv.setText(getDetailString(item.forwardCount, R.string.feed_detail_content_share));
@@ -526,6 +544,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         public View moreLayout;
         public TextView moreTv;*/
         public TextView sourceContentTv;
+        public View urlLayout;
         public TextView urlTv;
         public TextView share2Tv;
 
@@ -548,6 +567,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             moreLayout = view.findViewById(R.id.item_feed_item_more_layout);
             moreTv = view.findViewById(R.id.item_feed_item_more);*/
 
+            urlLayout = view.findViewById(R.id.item_feed_item_url_layout);
             urlTv = view.findViewById(R.id.item_feed_item_url);
         }
     }

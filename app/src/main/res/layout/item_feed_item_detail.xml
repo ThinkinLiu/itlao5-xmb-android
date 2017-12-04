@@ -69,13 +69,13 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_feed_item_sex"
         android:layout_below="@id/item_feed_item_content"
-        android:layout_marginBottom="@dimen/space"
-        android:background="@color/color_seperator"
+        android:background="@color/backgroud_feedback_detail_source_feeditem"
         android:autoLink="web"
         android:includeFontPadding="false"
         android:maxLines="5"
         android:text=""
         android:textColor="@color/text"
+        android:padding="@dimen/space_2x"
         android:textSize="@dimen/size_l" />
 
     <!--<TextView
@@ -143,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_feed_item_sex"
         android:layout_below="@id/item_feed_item_url_layout"
-        android:layout_marginTop="@dimen/space"
+        android:paddingTop="@dimen/space"
         android:focusable="false"
         android:horizontalSpacing="@dimen/space"
         android:verticalSpacing="@dimen/space" />
