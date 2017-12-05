@@ -119,6 +119,10 @@ public class CommonUtil {
 		return false;
 	}
 
+	public static String getUrlString(String text) {
+		return getUrlString("", text);
+	}
+
 	public static String getUrlString(String font, String text) {
 		return E7App.mApp.getString(R.string.blue_feed_content_url, font, text);
 	}

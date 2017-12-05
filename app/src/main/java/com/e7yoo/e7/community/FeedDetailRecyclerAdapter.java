@@ -247,12 +247,12 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         StringBuilder content = new StringBuilder("");
         StringBuilder sourceContent = new StringBuilder("");
         if(item.sourceFeed != null && item.sourceFeed.creator != null) {
-            content.append(CommonUtil.getUrlString("", "【转】： "));
+            content.append(CommonUtil.getUrlString("【转】： "));
             content.append(item.text);
-            content.append(CommonUtil.getUrlString("", " @" + item.sourceFeed.creator.name + " "));
+            content.append(CommonUtil.getUrlString(" @" + item.sourceFeed.creator.name + " "));
             /*content.append("\n\n--------------------\n");*/
             // sourceFeed只展示五行
-            sourceContent.append(CommonUtil.getUrlString("",  "【原文】： "));
+            sourceContent.append(CommonUtil.getUrlString("【原文】： "));
             if (item.sourceFeed.topics != null) {
                 for (int i = 0; i < item.sourceFeed.topics.size(); i++) {
                     if (item.sourceFeed.topics.get(i) != null && !TextUtils.isEmpty(item.sourceFeed.topics.get(i).name)) {
