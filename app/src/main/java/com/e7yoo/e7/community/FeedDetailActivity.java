@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -507,16 +508,9 @@ public class FeedDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void toForward() {
-        final FeedItem feedItem = new FeedItem();
-        feedItem.sourceFeed = mFeedItem;
-        feedItem.sourceFeedId = mFeedItem.id;
-        feedItem.text = getString(R.string.feed_detail_forward_text);
-        E7App.getCommunitySdk().forward(feedItem, new Listeners.SimpleFetchListener<FeedItemResponse>() {
-            @Override
-            public void onComplete(FeedItemResponse feedItemResponse) {
-            }
-        });
+        ActivityUtil.toForwardActivity(this, mFeedItem);
     }
+
 
     private void toFollow() {
         if(mFeedItem.creator == null) {

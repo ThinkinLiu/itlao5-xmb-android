@@ -389,5 +389,11 @@
     <string name="clipboard_hint">已复制到粘贴板</string>
     <string name="chat_long_click_share_title">与【小萌伴】“%1$s”的聊天</string>
     <string name="chat_to_post_login_hint">发帖前需要先登录哦！</string>
+    <string name="forward_success">转发成功</string>
+    <string name="forward_failed">转发失败%1$s</string>
+    <string name="forward_content_hint">说点啥呢？</string>
+    <string name="forward_title">转发</string>
+
+    <string name="blue_feed_content_url">&lt;font color= \'#1296db\' %1$s>%2$s&lt;/font></string>
 
 </resources>

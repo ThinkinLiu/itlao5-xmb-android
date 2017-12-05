@@ -20,6 +20,7 @@ import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.community.CollectFeedListActivity;
 import com.e7yoo.e7.community.FeedDetailActivity;
+import com.e7yoo.e7.community.ForwardActivity;
 import com.e7yoo.e7.community.SpaceActivity;
 import com.e7yoo.e7.community.TopicListActivity;
 import com.e7yoo.e7.game.GameActivity;
@@ -224,5 +225,11 @@ public class ActivityUtil {
         } else {
             ActivityUtil.toLogin(activity);
         }
+    }
+
+    public static void toForwardActivity(Activity context, FeedItem feedItem) {
+        Intent intent = new Intent(context, ForwardActivity.class);
+        intent.putExtra("FeedItem", feedItem);
+        context.startActivity(intent);
     }
 }

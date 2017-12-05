@@ -1,6 +1,5 @@
 package com.e7yoo.e7.util;
 
-import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationManagerCompat;
 import android.view.View;
 
-import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
 
 import java.lang.reflect.Field;

@@ -9,6 +9,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 
 
@@ -116,5 +117,9 @@ public class CommonUtil {
 			}
 		}
 		return false;
+	}
+
+	public static String getUrlString(String font, String text) {
+		return E7App.mApp.getString(R.string.blue_feed_content_url, font, text);
 	}
 }

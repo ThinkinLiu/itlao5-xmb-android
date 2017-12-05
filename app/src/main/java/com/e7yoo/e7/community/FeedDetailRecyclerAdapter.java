@@ -247,17 +247,16 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         StringBuilder content = new StringBuilder("");
         StringBuilder sourceContent = new StringBuilder("");
         if(item.sourceFeed != null && item.sourceFeed.creator != null) {
-            content.append("<font color= 'blue'>【转】： </font>");
+            content.append(CommonUtil.getUrlString("", "【转】： "));
             content.append(item.text);
-            content.append("<font color= 'blue'> @");
-            content.append(item.sourceFeed.creator.name);
-            /*content.append(" </font>\n\n--------------------\n");*/
+            content.append(CommonUtil.getUrlString("", " @" + item.sourceFeed.creator.name + " "));
+            /*content.append("\n\n--------------------\n");*/
             // sourceFeed只展示五行
-            sourceContent.append("<font color= 'blue'>【原文】： </font>");
+            sourceContent.append(CommonUtil.getUrlString("",  "【原文】： "));
             if (item.sourceFeed.topics != null) {
                 for (int i = 0; i < item.sourceFeed.topics.size(); i++) {
                     if (item.sourceFeed.topics.get(i) != null && !TextUtils.isEmpty(item.sourceFeed.topics.get(i).name)) {
-                        sourceContent.append("<font color= 'blue'>");
+                        sourceContent.append("<font color= '#1296db'>");
                         sourceContent.append(item.sourceFeed.topics.get(i).name);
                         sourceContent.append(" </font>");
                     }
@@ -268,7 +267,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             if (item.topics != null) {
                 for (int i = 0; i < item.topics.size(); i++) {
                     if (item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
-                        content.append("<font color= 'blue'>");
+                        content.append("<font color= '#1296db'>");
                         content.append(item.topics.get(i).name);
                         content.append(" </font>");
                     }
@@ -312,7 +311,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolder.contentTv.setMaxLines(1000);
         String reply = "";
         if(item.replyUser != null && !TextUtils.isEmpty(item.replyUser.name)) {
-            reply = "回复 <font color= 'blue'>" + item.replyUser.name + "</font> ";
+            reply = "回复 <font color= '#1296db'>" + item.replyUser.name + "</font> ";
         }
         viewHolder.contentTv.setText(CommonUtil.getHtmlStr(reply + item.text));
         CircleGvAdapterUtil.setGridView(mContext, viewHolder.gridView, item.imageUrls, mGvItemClick);

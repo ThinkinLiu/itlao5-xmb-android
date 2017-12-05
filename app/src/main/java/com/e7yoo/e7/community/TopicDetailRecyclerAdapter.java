@@ -173,7 +173,7 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         if(item.topics != null) {
             for(int i = 0; i < item.topics.size(); i++) {
                 if(item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
-                    content = content + "<font color= 'blue'>" + item.topics.get(i).name + "</font> ";
+                    content = content + "<font color= '#1296db'>" + item.topics.get(i).name + "</font> ";
                 }
             }
         }
