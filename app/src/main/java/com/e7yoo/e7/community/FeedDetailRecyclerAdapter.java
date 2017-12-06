@@ -252,13 +252,13 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             content.append(CommonUtil.getUrlString(" @" + item.sourceFeed.creator.name + " "));
             /*content.append("\n\n--------------------\n");*/
             // sourceFeed只展示五行
-            sourceContent.append(CommonUtil.getUrlString("【原文】： "));
+            sourceContent.append(CommonUtil.getUrlString("【原文】："));
+            sourceContent.append(" ");
             if (item.sourceFeed.topics != null) {
                 for (int i = 0; i < item.sourceFeed.topics.size(); i++) {
                     if (item.sourceFeed.topics.get(i) != null && !TextUtils.isEmpty(item.sourceFeed.topics.get(i).name)) {
-                        sourceContent.append("<font color= '#1296db'>");
-                        sourceContent.append(item.sourceFeed.topics.get(i).name);
-                        sourceContent.append(" </font>");
+                        sourceContent.append(CommonUtil.getUrlString(item.sourceFeed.topics.get(i).name));
+                        sourceContent.append(" ");
                     }
                 }
             }
@@ -267,9 +267,8 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
             if (item.topics != null) {
                 for (int i = 0; i < item.topics.size(); i++) {
                     if (item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
-                        content.append("<font color= '#1296db'>");
-                        content.append(item.topics.get(i).name);
-                        content.append(" </font>");
+                        content.append(CommonUtil.getUrlString(item.topics.get(i).name));
+                        content.append(" ");
                     }
                 }
             }
@@ -311,7 +310,7 @@ public class FeedDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
         viewHolder.contentTv.setMaxLines(1000);
         String reply = "";
         if(item.replyUser != null && !TextUtils.isEmpty(item.replyUser.name)) {
-            reply = "回复 <font color= '#1296db'>" + item.replyUser.name + "</font> ";
+            reply = "回复 " + CommonUtil.getUrlString(item.replyUser.name) + " ";
         }
         viewHolder.contentTv.setText(CommonUtil.getHtmlStr(reply + item.text));
         CircleGvAdapterUtil.setGridView(mContext, viewHolder.gridView, item.imageUrls, mGvItemClick);

@@ -51,16 +51,17 @@ public class FeedItemRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
             FeedItem item = (FeedItem) mDatas.get(position);
             if (item != null) {
                 setUser(viewHolderFeedItem, item);
-                String content = "";
+                StringBuilder content = new StringBuilder("");
                 if(item.topics != null) {
                     for(int i = 0; i < item.topics.size(); i++) {
                         if(item.topics.get(i) != null && !TextUtils.isEmpty(item.topics.get(i).name)) {
-                            content = content + "<font color= '#1296db'>" + item.topics.get(i).name + "</font> ";
+                            content.append(CommonUtil.getUrlString(item.topics.get(i).name));
+                            content.append(" ");
                         }
                     }
                 }
-                content = content + item.text;
-                viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content));
+                content.append(item.text);
+                viewHolderFeedItem.contentTv.setText(CommonUtil.getHtmlStr(content.toString()));
                 CircleGvAdapterUtil.setGridView(mContext, viewHolderFeedItem.gridView, item.getImages(), null);
                 viewHolderFeedItem.timeTv.setText(TimeUtil.formatFeedTime(item.publishTime));
                 viewHolderFeedItem.shareTv.setText(String.format("%-3d", item.forwardCount));
