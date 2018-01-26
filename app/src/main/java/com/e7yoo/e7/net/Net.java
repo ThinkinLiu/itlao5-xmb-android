@@ -86,6 +86,7 @@ public class Net {
 		params.put("page", page);// 当前页数,默认1
 		params.put("pagesize", pagesize);// 每次返回条数,默认1,最大20
 		params.put("key", APPKEY_JOKE);// 您申请的key
+		params.put("time", System.currentTimeMillis() / 1000);// 时间戳（10位），如：1418816972
 		doNet(callback, url, params);
 	}
 

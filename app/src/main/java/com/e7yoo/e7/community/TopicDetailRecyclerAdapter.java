@@ -308,7 +308,7 @@ public class TopicDetailRecyclerAdapter extends ListRefreshRecyclerAdapter {
                 }
             }
         });
-        
+
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
