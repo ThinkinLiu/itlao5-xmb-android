@@ -22,6 +22,8 @@ public class Constant {
     public static final int EVENT_BUS_NET_todayHistory = 102;
     public static final int EVENT_BUS_NET_todayHistoryDetails = 103;
     public static final int EVENT_BUS_NET_jokeNew = 104;
+    public static final int EVENT_BUS_NET_jokeRand = 105;
+    public static final int EVENT_BUS_NET_jokeRand_pic = 106;
     public static final int EVENT_BUS_CIRCLE_LOGIN = 1001;
     public static final int EVENT_BUS_CIRCLE_REGISTER = 1002;
     public static final int EVENT_BUS_CIRCLE_LOGOUT = 1003;

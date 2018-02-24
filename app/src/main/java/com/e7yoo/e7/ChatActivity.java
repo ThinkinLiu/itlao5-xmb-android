@@ -119,19 +119,19 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     private int getVoice(Robot robot) {
         int voice = 4; // 默认播放童音 0 (普通女声), 1 (普通男声), 2 (特别男声), 3 (情感男声), 4 (童声)
-        if(robot.getId() > 0) { // 0是萌萌，语音播放童音
-            switch (robot.getSex()) {
-                case 0: // 保密，特别男声
-                    voice = 2;
-                    break;
-                case 1: // 男，男声
-                    voice = 1;
-                    break;
-                case 2: // 女，女声
-                    voice = 0;
-                    break;
-            }
-        }
+//        if(robot.getId() > 0) { // 0是萌萌，语音播放童音
+//            switch (robot.getSex()) {
+//                case 0: // 保密，特别男声
+//                    voice = 2;
+//                    break;
+//                case 1: // 男，男声
+//                    voice = 1;
+//                    break;
+//                case 2: // 女，女声
+//                    voice = 0;
+//                    break;
+//            }
+//        }
         return voice;
     }
 
@@ -572,7 +572,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     } else if(pullUpTimes % 100 == 20) {
                         addMsgToViewRecv(getString(R.string.chat_url_to_news), MsgUrlType.news);
                     } else if(isNetOk(true)) {
-                        NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
+                        // NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
+                        NetHelper.newInstance().jokeRand(RandomUtil.getRandomNum(10) % 2 == 0);
                         mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                     }
                     PreferenceUtil.commitInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, ++pullUpTimes);
@@ -620,6 +621,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             case Constant.EVENT_BUS_NET_jokeNew:
                 PrivateMsg jokeMsg = JokeUtil.parseJoke(robotId, robotName, (JSONObject) msg.obj);
                 mRvAdapter.addItemBottom(jokeMsg);
+                scrollToEnd();
+                mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
+                break;
+            case Constant.EVENT_BUS_NET_jokeRand:
+                PrivateMsg jokeRandMsg = JokeUtil.parseJokeRand(robotId, robotName, (JSONObject) msg.obj, false);
+                mRvAdapter.addItemBottom(jokeRandMsg);
+                scrollToEnd();
+                mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
+                break;
+            case Constant.EVENT_BUS_NET_jokeRand_pic:
+                PrivateMsg jokeRandPicMsg = JokeUtil.parseJokeRand(robotId, robotName, (JSONObject) msg.obj, true);
+                mRvAdapter.addItemBottom(jokeRandPicMsg);
                 scrollToEnd();
                 mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
                 break;

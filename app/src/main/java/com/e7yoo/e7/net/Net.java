@@ -81,12 +81,23 @@ public class Net {
 	 * 2.最新笑话
 	 */
 	public static void jokeNew(NetCallback callback, int page, int pagesize) {
-		String url = "http://japi.juhe.cn/joke/content/text.from";// 请求接口地址
+		//String url = "http://japi.juhe.cn/joke/content/text.from";// 请求接口地址
+		String url = "http://v.juhe.cn/joke/content/text.php";
 		Map params = new HashMap();// 请求参数
 		params.put("page", page);// 当前页数,默认1
 		params.put("pagesize", pagesize);// 每次返回条数,默认1,最大20
 		params.put("key", APPKEY_JOKE);// 您申请的key
-		params.put("time", System.currentTimeMillis() / 1000);// 时间戳（10位），如：1418816972
+		doNet(callback, url, params);
+	}
+
+	/**
+	 * 2.随机获取笑话or趣图
+	 */
+	public static void jokeRand(NetCallback callback, boolean isPic) {
+		String url = "http://v.juhe.cn/joke/randJoke.php";
+		Map params = new HashMap();// 请求参数
+		params.put("type", isPic ? "pic" : "");// 当前页数,默认1
+		params.put("key", APPKEY_JOKE);// 您申请的key
 		doNet(callback, url, params);
 	}
 

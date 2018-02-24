@@ -99,6 +99,27 @@ public class NetHelper {
 		});
 	}
 
+	/**
+	 * 机器人，聊天
+	 * @param isPic
+	 */
+	public void jokeRand(final boolean isPic) {
+		executorService.execute(new Runnable() {
+			public void run() {
+				Net.jokeRand(new NetCallback() {
+					@Override
+					public void callback(JSONObject object) {
+						if(isPic) {
+							sendNetHandler(Constant.EVENT_BUS_NET_jokeRand_pic, object);
+						} else {
+							sendNetHandler(Constant.EVENT_BUS_NET_jokeRand, object);
+						}
+					}
+				}, isPic);
+			}
+		});
+	}
+
 	public void sendNetHandler(int what, Object object) {
 		Message msg = new Message();
 		msg.what = what;

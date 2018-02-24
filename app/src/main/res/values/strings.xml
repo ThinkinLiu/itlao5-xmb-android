@@ -22,7 +22,9 @@
     <string name="history_message_nomore">没有更多历史消息</string>
     <string name="net_no">网络不给力哦o(╥﹏╥)o</string>
     <string name="joke_happy">开心一刻</string>
+    <string name="joke_happy_pic">萌伴趣图</string>
     <string name="joke_parse_error">不开心，不想说笑话了，陪我聊聊其它的o(╥﹏╥)o</string>
+    <string name="joke_rand_parse_error">不开心，找不到趣图了，陪我聊聊其它的o(╥﹏╥)o</string>
     <string name="mengmeng_welcome">闲暇时光，有我陪你！</string>
 
     <string name="add_robot_icon">头像</string>

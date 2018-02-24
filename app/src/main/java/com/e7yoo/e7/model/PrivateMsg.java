@@ -10,7 +10,7 @@ public class PrivateMsg implements Serializable {
 	private static final long serialVersionUID = 92167621L;
 	private int _id;
 	private String user;
-	private int code;
+	private int code; // 1000提示语句， -1 笑话 ，-2 趣图  -10000 网络异常， 其他正数code robot聊天返回
 	private long time;// 发送时间
 	private String content;
 	private Type type;// 方向,0:我主动发，1:我被动收，2，提示（网络异常等）

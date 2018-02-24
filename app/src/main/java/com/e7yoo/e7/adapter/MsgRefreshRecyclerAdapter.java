@@ -209,12 +209,28 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderRev.itemMsgVoice.setSelected(false);
             }
             View urlView;
-            if(TextUtils.isEmpty(mMsgs.get(position).getUrl())) {
+            String url = mMsgs.get(position).getUrl();
+            if(TextUtils.isEmpty(url)) {
+                viewHolderRev.itemMsgPic.setVisibility(View.GONE);
                 viewHolderRev.itemMsgUrl.setVisibility(View.GONE);
                 urlView = null;
             } else {
-                viewHolderRev.itemMsgUrl.setVisibility(View.VISIBLE);
-                urlView = viewHolderRev.itemMsgUrl;
+                if(mMsgs.get(position).getCode() == -2) { // 图片
+                    RequestOptions options = new RequestOptions();
+                    options.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
+                    if(url.endsWith(".gif")) {
+                        Glide.with(mContext).asGif().load(url).apply(options).into(viewHolderRev.itemMsgPic);
+                    } else {
+                        Glide.with(mContext).asBitmap().load(url).apply(options).into(viewHolderRev.itemMsgPic);
+                    }
+                    viewHolderRev.itemMsgPic.setVisibility(View.VISIBLE);
+                    viewHolderRev.itemMsgUrl.setVisibility(View.GONE);
+                    urlView = viewHolderRev.itemMsgPic;
+                } else {
+                    viewHolderRev.itemMsgPic.setVisibility(View.GONE);
+                    viewHolderRev.itemMsgUrl.setVisibility(View.VISIBLE);
+                    urlView = viewHolderRev.itemMsgUrl;
+                }
             }
             // viewHolderRev.itemMsgIcon.setImageResource();
             // viewHolderRev.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
@@ -387,9 +403,11 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
      */
     public static class ViewHolderRev extends BaseMsgViewHolder {
 
+        public ImageView itemMsgPic;
         public TextView itemMsgUrl;
         public ViewHolderRev(View view) {
             super(view);
+            itemMsgPic = view.findViewById(R.id.item_msg_pic);
             itemMsgUrl = view.findViewById(R.id.item_msg_url);
         }
     }
