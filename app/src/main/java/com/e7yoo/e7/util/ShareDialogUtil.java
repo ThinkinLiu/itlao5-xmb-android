@@ -87,7 +87,6 @@ public class ShareDialogUtil {
         dismiss();
         dialog = null;
         context = null;
-        gridItemClickListener = null;
     }
 
     private static void initDialog(View view) {
