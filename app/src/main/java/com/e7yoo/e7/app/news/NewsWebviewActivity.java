@@ -194,6 +194,7 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 
 	@Override
 	protected void initView() {
+		rootView = findViewById(R.id.root_layout);
 
 		closeView = findViewById(R.id.titlebar_left_tv_close);
 		closeView.setVisibility(View.GONE);

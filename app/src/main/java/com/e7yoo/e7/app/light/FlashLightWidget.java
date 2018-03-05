@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.e7yoo.e7.R;
+import com.tencent.bugly.crashreport.CrashReport;
 
 /**
  * Implementation of App Widget functionality.
@@ -36,7 +37,12 @@ public class FlashLightWidget extends AppWidgetProvider {
             NotificationControl.showNotification(context);
         } else if (ACTION_LED_OFF.equals(action)) {
             CameraManager.closeFlash();
-            CameraManager.release();
+            try {
+                CameraManager.release();
+            } catch (Throwable e) {
+                //45 java.lang.RuntimeException    Camera is being used after Camera.release() was called
+                CrashReport.postCatchedException(e);
+            }
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             ComponentName componentName = new ComponentName(context, FlashLightWidget.class);
             int[] widgetIds = appWidgetManager.getAppWidgetIds(componentName);

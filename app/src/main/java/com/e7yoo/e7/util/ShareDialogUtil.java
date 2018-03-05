@@ -197,7 +197,7 @@ public class ShareDialogUtil {
         }
     }
 
-    private static void share(String name, ShareParams shareParams) {
+    private static void share(final String name, ShareParams shareParams) {
         JShareInterface.share(name, shareParams, new PlatActionListener() {
             @Override
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
@@ -208,6 +208,23 @@ public class ShareDialogUtil {
             @Override
             public void onError(Platform platform, int i, int i1, Throwable throwable) {
                 Logs.isDebug();
+                if(name != null) {
+                    if(context != null) {
+                        String text = "QQ";
+                        if (name.equals(QQ.Name)) {
+                            text = context.getString(R.string.share_to_qq);
+                        } else if (name.equals(QZone.Name)) {
+                            text = context.getString(R.string.share_to_qq);
+                        } else if (name.equals(Wechat.Name)) {
+                            text = context.getString(R.string.share_to_wx);
+                        } else if (name.equals(WechatMoments.Name)) {
+                            text = context.getString(R.string.share_to_wx);
+                        } else {
+                            text = context.getString(R.string.share_to_sina);
+                        }
+                        TastyToastUtil.toast(context, R.string.share_failed, text);
+                    }
+                }
                 CrashReport.postCatchedException(throwable);
             }
 

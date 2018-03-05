@@ -30,7 +30,7 @@ public class ForwardActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
-        inputEt = (EditText) findViewById(R.id.input_edit);
+        inputEt = (EditText) findViewById(R.id.forward_edit);
     }
 
     @Override

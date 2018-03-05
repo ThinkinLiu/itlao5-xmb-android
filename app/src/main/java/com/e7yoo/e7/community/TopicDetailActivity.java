@@ -67,6 +67,7 @@ public class TopicDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initView() {
+        rootView = findViewById(R.id.root_layout);
         mPostIv = (ImageView) findViewById(R.id.circle_post);
         mRecyclerView = (RecyclerView) findViewById(R.id.topic_detail_rv);
     }

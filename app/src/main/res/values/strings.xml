@@ -226,6 +226,7 @@
     <string name="share_to_circle">朋友圈</string>
     <string name="share_to_qq">QQ</string>
     <string name="share_to_qzone">QQ空间</string>
+    <string name="share_failed">分享失败，您没有安装%1$s，或者版本过低，您可以分享到其他平台</string>
     <string name="share_to_sina">微博</string>
     <string name="mengmeng_is_here">萌萌在这里</string>
     <string name="mine_label_hint">闲暇时光·有我陪你</string>

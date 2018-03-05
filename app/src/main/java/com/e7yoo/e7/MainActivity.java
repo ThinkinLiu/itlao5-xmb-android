@@ -33,6 +33,7 @@ import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
@@ -315,7 +316,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         String tmpList[] = new String[toApplyList.size()];
         if (!toApplyList.isEmpty()) {
-            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+            try {
+                ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+            } catch (Throwable e) {
+                CrashReport.postCatchedException(e);
+            }
         }
     }
 
