@@ -27,6 +27,8 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
     private List<Robot> mRobots = new ArrayList<>();
     public static final int VIEW_TYPE_ROBOT = 0;
     public static final int VIEW_TYPE_FOOTER = 10;
+    public static final int VIEW_TYPE_HEADER = 11;
+    private int HEADER_COUNT = 1;
     private int FOOTER_COUNT = 1;
     private int MAX_COUNT = 5;
 
@@ -59,6 +61,10 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
         RecyclerView.ViewHolder viewHolder;
         View view;
         switch (viewType) {
+            case VIEW_TYPE_HEADER:
+                view = mInflater.inflate(R.layout.item_robot_header, parent, false);
+                viewHolder = new ViewHolderFooter(view);
+                break;
             case VIEW_TYPE_FOOTER:
                 view = mInflater.inflate(R.layout.item_robot_footer, parent, false);
                 viewHolder = new ViewHolderFooter(view);
@@ -75,7 +81,7 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof ViewHolderRobot) {
-            Robot robot = mRobots.get(position);
+            Robot robot = mRobots.get(position - HEADER_COUNT);
             ViewHolderRobot viewHolderRobot = (ViewHolderRobot) holder;
             int resIcon = RobotUtil.getDefaultIconResId(robot);
             if(robot.getIcon() != null) {
@@ -132,14 +138,14 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
     public int getItemCount() {
         if(mRobots == null) {
             FOOTER_COUNT = 1;
-            return FOOTER_COUNT;
+            return HEADER_COUNT + FOOTER_COUNT;
         } else {
             if(mRobots.size() >= MAX_COUNT) {
                 FOOTER_COUNT = 0;
-                return MAX_COUNT;
+                return HEADER_COUNT + MAX_COUNT;
             } else {
                 FOOTER_COUNT = 1;
-                return mRobots.size() + FOOTER_COUNT;
+                return HEADER_COUNT + mRobots.size() + FOOTER_COUNT;
             }
         }
     }
@@ -147,7 +153,9 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
     @Override
     public int getItemViewType(int position) {
         int itemViewType;
-        if (position == getItemCount() - FOOTER_COUNT) {
+        if(position < HEADER_COUNT) {
+            itemViewType = VIEW_TYPE_HEADER;
+        } else if (position >= getItemCount() - FOOTER_COUNT) {
             itemViewType = VIEW_TYPE_FOOTER;
         } else {
             itemViewType = VIEW_TYPE_ROBOT;
@@ -181,6 +189,17 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
     public static class ViewHolderFooter extends RecyclerView.ViewHolder {
         public TextView addTv;
         public ViewHolderFooter(View view) {
+            super(view);
+            addTv = view.findViewById(R.id.item_robot_add);
+        }
+    }
+
+    /**
+     * 头部item（用于展示功能按钮）
+     */
+    public static class ViewHolderHeader extends RecyclerView.ViewHolder {
+        public TextView addTv;
+        public ViewHolderHeader(View view) {
             super(view);
             addTv = view.findViewById(R.id.item_robot_add);
         }

@@ -399,4 +399,8 @@
 
     <string name="blue_feed_content_url">&lt;font color= \'#1296db\' %1$s>%2$s&lt;/font></string>
 
+    <string name="home_top_btn_post">发帖</string>
+    <string name="home_top_btn_game">小游戏</string>
+    <string name="home_top_btn_findphone">找手机</string>
+    <string name="home_top_btn_flashlight">手电筒</string>
 </resources>
