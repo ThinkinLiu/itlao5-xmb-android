@@ -12,13 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.e7yoo.e7.GameListActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.adapter.RobotRefreshRecyclerAdapter;
+import com.e7yoo.e7.app.findphone.FindPhoneActivity;
+import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
 
 import java.util.ArrayList;
@@ -128,6 +132,7 @@ public class HomeFragment extends BaseFragment {
             // mRvAdapter.refreshData();
             mRvAdapter.setOnItemClickListener(onItemClickListener);
             mRvAdapter.setOnItemLongClickListener(onItemLongClickListener);
+            mRvAdapter.setHeaderClickListener(headerClickListener);
             mRvAdapter.refreshData(mRobots);
         }
         mRecyclerView.setAdapter(mRvAdapter);
@@ -164,5 +169,36 @@ public class HomeFragment extends BaseFragment {
         }
     };
 
+    private RobotRefreshRecyclerAdapter.HeaderClickListener headerClickListener = new RobotRefreshRecyclerAdapter.HeaderClickListener() {
+        @Override
+        public void onClickListener(View view, int index) {
+            switch (index) {
+                case 0:
+                    if(getActivity() != null) {
+                        ActivityUtil.toPostOrLogin(getActivity(), null);
+                        UmengUtil.onEvent(UmengUtil.POST_FROM_HOME_HEADER);
+                    }
+                    break;
+                case 1:
+                    if(getActivity() != null) {
+                        ActivityUtil.toActivity(getActivity(), GameListActivity.class);
+                        UmengUtil.onEvent(UmengUtil.GAME_FROM_HOME_HEADER);
+                    }
+                    break;
+                case 2:
+                    if(getActivity() != null) {
+                        ActivityUtil.toActivity(getActivity(), FindPhoneActivity.class);
+                        UmengUtil.onEvent(UmengUtil.FINEPHONE_FROM_HOME_HEADER);
+                    }
+                    break;
+                case 3:
+                    if(getActivity() != null) {
+                        ActivityUtil.toActivity(getActivity(), FlashLightActivity.class);
+                        UmengUtil.onEvent(UmengUtil.FLASHLIGHT_FROM_HOME_HEADER);
+                    }
+                    break;
+            }
+        }
+    };
 }
 

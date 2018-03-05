@@ -56,4 +56,10 @@ public class UmengUtil {
     public static final String ABOUT_SHARE = "3_about_share";
     public static final String ABOUT_LIKE = "3_about_like";
     public static final String FEED_DETAILS = "3_feed_details";
+
+
+    public static final String POST_FROM_HOME_HEADER = "3_post_from_home_header";
+    public static final String GAME_FROM_HOME_HEADER = "3_game_from_home_header";
+    public static final String FINEPHONE_FROM_HOME_HEADER = "3_findphone_from_home_header";
+    public static final String FLASHLIGHT_FROM_HOME_HEADER = "3_flashlight_from_home_header";
 }

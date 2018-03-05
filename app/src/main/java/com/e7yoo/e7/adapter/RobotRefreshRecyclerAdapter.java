@@ -63,7 +63,7 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
         switch (viewType) {
             case VIEW_TYPE_HEADER:
                 view = mInflater.inflate(R.layout.item_robot_header, parent, false);
-                viewHolder = new ViewHolderFooter(view);
+                viewHolder = new ViewHolderHeader(view);
                 break;
             case VIEW_TYPE_FOOTER:
                 view = mInflater.inflate(R.layout.item_robot_footer, parent, false);
@@ -100,6 +100,10 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
             ViewHolderFooter viewHolderFooter = (ViewHolderFooter) holder;
 
             addClickListener(viewHolderFooter.addTv, position);
+        } else if(holder instanceof ViewHolderHeader) {
+            ViewHolderHeader viewHolderHeader = (ViewHolderHeader) holder;
+
+            addHeaderClickListener(viewHolderHeader, position);
         }
         holder.itemView.setTag(position);
     }
@@ -117,6 +121,33 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
                 imageView.setImageResource(R.mipmap.sex_unknow_selected);
                 break;
         }
+    }
+
+    private void addHeaderClickListener(ViewHolderHeader viewHolderHeader, final int position) {
+        viewHolderHeader.btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onClickListener(v, 0);
+            }
+        });
+        viewHolderHeader.btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onClickListener(v, 1);
+            }
+        });
+        viewHolderHeader.btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onClickListener(v, 2);
+            }
+        });
+        viewHolderHeader.btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onClickListener(v, 3);
+            }
+        });
     }
 
     private void addClickListener(View view, final int position) {
@@ -198,14 +229,32 @@ public class RobotRefreshRecyclerAdapter extends RecyclerAdapter{
      * 头部item（用于展示功能按钮）
      */
     public static class ViewHolderHeader extends RecyclerView.ViewHolder {
-        public TextView addTv;
+        public View layout;
+        public TextView btn0;
+        public TextView btn1;
+        public TextView btn2;
+        public TextView btn3;
         public ViewHolderHeader(View view) {
             super(view);
-            addTv = view.findViewById(R.id.item_robot_add);
+            layout = view.findViewById(R.id.item_robot_headerlayout);
+            btn0 = view.findViewById(R.id.item_robot_header0);
+            btn1 = view.findViewById(R.id.item_robot_header1);
+            btn2 = view.findViewById(R.id.item_robot_header2);
+            btn3 = view.findViewById(R.id.item_robot_header3);
         }
     }
 
     public Robot getRobot(int position) {
+        position = position - HEADER_COUNT;
         return mRobots != null && mRobots.size() > position && position >= 0 ? mRobots.get(position) : null;
+    }
+
+    public interface HeaderClickListener {
+        void onClickListener(View view, int index);
+    }
+
+    private HeaderClickListener clickListener;
+    public void setHeaderClickListener(HeaderClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_robot_headerlayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/space"
     android:padding="@dimen/space_2x">
 
     <TextView
-        android:id="@+id/item_robot_header1"
+        android:id="@+id/item_robot_header0"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -19,7 +20,7 @@
         android:drawableTop="@mipmap/home_top_btn_post"
         android:padding="@dimen/space_4x"/>
     <TextView
-        android:id="@+id/item_robot_header2"
+        android:id="@+id/item_robot_header1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -32,7 +33,7 @@
         android:drawableTop="@mipmap/home_top_btn_game"
         android:padding="@dimen/space_4x"/>
     <TextView
-        android:id="@+id/item_robot_header3"
+        android:id="@+id/item_robot_header2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -45,7 +46,7 @@
         android:drawableTop="@mipmap/home_top_btn_findphone"
         android:padding="@dimen/space_4x"/>
     <TextView
-        android:id="@+id/item_robot_header4"
+        android:id="@+id/item_robot_header3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
