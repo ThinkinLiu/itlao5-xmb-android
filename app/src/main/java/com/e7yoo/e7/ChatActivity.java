@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
@@ -111,10 +112,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private EventManager mWpEventManager;
 
     private void init() {
-        mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this, new ComponentName(this, VoiceRecognitionService.class));
-        // 注册监听器
-        mSpeechRecognizer.setRecognitionListener(this);
-        mSpeechSynthesizer = TtsUtils.getSpeechSynthesizer(this, this, getVoice(mRobot));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(ChatActivity.this != null && !ChatActivity.this.isFinishing()) {
+                    mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(ChatActivity.this, new ComponentName(ChatActivity.this, VoiceRecognitionService.class));
+                    // 注册监听器
+                    mSpeechRecognizer.setRecognitionListener(ChatActivity.this);
+                    mSpeechSynthesizer = TtsUtils.getSpeechSynthesizer(ChatActivity.this, ChatActivity.this, getVoice(mRobot));
+                }
+            }
+        }, 1000);
     }
 
     private int getVoice(Robot robot) {
