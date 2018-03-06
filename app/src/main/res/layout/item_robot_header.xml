@@ -18,8 +18,8 @@
         android:textSize="@dimen/size_xl"
         android:drawablePadding="@dimen/space"
         android:drawableTop="@mipmap/home_top_btn_post"
-        android:paddingTop="@dimen/space_4x"
-        android:paddingBottom="@dimen/space_4x"/>
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingRight="@dimen/space_4x"/>
     <TextView
         android:id="@+id/item_robot_header1"
         android:layout_width="0dp"
@@ -32,8 +32,8 @@
         android:textSize="@dimen/size_xl"
         android:drawablePadding="@dimen/space"
         android:drawableTop="@mipmap/home_top_btn_game"
-        android:paddingTop="@dimen/space_4x"
-        android:paddingBottom="@dimen/space_4x"/>
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingRight="@dimen/space_4x"/>
     <TextView
         android:id="@+id/item_robot_header2"
         android:layout_width="0dp"
@@ -46,8 +46,8 @@
         android:textSize="@dimen/size_xl"
         android:drawablePadding="@dimen/space"
         android:drawableTop="@mipmap/home_top_btn_findphone"
-        android:paddingTop="@dimen/space_4x"
-        android:paddingBottom="@dimen/space_4x"/>
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingRight="@dimen/space_4x"/>
     <TextView
         android:id="@+id/item_robot_header3"
         android:layout_width="0dp"
@@ -60,7 +60,7 @@
         android:textSize="@dimen/size_xl"
         android:drawablePadding="@dimen/space"
         android:drawableTop="@mipmap/home_top_btn_flashlight"
-        android:paddingTop="@dimen/space_4x"
-        android:paddingBottom="@dimen/space_4x"/>
+        android:paddingLeft="@dimen/space_4x"
+        android:paddingRight="@dimen/space_4x"/>
 
 </LinearLayout>
