@@ -17,6 +17,7 @@ import com.e7yoo.e7.PushMsgDetailsActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
+import com.e7yoo.e7.VoiceActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.community.CollectFeedListActivity;
 import com.e7yoo.e7.community.FeedDetailActivity;
@@ -76,11 +77,18 @@ public class ActivityUtil {
         activity.startActivityForResult(intent, requestCode);
     }
 
-    public static void toSexActivityForResult(Activity activity, int titleResId, boolean showUnkoneSex, int sex,int requestCode) {
+    public static void toSexActivityForResult(Activity activity, int titleResId, boolean showUnknowSex, int sex,int requestCode) {
         Intent intent = new Intent(activity, SexActivity.class);
         intent.putExtra(Constant.INTENT_TITLE_RES_ID, titleResId);
-        intent.putExtra(Constant.INTENT_SHOW_UNKNOW_SEX, showUnkoneSex);
+        intent.putExtra(Constant.INTENT_SHOW_UNKNOW_SEX, showUnknowSex);
         intent.putExtra(Constant.INTENT_SEX, sex);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    public static void toVoiceActivityForResult(Activity activity, int titleResId, int voice, int requestCode) {
+        Intent intent = new Intent(activity, VoiceActivity.class);
+        intent.putExtra(Constant.INTENT_TITLE_RES_ID, titleResId);
+        intent.putExtra(Constant.INTENT_VOICE, voice);
         activity.startActivityForResult(intent, requestCode);
     }
 

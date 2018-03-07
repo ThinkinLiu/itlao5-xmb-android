@@ -40,7 +40,7 @@ public class Robot implements Serializable {
         this.sex = 2;
         this.score = 0;
         this.level = 0;
-        this.voice = 0;
+        this.voice = 4;
     }
 
     public Robot(Context context) {

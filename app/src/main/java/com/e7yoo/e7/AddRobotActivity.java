@@ -40,10 +40,11 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
     public static final int REQUEST_CODE_FOR_INPUT_NAME = 1003;
     public static final int REQUEST_CODE_FOR_INPUT_WELCOME = 1004;
     public static final int REQUEST_CODE_FOR_INPUT_SEX = 1005;
-    private View iconLayout, nameLayout, sexLayout, welcomeLayout, bgLayout, bgBlurLayout;
+    public static final int REQUEST_CODE_FOR_INPUT_VOICE = 1006;
+    private View iconLayout, nameLayout, sexLayout, voiceLayout, welcomeLayout, bgLayout, bgBlurLayout;
     private ImageView iconIv, bgIv;
     private ToggleButton bgBlurTb;
-    private TextView nameTv, sexTv, welcomeTv;
+    private TextView nameTv, sexTv, voiceTv, welcomeTv;
     private TextView saveTv;
     private View nameArrow;
     /**
@@ -68,6 +69,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         iconLayout = findViewById(R.id.add_robot_icon_layout);
         nameLayout = findViewById(R.id.add_robot_name_layout);
         sexLayout = findViewById(R.id.add_robot_sex_layout);
+        voiceLayout = findViewById(R.id.add_robot_voice_layout);
         welcomeLayout = findViewById(R.id.add_robot_welcome_layout);
         bgLayout = findViewById(R.id.add_robot_bg_layout);
         bgBlurLayout = findViewById(R.id.add_robot_bg_blur_layout);
@@ -77,6 +79,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         nameTv = (TextView) findViewById(R.id.add_robot_name_tv);
         nameArrow = findViewById(R.id.add_robot_name_arrow);
         sexTv = (TextView) findViewById(R.id.add_robot_sex_tv);
+        voiceTv = (TextView) findViewById(R.id.add_robot_voice_tv);
         welcomeTv = (TextView) findViewById(R.id.add_robot_welcome_tv);
         saveTv = (TextView) findViewById(R.id.add_robot_save);
     }
@@ -105,6 +108,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
                 }
                 nameTv.setText(name);
                 sexTv.setText(RobotUtil.getSexText(mRobot.getSex()));
+                voiceTv.setText(RobotUtil.getVoiceText(mRobot.getVoice()));
                 welcomeTv.setText(RobotUtil.getString(mRobot.getWelcome()));
                 Glide.with(this).load(mRobot.getBg()).into(bgIv);
                 bgIv.setTag(R.id.add_robot_bg_iv, mRobot.getBg());
@@ -122,6 +126,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
             nameLayout.setOnClickListener(this);
         }
         sexLayout.setOnClickListener(this);
+        voiceLayout.setOnClickListener(this);
         welcomeLayout.setOnClickListener(this);
         bgLayout.setOnClickListener(this);
         saveTv.setOnClickListener(this);
@@ -143,6 +148,9 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.add_robot_sex_layout:
                 ActivityUtil.toSexActivityForResult(this, R.string.add_robot_sex, true, RobotUtil.getSex(sexTv.getText().toString().trim()), REQUEST_CODE_FOR_INPUT_SEX);
+                break;
+            case R.id.add_robot_voice_layout:
+                ActivityUtil.toVoiceActivityForResult(this, R.string.add_robot_voice, true, RobotUtil.getVoice(voiceTv.getText().toString().trim()), REQUEST_CODE_FOR_INPUT_VOICE);
                 break;
             case R.id.add_robot_welcome_layout:
                 ActivityUtil.toInputActivityForResult(this, R.string.add_robot_welcome, 30, 0,
@@ -188,6 +196,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
         mRobot.setBg(String.valueOf(bgIv.getTag(R.id.add_robot_bg_iv)));
         mRobot.setBgblur(bgBlurTb.isChecked() ? 25 : 0);
         mRobot.setSex(RobotUtil.getSex(sexTv.getText().toString()));
+        mRobot.setVoice(RobotUtil.getVoice(voiceTv.getText().toString()));
         if (FLAG == 0) {
             long id = MessageDbHelper.getInstance(this).insertRobot(mRobot);
             mRobot.setId((int) id);
@@ -257,6 +266,11 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
                 case REQUEST_CODE_FOR_INPUT_SEX:
                     if(data != null && data.hasExtra(Constant.INTENT_INT)) {
                         sexTv.setText(RobotUtil.getSexText(data.getIntExtra(Constant.INTENT_INT, 0)));
+                    }
+                    return;
+                case REQUEST_CODE_FOR_INPUT_VOICE:
+                    if(data != null && data.hasExtra(Constant.INTENT_INT)) {
+                        voiceTv.setText(RobotUtil.getVoiceText(data.getIntExtra(Constant.INTENT_INT, 4)));
                     }
                     return;
             }

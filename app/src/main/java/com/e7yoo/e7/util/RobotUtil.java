@@ -39,6 +39,36 @@ public class RobotUtil {
         }
     }
 
+    public static String getVoiceText(int voice) {
+        switch (voice) {
+            case 0:
+                return E7App.mApp.getString(R.string.voice_female);
+            case 1:
+                return E7App.mApp.getString(R.string.voice_male);
+            case 2:
+                return E7App.mApp.getString(R.string.voice_male1);
+            case 3:
+                return E7App.mApp.getString(R.string.voice_male2);
+            case 4:
+            default:
+                return E7App.mApp.getString(R.string.voice_children);
+        }
+    }
+
+    public static int getVoice(String voice) {
+        if(E7App.mApp.getString(R.string.voice_female).equals(voice)) {
+            return 0;
+        } else if(E7App.mApp.getString(R.string.voice_male).equals(voice)) {
+            return 1;
+        } else if(E7App.mApp.getString(R.string.voice_male1).equals(voice)) {
+            return 2;
+        } else if(E7App.mApp.getString(R.string.voice_male2).equals(voice)) {
+            return 3;
+        } else {
+            return 4;
+        }
+    }
+
     public static int getDefaultIconResId(Robot robot) {
         if(robot != null && E7App.mApp.getString(R.string.mengmeng).equals(robot.getName())) {
             return R.mipmap.icon_mengmeng;

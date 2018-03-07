@@ -31,6 +31,7 @@
     <string name="add_robot_name">昵称</string>
     <string name="add_robot_sex">性别</string>
     <string name="add_robot_welcome">签名</string>
+    <string name="add_robot_voice">声音</string>
     <string name="add_robot_bg">背景</string>
     <string name="add_robot_bg_blur">背景模糊</string>
     <string name="add">添加</string>
@@ -50,9 +51,15 @@
     <string name="sex_male">男</string>
     <string name="sex_female">女</string>
     <string name="sex_unknow">保密</string>
+    <string name="voice_female">女声</string>
+    <string name="voice_male">男声</string>
+    <string name="voice_male1">特别男声</string>
+    <string name="voice_male2">情感男声</string>
+    <string name="voice_children">童声</string>
     <string name="input_name_hint">为您的萌伴取个名吧</string>
     <string name="input_welcome_hint">萌伴希望有一条帅气的个性签名哦</string>
     <string name="sex_hint">是男是女？不会是中性吧^_^</string>
+    <string name="voice_hint">希望萌伴的声音是什么样子呢</string>
     <string name="input_error">"萌萌"已经存在，换个更有爱的名字吧^_^</string>
 
 

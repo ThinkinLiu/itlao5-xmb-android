@@ -127,19 +127,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     private int getVoice(Robot robot) {
         int voice = 4; // 默认播放童音 0 (普通女声), 1 (普通男声), 2 (特别男声), 3 (情感男声), 4 (童声)
-//        if(robot.getId() > 0) { // 0是萌萌，语音播放童音
-//            switch (robot.getSex()) {
-//                case 0: // 保密，特别男声
-//                    voice = 2;
-//                    break;
-//                case 1: // 男，男声
-//                    voice = 1;
-//                    break;
-//                case 2: // 女，女声
-//                    voice = 0;
-//                    break;
-//            }
-//        }
+        if(robot.getVoice() > 4 || robot.getVoice() < 0) {
+            voice = 4;
+        }
         return voice;
     }
 
