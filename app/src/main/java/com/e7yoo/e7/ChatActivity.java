@@ -228,6 +228,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     private void refresh(Robot robot) {
         if(mRobot != null) {
+            if(robot.getVoice() != mRobot.getVoice()) {
+                mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, String.valueOf(getVoice(robot)));
+            }
             mRobot = robot;
             setTitleTv(mRobot.getName());
             if(getString(R.string.mengmeng).equals(mRobot.getName())) {
