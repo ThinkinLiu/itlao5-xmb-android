@@ -178,7 +178,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 count = count + CommConfig.getConfig().mMessageCount.newFansCount;
             }
             try {
-                ((MainActivity) getActivity()).showMinePoint(count);
+                if(getActivity() != null && !getActivity().isFinishing()) {
+                    ((MainActivity) getActivity()).showMinePoint(count);
+                }
             } catch (Throwable e) {
                 e.printStackTrace();
             }
