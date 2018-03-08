@@ -18,7 +18,7 @@
         android:id="@+id/voice_radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/space_4x"
+        android:layout_marginLeft="@dimen/space_10x"
         android:layout_marginTop="@dimen/space_6x"
         android:orientation="vertical">
 

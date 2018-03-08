@@ -46,7 +46,7 @@ public class VoiceActivity extends BaseActivity implements View.OnClickListener 
             if(titleResId > 0) {
                 setTitleTv(titleResId);
             }
-            initVoice(getIntent().getIntExtra(Constant.INTENT_VOICE, 0));
+            initVoice(getIntent().getIntExtra(Constant.INTENT_VOICE, 4));
         }
     }
 
