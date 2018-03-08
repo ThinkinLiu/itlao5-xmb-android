@@ -32,6 +32,7 @@ import com.jph.takephoto.model.TResult;
 import com.jph.takephoto.permission.InvokeListener;
 import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 
@@ -206,9 +207,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void toTakePhone(int flag) {
-        if (flag == 1) {
-            getTakePhoto().onPickFromGallery();
-        } else {
+        if (flag == TAKE_PHOTO_FOR_ICON) {
             CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
             CompressConfig compressConfig = new CompressConfig.Builder().setMaxSize(20 * 1024).setMaxPixel(300).create();
             getTakePhoto().onEnableCompress(compressConfig, true);
@@ -218,6 +217,8 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
             }
             Uri imageUri = Uri.fromFile(file);
             getTakePhoto().onPickFromGalleryWithCrop(imageUri, cropOptions);
+        } else {
+            getTakePhoto().onPickFromGallery();
         }
         this.mFlag = flag;
     }
@@ -281,7 +282,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void takeSuccess(TResult result) {
-        if (mFlag == 0) {
+        if (mFlag == TAKE_PHOTO_FOR_ICON) {
             String path = result.getImage().getCompressPath();
             int resIcon = RobotUtil.getDefaultIconResId(mRobot);
             RequestOptions options = new RequestOptions();
@@ -297,7 +298,8 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void takeFail(TResult result, String msg) {
-
+        System.out.println("msg:" + msg);
+        CrashReport.postCatchedException(new Throwable(msg));
     }
 
     @Override
