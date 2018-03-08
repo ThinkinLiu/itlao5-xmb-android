@@ -9,8 +9,6 @@ import android.widget.RadioGroup;
 
 import com.e7yoo.e7.util.Constant;
 
-import static com.e7yoo.e7.util.Constant.INTENT_SHOW_UNKNOW_SEX;
-
 public class VoiceActivity extends BaseActivity implements View.OnClickListener {
     private RadioGroup mRadioGroup;
     private RadioButton mFemaleRadioBtn;
