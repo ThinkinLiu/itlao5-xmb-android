@@ -2,16 +2,12 @@ package com.e7yoo.e7;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.IdRes;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
-import com.e7yoo.e7.util.RobotUtil;
-import com.e7yoo.e7.util.TastyToastUtil;
 
 import static com.e7yoo.e7.util.Constant.INTENT_SHOW_UNKNOW_SEX;
 
@@ -58,31 +54,57 @@ public class SexActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initViewListener() {
+        mMaleRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
+        mFemaleRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
+        mUnknowRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
     }
+
+    CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            updateDrawable(mMaleRadioBtn, false);
+            updateDrawable(mFemaleRadioBtn, false);
+            updateDrawable(mUnknowRadioBtn, false);
+            updateDrawable(buttonView, isChecked);
+        }
+    };
 
     /**
      * 0保密， 1男 2女
      * @param sex
      */
     private void initSex(int sex) {
-        mMaleRadioBtn.setChecked(false);
-        mFemaleRadioBtn.setChecked(false);
-        mUnknowRadioBtn.setChecked(false);
+        setChecked(mMaleRadioBtn, false);
+        setChecked(mFemaleRadioBtn, false);
+        setChecked(mUnknowRadioBtn, false);
         switch (sex) {
             case 1:
-                mMaleRadioBtn.setChecked(true);
+                setChecked(mMaleRadioBtn, true);
                 break;
             case 2:
-                mFemaleRadioBtn.setChecked(true);
+                setChecked(mFemaleRadioBtn, true);
                 break;
             case 0:
             default:
                 if(mUnknowRadioBtn.getVisibility() == View.VISIBLE) {
-                    mUnknowRadioBtn.setChecked(true);
+                    setChecked(mUnknowRadioBtn, true);
                 } else {
-                    mMaleRadioBtn.setChecked(true);
+                    setChecked(mMaleRadioBtn, true);
                 }
                 break;
+        }
+    }
+
+    private void setChecked(CompoundButton radioButton, boolean checked) {
+        radioButton.setChecked(checked);
+        updateDrawable(radioButton, checked);
+    }
+
+    private void updateDrawable(CompoundButton radioButton, boolean checked) {
+        if(checked) {
+            radioButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.radio_selected, 0, 0, 0);
+        } else {
+            radioButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.radio_unselected, 0, 0, 0);
         }
     }
 
