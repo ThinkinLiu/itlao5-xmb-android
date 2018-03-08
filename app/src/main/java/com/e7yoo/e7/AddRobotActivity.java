@@ -150,7 +150,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
                 ActivityUtil.toSexActivityForResult(this, R.string.add_robot_sex, true, RobotUtil.getSex(sexTv.getText().toString().trim()), REQUEST_CODE_FOR_INPUT_SEX);
                 break;
             case R.id.add_robot_voice_layout:
-                ActivityUtil.toVoiceActivityForResult(this, R.string.add_robot_voice, true, RobotUtil.getVoice(voiceTv.getText().toString().trim()), REQUEST_CODE_FOR_INPUT_VOICE);
+                ActivityUtil.toVoiceActivityForResult(this, R.string.add_robot_voice, RobotUtil.getVoice(voiceTv.getText().toString().trim()), REQUEST_CODE_FOR_INPUT_VOICE);
                 break;
             case R.id.add_robot_welcome_layout:
                 ActivityUtil.toInputActivityForResult(this, R.string.add_robot_welcome, 30, 0,
