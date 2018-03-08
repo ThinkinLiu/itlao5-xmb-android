@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_4x"
         android:layout_marginTop="@dimen/space_6x"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/voice_radio_btn_female"
