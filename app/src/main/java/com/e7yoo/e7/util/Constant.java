@@ -48,7 +48,7 @@ public class Constant {
     public static final String INTENT_INT = "int";
     public static final String INTENT_SHOW_UNKNOW_SEX = "show_unknow_sex";
     public static final String INTENT_SEX = "sex";
-    public static final String INTENT_VOICE = "sex";
+    public static final String INTENT_VOICE = "voice";
 
 
     public static final String SP_IS_NEED_INIT_ROBOT = "is_need_init_robot";
