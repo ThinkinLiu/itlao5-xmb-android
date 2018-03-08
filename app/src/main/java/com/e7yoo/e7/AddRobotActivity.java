@@ -6,9 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -19,7 +17,6 @@ import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
-import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.RobotUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.jph.takephoto.app.TakePhoto;
@@ -270,10 +267,14 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
                     }
                     return;
                 case REQUEST_CODE_FOR_INPUT_VOICE:
-                    if(data != null && data.hasExtra(Constant.INTENT_INT)) {
-                        voiceTv.setText(RobotUtil.getVoiceText(data.getIntExtra(Constant.INTENT_INT, 4)));
+                    try {
+                        if(data != null && data.hasExtra(Constant.INTENT_INT)) {
+                            voiceTv.setText(RobotUtil.getVoiceText(data.getIntExtra(Constant.INTENT_INT, 4)));
+                        }
+                        return;
+                    }catch (Throwable e) {
+                        // 图片选择onPickFromGallery也是1006
                     }
-                    return;
             }
         }
         getTakePhoto().onActivityResult(requestCode, resultCode, data);
@@ -304,7 +305,7 @@ public class AddRobotActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void takeCancel() {
-
+        System.out.println("takeCancel:");
     }
 
     @Override

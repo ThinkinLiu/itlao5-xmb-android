@@ -118,14 +118,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private static final int TAKE_PHOTO_FOR_ICON = 0;
-    private int mFlag = TAKE_PHOTO_FOR_ICON;
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.info_icon_layout:
-                toTakePhone(TAKE_PHOTO_FOR_ICON);
+                toTakePhone();
                 break;
             case R.id.info_name_layout:
                 ActivityUtil.toInputActivityForResult(this, R.string.info_name, 20, 1,
@@ -182,21 +179,16 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         return result;
     }
 
-    private void toTakePhone(int flag) {
-        if (flag == 1) {
-            getTakePhoto().onPickFromGallery();
-        } else {
-            CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
-            CompressConfig compressConfig = new CompressConfig.Builder().setMaxSize(20 * 1024).setMaxPixel(300).create();
-            getTakePhoto().onEnableCompress(compressConfig, true);
-            File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            Uri imageUri = Uri.fromFile(file);
-            getTakePhoto().onPickFromGalleryWithCrop(imageUri, cropOptions);
+    private void toTakePhone() {
+        CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
+        CompressConfig compressConfig = new CompressConfig.Builder().setMaxSize(20 * 1024).setMaxPixel(300).create();
+        getTakePhoto().onEnableCompress(compressConfig, true);
+        File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
         }
-        this.mFlag = flag;
+        Uri imageUri = Uri.fromFile(file);
+        getTakePhoto().onPickFromGalleryWithCrop(imageUri, cropOptions);
     }
 
     private InvokeParam invokeParam;
@@ -250,10 +242,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void takeSuccess(TResult result) {
-        if (mFlag == TAKE_PHOTO_FOR_ICON) {
-            String path = result.getImage().getCompressPath();
-            uploadImg(path);
-        }
+        String path = result.getImage().getCompressPath();
+        uploadImg(path);
     }
 
     private void uploadImg(String path) {
