@@ -1,7 +1,6 @@
 package com.e7yoo.e7.community;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
-import com.umeng.comm.core.beans.ImageItem;
 
 import java.util.ArrayList;
 import java.util.List;

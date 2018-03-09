@@ -2,7 +2,6 @@ package com.e7yoo.e7.game.plane;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -6,9 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -17,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.RobotUtil;

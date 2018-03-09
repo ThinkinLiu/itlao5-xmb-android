@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.e7yoo.e7.R;
 

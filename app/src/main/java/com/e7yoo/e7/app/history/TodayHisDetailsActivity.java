@@ -1,6 +1,5 @@
 package com.e7yoo.e7.app.history;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;

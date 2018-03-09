@@ -10,11 +10,6 @@ import android.util.Log;
 
 import java.io.File;
 
-/**
- * ͼƬѡ��/����
- *
- * @Author KenChung
- */
 public class ImageUtil {
 
     private static final String TAG ="ImageUtil";
@@ -26,7 +21,7 @@ public class ImageUtil {
     }
 
     /**
-     * ���պ󷵻�
+     * 大图选择
      */
     public static Intent takeBigPicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

@@ -1,22 +1,17 @@
 package com.e7yoo.e7;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.View.OnClickListener;
 
-import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.PushMsgRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.model.PushMsg;
-import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.RandomUtil;
 
 import java.util.ArrayList;
 

@@ -3,8 +3,6 @@ package com.e7yoo.e7.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.e7yoo.e7.model.Robot;
-
 /**
  * Created by Administrator on 2017/9/19.
  */

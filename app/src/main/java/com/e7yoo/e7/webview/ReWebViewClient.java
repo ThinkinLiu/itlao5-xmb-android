@@ -11,9 +11,6 @@ import android.webkit.WebViewClient;
 
 import com.e7yoo.e7.E7App;
 
-import java.io.File;
-import java.io.FileInputStream;
-
 
 public class ReWebViewClient extends WebViewClient {
 

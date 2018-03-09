@@ -1,6 +1,5 @@
 package com.e7yoo.e7.util;
 
-import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;

@@ -1,7 +1,6 @@
 package com.e7yoo.e7.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.text.TextUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;

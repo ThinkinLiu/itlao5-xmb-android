@@ -1,33 +1,25 @@
 package com.e7yoo.e7.community;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
-import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.view.CircleGridView;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/9/25.

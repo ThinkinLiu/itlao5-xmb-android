@@ -9,15 +9,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.e7yoo.e7.model.Robot;
-import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.BaseBeanUtil;
-import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.RobotUtil;
@@ -42,7 +38,6 @@ import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class InfoActivity extends BaseActivity implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener {
 

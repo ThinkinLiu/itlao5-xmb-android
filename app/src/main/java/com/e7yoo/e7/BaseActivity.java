@@ -18,9 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.util.CheckPermissionUtil;
-import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.SystemBarTintManager;
 import com.tencent.bugly.crashreport.CrashReport;

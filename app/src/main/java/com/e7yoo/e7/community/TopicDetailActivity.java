@@ -1,10 +1,6 @@
 package com.e7yoo.e7.community;
 
-import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -24,16 +20,13 @@ import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
-import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
-import com.umeng.comm.core.nets.responses.ProfileResponse;
 import com.umeng.comm.core.nets.responses.TopicItemResponse;
-import com.umeng.comm.core.nets.responses.TopicResponse;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

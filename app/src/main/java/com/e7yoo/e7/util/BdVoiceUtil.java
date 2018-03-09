@@ -1,7 +1,6 @@
 package com.e7yoo.e7.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.speech.SpeechRecognizer;
 import android.util.AndroidRuntimeException;
@@ -10,7 +9,6 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.tts.client.SpeechSynthesizer;
-import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
 
 import org.json.JSONException;

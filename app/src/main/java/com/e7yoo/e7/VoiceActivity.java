@@ -72,7 +72,7 @@ public class VoiceActivity extends BaseActivity implements View.OnClickListener 
 
     /**
      * 0女声， 1男声 2特别男声 3情感男声 4童声
-     * @param voice
+     * @param voice 声音类型
      */
     private void initVoice(int voice) {
         setChecked(mFemaleRadioBtn, false);

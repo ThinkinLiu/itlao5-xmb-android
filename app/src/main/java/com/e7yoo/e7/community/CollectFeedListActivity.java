@@ -1,13 +1,11 @@
 package com.e7yoo.e7.community;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
-import com.umeng.comm.core.beans.Topic;
 
 /**
  * Created by andy on 2017/10/11.

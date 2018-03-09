@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PushMsg;
-import com.e7yoo.e7.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

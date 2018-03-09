@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.e7yoo.e7.util.DebugUtil;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.Robot;
+import com.e7yoo.e7.util.DebugUtil;
 import com.e7yoo.e7.util.RobotUtil;
 
 import java.util.ArrayList;

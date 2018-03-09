@@ -1,9 +1,7 @@
 package com.e7yoo.e7.community;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.E7App;
-import com.e7yoo.e7.PostActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.CircleGvAdapterUtil;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
@@ -28,7 +25,6 @@ import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.view.CircleGridView;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
@@ -36,9 +32,6 @@ import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.SimpleResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

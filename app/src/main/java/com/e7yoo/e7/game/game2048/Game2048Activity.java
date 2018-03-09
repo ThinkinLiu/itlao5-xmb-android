@@ -1,14 +1,12 @@
 package com.e7yoo.e7.game.game2048;
 
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.util.BitmapUtils;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 

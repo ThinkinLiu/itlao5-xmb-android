@@ -7,28 +7,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.e7yoo.e7.adapter.CircleMsgRefreshRecyclerAdapter;
-import com.e7yoo.e7.adapter.MsgRefreshRecyclerAdapter;
-import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.net.Net;
-import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.CommonUtil;
-import com.e7yoo.e7.util.Constant;
-import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.MessageChat;
 import com.umeng.comm.core.constants.ErrorCode;
-import com.umeng.comm.core.db.ctrl.CommentDBAPI;
-import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.MessageChatListResponse;
 import com.umeng.comm.core.nets.responses.MessageChatResponse;
 import com.umeng.comm.core.nets.responses.MessageSessionResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

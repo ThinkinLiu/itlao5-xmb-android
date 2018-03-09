@@ -11,15 +11,12 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.TextView;
 
-import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
-
-import cn.jiguang.share.android.api.JShareInterface;
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
 

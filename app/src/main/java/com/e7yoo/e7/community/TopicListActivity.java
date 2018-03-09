@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.util.TastyToastUtil;
 import com.umeng.comm.core.beans.Topic;
 
 /**

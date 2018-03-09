@@ -17,7 +17,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
-import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 
 import java.util.ArrayList;

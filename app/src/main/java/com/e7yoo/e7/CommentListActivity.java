@@ -10,7 +10,6 @@ import com.e7yoo.e7.adapter.CommentListRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
-import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;

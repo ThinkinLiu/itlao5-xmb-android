@@ -1,7 +1,6 @@
 package com.e7yoo.e7.community;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.umeng.comm.core.beans.BaseBean;
-import com.umeng.comm.core.beans.Comment;
-import com.umeng.comm.core.beans.FeedItem;
 
 import java.util.ArrayList;
 import java.util.List;

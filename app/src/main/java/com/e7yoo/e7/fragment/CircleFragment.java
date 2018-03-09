@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import com.e7yoo.e7.community.RecomFeedsFragment;
 import com.e7yoo.e7.community.TopicListFragment;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
-import com.umeng.comm.core.utils.CommonUtils;
 
 import java.util.ArrayList;
 

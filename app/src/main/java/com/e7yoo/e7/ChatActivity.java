@@ -59,7 +59,6 @@ import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.BdVoiceUtil;
 import com.e7yoo.e7.util.CheckPermissionUtil;
-import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.GameInfoUtil;
@@ -79,7 +78,6 @@ import com.umeng.comm.core.utils.CommonUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2017/8/31.

@@ -11,13 +11,10 @@ import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
 import com.umeng.comm.core.beans.CommConfig;
-import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Like;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
-import com.umeng.comm.core.nets.responses.FeedCommentResponse;
 import com.umeng.comm.core.nets.responses.LikeMeResponse;
-import com.umeng.comm.core.nets.responses.LikesResponse;
 
 import java.util.List;
 

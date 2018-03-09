@@ -2,7 +2,6 @@ package com.e7yoo.e7.model;
 
 import android.content.Context;
 
-import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 
 import java.io.Serializable;

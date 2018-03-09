@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.e7yoo.e7.E7App;
-import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.PrivateMsg.Type;
 import com.e7yoo.e7.model.PushMsg;
@@ -17,9 +15,7 @@ import com.e7yoo.e7.model.Robot;
 import com.google.gson.Gson;
 import com.tencent.bugly.crashreport.CrashReport;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,5 @@
 package com.e7yoo.e7.util;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

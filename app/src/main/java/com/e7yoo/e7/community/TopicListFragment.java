@@ -9,8 +9,6 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.Constant;
-import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;

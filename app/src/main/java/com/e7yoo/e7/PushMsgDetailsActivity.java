@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.model.PushMsg;
-import com.e7yoo.e7.model.TodayHisEntity;
 import com.e7yoo.e7.util.ActivityUtil;
 
 public class PushMsgDetailsActivity extends BaseActivity implements OnClickListener {

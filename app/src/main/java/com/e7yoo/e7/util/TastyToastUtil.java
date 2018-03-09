@@ -3,7 +3,6 @@ package com.e7yoo.e7.util;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.e7yoo.e7.E7App;
 import com.sdsmdg.tastytoast.TastyToast;
 
 /**

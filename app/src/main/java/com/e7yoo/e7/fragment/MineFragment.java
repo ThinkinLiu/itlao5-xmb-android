@@ -24,7 +24,6 @@ import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.utils.CommonUtils;

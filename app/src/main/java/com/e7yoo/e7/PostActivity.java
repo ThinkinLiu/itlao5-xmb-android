@@ -41,9 +41,6 @@ import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedItemResponse;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 
-import org.w3c.dom.Text;
-
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

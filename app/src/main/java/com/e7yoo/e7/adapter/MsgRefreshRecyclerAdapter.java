@@ -11,10 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.DbThreadPool;

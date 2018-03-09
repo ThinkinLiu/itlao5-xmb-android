@@ -1,7 +1,5 @@
 package com.e7yoo.e7.util;
 
-import android.content.Context;
-
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PrivateMsg;

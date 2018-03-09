@@ -1,7 +1,5 @@
 package com.e7yoo.e7.model;
 
-import android.view.View;
-
 /**
  * Created by Administrator on 2017/9/21.
  */

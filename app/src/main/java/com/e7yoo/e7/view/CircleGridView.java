@@ -6,7 +6,6 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 
 /**
  * Created by Administrator on 2017/10/12.

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.model.PushMsg;
-import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;

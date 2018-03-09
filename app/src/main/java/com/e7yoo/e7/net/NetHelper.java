@@ -2,8 +2,8 @@ package com.e7yoo.e7.net;
 
 import android.os.Message;
 
-import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.E7App;
+import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.OsUtil;
 
 import org.greenrobot.eventbus.EventBus;

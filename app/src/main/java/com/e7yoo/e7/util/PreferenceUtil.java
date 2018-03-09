@@ -3,12 +3,10 @@ package com.e7yoo.e7.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 
 import com.e7yoo.e7.E7App;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public class PreferenceUtil {

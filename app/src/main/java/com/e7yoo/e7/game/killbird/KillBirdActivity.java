@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 
 import com.e7yoo.e7.BaseActivity;

@@ -7,13 +7,8 @@ import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
-import com.e7yoo.e7.E7App;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class TtsUtils {
 

@@ -16,8 +16,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.GameInfo;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 

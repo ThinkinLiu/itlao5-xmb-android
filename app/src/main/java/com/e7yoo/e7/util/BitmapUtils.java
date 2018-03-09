@@ -1,13 +1,5 @@
 package com.e7yoo.e7.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.sdsmdg.tastytoast.TastyToast;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +13,14 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
 import android.view.View;
+
+import com.sdsmdg.tastytoast.TastyToast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public final class BitmapUtils {
     /**

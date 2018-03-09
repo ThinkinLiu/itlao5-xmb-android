@@ -15,7 +15,6 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.view.RecyclerViewDivider;
