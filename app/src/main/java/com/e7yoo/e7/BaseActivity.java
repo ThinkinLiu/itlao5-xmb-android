@@ -23,6 +23,7 @@ import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.ProgressDialogEx;
 import com.e7yoo.e7.util.SystemBarTintManager;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,7 +50,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         initView();
         EventBus.getDefault().register(this);
-        initSettings();
+        try {
+            initSettings();
+        } catch (Throwable e) {
+            // getIntent().hasExtra(出现NullPointerException  （activeandroid.Cache.getTableInfo）主要是后台重新进入时出现
+            CrashReport.postCatchedException(e);
+            finish();
+            return;
+        }
         initViewListener();
     }
 
