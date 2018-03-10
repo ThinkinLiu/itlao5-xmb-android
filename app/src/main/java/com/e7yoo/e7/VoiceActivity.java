@@ -3,7 +3,6 @@ package com.e7yoo.e7;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -51,60 +50,30 @@ public class VoiceActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initViewListener() {
-        mFemaleRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
-        mMaleRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
-        mMale1RadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
-        mMale2RadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
-        mChildrenRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
     }
-
-    CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            updateDrawable(buttonView, isChecked);
-        }
-    };
 
     /**
      * 0女声， 1男声 2特别男声 3情感男声 4童声
      * @param voice 声音类型
      */
     private void initVoice(int voice) {
-        setChecked(mFemaleRadioBtn, false);
-        setChecked(mMaleRadioBtn, false);
-        setChecked(mMale1RadioBtn, false);
-        setChecked(mMale2RadioBtn, false);
-        setChecked(mChildrenRadioBtn, false);
         switch (voice) {
             case 0:
-                setChecked(mFemaleRadioBtn, true);
+                mRadioGroup.check(R.id.voice_radio_btn_female);
                 break;
             case 1:
-                setChecked(mMaleRadioBtn, true);
+                mRadioGroup.check(R.id.voice_radio_btn_male);
                 break;
             case 2:
-                setChecked(mMale1RadioBtn, true);
+                mRadioGroup.check(R.id.voice_radio_btn_male1);
                 break;
             case 3:
-                setChecked(mMale2RadioBtn, true);
+                mRadioGroup.check(R.id.voice_radio_btn_male2);
                 break;
             case 4:
             default:
-                setChecked(mChildrenRadioBtn, true);
+                mRadioGroup.check(R.id.voice_radio_btn_children);
                 break;
-        }
-    }
-
-    private void setChecked(CompoundButton radioButton, boolean checked) {
-        radioButton.setChecked(checked);
-        updateDrawable(radioButton, checked);
-    }
-
-    private void updateDrawable(CompoundButton radioButton, boolean checked) {
-        if(checked) {
-            radioButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.radio_selected, 0, 0, 0);
-        } else {
-            radioButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.radio_unselected, 0, 0, 0);
         }
     }
 

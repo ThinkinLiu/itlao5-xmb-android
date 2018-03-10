@@ -3,7 +3,6 @@ package com.e7yoo.e7;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -54,54 +53,28 @@ public class SexActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initViewListener() {
-        mMaleRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
-        mFemaleRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
-        mUnknowRadioBtn.setOnCheckedChangeListener(onCheckedChangeListener);
     }
-
-    CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            updateDrawable(buttonView, isChecked);
-        }
-    };
 
     /**
      * 0保密， 1男 2女
      * @param sex
      */
     private void initSex(int sex) {
-        setChecked(mMaleRadioBtn, false);
-        setChecked(mFemaleRadioBtn, false);
-        setChecked(mUnknowRadioBtn, false);
         switch (sex) {
             case 1:
-                setChecked(mMaleRadioBtn, true);
+                mRadioGroup.check(R.id.sex_radio_btn_male);
                 break;
             case 2:
-                setChecked(mFemaleRadioBtn, true);
+                mRadioGroup.check(R.id.sex_radio_btn_female);
                 break;
             case 0:
             default:
                 if(mUnknowRadioBtn.getVisibility() == View.VISIBLE) {
-                    setChecked(mUnknowRadioBtn, true);
+                    mRadioGroup.check(R.id.sex_radio_btn_unknow);
                 } else {
-                    setChecked(mMaleRadioBtn, true);
+                    mRadioGroup.check(R.id.sex_radio_btn_male);
                 }
                 break;
-        }
-    }
-
-    private void setChecked(CompoundButton radioButton, boolean checked) {
-        radioButton.setChecked(checked);
-        updateDrawable(radioButton, checked);
-    }
-
-    private void updateDrawable(CompoundButton radioButton, boolean checked) {
-        if(checked) {
-            radioButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.radio_selected, 0, 0, 0);
-        } else {
-            radioButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.radio_unselected, 0, 0, 0);
         }
     }
 
