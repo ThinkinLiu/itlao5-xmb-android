@@ -61,11 +61,6 @@ public class VoiceActivity extends BaseActivity implements View.OnClickListener 
     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            updateDrawable(mFemaleRadioBtn, false);
-            updateDrawable(mMaleRadioBtn, false);
-            updateDrawable(mMale1RadioBtn, false);
-            updateDrawable(mMale2RadioBtn, false);
-            updateDrawable(mChildrenRadioBtn, false);
             updateDrawable(buttonView, isChecked);
         }
     };

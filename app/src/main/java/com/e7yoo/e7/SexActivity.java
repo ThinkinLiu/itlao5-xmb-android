@@ -62,9 +62,6 @@ public class SexActivity extends BaseActivity implements View.OnClickListener {
     CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            updateDrawable(mMaleRadioBtn, false);
-            updateDrawable(mFemaleRadioBtn, false);
-            updateDrawable(mUnknowRadioBtn, false);
             updateDrawable(buttonView, isChecked);
         }
     };

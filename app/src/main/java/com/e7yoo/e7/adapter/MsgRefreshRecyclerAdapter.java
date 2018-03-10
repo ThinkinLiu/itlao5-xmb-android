@@ -167,7 +167,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderSend.itemMsgTime.setBackgroundResource(0);
             }
             viewHolderSend.itemMsgContent.setText(mMsgs.get(position).getContent());
-            if(mCommUser != null && TextUtils.isEmpty(mCommUser.iconUrl)) {
+            if(mCommUser != null && !TextUtils.isEmpty(mCommUser.iconUrl)) {
                 RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
                 Glide.with(mContext).load(mCommUser.iconUrl).apply(options).into(viewHolderSend.itemMsgIcon);
