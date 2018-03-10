@@ -124,8 +124,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private int getVoice(Robot robot) {
-        int voice = 4; // 默认播放童音 0 (普通女声), 1 (普通男声), 2 (特别男声), 3 (情感男声), 4 (童声)
-        if(robot.getVoice() > 4 || robot.getVoice() < 0) {
+        if(robot == null) {
+            return 4;
+        }
+        int voice = robot.getVoice(); // 默认播放童音 0 (普通女声), 1 (普通男声), 2 (特别男声), 3 (情感男声), 4 (童声)
+        if(voice > 4 || robot.getVoice() < 0) {
             voice = 4;
         }
         return voice;
@@ -225,8 +228,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void refresh(Robot robot) {
+        if(robot == null) {
+            return;
+        }
         if(mRobot != null) {
-            if(robot.getVoice() != mRobot.getVoice()) {
+            if(robot.getVoice() != mRobot.getVoice() && mSpeechSynthesizer != null) {
                 mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, String.valueOf(getVoice(robot)));
             }
             mRobot = robot;
