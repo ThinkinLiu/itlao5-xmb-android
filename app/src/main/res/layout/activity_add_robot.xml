@@ -165,6 +165,45 @@
                         app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
                 </LinearLayout>
 
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_1dp"
+                    android:background="@color/color_seperator" />
+                <LinearLayout
+                    android:id="@+id/add_robot_voice_tb_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector2"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_3x">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/space_2x"
+                        android:layout_marginRight="@dimen/space_4x"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="@string/add_robot_voice_tb"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/size_xl" />
+
+                    <ToggleButton
+                        android:id="@+id/add_robot_voice_tb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:button="@drawable/btn_checkbox"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:textOff=""
+                        android:textOn="" />
+                </LinearLayout>-->
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/space_1dp"

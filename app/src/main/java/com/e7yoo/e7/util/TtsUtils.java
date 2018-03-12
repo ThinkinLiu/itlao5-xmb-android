@@ -100,7 +100,7 @@ public class TtsUtils {
 		} else {
 			// 授权失败
 			AuthInfo authInfo2 = mSpeechSynthesizer.auth(TtsMode.ONLINE);
-			if (authInfo.isSuccess()) {
+			if (authInfo2.isSuccess()) {
 				mSpeechSynthesizer.initTts(TtsMode.ONLINE);
 				// TODO
 				// CrashReport.postCatchedException(new Exception("百度tts MIX授权失败"));
