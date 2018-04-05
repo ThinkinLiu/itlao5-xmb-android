@@ -73,7 +73,6 @@ import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.TtsUtils;
 import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.view.BlurTransformation;
-import com.umeng.comm.core.utils.CommonUtils;
 
 import org.json.JSONObject;
 
@@ -175,11 +174,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        if(CommonUtils.isLogin(this)) {
-            mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot, CommonUtils.getLoginUser(this));
-        } else {
-            mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot, null);
-        }
+        mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot);
         mRecyclerView.setAdapter(mRvAdapter);
         mHomeSRLayout.setColorSchemeResources(R.color.titlebar_bg);
 
@@ -849,12 +844,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 toShare(msg);
             }
         }));
-        textSets.add(new TextSet(R.string.chat_long_click_post, false, new View.OnClickListener() {
+        /*textSets.add(new TextSet(R.string.chat_long_click_post, false, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toPost(msg);
             }
-        }));
+        }));*/
         textSets.add(new TextSet(R.string.chat_long_click_delete, false, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -875,12 +870,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         ShareDialogUtil.show(this, null, getString(R.string.chat_long_click_share_title, mRobot != null ? mRobot.getName() : getString(R.string.mengmeng)), msg.getContent(), null);
     }
 
-    private void toPost(PrivateMsg msg) {
+    /*private void toPost(PrivateMsg msg) {
         boolean isLogin = ActivityUtil.toPostOrLoginText(this, msg.getContent());
         if(!isLogin) {
             TastyToastUtil.toast(this, R.string.chat_to_post_login_hint);
         }
-    }
+    }*/
 
     private void toDelete(int position, PrivateMsg msg) {
         MessageDbHelper.getInstance(this).deleteMessageInfo(msg.getId());

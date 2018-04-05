@@ -13,13 +13,6 @@ import android.widget.TextView;
 
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.ViewPagerAdapter;
-import com.e7yoo.e7.community.FollowedFeedsFragment;
-import com.e7yoo.e7.community.HotFeedsFragmentFeed;
-import com.e7yoo.e7.community.RealtimeFeedsFragment;
-import com.e7yoo.e7.community.RecomFeedsFragment;
-import com.e7yoo.e7.community.TopicListFragment;
-import com.e7yoo.e7.util.ActivityUtil;
-import com.e7yoo.e7.util.Constant;
 
 import java.util.ArrayList;
 
@@ -29,7 +22,6 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     private final ArrayList<BaseFragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
-    protected ImageView mPostIv;
 
     public CircleFragment() {
         // Required empty public constructor
@@ -37,19 +29,6 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onEventMainThread(Message msg) {
-        switch (msg.what) {
-            case Constant.EVENT_BUS_POST_FEED_SUCCESS:
-            case Constant.EVENT_BUS_DELETE_FEED_SUCCESS:
-                if(fragments != null) {
-                    int size = fragments.size() - 1; // 最后一个是话题，不需要接受EVENT_BUS_POST_FEED_SUCCESS和EVENT_BUS_DELETE_FEED_SUCCESS消息
-                    for(int i = 0; i < size; i++) {
-                        if (fragments.get(i) != null) {
-                            fragments.get(i).onEventMainThread(msg);
-                        }
-                    }
-                }
-                break;
-        }
     }
 
     public static CircleFragment newInstance() {
@@ -73,7 +52,6 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
             mFollowedTv = mRootView.findViewById(R.id.circle_followed);
             mPlateTv = mRootView.findViewById(R.id.circle_plate);
             mViewPager = mRootView.findViewById(R.id.circle_viewpager);
-            mPostIv = mRootView.findViewById(R.id.circle_post);
         }
         return mRootView;
     }
@@ -81,11 +59,11 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if(mViewPagerAdapter == null) {
-            fragments.add(RealtimeFeedsFragment.newInstance());
-            fragments.add(HotFeedsFragmentFeed.newInstance());
-            fragments.add(RecomFeedsFragment.newInstance());
-            fragments.add(FollowedFeedsFragment.newInstance());
-            fragments.add(TopicListFragment.newInstance());
+//            fragments.add(RealtimeFeedsFragment.newInstance());
+//            fragments.add(HotFeedsFragmentFeed.newInstance());
+//            fragments.add(RecomFeedsFragment.newInstance());
+//            fragments.add(FollowedFeedsFragment.newInstance());
+//            fragments.add(TopicListFragment.newInstance());
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
             setSelectedTv(mAllTv);
         }
@@ -95,7 +73,6 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
         mRecomTv.setOnClickListener(this);
         mFollowedTv.setOnClickListener(this);
         mPlateTv.setOnClickListener(this);
-        mPostIv.setOnClickListener(this);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -142,18 +119,6 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
                 setSelectedTv(mPlateTv);
                 mViewPager.setCurrentItem(4);
                 break;
-            case R.id.circle_post:
-                if(getActivity() != null) {
-                    ActivityUtil.toPostOrLogin(getActivity(), null);
-                }
-                break;
-        }
-    }
-
-
-    public void setPostIvVisibility(int visibility) {
-        if(mPostIv != null) {
-            mPostIv.setVisibility(visibility);
         }
     }
 

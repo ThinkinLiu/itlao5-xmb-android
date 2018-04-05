@@ -33,11 +33,6 @@ import com.e7yoo.e7.util.PreferenceUtil;
 import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.umeng.comm.core.beans.CommConfig;
-import com.umeng.comm.core.constants.ErrorCode;
-import com.umeng.comm.core.listeners.Listeners;
-import com.umeng.comm.core.nets.responses.MessageCountResponse;
-import com.umeng.comm.core.utils.CommonUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -76,12 +71,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void showMinePoint() {
         int count = PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
-        count = count + (
-                CommConfig.getConfig().mMessageCount != null ?
-                        CommConfig.getConfig().mMessageCount.unReadLikesCount +
-                                CommConfig.getConfig().mMessageCount.unReadCommentsCount +
-                                CommConfig.getConfig().mMessageCount.newFansCount
-                        : 0);
         showMinePoint(count);
     }
 
@@ -97,7 +86,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initSettings() {
-        E7App.getCommunitySdk();
         initPermission();
         initRobot();
         setLeftTv(View.GONE);
@@ -242,7 +230,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG:
-                getUnReadMsg();
                 break;
             case Constant.EVENT_BUS_POST_FEED_SUCCESS:
             case Constant.EVENT_BUS_DELETE_FEED_SUCCESS:
@@ -356,57 +343,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-    }
-
-    private void getUnReadMsg() {
-        if(!CommonUtils.isLogin(MainActivity.this)) {
-            // getUnReadMsgDelay(10000);
-            return;
-        }
-        E7App.getCommunitySdk().fetchUserMessageCount(this, new Listeners.SimpleFetchListener<MessageCountResponse>() {
-            @Override
-            public void onComplete(MessageCountResponse messageCountResponse) {
-                if(messageCountResponse != null && messageCountResponse.errCode == ErrorCode.NO_ERROR) {
-                    EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS);
-                } else {
-                    getUnReadMsgDelay(10000);
-                }
-            }
-        });
-        /*E7App.getCommunitySdk().fetchUnReadMessageCount(new Listeners.FetchListener<MsgCountResponse>() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onComplete(MsgCountResponse msgCountResponse) {
-                if(msgCountResponse != null && msgCountResponse.errCode == ErrorCode.NO_ERROR) {
-                    if(CommonUtils.isLogin(MainActivity.this) && CommConfig.getConfig().loginedUser != null) {
-                        CommConfig.getConfig().loginedUser.unReadCount = Integer.getInteger(msgCountResponse.count,
-                                CommConfig.getConfig().loginedUser.unReadCount);
-                    } else {
-                        getUnReadMsgDelay(10000);
-                    }
-                } else {
-                    getUnReadMsgDelay(10000);
-                }
-            }
-        });*/
-    }
-
-    private void getUnReadMsgDelay(final long millis) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(millis);
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-                EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
-            }
-        }).start();
     }
 
     @Override

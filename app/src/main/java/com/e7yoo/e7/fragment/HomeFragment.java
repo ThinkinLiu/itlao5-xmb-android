@@ -175,7 +175,7 @@ public class HomeFragment extends BaseFragment {
             switch (index) {
                 case 0:
                     if(getActivity() != null) {
-                        ActivityUtil.toPostOrLogin(getActivity(), null);
+                        //ActivityUtil.toPostOrLogin(getActivity(), null);
                         UmengUtil.onEvent(UmengUtil.POST_FROM_HOME_HEADER);
                     }
                     break;

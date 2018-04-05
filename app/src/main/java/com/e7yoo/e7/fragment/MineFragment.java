@@ -4,19 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.AboutActivity;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
-import com.e7yoo.e7.MsgActivity;
 import com.e7yoo.e7.PushMsgActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
@@ -24,19 +20,14 @@ import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
-import com.umeng.comm.core.beans.CommConfig;
-import com.umeng.comm.core.beans.CommUser;
-import com.umeng.comm.core.utils.CommonUtils;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
     private View mRootView;
     private ImageView mHeadIconIv;
     private TextView mine_label;
-    private View mSpaceLayout, mMsgLayout, mCollectLayout, mSetLayout, mAboutLayout;
+    private View mMsgLayout, mSetLayout, mAboutLayout;
     private TextView mPageHintTv;
-    private TextView mPagePoint, mineMsgPoint, mCollectPoint;
-    // private Me mMe;
-    private CommUser mUser;
+    private TextView mineMsgPoint;
 
 
     public MineFragment() {
@@ -49,11 +40,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case Constant.EVENT_BUS_CIRCLE_LOGIN:
             case Constant.EVENT_BUS_CIRCLE_LOGOUT:
             case Constant.EVENT_BUS_COMMUSER_MODIFY:
-                if(msg.obj != null && msg.obj instanceof CommUser) {
-                    initDatas((CommUser) msg.obj);
-                } else {
-                    initDatas(null);
-                }
+                initDatas();
                 break;
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ:
@@ -92,22 +79,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private void initView() {
         mHeadIconIv = mRootView.findViewById(R.id.mine_icon);
         mine_label = mRootView.findViewById(R.id.mine_label);
-        mSpaceLayout = mRootView.findViewById(R.id.mine_page_layout);
         mMsgLayout = mRootView.findViewById(R.id.mine_msg_layout);
-        mCollectLayout = mRootView.findViewById(R.id.mine_collect_layout);
         mSetLayout = mRootView.findViewById(R.id.mine_set_layout);
         mAboutLayout = mRootView.findViewById(R.id.mine_about_layout);
-        mPageHintTv = mRootView.findViewById(R.id.mine_page_hint);
-        mPagePoint = mRootView.findViewById(R.id.mine_page_point);
         mineMsgPoint = mRootView.findViewById(R.id.mine_msg_point);
-        mCollectPoint = mRootView.findViewById(R.id.mine_collect_point);
     }
 
     private void initListener() {
         mHeadIconIv.setOnClickListener(this);
-        mSpaceLayout.setOnClickListener(this);
         mMsgLayout.setOnClickListener(this);
-        mCollectLayout.setOnClickListener(this);
         mSetLayout.setOnClickListener(this);
         mAboutLayout.setOnClickListener(this);
     }
@@ -116,52 +96,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // ((BaseActivity) getActivity()).hintTitle();
-        initDatas(null);
+        initDatas();
     }
 
-    private void initDatas(CommUser commUser) {
-        if(CommonUtils.isLogin(getActivity())) {
-            mUser = CommonUtils.getLoginUser(getActivity());
-        } else {
-            mUser = null;
-        }
-        if(mUser != null && !TextUtils.isEmpty(mUser.id)) {
-            // 用户名在MainActivity中设置（setTitleText方法）
-            RequestOptions options = new RequestOptions();
-            options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-            Glide.with(getActivity()).load(mUser.iconUrl).apply(options).into(mHeadIconIv);
-            mine_label.setText(mUser.name);
-        } else {
-            mHeadIconIv.setImageResource(R.mipmap.icon_me);
-            mine_label.setText(R.string.mine_label_hint);
-        }
-        mPagePoint.setVisibility(View.GONE);
-        setMsgPoint();
-        mCollectPoint.setVisibility(View.GONE);
-    }
-
-    private void setPagePoint() {
-        if(mPageHintTv == null/* || mPagePoint == null*/) {
-            return;
-        }
-        if(mUser != null && CommConfig.getConfig().mMessageCount != null
-                && CommConfig.getConfig().mMessageCount.newFansCount > 0) {
-            int count = CommConfig.getConfig().mMessageCount.newFansCount;
-            mPageHintTv.setText(getString(R.string.new_fans_hint_count, count));
-            // mineMsgPoint.setText(String.valueOf(count > 99 ? 99 : count));
-            // mPagePoint.setVisibility(View.VISIBLE);
-        } else {
-            mPageHintTv.setText("");
-            // mPagePoint.setVisibility(View.GONE);
-        }
+    private void initDatas() {
+        mHeadIconIv.setImageResource(R.mipmap.icon_me);
+        mine_label.setText(R.string.mine_label_hint);
     }
 
     private void setMsgPoint() {
-        setPagePoint();
         int count = PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
-        if(mUser != null && CommConfig.getConfig().mMessageCount != null) {
-            count += CommConfig.getConfig().mMessageCount.unReadCommentsCount + CommConfig.getConfig().mMessageCount.unReadLikesCount;
-        }
         if(count > 0) {
             if(mineMsgPoint != null) {
                 mineMsgPoint.setText(String.valueOf(count > 99 ? 99 : count));
@@ -173,9 +117,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             }
         }
         try {
-            if(mUser != null && CommConfig.getConfig().mMessageCount != null) {
-                count = count + CommConfig.getConfig().mMessageCount.newFansCount;
-            }
             try {
                 if(getActivity() != null && !getActivity().isFinishing()) {
                     ((MainActivity) getActivity()).showMinePoint(count);
@@ -215,31 +156,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_icon:
-                if(CommonUtils.isLogin(getActivity())) {
-                    ActivityUtil.toCommUserInfo(getActivity(), mUser);
-                } else {
-                    ActivityUtil.toLogin(getActivity());
-                }
-                break;
-            case R.id.mine_page_layout:
-                ActivityUtil.toSpace(getActivity(), mUser, true);
                 break;
             case R.id.mine_msg_layout:
-                if(CommonUtils.isLogin(getActivity()) && mUser != null) {
-                    ActivityUtil.toActivity(getActivity(), MsgActivity.class);
-                } else {
-                    ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
-                    PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
-                    setMsgPoint();
-                    try {
-                        ShortCutUtils.deleteShortCut(getContext(), MainActivity.class);
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case R.id.mine_collect_layout:
-                ActivityUtil.toCollect(getActivity(), true);
+                ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
+                PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
+                setMsgPoint();
                 break;
             case R.id.mine_set_layout:
                 ActivityUtil.toActivity(getActivity(), SettingsActivity.class);
