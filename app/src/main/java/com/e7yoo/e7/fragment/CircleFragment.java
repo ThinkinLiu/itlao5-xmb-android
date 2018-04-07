@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.e7yoo.e7.R;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 
 public class CircleFragment extends BaseFragment implements View.OnClickListener {
 
-    private TextView mAllTv, mHotTv, mRecomTv, mFollowedTv, mPlateTv;
+    private TextView mJokeTv, mPicTv;
     private final ArrayList<BaseFragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
@@ -29,6 +28,9 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onEventMainThread(Message msg) {
+        for(BaseFragment fragment : fragments) {
+            fragment.onEventMainThread(msg);
+        }
     }
 
     public static CircleFragment newInstance() {
@@ -46,11 +48,8 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         if(mRootView == null) {
             mRootView = inflater.inflate(R.layout.fragment_circle, container, false);
-            mAllTv = mRootView.findViewById(R.id.circle_all);
-            mRecomTv = mRootView.findViewById(R.id.circle_recom);
-            mHotTv = mRootView.findViewById(R.id.circle_hot);
-            mFollowedTv = mRootView.findViewById(R.id.circle_followed);
-            mPlateTv = mRootView.findViewById(R.id.circle_plate);
+            mJokeTv = mRootView.findViewById(R.id.circle_top_joke);
+            mPicTv = mRootView.findViewById(R.id.circle_top_pic);
             mViewPager = mRootView.findViewById(R.id.circle_viewpager);
         }
         return mRootView;
@@ -59,20 +58,14 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if(mViewPagerAdapter == null) {
-//            fragments.add(RealtimeFeedsFragment.newInstance());
-//            fragments.add(HotFeedsFragmentFeed.newInstance());
-//            fragments.add(RecomFeedsFragment.newInstance());
-//            fragments.add(FollowedFeedsFragment.newInstance());
-//            fragments.add(TopicListFragment.newInstance());
+            fragments.add(JokeListFragment.newInstance().setJokeType(JokeListFragment.JokeType.JOKE));
+            fragments.add(JokeListFragment.newInstance().setJokeType(JokeListFragment.JokeType.PIC));
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
-            setSelectedTv(mAllTv);
+            setSelectedTv(mJokeTv);
         }
         mViewPager.addOnPageChangeListener(mOnPageChangeListener);
-        mAllTv.setOnClickListener(this);
-        mHotTv.setOnClickListener(this);
-        mRecomTv.setOnClickListener(this);
-        mFollowedTv.setOnClickListener(this);
-        mPlateTv.setOnClickListener(this);
+        mJokeTv.setOnClickListener(this);
+        mPicTv.setOnClickListener(this);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -99,35 +92,20 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.circle_all:
-                setSelectedTv(mAllTv);
+            case R.id.circle_top_joke:
+                setSelectedTv(mJokeTv);
                 mViewPager.setCurrentItem(0);
                 break;
-            case R.id.circle_hot:
-                setSelectedTv(mHotTv);
+            case R.id.circle_top_pic:
+                setSelectedTv(mPicTv);
                 mViewPager.setCurrentItem(1);
-                break;
-            case R.id.circle_recom:
-                setSelectedTv(mRecomTv);
-                mViewPager.setCurrentItem(2);
-                break;
-            case R.id.circle_followed:
-                setSelectedTv(mFollowedTv);
-                mViewPager.setCurrentItem(3);
-                break;
-            case R.id.circle_plate:
-                setSelectedTv(mPlateTv);
-                mViewPager.setCurrentItem(4);
                 break;
         }
     }
 
     private void setSelectedTv(TextView view) {
-        mAllTv.setSelected(view == mAllTv ? true : false);
-        mHotTv.setSelected(view == mHotTv ? true : false);
-        mRecomTv.setSelected(view == mRecomTv ? true : false);
-        mFollowedTv.setSelected(view == mFollowedTv ? true : false);
-        mPlateTv.setSelected(view == mPlateTv ? true : false);
+        mJokeTv.setSelected(view == mJokeTv ? true : false);
+        mPicTv.setSelected(view == mPicTv ? true : false);
     }
 
     private ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -138,21 +116,14 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
         @Override
         public void onPageSelected(int position) {
             switch (position) {
-                case 1:
-                    setSelectedTv(mHotTv);
-                    break;
-                case 2:
-                    setSelectedTv(mRecomTv);
-                    break;
-                case 3:
-                    setSelectedTv(mFollowedTv);
-                    break;
-                case 4:
-                    setSelectedTv(mPlateTv);
-                    break;
                 case 0:
+                    setSelectedTv(mJokeTv);
+                    break;
+                case 1:
+                    setSelectedTv(mPicTv);
+                    break;
                 default:
-                    setSelectedTv(mAllTv);
+                    setSelectedTv(mJokeTv);
                     break;
             }
         }

@@ -242,6 +242,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
                 }
                 break;
+            case Constant.EVENT_BUS_NET_jokeRand:
+            case Constant.EVENT_BUS_NET_jokeRand_pic:
+                if (!isFinishing() && fragments != null && fragments.size() > 0) {
+                    for(int i = 1; i < fragments.size(); i++) {
+                        if(fragments.get(i) != null && fragments.get(i) instanceof CircleFragment) {
+                            fragments.get(i).onEventMainThread(msg);
+                            break;
+                        }
+                    }
+                }
+                break;
         }
     }
 

@@ -54,7 +54,7 @@
             <ImageView
                 android:id="@+id/item_msg_pic"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp"
+                android:layout_height="@dimen/space_150dp"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"
                 android:visibility="gone" />

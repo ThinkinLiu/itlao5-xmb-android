@@ -2,11 +2,16 @@ package com.e7yoo.e7.util;
 
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.model.Joke;
 import com.e7yoo.e7.model.PrivateMsg;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/9/4.
@@ -83,5 +88,26 @@ public class JokeUtil {
             }
         }
         return msg;
+    }
+
+    public static ArrayList<Joke> parseJokeRand(JSONObject object) {
+        try {
+            if (object != null) {
+                if (object.getInt("error_code") == 0) {
+                    JSONArray ja = object.optJSONArray("result");
+                    if (ja != null && ja.length() > 0) {
+                        ArrayList<Joke> list = new ArrayList<>();
+                        Gson gson = new Gson();
+                        for(int i = 0; i < ja.length(); i++) {
+                            list.add(gson.fromJson(ja.optString(i), Joke.class));
+                        }
+                        return list;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -18,6 +18,9 @@
     <dimen name="space_9x">36dp</dimen>
     <dimen name="space_10x">40dp</dimen>
     <dimen name="space_100dp">100dp</dimen>
+    <dimen name="space_150dp">150dp</dimen>
+    <dimen name="space_200dp">200dp</dimen>
+    <dimen name="space_350dp">350dp</dimen>
     <dimen name="space__96dp">-96dp</dimen>
     <dimen name="space_30dp">30dp</dimen>
 
@@ -76,4 +79,7 @@
     <dimen name="item_push_msg_point">20dp</dimen>
     <dimen name="feed_detail_input_pic">80dp</dimen>
     <dimen name="item_unfriend_msg_point">20dp</dimen>
+
+
+    <dimen name="item_joke_icon">26dp</dimen>
 </resources>

@@ -14,78 +14,35 @@
         android:padding="@dimen/space_2x">
 
         <TextView
-            android:id="@+id/circle_all"
-            android:layout_width="wrap_content"
+            android:id="@+id/circle_top_joke"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corners_circle_text"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_top_joke_left"
             android:gravity="center"
             android:paddingBottom="@dimen/space_half"
             android:paddingLeft="@dimen/space_3x"
             android:paddingRight="@dimen/space_3x"
             android:paddingTop="@dimen/space_half"
-            android:text="@string/circle_all"
+            android:text="@string/circle_top_joke"
             android:textColor="@color/circle_text_selector"
-            android:textSize="@dimen/size_l" />
+            android:textSize="@dimen/size_3xl" />
 
         <TextView
-            android:id="@+id/circle_hot"
-            android:layout_width="wrap_content"
+            android:id="@+id/circle_top_pic"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_4x"
-            android:background="@drawable/rounded_corners_circle_text"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners_top_joke_right"
             android:gravity="center"
             android:paddingBottom="@dimen/space_half"
             android:paddingLeft="@dimen/space_3x"
             android:paddingRight="@dimen/space_3x"
             android:paddingTop="@dimen/space_half"
-            android:text="@string/circle_hot"
+            android:text="@string/circle_top_pic"
             android:textColor="@color/circle_text_selector"
-            android:textSize="@dimen/size_l" />
+            android:textSize="@dimen/size_3xl" />
 
-        <TextView
-            android:id="@+id/circle_recom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_4x"
-            android:background="@drawable/rounded_corners_circle_text"
-            android:gravity="center"
-            android:paddingBottom="@dimen/space_half"
-            android:paddingLeft="@dimen/space_3x"
-            android:paddingRight="@dimen/space_3x"
-            android:paddingTop="@dimen/space_half"
-            android:text="@string/circle_recom"
-            android:textColor="@color/circle_text_selector"
-            android:textSize="@dimen/size_l" />
-
-        <TextView
-            android:id="@+id/circle_followed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_4x"
-            android:background="@drawable/rounded_corners_circle_text"
-            android:gravity="center"
-            android:paddingBottom="@dimen/space_half"
-            android:paddingLeft="@dimen/space_3x"
-            android:paddingRight="@dimen/space_3x"
-            android:paddingTop="@dimen/space_half"
-            android:text="@string/circle_followed"
-            android:textColor="@color/circle_text_selector"
-            android:textSize="@dimen/size_l" />
-
-        <TextView
-            android:id="@+id/circle_plate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_4x"
-            android:background="@drawable/rounded_corners_circle_text"
-            android:gravity="center"
-            android:paddingBottom="@dimen/space_half"
-            android:paddingLeft="@dimen/space_3x"
-            android:paddingRight="@dimen/space_3x"
-            android:paddingTop="@dimen/space_half"
-            android:text="@string/circle_plate"
-            android:textColor="@color/circle_text_selector"
-            android:textSize="@dimen/size_l" />
     </LinearLayout>
 
     <View

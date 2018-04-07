@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corners_bg_joke1"
+    android:padding="@dimen/space_2x" >
+
+    <com.e7yoo.e7.view.CircleImageView
+        android:id="@+id/item_joke_icon"
+        android:layout_width="@dimen/item_joke_icon"
+        android:layout_height="@dimen/item_joke_icon"
+        android:src="@mipmap/icon"
+        app:civ_border_color="@color/white_translucent"
+        app:civ_border_overlay="false"
+        app:civ_border_width="@dimen/space_half"
+        app:civ_fill_color="@color/white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_joke_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space"
+        android:layout_toRightOf="@id/item_joke_icon"
+        android:layout_alignBottom="@+id/item_joke_icon"
+        android:layout_alignTop="@+id/item_joke_icon"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:text="@string/mengmeng"
+        android:textColor="@color/text_l"
+        android:textSize="@dimen/size_xl"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_joke_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_joke_icon"
+        android:layout_marginBottom="@dimen/space"
+        android:layout_marginTop="@dimen/space_2x"
+        android:paddingLeft="@dimen/space_2x"
+        android:includeFontPadding="false"
+        android:text="@string/joke_hint"
+        android:textColor="@color/text"
+        android:textSize="@dimen/size_3xl" />
+
+    <ImageView
+        android:id="@+id/item_joke_pic"
+        android:layout_width="@dimen/space_200dp"
+        android:layout_height="@dimen/space_200dp"
+        android:layout_below="@id/item_joke_content"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

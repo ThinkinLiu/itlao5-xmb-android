@@ -96,7 +96,7 @@ public class Net {
 	public static void jokeRand(NetCallback callback, boolean isPic) {
 		String url = "http://v.juhe.cn/joke/randJoke.php";
 		Map params = new HashMap();// 请求参数
-		params.put("type", isPic ? "pic" : "");// 当前页数,默认1
+		params.put("type", isPic ? "pic" : "");// 类型 pic 趣图， 其他 笑话
 		params.put("key", APPKEY_JOKE);// 您申请的key
 		doNet(callback, url, params);
 	}

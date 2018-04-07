@@ -411,4 +411,9 @@
     <string name="home_top_btn_game">小游戏</string>
     <string name="home_top_btn_findphone">找手机</string>
     <string name="home_top_btn_flashlight">手电筒</string>
+
+    <string name="circle_top_all">随意看看</string>
+    <string name="circle_top_joke">内涵段子</string>
+    <string name="circle_top_pic">幽默趣图</string>
+    <string name="joke_hint">故事是这样的...还没开始就结束了ahahaha</string>
 </resources>

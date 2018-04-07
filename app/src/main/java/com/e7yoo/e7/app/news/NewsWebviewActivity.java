@@ -3,8 +3,11 @@ package com.e7yoo.e7.app.news;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -45,10 +48,15 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 	public final static String INTENT_FROM_CHAT_MSG = "from_chat_msg";
 	/** 帖子详情  */
 	public final static String INTENT_FROM_FEED_DETAILS = "from_feed_details";
+	/** 趣图列表  */
+	public final static String INTENT_FROM_JOKE_LIST = "from_joke_list";
 	/** 来源 */
 	public final static String INTENT_FROM = "from";
 	private ImageView loadingIv;
 	private String from;
+
+	private float touchSloup = 10;
+	private ViewGroup webviewLayout;
 	
 	@Override
 	public void onBackPressed() {
@@ -193,7 +201,10 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 
 	@Override
 	protected void initView() {
+		touchSloup = getResources().getDimensionPixelSize(R.dimen.space);
 		rootView = findViewById(R.id.root_layout);
+
+		webviewLayout = (ViewGroup) findViewById(R.id.webviewLayout);
 
 		closeView = findViewById(R.id.titlebar_left_tv_close);
 		closeView.setVisibility(View.GONE);
@@ -202,6 +213,41 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 		mWebView = (WebView) findViewById(R.id.webview);
 
 		loadingIv = (ImageView) findViewById(R.id.loading);
+
+	}
+
+	private float startX, startY;
+	private long startTime;
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		float nowX = event.getRawX();
+		float nowY = event.getRawY();
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				startX = nowX;
+				startY = nowY;
+				startTime = System.currentTimeMillis();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				break;
+			case MotionEvent.ACTION_UP:
+				if(Math.abs(nowX - startX) < touchSloup && Math.abs(nowY - startY) < touchSloup) {
+					if(System.currentTimeMillis() - startTime < 500) {
+						if(rootView == null || nowY > rootView.getHeight() + 50) {
+							exitJokePic();
+						}
+					}
+				}
+				break;
+		}
+		return super.dispatchTouchEvent(event);
+	}
+
+	private void exitJokePic() {
+		if(from != null && from.equals(INTENT_FROM_JOKE_LIST)) {
+			// 从趣图列表进入
+			finishAct();
+		}
 	}
 
 	@Override
@@ -212,6 +258,12 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 			from = getIntent().getStringExtra(INTENT_FROM);
 		}
 		initWebView();
+
+		if(from != null && from.equals(INTENT_FROM_JOKE_LIST)) {
+			// 从趣图列表进入
+			mWebView.getSettings().setSupportZoom(true);
+			mWebView.getSettings().setBuiltInZoomControls(true);
+		}
 
 		AnimaUtils.startImageViewAnima(loadingIv);
 		loadingIv.setVisibility(View.VISIBLE);
