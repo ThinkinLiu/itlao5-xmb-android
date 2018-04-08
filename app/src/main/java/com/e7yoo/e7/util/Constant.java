@@ -74,4 +74,6 @@ public class Constant {
     public static final String PREFERENCE_CIRCLE_JOKE_ALL = "preference_circle_joke_all";
     public static final String PREFERENCE_CIRCLE_JOKE_JOKE = "preference_circle_joke_joke";
     public static final String PREFERENCE_CIRCLE_JOKE_PIC = "preference_circle_joke_pic";
+
+    public static final String PREFERENCE_MY_ICON = "preference_my_icon";
 }

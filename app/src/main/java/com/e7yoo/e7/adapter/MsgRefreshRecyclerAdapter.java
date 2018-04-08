@@ -17,6 +17,7 @@ import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.util.DebugUtil;
+import com.e7yoo.e7.util.MyIconUtil;
 import com.e7yoo.e7.util.RobotUtil;
 import com.e7yoo.e7.util.TimeUtil;
 
@@ -43,6 +44,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private Robot mRobot;
     private Context mContext;
 //头像    private CommUser mCommUser;
+    private String mMyIcon;
 
     public MsgRefreshRecyclerAdapter(Context context, Robot robot/*, CommUser commUser*/) {
         this.mContext = context;
@@ -50,6 +52,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         this.mRobot = robot;
         //头像this.mCommUser = commUser;
         DebugUtil.setDatas(mMsgs, 1, true);
+        mMyIcon = MyIconUtil.getMyIcon();
     }
 
     public void refreshRobot(Robot robot) {
@@ -166,13 +169,13 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderSend.itemMsgTime.setBackgroundResource(0);
             }
             viewHolderSend.itemMsgContent.setText(mMsgs.get(position).getContent());
-            /*if(mCommUser != null && !TextUtils.isEmpty(mCommUser.iconUrl)) {
-                头像RequestOptions options = new RequestOptions();
+            if(mMyIcon != null) {
+                RequestOptions options = new RequestOptions();
                 options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-                Glide.with(mContext).load(mCommUser.iconUrl).apply(options).into(viewHolderSend.itemMsgIcon);
-            } else {*/
+                Glide.with(mContext).load(mMyIcon).apply(options).into(viewHolderSend.itemMsgIcon);
+            } else {
                 viewHolderSend.itemMsgIcon.setImageResource(R.mipmap.icon_me);
-            /*}*/
+            }
             viewHolderSend.itemMsgVoice.setVisibility(View.GONE);
             if(ttsMsgTime == mMsgs.get(position).getTime()) {
                 viewHolderSend.itemMsgVoice.setSelected(true);

@@ -75,8 +75,8 @@ public class JokeListFragment extends ListFragment {
         if(isRefresh) {
             if(joke != null && joke.size() > 0) {
                 saveDataToDb(joke);
+                refreshData(joke, true);
             }
-            refreshData(joke);
             mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
         } else {
             mRvAdapter.addItemBottom(joke);
@@ -88,9 +88,9 @@ public class JokeListFragment extends ListFragment {
         }
     }
 
-    protected void refreshData(List<Joke> feedItems) {
-        if(mDatas == null) {
-            mDatas = feedItems;
+    protected void refreshData(List<Joke> jokes, boolean refresh) {
+        if(mDatas == null || refresh) {
+            mDatas = jokes;
             mRvAdapter.refreshData(mDatas);
         }
     }
@@ -132,7 +132,7 @@ public class JokeListFragment extends ListFragment {
             Object obj = IOUtils.UnserializeStringToObject(jokeList);
             if(obj != null) {
                 ArrayList<Joke> jokes = (ArrayList<Joke>) obj;
-                refreshData(jokes);
+                refreshData(jokes, false);
             }
         } catch (Throwable e) {
             CrashReport.postCatchedException(e);

@@ -1,7 +1,10 @@
 package com.e7yoo.e7.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.AboutActivity;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
@@ -18,10 +23,25 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.MyIconUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.RobotUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
+import com.jph.takephoto.app.TakePhoto;
+import com.jph.takephoto.app.TakePhotoImpl;
+import com.jph.takephoto.compress.CompressConfig;
+import com.jph.takephoto.model.CropOptions;
+import com.jph.takephoto.model.InvokeParam;
+import com.jph.takephoto.model.TContextWrap;
+import com.jph.takephoto.model.TResult;
+import com.jph.takephoto.permission.InvokeListener;
+import com.jph.takephoto.permission.PermissionManager;
+import com.jph.takephoto.permission.TakePhotoInvocationHandler;
+import com.tencent.bugly.crashreport.CrashReport;
 
-public class MineFragment extends BaseFragment implements View.OnClickListener {
+import java.io.File;
+
+public class MineFragment extends BaseFragment implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener {
     private View mRootView;
     private ImageView mHeadIconIv;
     private TextView mine_label;
@@ -39,7 +59,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case Constant.EVENT_BUS_CIRCLE_LOGIN:
             case Constant.EVENT_BUS_CIRCLE_LOGOUT:
             case Constant.EVENT_BUS_COMMUSER_MODIFY:
-                initDatas();
+                initDatas(null);
                 break;
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ:
@@ -58,10 +78,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getTakePhoto().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        getTakePhoto().onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,11 +120,20 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // ((BaseActivity) getActivity()).hintTitle();
-        initDatas();
+        initDatas(null);
     }
 
-    private void initDatas() {
-        mHeadIconIv.setImageResource(R.mipmap.icon_me);
+    private void initDatas(String myIcon) {
+        if(myIcon == null) {
+            myIcon = MyIconUtil.getMyIcon();
+        }
+        if(myIcon != null) {
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+            Glide.with(getActivity()).load(myIcon).apply(options).into(mHeadIconIv);
+        } else {
+            mHeadIconIv.setImageResource(R.mipmap.icon_me);
+        }
         mine_label.setText(R.string.mine_label_hint);
     }
 
@@ -155,6 +189,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_icon:
+                toTakePhone();
                 break;
             case R.id.mine_msg_layout:
                 ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
@@ -168,5 +203,72 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 ActivityUtil.toActivity(getActivity(), AboutActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void toTakePhone() {
+        CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
+        CompressConfig compressConfig = new CompressConfig.Builder().setMaxSize(20 * 1024).setMaxPixel(300).create();
+        getTakePhoto().onEnableCompress(compressConfig, true);
+        File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        Uri imageUri = Uri.fromFile(file);
+        getTakePhoto().onPickFromGalleryWithCrop(imageUri, cropOptions);
+    }
+
+    private InvokeParam invokeParam;
+    private TakePhoto takePhoto;
+
+    private TakePhoto getTakePhoto() {
+        if (takePhoto == null) {
+            takePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this, this));
+        }
+        return takePhoto;
+    }
+
+
+    @Override
+    public PermissionManager.TPermissionType invoke(InvokeParam invokeParam) {
+        PermissionManager.TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.getMethod());
+        if (PermissionManager.TPermissionType.WAIT.equals(type)) {
+            this.invokeParam = invokeParam;
+        }
+        return type;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(isDetached() || getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        //以下代码为处理Android6.0、7.0动态权限所需
+        PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.handlePermissionsResult(getActivity(), type, invokeParam, this);
+    }
+
+    @Override
+    public void takeSuccess(TResult result) {
+        String path = result.getImage().getCompressPath();
+        MyIconUtil.setMyIcon(path);
+        initDatas(path);
+    }
+
+    @Override
+    public void takeFail(TResult result, String msg) {
+        System.out.println("msg:" + msg);
+        CrashReport.postCatchedException(new Throwable(msg));
+    }
+
+    @Override
+    public void takeCancel() {
+        System.out.println("takeCancel:");
     }
 }
