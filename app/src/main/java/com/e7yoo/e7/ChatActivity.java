@@ -55,6 +55,7 @@ import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.net.NetHelper;
+import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.BdVoiceUtil;
@@ -76,6 +77,7 @@ import com.e7yoo.e7.view.BlurTransformation;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -232,12 +234,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             }
             mRobot = robot;
             setTitleTv(mRobot.getName());
-            if(getString(R.string.mengmeng).equals(mRobot.getName())) {
-                // 萌萌的信息不能修改
-                setRightTv(View.GONE);
-            } else {
-                setRightTv(View.VISIBLE, R.mipmap.title_right_chat_robot, 0, this);
-            }
+            setLeft();
+            setRight();
             if(!TextUtils.isEmpty(mRobot.getBg())) {
                 int bgblur = mRobot.getBgblur();
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && bgblur > 0) {
@@ -250,6 +248,32 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             }
             if(mRvAdapter != null) {
                 mRvAdapter.refreshRobot(mRobot);
+            }
+        }
+    }
+
+    private void setLeft() {
+        if(mRvAdapter != null && mRvAdapter.isShowCheckBox()) {
+            if(checekAll) {
+                setLeftTv(View.VISIBLE, 0, R.string.all_cancel, this);
+            } else {
+                setLeftTv(View.VISIBLE, 0, R.string.all, this);
+            }
+        } else {
+            checekAll = false;
+            setLeftTv(View.VISIBLE, R.mipmap.ic_arrow_back_white_24dp, 0, this);
+        }
+    }
+
+    private void setRight() {
+        if(mRvAdapter != null && mRvAdapter.isShowCheckBox()) {
+            setRightTv(View.VISIBLE, R.mipmap.title_right_chat_delete, 0, this);
+        } else {
+            if (getString(R.string.mengmeng).equals(mRobot.getName())) {
+                // 萌萌的信息不能修改
+                setRightTv(View.GONE);
+            } else {
+                setRightTv(View.VISIBLE, R.mipmap.title_right_chat_robot, 0, this);
             }
         }
     }
@@ -409,11 +433,28 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
     };
 
+    boolean checekAll = false;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.titlebar_left_tv:
+                if(mRvAdapter.isShowCheckBox()) {
+                    checekAll = !checekAll;
+                    mRvAdapter.setCheckAll(checekAll);
+                    setLeft();
+                } else {
+                    onBackPressed();
+                }
+                break;
             case R.id.titlebar_right_tv:
-                ActivityUtil.toAddRobotActivityForResult(this, mRobot, REQUEST_CODE_FOR_ADD_ROBOT);
+                if(mRvAdapter.isShowCheckBox()) {
+                    deleteCheck(mRvAdapter.getCheckIdsAndRemove());
+                    mRvAdapter.showCheckBox(false);
+                    setLeft();
+                    setRight();
+                } else {
+                    ActivityUtil.toAddRobotActivityForResult(this, mRobot, REQUEST_CODE_FOR_ADD_ROBOT);
+                }
                 break;
             case R.id.chat_voice:
                 if(mVoiceTv.getVisibility() == View.VISIBLE) {
@@ -450,6 +491,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 }
                 break;
         }
+    }
+
+    private void deleteCheck(ArrayList<Long> times) {
+        DbThreadPool.getInstance().delete(this.getApplicationContext(), times);
     }
 
     @Override
@@ -810,6 +855,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         if(mChatInputMoreLayout.getVisibility() == View.VISIBLE) {
             mChatInputMoreLayout.setVisibility(View.GONE);
             return;
+        } else if(mRvAdapter != null && mRvAdapter.isShowCheckBox()) {
+            mRvAdapter.showCheckBox(false);
+            setLeft();
+            setRight();
         }
         BdVoiceUtil.stopTTS(mSpeechSynthesizer);
         super.onBackPressed();
@@ -893,12 +942,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }*/
 
     private void toDelete(int position, PrivateMsg msg) {
-        MessageDbHelper.getInstance(this).deleteMessageInfo(msg.getId());
+        DbThreadPool.getInstance().delete(this, msg.getTime());
         mRvAdapter.removeItem(position);
     }
 
     private void toDeleteBatch() {
+        checekAll = false;
         mRvAdapter.showCheckBox(true);
+        setLeft();
+        setRight();
     }
 
     MsgRefreshRecyclerAdapter.OnVoiceClickListener mOnVoiceClickListener = new MsgRefreshRecyclerAdapter.OnVoiceClickListener() {

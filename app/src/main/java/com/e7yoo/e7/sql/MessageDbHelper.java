@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.e7yoo.e7.E7App;
+import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.PrivateMsg.Type;
 import com.e7yoo.e7.model.PushMsg;
@@ -123,7 +125,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER DEFAULT 1;");
             } else if(oldVersion <= 5) {
                 try {
-                    db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + "user" + " TEXT NOT NULL DEFAULT " + "萌萌" + ";");
+                    db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + "user" + " TEXT NOT NULL DEFAULT " + E7App.mApp.getString(R.string.mengmeng) + ";");
                 } catch (Throwable e) {
                     e.printStackTrace();
                     CrashReport.postCatchedException(e);
@@ -290,26 +292,33 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteMessageInfo(String id) {
-        StringBuilder where = new StringBuilder().append(MessageInfoColumns._ID).append("=?");
-        int count = mDatabase.delete(TABLE_MESSAGE, where.toString(), new String[]{id});
+    public void deleteMessageInfo(long time) {
+        StringBuilder where = new StringBuilder().append(MessageInfoColumns.TIME).append("=?");
+        int count = mDatabase.delete(TABLE_MESSAGE, where.toString(), new String[]{String.valueOf(time)});
+        int c = count;
     }
 
-    public void deleteMessageInfo(ArrayList<Integer> ids) {
-        if (ids == null) {
+    public void deleteMessageInfo(ArrayList<Long> times) {
+        if (times == null) {
             return;
         }
-        int idSize = ids.size();
-        if (idSize == 0) {
+        int timeSize = times.size();
+        if (timeSize == 0) {
             return;
         }
-        StringBuilder where = new StringBuilder().append(MessageInfoColumns._ID).append(" in ?");
-        String[] idArray = new String[idSize];
-        for (int i = 0; i < idSize; i++) {
-            idArray[i] = ids.get(i).toString();
-        }
+        StringBuilder where = new StringBuilder().append(MessageInfoColumns.TIME).append(" in(");
 
-        int count = mDatabase.delete(TABLE_MESSAGE, where.toString(), idArray);
+        for (int i = 0; i < timeSize; i++) {
+            where.append(times.get(i));
+            if(i < timeSize - 1) {
+                where.append(",");
+            }
+        }
+        where.append(")");
+
+
+        int count = mDatabase.delete(TABLE_MESSAGE, where.toString(), null);
+        int c = count;
     }
 
     public void deleteMessageInfoByMsgList(ArrayList<PrivateMsg> msgs) {
@@ -335,6 +344,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         }
 
         int count = mDatabase.delete(TABLE_MESSAGE, where.toString(), null);
+        int c = count;
     }
 
     public ArrayList<Robot> getRobots() {

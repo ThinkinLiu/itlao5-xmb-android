@@ -47,6 +47,16 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private String mMyIcon;
     private boolean mShowCheckBox = false;
 
+    public void setCheckAll(boolean checkAll) {
+        checkIds.clear();
+        if(checkAll) {
+            for (PrivateMsg msg : mMsgs) {
+                checkIds.add(msg.getTime());
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     public void showCheckBox(boolean showCheckBox) {
         this.mShowCheckBox = showCheckBox;
         checkIds.clear();
@@ -169,17 +179,17 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
 
     private ArrayList<Long> checkIds = new ArrayList<>();
 
-    public ArrayList<PrivateMsg> getCheckListAndRemove() {
-        ArrayList<PrivateMsg> checks = new ArrayList<>();
+    public ArrayList<Long> getCheckIdsAndRemove() {
+        ArrayList<Long> ids = new ArrayList<>();
         for(int i = 0; i < mMsgs.size(); i++) {
             PrivateMsg msg = mMsgs.get(i);
-            if(msg != null && checkIds.contains(msg.getTime())) {
-                checks.add(msg);
+            if(msg != null && checkIds.contains(msg.get_id())) {
                 mMsgs.remove(i);
                 i--;
             }
         }
-        return checks;
+        ids.addAll(checkIds);
+        return ids;
     }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -295,8 +305,9 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(checkIds.contains(msg.getTime())) {
-                        checkIds.remove(msg.getTime());
+                    int index = checkIds.indexOf(msg.getTime());
+                    if(index >= 0) {
+                        checkIds.remove(index);
                         check.setSelected(false);
                     } else {
                         checkIds.add(msg.getTime());

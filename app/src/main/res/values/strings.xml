@@ -418,4 +418,7 @@
     <string name="circle_top_joke">内涵段子</string>
     <string name="circle_top_pic">幽默趣图</string>
     <string name="joke_hint">故事是这样的...还没开始就结束了ahahaha</string>
+
+    <string name="all">全选</string>
+    <string name="all_cancel">取消全选</string>
 </resources>
