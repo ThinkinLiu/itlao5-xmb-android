@@ -62,4 +62,10 @@ public class UmengUtil {
     public static final String GAME_FROM_HOME_HEADER = "3_game_from_home_header";
     public static final String FINEPHONE_FROM_HOME_HEADER = "3_findphone_from_home_header";
     public static final String FLASHLIGHT_FROM_HOME_HEADER = "3_flashlight_from_home_header";
+    public static final String JOKE_FROM_HOME_HEADER = "3_joke_from_home_header";
+
+    public static final String JOKE_LIST_JOKE_REFRESH = "3_joke_list_joke_refresh";
+    public static final String JOKE_LIST_JOKE_MORE = "3_joke_list_joke_more";
+    public static final String JOKE_LIST_PIC_REFRESH = "3_joke_list_pic_refresh";
+    public static final String JOKE_LIST_PIC_MORE = "3_joke_list_pic_more";
 }

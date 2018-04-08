@@ -26,7 +26,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private ImageView mHeadIconIv;
     private TextView mine_label;
     private View mMsgLayout, mSetLayout, mAboutLayout;
-    private TextView mPageHintTv;
     private TextView mineMsgPoint;
 
 

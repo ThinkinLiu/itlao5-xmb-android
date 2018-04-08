@@ -13,11 +13,11 @@
         android:layout_weight="1"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="@string/home_top_btn_post"
+        android:text="@string/home_top_btn_joke"
         android:textColor="@color/text"
         android:textSize="@dimen/size_xl"
         android:drawablePadding="@dimen/space"
-        android:drawableTop="@mipmap/home_top_btn_post"
+        android:drawableTop="@mipmap/home_top_btn_joke"
         android:paddingLeft="@dimen/space_4x"
         android:paddingRight="@dimen/space_4x"/>
     <TextView

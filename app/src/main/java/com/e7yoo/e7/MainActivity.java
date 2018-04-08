@@ -143,14 +143,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onPageSelected(int position) {
-                setTitleText(null, position);
-                if (prevMenuItem != null) {
-                    prevMenuItem.setChecked(false);
-                } else {
-                    navigation.getMenu().getItem(0).setChecked(false);
-                }
-                navigation.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = navigation.getMenu().getItem(position);
+                setPage(position);
             }
 
             @Override
@@ -190,9 +183,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     };
 
+    private void setPage(int position) {
+        setTitleText(null, position);
+        if (prevMenuItem != null) {
+            prevMenuItem.setChecked(false);
+        } else {
+            navigation.getMenu().getItem(0).setChecked(false);
+        }
+        navigation.getMenu().getItem(position).setChecked(true);
+        prevMenuItem = navigation.getMenu().getItem(position);
+    }
+
     private void setItem(int position) {
         mViewPager.setCurrentItem(position);
         setTitleText(null, position);
+    }
+
+    public void showCircle() {
+        setPage(1);
+        setItem(1);
     }
 
     public void setTitleText(Me me, int position) {

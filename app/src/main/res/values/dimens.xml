@@ -20,6 +20,7 @@
     <dimen name="space_100dp">100dp</dimen>
     <dimen name="space_150dp">150dp</dimen>
     <dimen name="space_200dp">200dp</dimen>
+    <dimen name="space_250dp">250dp</dimen>
     <dimen name="space_350dp">350dp</dimen>
     <dimen name="space__96dp">-96dp</dimen>
     <dimen name="space_30dp">30dp</dimen>

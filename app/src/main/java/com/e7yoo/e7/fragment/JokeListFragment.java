@@ -11,6 +11,7 @@ import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.IOUtils;
 import com.e7yoo.e7.util.JokeUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.UmengUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONObject;
@@ -48,11 +49,21 @@ public class JokeListFragment extends ListFragment {
             case Constant.EVENT_BUS_NET_jokeRand:
                 if(JokeType.JOKE == jokeType) {
                     doMsg(msg);
+                    if(isRefresh) {
+                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_JOKE_REFRESH);
+                    } else {
+                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_JOKE_MORE);
+                    }
                 }
                 break;
             case Constant.EVENT_BUS_NET_jokeRand_pic:
                 if(JokeType.PIC == jokeType) {
                     doMsg(msg);
+                    if(isRefresh) {
+                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_PIC_REFRESH);
+                    } else {
+                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_PIC_MORE);
+                    }
                 }
                 break;
         }

@@ -49,8 +49,8 @@
 
     <ImageView
         android:id="@+id/item_joke_pic"
-        android:layout_width="@dimen/space_200dp"
-        android:layout_height="@dimen/space_200dp"
+        android:layout_width="@dimen/space_250dp"
+        android:layout_height="@dimen/space_150dp"
         android:layout_below="@id/item_joke_content"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"

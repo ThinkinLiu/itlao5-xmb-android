@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.e7yoo.e7.GameListActivity;
+import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.RecyclerAdapter;
 import com.e7yoo.e7.adapter.RobotRefreshRecyclerAdapter;
@@ -176,7 +177,9 @@ public class HomeFragment extends BaseFragment {
                 case 0:
                     if(getActivity() != null) {
                         //ActivityUtil.toPostOrLogin(getActivity(), null);
-                        UmengUtil.onEvent(UmengUtil.POST_FROM_HOME_HEADER);
+                        //UmengUtil.onEvent(UmengUtil.POST_FROM_HOME_HEADER);
+                        toJokeList();
+                        UmengUtil.onEvent(UmengUtil.JOKE_FROM_HOME_HEADER);
                     }
                     break;
                 case 1:
@@ -200,5 +203,9 @@ public class HomeFragment extends BaseFragment {
             }
         }
     };
+
+    private void toJokeList() {
+        ((MainActivity) getActivity()).showCircle();
+    }
 }
 

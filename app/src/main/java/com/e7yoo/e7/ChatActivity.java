@@ -270,10 +270,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     boolean isNoMatch = false;
     boolean isBusy = false;
+    boolean isNoNet = false;
+    boolean isError = false;
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         private long time;
         private Toast lastToast;
-        private boolean isNoNet = false;
         int maxTime = 10 * 1000;
         int minTime = 1 * 1000;
         private void showToast(int strResId) {
@@ -315,6 +316,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             isNoNet = false;
             isNoMatch = false;
             isBusy = false;
+            isError = false;
             if(Net.isNetWorkConnected(ChatActivity.this)) {
                 BdVoiceUtil.startASR(mSpeechRecognizer, mSpeechSynthesizer);
                 showToast(R.string.input_voice_toast_start);
@@ -359,6 +361,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
         private void actionUp(View view, MotionEvent motionEvent) {
             if(isNoNet) {
+                return;
+            }
+            if(isError) {
+                BdVoiceUtil.cancelASR(mSpeechRecognizer);
                 return;
             }
             long now = System.currentTimeMillis();
@@ -693,15 +699,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         }
         switch (error) {
             case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                isError = true;
                 TastyToastUtil.toast(this, R.string.sr_error_network_timeout);
                 break;
             case SpeechRecognizer.ERROR_NETWORK:
+                isError = true;
                 TastyToastUtil.toast(this, R.string.sr_error_network);
                 break;
             case SpeechRecognizer.ERROR_AUDIO:
                 // TastyToastUtil.toast(this, R.string.sr_error_audio);
                 break;
             case SpeechRecognizer.ERROR_SERVER:
+                isError = true;
                 TastyToastUtil.toast(this, R.string.sr_error_server);
                 break;
             case SpeechRecognizer.ERROR_CLIENT:
