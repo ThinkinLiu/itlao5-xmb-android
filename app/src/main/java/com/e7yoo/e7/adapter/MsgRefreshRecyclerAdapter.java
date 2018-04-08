@@ -183,7 +183,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         ArrayList<Long> ids = new ArrayList<>();
         for(int i = 0; i < mMsgs.size(); i++) {
             PrivateMsg msg = mMsgs.get(i);
-            if(msg != null && checkIds.contains(msg.get_id())) {
+            if(msg != null && checkIds.contains(msg.getTime())) {
                 mMsgs.remove(i);
                 i--;
             }
