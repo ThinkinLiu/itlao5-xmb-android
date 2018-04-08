@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/space_2x">
-
     <TextView
         android:id="@+id/item_msg_time"
         android:layout_width="wrap_content"
@@ -22,46 +21,58 @@
         android:textColor="@color/text"
         android:textSize="@dimen/size_m" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_below="@id/item_msg_time">
-
-        <ImageView
-            android:id="@+id/item_msg_icon"
-            android:layout_width="@dimen/item_msg_icon"
-            android:layout_height="@dimen/item_msg_icon"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/icon" />
-
-        <RelativeLayout
-            android:id="@+id/item_msg_content_layout"
+        <TextView
+            android:id="@+id/item_msg_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_100dp"
-            android:layout_marginRight="@dimen/space_2x"
-            android:layout_toLeftOf="@id/item_msg_icon"
-            android:background="@drawable/chat_pop_me_seletor">
+            android:background="@drawable/radio_btn_selector"
+            android:layout_margin="@dimen/space_2x"
+            android:visibility="gone"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/item_msg_content"
+            <ImageView
+                android:id="@+id/item_msg_icon"
+                android:layout_width="@dimen/item_msg_icon"
+                android:layout_height="@dimen/item_msg_icon"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/icon" />
+
+            <RelativeLayout
+                android:id="@+id/item_msg_content_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="@dimen/size_l" />
-        </RelativeLayout>
+                android:layout_marginLeft="@dimen/space_100dp"
+                android:layout_marginRight="@dimen/space_2x"
+                android:layout_toLeftOf="@id/item_msg_icon"
+                android:background="@drawable/chat_pop_me_seletor">
 
-        <ImageView
-            android:id="@+id/item_msg_voice"
-            android:layout_width="@dimen/item_msg_voice"
-            android:layout_height="@dimen/item_msg_voice"
-            android:layout_marginRight="@dimen/space__96dp"
-            android:layout_marginTop="@dimen/space"
-            android:layout_toLeftOf="@+id/item_msg_content_layout"
-            android:background="@drawable/rounded_chat_voice_bg"
-            android:padding="@dimen/space"
-            android:src="@drawable/chat_item_voice_selector" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/item_msg_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/app_name"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_l" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/item_msg_voice"
+                android:layout_width="@dimen/item_msg_voice"
+                android:layout_height="@dimen/item_msg_voice"
+                android:layout_marginRight="@dimen/space__96dp"
+                android:layout_marginTop="@dimen/space"
+                android:layout_toLeftOf="@+id/item_msg_content_layout"
+                android:background="@drawable/rounded_chat_voice_bg"
+                android:padding="@dimen/space"
+                android:src="@drawable/chat_item_voice_selector" />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

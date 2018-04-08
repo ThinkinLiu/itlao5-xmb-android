@@ -45,6 +45,17 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private Context mContext;
 //头像    private CommUser mCommUser;
     private String mMyIcon;
+    private boolean mShowCheckBox = false;
+
+    public void showCheckBox(boolean showCheckBox) {
+        this.mShowCheckBox = showCheckBox;
+        checkIds.clear();
+        notifyDataSetChanged();
+    }
+
+    public boolean isShowCheckBox() {
+        return mShowCheckBox;
+    }
 
     public MsgRefreshRecyclerAdapter(Context context, Robot robot/*, CommUser commUser*/) {
         this.mContext = context;
@@ -156,11 +167,26 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         return viewHolder;
     }
 
+    private ArrayList<Long> checkIds = new ArrayList<>();
+
+    public ArrayList<PrivateMsg> getCheckListAndRemove() {
+        ArrayList<PrivateMsg> checks = new ArrayList<>();
+        for(int i = 0; i < mMsgs.size(); i++) {
+            PrivateMsg msg = mMsgs.get(i);
+            if(msg != null && checkIds.contains(msg.getTime())) {
+                checks.add(msg);
+                mMsgs.remove(i);
+                i--;
+            }
+        }
+        return checks;
+    }
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         boolean showTime = showTime(position);
         if(holder instanceof ViewHolderSend) {
-            ViewHolderSend viewHolderSend = (ViewHolderSend) holder;
+            final ViewHolderSend viewHolderSend = (ViewHolderSend) holder;
+            initCheck(viewHolderSend.itemCheck, mMsgs.get(position));
             if(showTime) {
                 viewHolderSend.itemMsgTime.setText(TimeUtil.formatMsgTime(mMsgs.get(position).getTime()));
                 viewHolderSend.itemMsgTime.setBackgroundResource(R.drawable.rounded_corners_tag_gray_trans);
@@ -186,6 +212,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             addClickListener(viewHolderSend.contentLayout, viewHolderSend.itemMsgVoice, null, position);
         } else if(holder instanceof ViewHolderRev) {
             ViewHolderRev viewHolderRev = (ViewHolderRev) holder;
+            initCheck(viewHolderRev.itemCheck, mMsgs.get(position));
             if(showTime) {
                 viewHolderRev.itemMsgTime.setText(TimeUtil.formatMsgTime(mMsgs.get(position).getTime()));
                 viewHolderRev.itemMsgTime.setBackgroundResource(R.drawable.rounded_corners_tag_gray_trans);
@@ -237,6 +264,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             addClickListener(viewHolderRev.contentLayout, viewHolderRev.itemMsgVoice, urlView, position);
         } else if(holder instanceof ViewHolderHint) {
             ViewHolderHint viewHolderHint = (ViewHolderHint) holder;
+            initCheck(viewHolderHint.itemCheck, mMsgs.get(position));
             if(showTime) {
                 viewHolderHint.itemMsgTime.setText(TimeUtil.formatMsgTime(mMsgs.get(position).getTime()));
                 viewHolderHint.itemMsgTime.setBackgroundResource(R.drawable.rounded_corners_tag_gray_trans);
@@ -258,6 +286,27 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             viewHolderFooter.loadingPb.setVisibility(mFooterShowProgress ? View.VISIBLE : View.GONE);
         }
         holder.itemView.setTag(position);
+    }
+
+    private void initCheck(final TextView check, final PrivateMsg msg) {
+        if(mShowCheckBox) {
+            check.setSelected(checkIds.contains(msg.getTime()));
+            check.setVisibility(View.VISIBLE);
+            check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(checkIds.contains(msg.getTime())) {
+                        checkIds.remove(msg.getTime());
+                        check.setSelected(false);
+                    } else {
+                        checkIds.add(msg.getTime());
+                        check.setSelected(true);
+                    }
+                }
+            });
+        } else {
+            check.setVisibility(View.GONE);
+        }
     }
 
     private int voicePosition;
@@ -373,6 +422,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
      */
     public static class BaseMsgViewHolder extends RecyclerView.ViewHolder {
         public TextView itemMsgTime;
+        public TextView itemCheck;
         public ImageView itemMsgIcon;
         public TextView itemMsgContent;
         public View contentLayout;
@@ -381,6 +431,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         public BaseMsgViewHolder(View view) {
             super(view);
             itemMsgTime = view.findViewById(R.id.item_msg_time);
+            itemCheck = view.findViewById(R.id.item_msg_check);
             itemMsgIcon = view.findViewById(R.id.item_msg_icon);
             itemMsgContent = view.findViewById(R.id.item_msg_content);
             contentLayout = view.findViewById(R.id.item_msg_content_layout);
@@ -417,11 +468,13 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
      */
     public static class ViewHolderHint extends RecyclerView.ViewHolder {
         public TextView itemMsgTime;
+        public TextView itemCheck;
         public TextView itemMsgHint;
 
         public ViewHolderHint(View view) {
             super(view);
             itemMsgTime = view.findViewById(R.id.item_msg_time);
+            itemCheck = view.findViewById(R.id.item_msg_check);
             itemMsgHint = view.findViewById(R.id.item_msg_hint);
         }
     }

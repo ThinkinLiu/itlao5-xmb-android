@@ -865,6 +865,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 toDelete(position, msg);
             }
         }));
+        textSets.add(new TextSet(R.string.chat_long_click_delete_batch, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toDeleteBatch();
+            }
+        }));
         PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
         return false;
     }
@@ -889,6 +895,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private void toDelete(int position, PrivateMsg msg) {
         MessageDbHelper.getInstance(this).deleteMessageInfo(msg.getId());
         mRvAdapter.removeItem(position);
+    }
+
+    private void toDeleteBatch() {
+        mRvAdapter.showCheckBox(true);
     }
 
     MsgRefreshRecyclerAdapter.OnVoiceClickListener mOnVoiceClickListener = new MsgRefreshRecyclerAdapter.OnVoiceClickListener() {

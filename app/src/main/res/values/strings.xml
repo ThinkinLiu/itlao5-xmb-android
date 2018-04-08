@@ -397,6 +397,7 @@
     <string name="chat_long_click_post">转发到萌圈</string>
     <string name="chat_long_click_clipboard">复制</string>
     <string name="chat_long_click_delete">删除</string>
+    <string name="chat_long_click_delete_batch">批量删除</string>
     <string name="clipboard_hint">已复制到粘贴板</string>
     <string name="chat_long_click_share_title">与【小萌伴】“%1$s”的聊天</string>
     <string name="chat_to_post_login_hint">发帖前需要先登录哦！</string>
