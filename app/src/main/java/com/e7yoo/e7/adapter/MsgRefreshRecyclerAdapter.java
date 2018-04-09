@@ -187,7 +187,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 i--;
             }
         }
-        return checkTimes;
+        return new ArrayList<>(checkTimes);
     }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -281,6 +281,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderHint.itemMsgTime.setBackgroundResource(0);
             }
             viewHolderHint.itemMsgHint.setText(mMsgs.get(position).getContent());
+            addClickListener(viewHolderHint.itemMsgHint, null, null, position);
         } else if(holder instanceof ViewHolderFooter) {
             ViewHolderFooter viewHolderFooter = (ViewHolderFooter) holder;
             int footerStringId = getFooterStringId();
@@ -320,23 +321,28 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
 
     private int voicePosition;
     private void addClickListener(View view, View voice, View url, final int position) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(view, position);
+        if(isShowCheckBox()) {
+            return;
+        }
+        if(view != null) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(view, position);
+                    }
                 }
-            }
-        });
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if(mOnItemLongClickListener != null) {
-                    return mOnItemLongClickListener.onItemLongClick(view, position);
+            });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if(mOnItemLongClickListener != null) {
+                        return mOnItemLongClickListener.onItemLongClick(view, position);
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
         if(url != null) {
             url.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -347,14 +353,16 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 }
             });
         }
-        voice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mOnVoiceClickListener != null) {
-                    mOnVoiceClickListener.onVoiceClick(view, position);
+        if(voice != null) {
+            voice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mOnVoiceClickListener != null) {
+                        mOnVoiceClickListener.onVoiceClick(view, position);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private boolean showTime(int position) {

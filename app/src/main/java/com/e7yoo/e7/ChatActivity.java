@@ -860,6 +860,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             mRvAdapter.showCheckBox(false);
             setLeft();
             setRight();
+            return;
         }
         BdVoiceUtil.stopTTS(mSpeechSynthesizer);
         super.onBackPressed();
@@ -881,7 +882,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     RecyclerAdapter.OnItemLongClickListener mOnItemLongClickListener = new RecyclerAdapter.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(View view, int position) {
-            PrivateMsg msg = mRvAdapter != null ? mRvAdapter.getItem(position) : null;
+            PrivateMsg msg = mRvAdapter != null || !mRvAdapter.isShowCheckBox() ? mRvAdapter.getItem(position) : null;
             if(msg != null) {
                 return toLongClick(position, msg);
             }
