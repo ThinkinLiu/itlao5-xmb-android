@@ -298,6 +298,12 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         int c = count;
     }
 
+    public void deleteMessageInfoByRobotId(int robotId) {
+        StringBuilder where = new StringBuilder().append(MessageInfoColumns.ROBOT_ID).append("=?");
+        int count = mDatabase.delete(TABLE_MESSAGE, where.toString(), new String[]{String.valueOf(robotId)});
+        int c = count;
+    }
+
     public void deleteMessageInfo(ArrayList<Long> times) {
         if (times == null) {
             return;

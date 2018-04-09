@@ -533,15 +533,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onRefresh() {
             final int lastId = mRvAdapter.getLastId();
-            if(lastId <= 0) {
+            if(lastId == 0) {
                 EventBusUtil.post(Constant.EVENT_BUS_REFRESH_RecyclerView);
                 return;
             }
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    int id = lastId < 0 ? 0 : lastId;
                     ArrayList<PrivateMsg> newDatas = MessageDbHelper.getInstance(ChatActivity.this)
-                            .getPrivateMsgs(mRobot.getId(), lastId, 100);
+                            .getPrivateMsgs(mRobot.getId(), id, 100);
                     if(newDatas == null || newDatas.size() == 0) {
                         EventBusUtil.post(Constant.EVENT_BUS_REFRESH_RecyclerView_NOMORE);
                     } else {
@@ -920,6 +921,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 toDeleteBatch();
             }
         }));
+        textSets.add(new TextSet(R.string.chat_long_click_delete_all, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toDeleteAll();
+            }
+        }));
         PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
         return false;
     }
@@ -951,6 +958,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         mRvAdapter.showCheckBox(true);
         setLeft();
         setRight();
+    }
+
+    private void toDeleteAll() {
+        DbThreadPool.getInstance().deleteByRobotId(this, mRobot.getId());
+        mRvAdapter.refreshData(null);
     }
 
     MsgRefreshRecyclerAdapter.OnVoiceClickListener mOnVoiceClickListener = new MsgRefreshRecyclerAdapter.OnVoiceClickListener() {

@@ -48,10 +48,10 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private boolean mShowCheckBox = false;
 
     public void setCheckAll(boolean checkAll) {
-        checkIds.clear();
+        checkTimes.clear();
         if(checkAll) {
             for (PrivateMsg msg : mMsgs) {
-                checkIds.add(msg.getTime());
+                checkTimes.add(msg.getTime());
             }
         }
         notifyDataSetChanged();
@@ -59,7 +59,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
 
     public void showCheckBox(boolean showCheckBox) {
         this.mShowCheckBox = showCheckBox;
-        checkIds.clear();
+        checkTimes.clear();
         notifyDataSetChanged();
     }
 
@@ -94,7 +94,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     public void addItemTop(List<PrivateMsg> newDatas) {
         if(newDatas != null && newDatas.size() > 0) {
             mMsgs.addAll(0, newDatas);
-            notifyItemRangeChanged(0, newDatas.size());
+            //notifyItemRangeChanged(0, newDatas.size());
             notifyDataSetChanged();
         }
     }
@@ -107,11 +107,11 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     }
 
     public void addItemBottom(PrivateMsg newData) {
-        mMsgs.add(newData);
-        notifyDataSetChanged();
         if(mRobot != null && mRobot.getName() != null) {
             newData.setUser(mRobot.getName());
         }
+        mMsgs.add(newData);
+        notifyItemRangeChanged(mMsgs.size() - 2, 2);
         DbThreadPool.getInstance().insert(mContext, newData);
     }
 
@@ -177,19 +177,17 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         return viewHolder;
     }
 
-    private ArrayList<Long> checkIds = new ArrayList<>();
+    private ArrayList<Long> checkTimes = new ArrayList<>();
 
     public ArrayList<Long> getCheckIdsAndRemove() {
-        ArrayList<Long> ids = new ArrayList<>();
         for(int i = 0; i < mMsgs.size(); i++) {
             PrivateMsg msg = mMsgs.get(i);
-            if(msg != null && checkIds.contains(msg.getTime())) {
+            if(msg != null && checkTimes.contains(msg.getTime())) {
                 mMsgs.remove(i);
                 i--;
             }
         }
-        ids.addAll(checkIds);
-        return ids;
+        return checkTimes;
     }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -300,17 +298,17 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
 
     private void initCheck(final TextView check, final PrivateMsg msg) {
         if(mShowCheckBox) {
-            check.setSelected(checkIds.contains(msg.getTime()));
+            check.setSelected(checkTimes.contains(msg.getTime()));
             check.setVisibility(View.VISIBLE);
             check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int index = checkIds.indexOf(msg.getTime());
+                    int index = checkTimes.indexOf(msg.getTime());
                     if(index >= 0) {
-                        checkIds.remove(index);
+                        checkTimes.remove(index);
                         check.setSelected(false);
                     } else {
-                        checkIds.add(msg.getTime());
+                        checkTimes.add(msg.getTime());
                         check.setSelected(true);
                     }
                 }

@@ -73,6 +73,20 @@ public class DbThreadPool {
         });
     }
 
+    public void deleteByRobotId(final Context context, final int robotId) {
+        execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MessageDbHelper.getInstance(context).deleteMessageInfoByRobotId(robotId);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    CrashReport.postCatchedException(e);
+                }
+            }
+        });
+    }
+
     public void execute(Runnable runnable) {
         singlePool.execute(runnable);
     }
