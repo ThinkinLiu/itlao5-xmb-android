@@ -33,7 +33,7 @@ public class JokeListFragment extends ListFragment {
         return fragment;
     }
 
-    private JokeType jokeType;
+    private JokeType jokeType = JokeType.JOKE;
 
     public JokeListFragment setJokeType(JokeType jokeType) {
         this.jokeType = jokeType;
@@ -109,6 +109,9 @@ public class JokeListFragment extends ListFragment {
     @Override
     protected void loadDataFromNet(boolean isRefresh) {
         this.isRefresh = isRefresh;
+        if(jokeType == null) {
+            jokeType = JokeType.JOKE;
+        }
         switch (jokeType) {
             case PIC:
                 NetHelper.newInstance().jokeRand(true);
@@ -145,6 +148,9 @@ public class JokeListFragment extends ListFragment {
 
     private String getKey(JokeType jokeType) {
         String preferenceKey;
+        if(jokeType == null) {
+            jokeType = JokeType.JOKE;
+        }
         switch (jokeType) {
             case JOKE:
                 preferenceKey = Constant.PREFERENCE_CIRCLE_JOKE_JOKE;

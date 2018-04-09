@@ -222,7 +222,15 @@ public class ShareDialogUtil {
                         } else {
                             text = context.getString(R.string.share_to_sina);
                         }
-                        TastyToastUtil.toast(context, R.string.share_failed, text);
+                        if(context instanceof Activity) {
+                            final String finalText = text;
+                            ((Activity) context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TastyToastUtil.toast(context, R.string.share_failed, finalText);
+                                }
+                            });
+                        }
                     }
                 }
                 CrashReport.postCatchedException(throwable);

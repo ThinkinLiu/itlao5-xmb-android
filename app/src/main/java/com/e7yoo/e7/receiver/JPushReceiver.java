@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.model.PushMsg;
+import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
@@ -71,20 +72,7 @@ public class JPushReceiver extends BroadcastReceiver {
         pushMsg.setMsgId(msgId);
         pushMsg.setDesc("");
         pushMsg.setUnread(1);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    MessageDbHelper.getInstance(E7App.mApp).insertPushMsg(pushMsg, true);
-                    int unRead = PreferenceUtil.getInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
-                    PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, ++unRead);
-                    ShortCutUtils.addNumShortCut(E7App.mApp, MainActivity.class, true, String.valueOf(unRead));
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                    CrashReport.postCatchedException(e);
-                }
-            }
-        }).start();
+        DbThreadPool.getInstance().insertPushMsg(pushMsg, true);
     }
 
 }
