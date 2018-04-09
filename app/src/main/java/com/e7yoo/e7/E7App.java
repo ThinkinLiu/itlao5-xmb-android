@@ -30,12 +30,12 @@ public class E7App extends MultiDexApplication {
 
     private void initHotFix() {
         // initialize必须放在attachBaseContext最前面，初始化代码直接写在Application类里面，切勿封装到其他类。
-        int appVersion = OsUtil.getAppVersion(this);
-        if(appVersion <= 0) {
+        String appVersion = OsUtil.getAppVersionName(this);
+        if(appVersion.length() < 5) {
             return;
         }
         SophixManager.getInstance().setContext(this)
-                .setAppVersion(String.valueOf(appVersion))
+                .setAppVersion(appVersion)
                 .setAesKey(null)
                 .setEnableDebug(true)
                 .setPatchLoadStatusStub(new PatchLoadStatusListener() {
@@ -84,7 +84,7 @@ public class E7App extends MultiDexApplication {
     }
 
     private void ali() {
-        FeedbackAPI.init(mApp, "23473106", "f934f0f40717aa6b4416cf3883f28f6d");
+        FeedbackAPI.init(mApp, "24846408", "379523f21cdc6c4379d25c0914b96846");
     }
 
     private void bugly() {
