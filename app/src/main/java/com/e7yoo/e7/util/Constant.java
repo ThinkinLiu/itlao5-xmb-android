@@ -6,6 +6,10 @@ package com.e7yoo.e7.util;
 
 public class Constant {
 
+    public static final String APPID = "1106752385";
+
+    public static final String NativeExpressPosID = "4060631264783546";
+
     public static final String CIRCLE_IMG_EXT = "xmb_ext=";
     public static final String CIRCLE_URL_TITLE = "x:b";
     public static final String CIRCLE_URL_PIC = "xmb";
@@ -76,4 +80,6 @@ public class Constant {
     public static final String PREFERENCE_CIRCLE_JOKE_PIC = "preference_circle_joke_pic";
 
     public static final String PREFERENCE_MY_ICON = "preference_my_icon";
+
+    public static final String PREFERENCE_LAST_GET_PATCH_TIME = "preference_last_get_patch_time";
 }

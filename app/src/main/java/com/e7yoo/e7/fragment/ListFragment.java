@@ -20,6 +20,7 @@ import com.e7yoo.e7.view.RecyclerViewDivider;
 import java.util.List;
 
 public abstract class ListFragment extends BaseFragment {
+
     protected SwipeRefreshLayout mSRLayout;
     protected RecyclerView mRecyclerView;
     protected ListRefreshRecyclerAdapter mRvAdapter;

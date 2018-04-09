@@ -58,8 +58,8 @@ public class CircleFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if(mViewPagerAdapter == null) {
-            fragments.add(JokeListFragment.newInstance().setJokeType(JokeListFragment.JokeType.JOKE));
-            fragments.add(JokeListFragment.newInstance().setJokeType(JokeListFragment.JokeType.PIC));
+            fragments.add(JokeListFragmentAd.newInstance().setJokeType(JokeListFragmentAd.JokeType.JOKE));
+            fragments.add(JokeListFragmentAd.newInstance().setJokeType(JokeListFragmentAd.JokeType.PIC));
             mViewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments);
             setSelectedTv(mJokeTv);
         }

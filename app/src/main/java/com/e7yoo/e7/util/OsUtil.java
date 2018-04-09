@@ -82,6 +82,26 @@ public class OsUtil {
      * @param context
      * @return
      */
+    public static int getAppVersion(Context context) {
+        int versionCode = 0;
+        try {
+            // ---get the package info---
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionCode = pi.versionCode;
+        } catch (NameNotFoundException e) {
+            Log.e("VersionInfo", "Exception", e);
+            CrashReport.postCatchedException(e);
+        }
+        return versionCode;
+    }
+
+    /**
+     * get application version name writed in the manifest
+     *
+     * @param context
+     * @return
+     */
     public static String getAppVersionName(Context context) {
         String versionName = "";
         try {

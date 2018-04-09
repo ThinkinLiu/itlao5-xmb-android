@@ -52,12 +52,14 @@ public abstract class ListRefreshRecyclerAdapter extends RecyclerAdapter {
     public <T> void addItemBottom(List <T> newDatas) {
         if(newDatas != null && newDatas.size() > 0) {
             mDatas.addAll(newDatas);
+            beforeAddItemBottom();
             notifyDataSetChanged();
         }
     }
 
     public <T> void addItemBottom(T newData) {
         mDatas.add(newData);
+        beforeAddItemBottom();
         notifyDataSetChanged();
     }
 
@@ -66,7 +68,17 @@ public abstract class ListRefreshRecyclerAdapter extends RecyclerAdapter {
         if(newDatas != null) {
             mDatas.addAll(newDatas);
         }
+        beforeRefreshData();
         notifyDataSetChanged();
+    }
+
+    public void beforeRefreshData() {
+
+    }
+
+
+    public void beforeAddItemBottom() {
+
     }
 
     public FooterType getFooter() {

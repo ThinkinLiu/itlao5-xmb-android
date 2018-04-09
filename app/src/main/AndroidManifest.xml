@@ -122,6 +122,25 @@
     <!--<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />-->
     <!-- end umeng push -->
 
+    <!-- start tencent ad -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />    <!-- 如果需要精确定位的话请加上此权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- end tencent ad -->
+
+    <!-- start hotfix -->
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 外部存储读权限，调试工具加载本地补丁需要 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- end hotfix -->
+
     <application
         android:name=".E7App"
         android:allowBackup="false"
@@ -131,6 +150,18 @@
         android:roundIcon="@mipmap/logo_round"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+        <!-- start hotfix -->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="23473106" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="f934f0f40717aa6b4416cf3883f28f6d" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="RSA密钥" />
+        <!-- end hotfix -->
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5788cee967e58e9b78004641" />
@@ -401,6 +432,12 @@
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <!-- start tencent ad -->
+        <service android:name="com.qq.e.comm.DownloadService" android:exported="false" />
+        <activity android:name="com.qq.e.ads.ADActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+        <!-- end tencent ad -->
+
 
     </application>
 
