@@ -34,7 +34,7 @@ import java.util.List;
 
 public class JokeListFragmentAd extends ListFragment implements NativeExpressAD.NativeExpressADListener {
     private static final String TAG = JokeListFragmentAd.class.getSimpleName();
-    public static final int AD_COUNT = 3;    // 加载广告的条数，取值范围为[1, 10]
+    public static final int AD_COUNT = 10;    // 加载广告的条数，取值范围为[1, 10]
     private NativeExpressAD mADManager;
     private List<NativeExpressADView> mAdViewList;
 

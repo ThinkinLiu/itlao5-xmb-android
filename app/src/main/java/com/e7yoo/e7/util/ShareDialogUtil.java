@@ -116,7 +116,7 @@ public class ShareDialogUtil {
         items.add(new GridItem(R.mipmap.share_wxcircle, R.string.share_to_circle, gridItemClickListener));
         items.add(new GridItem(R.mipmap.share_qq, R.string.share_to_qq, gridItemClickListener));
         items.add(new GridItem(R.mipmap.share_qzone, R.string.share_to_qzone, gridItemClickListener));
-        // items.add(new GridItem(R.mipmap.share_sina, R.string.share_to_sina, gridItemClickListener));
+        items.add(new GridItem(R.mipmap.share_sina, R.string.share_to_sina, gridItemClickListener));
         return items;
     }
 
