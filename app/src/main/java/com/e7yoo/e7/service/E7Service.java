@@ -30,6 +30,7 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.VoiceRecognitionService;
+import com.baidu.speech.asr.SpeechConstant;
 import com.baidu.speech.asr.WakeUpControl;
 import com.e7yoo.e7.BuildConfig;
 import com.e7yoo.e7.ChatActivity;
@@ -38,6 +39,8 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.BdVoiceUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.Loc;
+import com.e7yoo.e7.util.MyRecognizer;
+import com.e7yoo.e7.util.OfflineRecogParams;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
@@ -51,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class E7Service extends Service implements RecognitionListener {
     public static final String FROM = "from";
@@ -313,6 +317,9 @@ public class E7Service extends Service implements RecognitionListener {
 //            eventWekeUpStop();
 //            mWpEventManager.unregisterListener(eventListener);
 //            mWpEventManager = null;
+            if(mMyRecognizer != null) {
+                mMyRecognizer.release();
+            }
             releaseMusic();
         } catch (Throwable e) {
             e.printStackTrace();
@@ -324,9 +331,9 @@ public class E7Service extends Service implements RecognitionListener {
 
     private EventManager mWpEventManager;
 
-    public boolean initEventWakeUp() {
+    public String initEventWakeUp() {
         String key = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
-        if(key == null || Arrays.binarySearch(new int[]{0,1,5,6,8}, Arrays.binarySearch(WpEventManagerUtil.KEYWORDS, key)) >= 0) {
+        if(key == null || key.length() > 0 || Arrays.binarySearch(new int[]{0,1,5,6,8}, Arrays.binarySearch(WpEventManagerUtil.KEYWORDS, key)) >= 0) {
             if(mWpEventManager == null) {
                 // 唤醒功能打开步骤
                 // 1) 创建唤醒事件管理器
@@ -334,18 +341,21 @@ public class E7Service extends Service implements RecognitionListener {
                 // 2) 注册唤醒事件监听器
                 mWpEventManager.registerListener(eventListener);
             }
-            return true;
+            return null;
         } else {
-            if(mSpeechRecognizer == null) {
-                mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(E7Service.this, new ComponentName(E7Service.this, VoiceRecognitionService.class));
-                // 注册监听器
-                mSpeechRecognizer.setRecognitionListener(this);
+            if(mMyRecognizer == null) {
+                mMyRecognizer = new MyRecognizer(this, eventListener);
             }
-            return false;
+//            if(mSpeechRecognizer == null) {
+//                mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(E7Service.this, new ComponentName(E7Service.this, VoiceRecognitionService.class));
+//                // 注册监听器
+//                mSpeechRecognizer.setRecognitionListener(this);
+//            }
+            return key;
         }
     }
 
-    private EventListener eventListener = new EventListener() {
+        private EventListener eventListener = new EventListener() {
         @Override
         public void onEvent(String name, String params, byte[] data, int offset, int length) {
             try {
@@ -374,16 +384,28 @@ public class E7Service extends Service implements RecognitionListener {
         }
     };
 
+    private String mKey = null;
+    private MyRecognizer mMyRecognizer;
+    private Map<String, Object> mMap = null;
     public void eventWakeUp() {
-        boolean isEventWakeUp = initEventWakeUp();
+        String key = initEventWakeUp();
 
-        if(isEventWakeUp) {
+        if(key == null) {
             // 3) 通知唤醒管理器, 启动唤醒功能
             HashMap params = new HashMap();
             params.put("kws-file", "assets:///WakeUp.bin"); // 设置唤醒资源, 唤醒资源请到 http://yuyin.baidu.com/wake#m4 来评估和导出
             mWpEventManager.send("wp.start", new JSONObject(params).toString(), null, 0, 0);
         } else {
-            BdVoiceUtil.startASR(mSpeechRecognizer, null, true);
+            if(!key.equals(mKey)) {
+                mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
+            }
+            if(mMap == null) {
+                mMap = new HashMap<>();
+                mMap.put(SpeechConstant.DECODER, 2);
+                mMap.remove(SpeechConstant.PID); // 去除pid，只支持中文
+            }
+            mMyRecognizer.start(mMap);
+//            BdVoiceUtil.startASR(mSpeechRecognizer, null, true);
         }
     }
 
@@ -392,8 +414,11 @@ public class E7Service extends Service implements RecognitionListener {
             // 停止唤醒监听
             mWpEventManager.send("wp.stop", null, null, 0, 0);
         }
-        if (mSpeechRecognizer != null) {
-            BdVoiceUtil.stopASR(mSpeechRecognizer);
+//        if (mSpeechRecognizer != null) {
+//            BdVoiceUtil.stopASR(mSpeechRecognizer);
+//        }
+        if(mMyRecognizer != null) {
+            mMyRecognizer.stop();
         }
     }
 

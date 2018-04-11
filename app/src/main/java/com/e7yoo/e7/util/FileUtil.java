@@ -35,6 +35,16 @@ public class FileUtil {
 		return result;
 	}
 
+
+	public static boolean makeDir(String dirPath) {
+		File file = new File(dirPath);
+		if (!file.exists()) {
+			return file.mkdirs();
+		} else {
+			return true;
+		}
+	}
+
 	/**
 	 * 读取文件 
 	 * @param context
