@@ -342,7 +342,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             isBusy = false;
             isError = false;
             if(Net.isNetWorkConnected(ChatActivity.this)) {
-                BdVoiceUtil.startASR(mSpeechRecognizer, mSpeechSynthesizer);
+                BdVoiceUtil.startASR(mSpeechRecognizer, mSpeechSynthesizer, true);
                 showToast(R.string.input_voice_toast_start);
             } else {
                 String noNetHint = getString(R.string.input_voice_hint_net_no);

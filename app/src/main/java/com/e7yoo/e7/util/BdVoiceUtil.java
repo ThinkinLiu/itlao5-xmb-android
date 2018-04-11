@@ -22,11 +22,16 @@ import java.util.HashMap;
 
 public class BdVoiceUtil {
 
-    // 开始识别(会先停止SpeechSynthesizer)
-    public static void startASR(SpeechRecognizer speechRecognizer, SpeechSynthesizer mSpeechSynthesizer) {
+    /**
+     * 开始识别(会先停止SpeechSynthesizer)
+     * @param speechRecognizer
+     * @param mSpeechSynthesizer
+     * @param bindParams 是否需要提示音
+     */
+    public static void startASR(SpeechRecognizer speechRecognizer, SpeechSynthesizer mSpeechSynthesizer, boolean bindParams) {
         stopTTS(mSpeechSynthesizer);
         Intent intent = new Intent();
-        bindParams(intent);
+        bindParams(intent, bindParams);
         if(speechRecognizer != null) {
             speechRecognizer.startListening(intent);
         }
@@ -53,13 +58,15 @@ public class BdVoiceUtil {
         }
     }
 
-    public static void bindParams(Intent intent) {
-        // 设置识别参数
-        intent.putExtra(TtsUtils.EXTRA_SOUND_START, R.raw.bdspeech_recognition_start);
-        intent.putExtra(TtsUtils.EXTRA_SOUND_END, R.raw.bdspeech_speech_end);
-        intent.putExtra(TtsUtils.EXTRA_SOUND_SUCCESS, R.raw.bdspeech_recognition_success);
-        intent.putExtra(TtsUtils.EXTRA_SOUND_ERROR, R.raw.bdspeech_recognition_error);
-        intent.putExtra(TtsUtils.EXTRA_SOUND_CANCEL, R.raw.bdspeech_recognition_cancel);
+    public static void bindParams(Intent intent, boolean hintSound) {
+        if(hintSound) {
+            // 设置识别参数
+            intent.putExtra(TtsUtils.EXTRA_SOUND_START, R.raw.bdspeech_recognition_start);
+            intent.putExtra(TtsUtils.EXTRA_SOUND_END, R.raw.bdspeech_speech_end);
+            intent.putExtra(TtsUtils.EXTRA_SOUND_SUCCESS, R.raw.bdspeech_recognition_success);
+            intent.putExtra(TtsUtils.EXTRA_SOUND_ERROR, R.raw.bdspeech_recognition_error);
+            intent.putExtra(TtsUtils.EXTRA_SOUND_CANCEL, R.raw.bdspeech_recognition_cancel);
+        }
         intent.putExtra("sample", 16000); // 离线仅支持16000采样率
         intent.putExtra("language", "cmn-Hans-CN"); // 离线仅支持中文普通话
         intent.putExtra("prop", 20000); // 输入

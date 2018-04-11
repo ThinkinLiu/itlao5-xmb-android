@@ -5,14 +5,19 @@ import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.speech.RecognitionListener;
+import android.speech.SpeechRecognizer;
 import android.telephony.SmsManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
@@ -24,27 +29,36 @@ import com.baidu.location.Poi;
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
+import com.baidu.speech.VoiceRecognitionService;
+import com.baidu.speech.asr.WakeUpControl;
 import com.e7yoo.e7.BuildConfig;
+import com.e7yoo.e7.ChatActivity;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.util.BdVoiceUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.Loc;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.e7yoo.e7.util.TtsUtils;
 import com.e7yoo.e7.util.WpEventManagerUtil;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class E7Service extends Service {
+public class E7Service extends Service implements RecognitionListener {
     public static final String FROM = "from";
     public static final int FROM_SMS_RECEIVER = 1001;
     public static final int FROM_SMS_RECEIVER_LATLNG = 1002;
     private Loc mLoc;
+
+    private SpeechRecognizer mSpeechRecognizer;
 
     public E7Service() {
     }
@@ -56,15 +70,15 @@ public class E7Service extends Service {
         registerReceiver(receiver, filter);
     }
 
+    private boolean isScreenOn = true;
     private void init(Context context) {
         if (PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) != 0) {
-            boolean isScreenOn = true;
             try {
                 PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
                 isScreenOn = pm.isScreenOn();//如果为true，则表示屏幕“亮”了，否则屏幕“暗”了。
             } catch (Throwable e) {
                 e.printStackTrace();
-                // // CrashReport.postCatchedException(e);
+                CrashReport.postCatchedException(e);
             }
             try {
                 if (isScreenOn) {
@@ -73,7 +87,7 @@ public class E7Service extends Service {
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
-                // // CrashReport.postCatchedException(e);
+                CrashReport.postCatchedException(e);
             }
             try {
                 if (!isScreenOn) {
@@ -81,7 +95,7 @@ public class E7Service extends Service {
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
-                // // CrashReport.postCatchedException(e);
+                CrashReport.postCatchedException(e);
             }
         }
     }
@@ -94,6 +108,7 @@ public class E7Service extends Service {
             }
             switch (intent.getAction()) { // 屏幕关闭才开启语音唤醒，为了解决跟微信等使用语音的app之间的冲突
                 case Intent.ACTION_SCREEN_OFF:
+                    isScreenOn = false;
                     try {
                         int i = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0);
                         if (PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) != 0) {
@@ -105,6 +120,7 @@ public class E7Service extends Service {
                     }
                     break;
                 case Intent.ACTION_SCREEN_ON:
+                    isScreenOn = true;
                     try {
                         if (PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) != 0) {
                             eventWekeUpStop();
@@ -141,7 +157,8 @@ public class E7Service extends Service {
                             break;
                         }
                     }
-                    Loc.getInstance(mLoc).startLocation(myListener);
+                    mLoc = Loc.getInstance(mLoc);
+                    mLoc.startLocation(myListener);
                     break;
             }
         }
@@ -307,12 +324,25 @@ public class E7Service extends Service {
 
     private EventManager mWpEventManager;
 
-    public void initEventWakeUp() {
-        // 唤醒功能打开步骤
-        // 1) 创建唤醒事件管理器
-        mWpEventManager = EventManagerFactory.create(this, "wp");
-        // 2) 注册唤醒事件监听器
-        mWpEventManager.registerListener(eventListener);
+    public boolean initEventWakeUp() {
+        String key = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
+        if(key == null || Arrays.binarySearch(new int[]{0,1,5,6,8}, Arrays.binarySearch(WpEventManagerUtil.KEYWORDS, key)) >= 0) {
+            if(mWpEventManager == null) {
+                // 唤醒功能打开步骤
+                // 1) 创建唤醒事件管理器
+                mWpEventManager = EventManagerFactory.create(this, "wp");
+                // 2) 注册唤醒事件监听器
+                mWpEventManager.registerListener(eventListener);
+            }
+            return true;
+        } else {
+            if(mSpeechRecognizer == null) {
+                mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(E7Service.this, new ComponentName(E7Service.this, VoiceRecognitionService.class));
+                // 注册监听器
+                mSpeechRecognizer.setRecognitionListener(this);
+            }
+            return false;
+        }
     }
 
     private EventListener eventListener = new EventListener() {
@@ -322,7 +352,7 @@ public class E7Service extends Service {
                 JSONObject json = new JSONObject(params);
                 if ("wp.data".equals(name)) { // 每次唤醒成功, 将会回调name=wp.data的时间, 被激活的唤醒词在params的word字段
                     String word = json.getString("word"); // 唤醒词
-                    if ("小萌小萌".equals(word)) {
+                    if (WpEventManagerUtil.KEYWORDS[8].equals(word)) {
                         // 语音回复“萌萌在这里”
                         openVoice();
                         // // MobclickAgent.onEvent(E7App.mApp, Constant.Umeng.Send_xmb_wpevent2);
@@ -345,19 +375,25 @@ public class E7Service extends Service {
     };
 
     public void eventWakeUp() {
-        if (mWpEventManager == null) {
-            initEventWakeUp();
+        boolean isEventWakeUp = initEventWakeUp();
+
+        if(isEventWakeUp) {
+            // 3) 通知唤醒管理器, 启动唤醒功能
+            HashMap params = new HashMap();
+            params.put("kws-file", "assets:///WakeUp.bin"); // 设置唤醒资源, 唤醒资源请到 http://yuyin.baidu.com/wake#m4 来评估和导出
+            mWpEventManager.send("wp.start", new JSONObject(params).toString(), null, 0, 0);
+        } else {
+            BdVoiceUtil.startASR(mSpeechRecognizer, null, true);
         }
-        // 3) 通知唤醒管理器, 启动唤醒功能
-        HashMap params = new HashMap();
-        params.put("kws-file", "assets:///WakeUp.bin"); // 设置唤醒资源, 唤醒资源请到 http://yuyin.baidu.com/wake#m4 来评估和导出
-        mWpEventManager.send("wp.start", new JSONObject(params).toString(), null, 0, 0);
     }
 
     public void eventWekeUpStop() {
         if (mWpEventManager != null) {
             // 停止唤醒监听
             mWpEventManager.send("wp.stop", null, null, 0, 0);
+        }
+        if (mSpeechRecognizer != null) {
+            BdVoiceUtil.stopASR(mSpeechRecognizer);
         }
     }
 
@@ -381,6 +417,51 @@ public class E7Service extends Service {
     }
 
     private BDLocationListener myListener = new MyLocationListener();
+
+    @Override
+    public void onReadyForSpeech(Bundle params) {
+
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+
+    }
+
+    @Override
+    public void onRmsChanged(float rmsdB) {
+
+    }
+
+    @Override
+    public void onBufferReceived(byte[] buffer) {
+
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+
+    }
+
+    @Override
+    public void onError(int error) {
+
+    }
+
+    @Override
+    public void onResults(Bundle results) {
+
+    }
+
+    @Override
+    public void onPartialResults(Bundle partialResults) {
+
+    }
+
+    @Override
+    public void onEvent(int eventType, Bundle params) {
+
+    }
 
     public class MyLocationListener implements BDLocationListener {
 
