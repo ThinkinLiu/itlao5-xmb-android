@@ -68,4 +68,10 @@ public class UmengUtil {
     public static final String JOKE_LIST_JOKE_MORE = "3_joke_list_joke_more";
     public static final String JOKE_LIST_PIC_REFRESH = "3_joke_list_pic_refresh";
     public static final String JOKE_LIST_PIC_MORE = "3_joke_list_pic_more";
+
+
+    public static final String WAKE_UP_XIAOMENG = "wake_up_xiaomeng";
+    public static final String WAKE_UP_OTHER = "wake_up_other";
+    public static final String WAKE_UP_ASR_KEY = "wake_up_asr_key";
+    public static final String WAKE_UP_ASR_OTHER = "wake_up_asr_other";
 }

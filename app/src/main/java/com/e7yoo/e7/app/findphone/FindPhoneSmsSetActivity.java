@@ -38,7 +38,7 @@ public class FindPhoneSmsSetActivity extends BaseActivity implements OnClickList
                 R.string.dialog_sms_hint_title, R.string.dialog_sms_hint);
         String text = PreferenceUtil.getString(Constant.PREFERENCE_SMS_FINDPHONE_TEXT, null);
         if(text != null) {
-            et.setText(text);
+            et.setHint(text);
         }
     }
 

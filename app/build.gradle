@@ -123,7 +123,8 @@ dependencies {
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     compile files('libs/360update-7.0.3.jar')
-    compile files('libs/GDTUnionSDK.4.15.559.min.jar')
+    // 热修复Sophix
     compile 'com.aliyun.ams:alicloud-android-hotfix:3.2.1'
+    // 百度语音
     compile files('libs/bdasr_V3_20180320_9066860.jar')
 }

@@ -103,6 +103,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         showMinePoint();
         EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
+
+        E7App.mApp.queryAndLoadNewPatch();
     }
 
     private void initRobot() {

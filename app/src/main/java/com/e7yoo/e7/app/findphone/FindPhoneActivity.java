@@ -13,8 +13,10 @@ import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.UmengUtil;
+import com.e7yoo.e7.util.WpEventManagerUtil;
 
 public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeListener, OnClickListener {
     private ToggleButton findPhoneSmsBtn;
@@ -27,6 +29,8 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
     private TextView findPhoneLatlngTv2;
     private ToggleButton findPhoneVoiceBtn;
     private View findPhoneVoiceLayout;
+    private TextView findPhoneVoiceTv;
+    private TextView findPhoneVoiceTv2;
 
     @Override
     protected String initTitle() {
@@ -44,12 +48,14 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
         findPhoneSmsLayout = findViewById(R.id.find_phone_sms);
         findPhoneSmsTv = (TextView) findViewById(R.id.find_phone_sms_hint);
         findPhoneSmsTv2 = (TextView) findViewById(R.id.find_phone_sms_text);
-        findPhoneVoiceBtn = (ToggleButton) findViewById(R.id.tb_find_phone_voice);
-        findPhoneVoiceLayout = findViewById(R.id.find_phone_voice);
         findPhoneLatlngBtn = (ToggleButton) findViewById(R.id.tb_find_phone_latlng);
         findPhoneLatlngLayout = findViewById(R.id.find_phone_latlng);
         findPhoneLatlngTv = (TextView) findViewById(R.id.find_phone_hint_latlng);
         findPhoneLatlngTv2 = (TextView) findViewById(R.id.find_phone_text_latlng);
+        findPhoneVoiceBtn = (ToggleButton) findViewById(R.id.tb_find_phone_voice);
+        findPhoneVoiceLayout = findViewById(R.id.find_phone_voice);
+        findPhoneVoiceTv = (TextView) findViewById(R.id.find_phone_voice_hint);
+        findPhoneVoiceTv2 = (TextView) findViewById(R.id.find_phone_voice_text);
     }
 
     @Override
@@ -74,6 +80,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
         findPhoneLatlngBtn.setOnCheckedChangeListener(this);
         findPhoneLatlngLayout.setOnClickListener(this);
         findPhoneVoiceBtn.setOnCheckedChangeListener(this);
+        findPhoneVoiceLayout.setOnClickListener(this);
     }
 
     @Override
@@ -85,6 +92,9 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
             case R.id.find_phone_latlng:
                 toFindPhoneActivity(1);
                 break;
+            case R.id.find_phone_voice:
+                toFindPhoneActivity(2);
+                break;
             default:
                 break;
         }
@@ -95,7 +105,9 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
      * @param toActivity FindPhoneLatlngSetActivity 1;      FindPhoneSetActivity 0
      */
     private void toFindPhoneActivity(int toActivity) {
-        if(toActivity == 1) {
+        if(toActivity == 2) {
+            startActivityForResult(new Intent(this, FindPhoneVoiceSetActivity.class), 111);
+        } else if(toActivity == 1) {
             startActivityForResult(new Intent(this, FindPhoneLatlngSetActivity.class), 111);
         } else {
             startActivityForResult(new Intent(this, FindPhoneSmsSetActivity.class), 111);
@@ -176,6 +188,14 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
             if (textLatlng.length() > 5) {
                 findPhoneLatlngTv2.setText(textLatlng.substring(0, 5) + "...");
             }
+        }
+        String textVoice = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
+        if (textLatlng == null) {
+            findPhoneVoiceTv.setText(R.string.findphone_voice_update);
+            findPhoneVoiceTv2.setText(WpEventManagerUtil.KEYWORDS[8]);
+        } else {
+            findPhoneVoiceTv.setText(R.string.findphone_voice_update);
+            findPhoneVoiceTv2.setText(textVoice);
         }
     }
 }

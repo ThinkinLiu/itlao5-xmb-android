@@ -152,6 +152,7 @@
     <string name="dialog_shot_cut_hint">您禁止了创建快捷图标权限，无法为你创建手电筒桌面快捷图标</string>
     <string name="dialog_shot_cut_hint_title">提示</string>
     <string name="dialog_voice_hint">您禁止了语音权限，将无法使用语音功能</string>
+    <string name="dialog_voice_hint2">您禁止了语音权限，将无法使用语音找手机功能</string>
     <string name="dialog_voice_hint_title">提示</string>
     <string name="dialog_sms_hint">您禁止了短信权限，将无法使用短信找手机功能</string>
     <string name="dialog_sms_hint_title">提示</string>
@@ -187,9 +188,13 @@
     <string name="findphone_latlng_set">设置短信指令</string>
     <string name="findphone_latlng_update">修改短信指令</string>
     <string name="findphone_voice">语音找手机</string>
-    <string name="findphone_voice_hint">注意：</string>
-    <string name="findphone_voice_hint2">打开"语音找手机"后，在手机锁屏或黑屏时，可以呼唤“小萌小萌”，萌萌会回复“主人，我在这里”，您即可根据声音来源找到手机，也可大喊“打开手电筒”，萌萌会发光哦！\n该功能需要您允许应用后台运行，并打开语音权限</string>
+    <string name="findphone_voice_update">修改语音指令</string>
 
+    <string name="set_find_phone_voice_edit_hint">请输入3-5个中文汉字</string>
+    <string name="set_find_phone_voice_text_hint">提示：请设置3-5位中文汉字语音指令\n\n备注：打开"语音找手机"功能后，在手机锁屏或黑屏时，可以呼唤语音指令（默认“小萌小萌”），萌萌会语音回复“主人，我在这里”，您即可根据声音来源找到手机，也可大喊“打开手电筒”，萌萌会发光哦！\n该功能需要您允许应用后台运行，并打开语音权限\n　　更实用便捷的找手机方式正在研发中...</string>
+    <string name="toast_set_find_phone_voice_length">请设置3-5位语音指令</string>
+    <string name="toast_set_find_phone_voice_error">语音指令仅支持纯中文汉字</string>
+    <string name="toast_set_find_phone_voice_error2">为了保证成功找到手机，请不要设置为同一个字符</string>
     <string name="set_find_phone_sms_edit_hint">请输入找手机短信指令（手机接收到该指令会响铃）</string>
     <string name="set_find_phone_sms_text_hint">备注：\n　　打开找手机功能，手机在附近却找不到时，可以通过另一台手机发送短信指令到该手机中，该手机接收到预设的短信指令后，会发出声音，根据声音即可找到手机。\n　　开通该功能需要接收短信权限，并请允许程序后台运行\n　　更实用便捷的找手机方式正在研发中...</string>
     <string name="toast_set_find_phone_sms_length">请设置6-20位短信密码</string>
@@ -237,6 +242,7 @@
     <string name="share_failed">分享失败，您没有安装%1$s，或者版本过低，您可以分享到其他平台</string>
     <string name="share_to_sina">微博</string>
     <string name="mengmeng_is_here">萌萌在这里</string>
+    <string name="flashlight_is_open">手电筒已打开</string>
     <string name="mine_label_hint">闲暇时光·有我陪你</string>
     <string name="push_msg_details">消息</string>
     <string name="push_msg_details_more">更多推荐</string>

@@ -6,6 +6,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.JokeListRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.ListRefreshRecyclerAdapter;
 import com.e7yoo.e7.model.Joke;
+import com.e7yoo.e7.model.JokeType;
 import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.IOUtils;
@@ -24,9 +25,6 @@ import java.util.List;
  */
 
 public class JokeListFragment extends ListFragment {
-    public enum JokeType {
-        ALL, JOKE, PIC
-    }
 
     public static JokeListFragment newInstance() {
         JokeListFragment fragment = new JokeListFragment();

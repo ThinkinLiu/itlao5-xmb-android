@@ -55,13 +55,28 @@ public class E7App extends MultiDexApplication {
     }
 
     public void queryAndLoadNewPatch() {
-        long last = PreferenceUtil.getLong(Constant.PREFERENCE_LAST_GET_PATCH_TIME, 0);
-        long now = System.currentTimeMillis();
-        if(now - last > 5 * 60 * 1000) { // 控制最多5分钟一次
-            PreferenceUtil.commitLong(Constant.PREFERENCE_LAST_GET_PATCH_TIME, 0);
-            // queryAndLoadNewPatch不可放在attachBaseContext 中，否则无网络权限，建议放在后面任意时刻，如onCreate中
-            SophixManager.getInstance().queryAndLoadNewPatch();
+        int times = PreferenceUtil.getInt(Constant.PREFERENCE_LAST_GET_PATCH_TIMES, 0);
+         if(times < 5) {
+            // 24小时内少于5次
+            times++;
+        } else {
+            long last = PreferenceUtil.getLong(Constant.PREFERENCE_LAST_GET_PATCH_TIME, 0);
+            long now = System.currentTimeMillis();
+             if(now - last > 24 * 60 * 60 * 1000) { // 控制24小时小时访问一次
+                 PreferenceUtil.commitLong(Constant.PREFERENCE_LAST_GET_PATCH_TIME, now);
+                 times = 1;//第一次
+             } else {
+                 // 24小时内超过5次，则不再请求
+                 return;
+             }
         }
+        PreferenceUtil.commitLong(Constant.PREFERENCE_CHAT_OPEN_TIMES, times);
+        doQueryAndLoadNewPatch();
+    }
+
+    private void doQueryAndLoadNewPatch() {
+        // queryAndLoadNewPatch不可放在attachBaseContext 中，否则无网络权限，建议放在后面任意时刻，如onCreate中
+        SophixManager.getInstance().queryAndLoadNewPatch();
     }
 
     public static boolean auth = false;

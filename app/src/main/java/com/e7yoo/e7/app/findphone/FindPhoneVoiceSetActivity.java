@@ -17,10 +17,11 @@ import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.e7yoo.e7.util.WpEventManagerUtil;
 
 import java.util.ArrayList;
 
-public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickListener {
+public class FindPhoneVoiceSetActivity extends BaseActivity implements OnClickListener {
     private EditText et;
 
     @Override
@@ -30,7 +31,7 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
 
     @Override
     protected int initLayoutResId() {
-        return R.layout.activity_find_phone_latlng_set;
+        return R.layout.activity_find_phone_voice_set;
     }
 
     @Override
@@ -41,9 +42,11 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
     @Override
     protected void initSettings() {
         initPermission();
-        String textLatlng = PreferenceUtil.getString(Constant.PREFERENCE_SMS_FINDPHONE_TEXT_LATLNG, null);
+        String textLatlng = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
         if (textLatlng != null) {
             et.setHint(textLatlng);
+        } else {
+            et.setHint(WpEventManagerUtil.KEYWORDS[8]);
         }
     }
 
@@ -57,16 +60,17 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
         switch (view.getId()) {
             case R.id.titlebar_right_tv:
                 String text = et.getText().toString().trim();
-                if (text.length() < 6 || text.length() > 20) {
-                    TastyToastUtil.toast(this, R.string.toast_set_find_phone_latlng_length);
+                if (text.length() < 3 || text.length() > 5) {
+                    TastyToastUtil.toast(this, R.string.toast_set_find_phone_voice_length);
+                    return;
+                } else if(isChinese(text)) {
+                    TastyToastUtil.toast(this, R.string.toast_set_find_phone_voice_error);
+                    return;
+                } else if(isSame(text)) {
+                    TastyToastUtil.toast(this, R.string.toast_set_find_phone_voice_error2);
                     return;
                 }
-                String voicePwd = PreferenceUtil.getString(Constant.PREFERENCE_SMS_FINDPHONE_TEXT, null);
-                if (voicePwd != null && voicePwd.equals(text)) {
-                    TastyToastUtil.toast(this, R.string.toast_set_find_phone_latlng_error);
-                    return;
-                }
-                PreferenceUtil.commitString(Constant.PREFERENCE_SMS_FINDPHONE_TEXT_LATLNG, text);
+                PreferenceUtil.commitString(Constant.PREFERENCE_WAKEUP_KEYWORD, text);
                 finish(text);
                 break;
             default:
@@ -82,14 +86,8 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
     }
 
 
-    String PERMISSIONS[] = {Manifest.permission.SEND_SMS,
-            Manifest.permission.READ_SMS,
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
+    String PERMISSIONS[] = {Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CHANGE_WIFI_STATE,
-            /*该权限无法弹出框口进行提醒*/Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
-            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
@@ -124,12 +122,43 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
                 for (int i = 0; i < permissions.length; i++) {
                     String permission = permissions[i];
                     if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED
-                            && !permission.equals(Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS)) {
-                        CheckPermissionUtil.AskForPermission(FindPhoneLatlngSetActivity.this, R.string.dialog_latlng_hint_title, R.string.dialog_latlng_hint);
+                            && !permission.equals(Manifest.permission.RECORD_AUDIO)) {
+                        CheckPermissionUtil.AskForPermission(FindPhoneVoiceSetActivity.this, R.string.dialog_latlng_hint_title, R.string.dialog_voice_hint2);
                         return;
                     }
                 }
                 break;
         }
+    }
+
+    /**
+     * 判断该字符串是否为中文
+     * @param string
+     * @return
+     */
+    public boolean isChinese(String string){
+        int n = 0;
+        for(int i = 0; i < string.length(); i++) {
+            n = (int)string.charAt(i);
+            if(!(19968 <= n && n <40869)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 判断string所有char是否一致
+     * @param string
+     * @return
+     */
+    public boolean isSame(String string) {
+        char last = string.charAt(0);
+        for(int i = 1; i < string.length(); i++) {
+            if(string.charAt(i) != last) {
+                return false;
+            }
+        }
+        return true;
     }
 }
