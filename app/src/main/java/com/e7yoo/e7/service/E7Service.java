@@ -302,7 +302,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
         int now = am.getStreamVolume(AudioManager.STREAM_MUSIC);//得到听筒模式的当前值
-        int max = now;//am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int max = /*now;*/am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, max, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
         soundp.play(soundm.get(str), 1, 1, 0, 0, 1f);
         try {
