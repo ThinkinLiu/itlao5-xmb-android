@@ -87,7 +87,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             newsRootLayout.setVisibility(View.VISIBLE);
         }
 
-        showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
+        showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, true);
         if(showNew) {
             more_findphone_right_icon.setBackgroundResource(R.mipmap.icon_new);
         }
