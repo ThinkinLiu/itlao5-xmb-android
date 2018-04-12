@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.e7yoo.e7.GameListActivity;
@@ -17,6 +18,8 @@ import com.e7yoo.e7.app.light.FlashLightActivity;
 import com.e7yoo.e7.app.news.NewsActivity;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.CommonUtil;
+import com.e7yoo.e7.util.Constant;
+import com.e7yoo.e7.util.PreferenceUtil;
 
 public class MoreFragment extends BaseFragment implements View.OnClickListener {
     private View newsLayout, historyLayout, gameLayout, lightLayout, findPhoneLayout, taobaoLayout;
@@ -24,6 +27,8 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView newsTitleTv, gamesTitleTv, appsTitleTv;
     private View newsRootLayout, gamesRootLayout, appsRootLayout;
+
+    private ImageView more_findphone_right_icon;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -62,6 +67,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             newsRootLayout = mRootView.findViewById(R.id.news_root_layout);
             gamesRootLayout = mRootView.findViewById(R.id.games_root_layout);
             appsRootLayout = mRootView.findViewById(R.id.apps_root_layout);
+            more_findphone_right_icon = mRootView.findViewById(R.id.more_findphone_right_icon);
             newsLayout.setOnClickListener(this);
             historyLayout.setOnClickListener(this);
             gameLayout.setOnClickListener(this);
@@ -80,8 +86,14 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             newsTitleTv.setVisibility(View.VISIBLE);
             newsRootLayout.setVisibility(View.VISIBLE);
         }
+
+        showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
+        if(showNew) {
+            more_findphone_right_icon.setBackgroundResource(R.mipmap.icon_new);
+        }
         return mRootView;
     }
+    private boolean showNew;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -115,6 +127,9 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.more_findphone_layout:
                 ActivityUtil.toActivity(getActivity(), FindPhoneActivity.class);
+                if(showNew) {
+                    PreferenceUtil.commitBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
+                }
                 break;
             case R.id.more_taobao_layout:
                 break;

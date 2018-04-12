@@ -75,7 +75,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         boolean showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
         if(showNew) {
             showMorePoint(0, showNew);
-            PreferenceUtil.commitBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
         }
     }
 
