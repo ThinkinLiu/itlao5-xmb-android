@@ -1,9 +1,11 @@
 package com.e7yoo.e7;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
 
 import com.alibaba.sdk.android.feedback.impl.FeedbackAPI;
+import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
@@ -55,7 +57,7 @@ public class E7App extends MultiDexApplication {
     }
 
     public void queryAndLoadNewPatch() {
-        int times = PreferenceUtil.getInt(Constant.PREFERENCE_LAST_GET_PATCH_TIMES, 0);
+        long times = PreferenceUtil.getLong(Constant.PREFERENCE_LAST_GET_PATCH_TIMES, 0);
          if(times < 5) {
             // 24小时内少于5次
             times++;
@@ -89,6 +91,10 @@ public class E7App extends MultiDexApplication {
         ali();
         bugly();
         auth = "c51334ce1b84a1efd36e603b88185f9b".equals(OsUtil.getUdid(mApp));
+
+
+        Intent intentE7Service = new Intent(this, E7Service.class);
+        this.startService(intentE7Service);
     }
 
     private void jPush() {

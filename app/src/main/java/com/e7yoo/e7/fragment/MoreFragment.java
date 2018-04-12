@@ -28,7 +28,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
     private TextView newsTitleTv, gamesTitleTv, appsTitleTv;
     private View newsRootLayout, gamesRootLayout, appsRootLayout;
 
-    private ImageView more_findphone_right_icon;
+    private ImageView findPhoneNew;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -67,7 +67,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             newsRootLayout = mRootView.findViewById(R.id.news_root_layout);
             gamesRootLayout = mRootView.findViewById(R.id.games_root_layout);
             appsRootLayout = mRootView.findViewById(R.id.apps_root_layout);
-            more_findphone_right_icon = mRootView.findViewById(R.id.more_findphone_right_icon);
+            findPhoneNew = mRootView.findViewById(R.id.more_findphone_new);
             newsLayout.setOnClickListener(this);
             historyLayout.setOnClickListener(this);
             gameLayout.setOnClickListener(this);
@@ -87,13 +87,14 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             newsRootLayout.setVisibility(View.VISIBLE);
         }
 
-        showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, true);
+        boolean showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, true);
         if(showNew) {
-            more_findphone_right_icon.setBackgroundResource(R.mipmap.icon_new);
+            findPhoneNew.setVisibility(View.VISIBLE);
+        } else {
+            findPhoneNew.setVisibility(View.GONE);
         }
         return mRootView;
     }
-    private boolean showNew;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -127,8 +128,9 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.more_findphone_layout:
                 ActivityUtil.toActivity(getActivity(), FindPhoneActivity.class);
-                if(showNew) {
+                if(findPhoneNew.getVisibility() == View.VISIBLE) {
                     PreferenceUtil.commitBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
+                    findPhoneNew.setVisibility(View.GONE);
                 }
                 break;
             case R.id.more_taobao_layout:

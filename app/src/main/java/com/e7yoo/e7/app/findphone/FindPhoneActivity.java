@@ -54,8 +54,8 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
         findPhoneLatlngTv2 = (TextView) findViewById(R.id.find_phone_text_latlng);
         findPhoneVoiceBtn = (ToggleButton) findViewById(R.id.tb_find_phone_voice);
         findPhoneVoiceLayout = findViewById(R.id.find_phone_voice);
-        findPhoneVoiceTv = (TextView) findViewById(R.id.find_phone_voice_hint);
-        findPhoneVoiceTv2 = (TextView) findViewById(R.id.find_phone_voice_text);
+        findPhoneVoiceTv = (TextView) findViewById(R.id.find_phone_hint_voice);
+        findPhoneVoiceTv2 = (TextView) findViewById(R.id.find_phone_text_voice);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
             }
         }
         String textVoice = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
-        if (textLatlng == null) {
+        if (textVoice == null) {
             findPhoneVoiceTv.setText(R.string.findphone_voice_update);
             findPhoneVoiceTv2.setText(WpEventManagerUtil.KEYWORDS[8]);
         } else {

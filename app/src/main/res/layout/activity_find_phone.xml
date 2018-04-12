@@ -259,10 +259,11 @@
                 android:paddingBottom="@dimen/space_2x">
 
                 <TextView
-                    android:id="@+id/find_phone_voice_hint"
+                    android:id="@+id/find_phone_hint_voice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left|top"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="left"
                     android:padding="@dimen/space_2x"
                     android:text="@string/findphone_voice_update"
                     android:textColor="@color/text"
@@ -270,11 +271,12 @@
                     android:layout_marginLeft="@dimen/space_4x" />
 
                 <TextView
-                    android:id="@+id/find_phone_voice_text"
+                    android:id="@+id/find_phone_text_voice"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:gravity="right|center_vertical"
                     android:padding="@dimen/space_2x"
                     android:textColor="@color/text_l"
                     android:textSize="@dimen/size_m"/>

@@ -63,7 +63,7 @@ public class FindPhoneVoiceSetActivity extends BaseActivity implements OnClickLi
                 if (text.length() < 3 || text.length() > 5) {
                     TastyToastUtil.toast(this, R.string.toast_set_find_phone_voice_length);
                     return;
-                } else if(isChinese(text)) {
+                } else if(!isChinese(text)) {
                     TastyToastUtil.toast(this, R.string.toast_set_find_phone_voice_error);
                     return;
                 } else if(isSame(text)) {

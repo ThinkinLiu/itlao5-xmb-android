@@ -76,6 +76,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         final IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
         registerReceiver(receiver, filter);
     }
 
@@ -91,13 +92,13 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             }
             try {
                 if (isScreenOn) {
-                    KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-                    isScreenOn = mKeyguardManager.inKeyguardRestrictedInputMode();
+                    isScreenOn = !isScreenLocked(context);
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
                 CrashReport.postCatchedException(e);
             }
+            System.out.println("------------1---isScreenOn--" + isScreenOn);
             try {
                 if (!isScreenOn) {
                     eventWakeUp();
@@ -115,11 +116,11 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             if (intent == null) {
                 return;
             }
+            System.out.println("------------1---ac--" + intent.getAction());
             switch (intent.getAction()) { // 屏幕关闭才开启语音唤醒，为了解决跟微信等使用语音的app之间的冲突
                 case Intent.ACTION_SCREEN_OFF:
                     isScreenOn = false;
                     try {
-                        int i = PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0);
                         if (PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) != 0) {
                             eventWakeUp();
                         }
@@ -129,6 +130,15 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                     }
                     break;
                 case Intent.ACTION_SCREEN_ON:
+                    try {
+                        if(isScreenLocked(E7Service.this)) {
+                            return;
+                        }
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        // // CrashReport.postCatchedException(e);
+                    }
+                case Intent.ACTION_USER_PRESENT:
                     isScreenOn = true;
                     try {
                         if (PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) != 0) {
@@ -143,6 +153,12 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         }
 
     };
+
+    //判断屏幕是否被锁定
+    public final static boolean isScreenLocked(Context c) {
+        android.app.KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(c.KEYGUARD_SERVICE);
+        return mKeyguardManager.inKeyguardRestrictedInputMode();
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -286,7 +302,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
         int now = am.getStreamVolume(AudioManager.STREAM_MUSIC);//得到听筒模式的当前值
-        int max = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int max = now;//am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, max, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
         soundp.play(soundm.get(str), 1, 1, 0, 0, 1f);
         try {
@@ -338,7 +354,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
 
     public String initEventWakeUp() {
         String key = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
-        if(key == null || key.length() <= 3) {
+        if(key == null || key.length() < 3 || key.equals(WpEventManagerUtil.KEYWORDS[8])) {
             if(mWpEventManager == null) {
                 // 唤醒功能打开步骤
                 // 1) 创建唤醒事件管理器
@@ -364,6 +380,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         @Override
         public void onEvent(String name, String params, byte[] data, int offset, int length) {
             try {
+                System.out.println("------------1-----" + name + "-:-" + params);
                 if ("wp.data".equals(name)) { // 每次唤醒成功, 将会回调name=wp.data的时间, 被激活的唤醒词在params的word字段
                     JSONObject json = new JSONObject(params);
                     String word = json.getString("word"); // 唤醒词
@@ -382,12 +399,15 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 } else if ("wp.exit".equals(name)) {
                     // 唤醒已经停止
                 } else if(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL.equals(name)) {
-                    if (params.contains("\"nlu_result\"")) {
+                    if (params.contains("nlu_result")) {
                         JSONObject json = new JSONObject(params);
-                        if("nlu_result".equals(json.getString("result_type"))) {
+                        String type = json.getString("result_type");
+                        if("nlu_result".equals(type)) {
                             String str = new String(data, offset, length);
                             TastyToastUtil.toast(E7App.mApp, "语音找手机："+str);
+                            System.out.println("------------1---1--" + str);
                             str = getResult(str);
+                            System.out.println("------------1---2--" + str);
                             String key = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
                             if(key != null && key.equals(str)) {
                                 // 语音回复“萌萌在这里”
@@ -404,7 +424,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                     }
                 } else if(SpeechConstant.CALLBACK_EVENT_ASR_EXIT.equals(name)) {
                     // 识别结束，资源释放
-
+                    init(E7Service.this);
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -449,17 +469,20 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             mWpEventManager.send("wp.start", new JSONObject(params).toString(), null, 0, 0);
         } else {
             if(!key.equals(mKey)) {
-                mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
             }
             if(mMap == null) {
                 mMap = new HashMap<>();
                 mMap.put(SpeechConstant.DECODER, 2);
                 mMap.remove(SpeechConstant.PID); // 去除pid，只支持中文
-                mMap.put(SpeechConstant.NLU, "enable-all"); // 去除pid，只支持中文
+                mMap.put(SpeechConstant.NLU, "enable-all");
                 mMap.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "asset:///baidu_speech_grammar.bsg");
+                mMap.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);//不需要音量回调
+
             }
             if(!key.equals(mKey)) {
+                mKey = key;
                 mMap.putAll(OfflineRecogParams.fetchSlotDataParam(key));
+                mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
             }
             mMyRecognizer.start(mMap);
 //            BdVoiceUtil.startASR(mSpeechRecognizer, null, true);
