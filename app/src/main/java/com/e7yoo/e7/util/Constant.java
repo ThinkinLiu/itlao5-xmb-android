@@ -85,4 +85,6 @@ public class Constant {
     public static final String PREFERENCE_LAST_GET_PATCH_TIMES = "preference_last_get_patch_times";
 
     public static final String PREFERENCE_WAKEUP_KEYWORD = "preference_wakeup_keyword";
+
+    public static final String PREFERENCE_MORE_POINT_NEW = "preference_more_point_new";
 }

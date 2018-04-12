@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private BottomNavigationView navigation;
     private final int[] titleResIds = {R.string.title_home, R.string.title_circle, R.string.title_more, R.string.title_mine};
+    private TextView mMorePoint;
     private TextView mMinePoint;
 
     @Override
@@ -66,7 +67,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void initView() {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mMorePoint = (TextView) findViewById(R.id.more_point);
         mMinePoint = (TextView) findViewById(R.id.mine_point);
+    }
+
+    public void showMoreNew() {
+        boolean showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
+        if(showNew) {
+            showMorePoint(0, showNew);
+            PreferenceUtil.commitBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
+        }
+    }
+
+    public void showMorePoint(int count, boolean... isNew) {
+        if(isNew != null && isNew[0]) {
+            mMorePoint.setBackgroundResource(R.mipmap.icon_new_s);
+            mMorePoint.setVisibility(View.VISIBLE);
+        } else {
+            if (count > 0) {
+                mMorePoint.setText(String.valueOf(count > 99 ? 99 : count));
+                mMorePoint.setVisibility(View.VISIBLE);
+                mMorePoint.setBackgroundResource(R.drawable.point);
+            } else {
+                mMorePoint.setText(String.valueOf(0));
+                mMorePoint.setVisibility(View.GONE);
+            }
+        }
     }
 
     public void showMinePoint() {
@@ -102,6 +128,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
 
         showMinePoint();
+        showMoreNew();
         EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
 
         E7App.mApp.queryAndLoadNewPatch();
