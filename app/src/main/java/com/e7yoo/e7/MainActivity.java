@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.e7yoo.e7.adapter.ViewPagerAdapter;
@@ -50,7 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private BottomNavigationView navigation;
     private final int[] titleResIds = {R.string.title_home, R.string.title_circle, R.string.title_more, R.string.title_mine};
-    private TextView mMorePoint;
+    private ImageView mMorePoint;
     private TextView mMinePoint;
 
     @Override
@@ -67,30 +68,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void initView() {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        mMorePoint = (TextView) findViewById(R.id.more_point);
+        mMorePoint = (ImageView) findViewById(R.id.more_point);
         mMinePoint = (TextView) findViewById(R.id.mine_point);
     }
 
-    public void showMoreNew() {
-        boolean showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, true);
-        if(showNew) {
-            showMorePoint(0, showNew);
+    /**
+     * 控制more菜单是否显示new图标
+     * @param isShowNew 是否显示new图标，不传则去获取SharedPreference值，传入true或false则直接使用该值
+     */
+    public void showMoreNew(boolean... isShowNew) {
+        boolean showNew;
+        if(isShowNew == null || isShowNew.length == 0) {
+            showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, true);
+        } else {
+            showNew = isShowNew[0];
         }
-    }
-
-    public void showMorePoint(int count, boolean... isNew) {
-        if(isNew != null && isNew[0]) {
-            mMorePoint.setBackgroundResource(R.mipmap.icon_new_s);
+        if(showNew) {
             mMorePoint.setVisibility(View.VISIBLE);
         } else {
-            if (count > 0) {
-                mMorePoint.setText(String.valueOf(count > 99 ? 99 : count));
-                mMorePoint.setVisibility(View.VISIBLE);
-                mMorePoint.setBackgroundResource(R.drawable.point);
-            } else {
-                mMorePoint.setText(String.valueOf(0));
-                mMorePoint.setVisibility(View.GONE);
-            }
+            mMorePoint.setVisibility(View.GONE);
         }
     }
 

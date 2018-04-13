@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.e7yoo.e7.GameListActivity;
+import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.app.findphone.FindPhoneActivity;
 import com.e7yoo.e7.app.history.TodayHisActivity;
@@ -130,6 +131,7 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
                 ActivityUtil.toActivity(getActivity(), FindPhoneActivity.class);
                 if(findPhoneNew.getVisibility() == View.VISIBLE) {
                     PreferenceUtil.commitBoolean(Constant.PREFERENCE_MORE_POINT_NEW, false);
+                    ((MainActivity) getActivity()).showMoreNew(false);
                     findPhoneNew.setVisibility(View.GONE);
                 }
                 break;

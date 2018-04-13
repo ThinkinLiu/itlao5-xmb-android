@@ -63,6 +63,8 @@
     <dimen name="size_3xl">18dp</dimen>
     <dimen name="size_4xl">19dp</dimen>
     <dimen name="size_5xl">20dp</dimen>
+    <dimen name="more_new_width">36dp</dimen>
+    <dimen name="more_new_height">24dp</dimen>
     <dimen name="array">24dp</dimen>
     <dimen name="add_robot_icon">48dp</dimen>
 
@@ -76,7 +78,9 @@
     <dimen name="list_news_height">90dp</dimen>
     <dimen name="item_push_msg_icon_width">54dp</dimen>
     <dimen name="item_push_msg_icon_height">42dp</dimen>
-    <dimen name="item_main_mine_msg_point">16dp</dimen>
+    <dimen name="item_main_new_width">24dp</dimen>
+    <dimen name="item_main_new_height">16dp</dimen>
+    <dimen name="item_main_point">16dp</dimen>
     <dimen name="item_push_msg_point">20dp</dimen>
     <dimen name="feed_detail_input_pic">80dp</dimen>
     <dimen name="item_unfriend_msg_point">20dp</dimen>

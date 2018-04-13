@@ -340,11 +340,14 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
 //            mWpEventManager = null;
             if(mMyRecognizer != null) {
                 mMyRecognizer.release();
+                mMyRecognizer = null;
+                mKey = null;
+                mMap = null;
             }
             releaseMusic();
         } catch (Throwable e) {
             e.printStackTrace();
-            // // CrashReport.postCatchedException(e);
+            CrashReport.postCatchedException(e);
         }
         startService(new Intent(this, E7Service.class));
     }
@@ -388,7 +391,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                         // 语音回复“萌萌在这里”
                         openVoice();
                         MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_XIAOMENG);
-                        TastyToastUtil.toast(E7App.mApp, R.string.mengmeng_is_here);
+                        //TastyToastUtil.toast(E7App.mApp, R.string.mengmeng_is_here);
                     } else {
                         WpEventManagerUtil.doEvent(null, word);
                         MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_OTHER);
@@ -404,7 +407,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                         String type = json.getString("result_type");
                         if("nlu_result".equals(type)) {
                             String str = new String(data, offset, length);
-                            TastyToastUtil.toast(E7App.mApp, "语音找手机："+str);
+                            //TastyToastUtil.toast(E7App.mApp, "语音找手机："+str);
                             System.out.println("------------1---1--" + str);
                             str = getResult(str);
                             System.out.println("------------1---2--" + str);
@@ -413,12 +416,12 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                                 // 语音回复“萌萌在这里”
                                 openVoice();
                                 MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_ASR_KEY);
-                                TastyToastUtil.toast(E7App.mApp, R.string.mengmeng_is_here);
+                                //TastyToastUtil.toast(E7App.mApp, R.string.mengmeng_is_here);
                             } else if(WpEventManagerUtil.KEYWORDS[0].equals(str)
                                     || WpEventManagerUtil.KEYWORDS[5].equals(str)) {// 打开电灯，打开手电筒
                                 E7App.mApp.sendBroadcast(new Intent(FlashLightWidget.ACTION_LED_ON));
                                 MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_ASR_OTHER);
-                                TastyToastUtil.toast(E7App.mApp, R.string.flashlight_is_open);
+                                //TastyToastUtil.toast(E7App.mApp, R.string.flashlight_is_open);
                             }
                         }
                     }
@@ -428,7 +431,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
-                // // CrashReport.postCatchedException(e);
+                CrashReport.postCatchedException(e);
             }
         }
     };
@@ -468,14 +471,13 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             params.put("kws-file", "assets:///WakeUp.bin"); // 设置唤醒资源, 唤醒资源请到 http://yuyin.baidu.com/wake#m4 来评估和导出
             mWpEventManager.send("wp.start", new JSONObject(params).toString(), null, 0, 0);
         } else {
-            if(!key.equals(mKey)) {
-            }
             if(mMap == null) {
                 mMap = new HashMap<>();
                 mMap.put(SpeechConstant.DECODER, 2);
-                mMap.remove(SpeechConstant.PID); // 去除pid，只支持中文
+                mMap.put(SpeechConstant.PID, 15361); // 普通话
                 mMap.put(SpeechConstant.NLU, "enable-all");
-                mMap.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "asset:///baidu_speech_grammar.bsg");
+                mMap.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0); // 开启长语音。即无静音超时断句。手动调用ASR_STOP停止录音。
+                mMap.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "assets:///baidu_speech_grammar.bsg");
                 mMap.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);//不需要音量回调
 
             }
@@ -484,6 +486,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 mMap.putAll(OfflineRecogParams.fetchSlotDataParam(key));
                 mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
             }
+            System.out.println("------------1---map--" + new JSONObject(mMap).toString());
             mMyRecognizer.start(mMap);
 //            BdVoiceUtil.startASR(mSpeechRecognizer, null, true);
         }

@@ -56,17 +56,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView
+            <!--<TextView
                 android:id="@+id/home_point"
-                android:layout_width="@dimen/item_main_mine_msg_point"
-                android:layout_height="@dimen/item_main_mine_msg_point"
+                android:layout_width="@dimen/item_main_point"
+                android:layout_height="@dimen/item_main_point"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/space_5x"
+                android:layout_marginLeft="@dimen/space_4x"
                 android:background="@drawable/point"
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_5xs"
                 android:gravity="center"
-                android:visibility="gone" />
+                android:visibility="gone" />-->
         </LinearLayout>
 
         <LinearLayout
@@ -74,17 +74,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView
+            <!--<TextView
                 android:id="@+id/circle_point"
-                android:layout_width="@dimen/item_main_mine_msg_point"
-                android:layout_height="@dimen/item_main_mine_msg_point"
+                android:layout_width="@dimen/item_main_point"
+                android:layout_height="@dimen/item_main_point"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/space_5x"
+                android:layout_marginLeft="@dimen/space_4x"
                 android:background="@drawable/point"
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_5xs"
                 android:gravity="center"
-                android:visibility="gone" />
+                android:visibility="gone" />-->
         </LinearLayout>
 
         <LinearLayout
@@ -92,16 +92,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView
+            <ImageView
                 android:id="@+id/more_point"
-                android:layout_width="@dimen/item_main_mine_msg_point"
-                android:layout_height="@dimen/item_main_mine_msg_point"
+                android:layout_width="@dimen/item_main_new_width"
+                android:layout_height="@dimen/item_main_new_height"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/space_5x"
-                android:background="@drawable/point"
-                android:textColor="@color/white"
-                android:textSize="@dimen/size_5xs"
-                android:gravity="center"
+                android:layout_marginLeft="@dimen/space_4x"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/icon_new"
                 android:visibility="gone"/>
         </LinearLayout>
 
@@ -112,10 +111,10 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/mine_point"
-                android:layout_width="@dimen/item_main_mine_msg_point"
-                android:layout_height="@dimen/item_main_mine_msg_point"
+                android:layout_width="@dimen/item_main_point"
+                android:layout_height="@dimen/item_main_point"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/space_5x"
+                android:layout_marginLeft="@dimen/space_4x"
                 android:background="@drawable/point"
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_5xs"

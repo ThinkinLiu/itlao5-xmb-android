@@ -300,10 +300,11 @@
 
                     <ImageView
                         android:id="@+id/more_findphone_new"
-                        android:layout_width="@dimen/array"
-                        android:layout_height="@dimen/array"
+                        android:layout_width="@dimen/more_new_width"
+                        android:layout_height="@dimen/more_new_height"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/icon_new" />
 
                     <ImageView
