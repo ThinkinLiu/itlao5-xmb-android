@@ -72,7 +72,7 @@ public class CollectListFragment extends ListFragment {
             } else {
                 ArrayList<Joke> jokes = MessageDbHelper.getInstance(E7App.mApp).getCollect(lastId, 0);
                 mRvAdapter.addItemBottom(jokes);
-                if (jokes != null || jokes.size() > 0) {
+                if (jokes != null && jokes.size() > 0) {
                     noMore = false;
                 } else {
                     noMore = true;
