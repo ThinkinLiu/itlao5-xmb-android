@@ -429,4 +429,6 @@
 
     <string name="all">全选</string>
     <string name="all_cancel">取消全选</string>
+
+    <string name="collect_suc">已加入我的收藏</string>
 </resources>

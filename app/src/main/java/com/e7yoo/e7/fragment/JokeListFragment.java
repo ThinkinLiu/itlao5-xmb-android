@@ -16,6 +16,7 @@ import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.IOUtils;
 import com.e7yoo.e7.util.JokeUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -113,6 +114,7 @@ public class JokeListFragment extends ListFragment {
                 if(mRvAdapter != null) {
                     ((JokeListRefreshRecyclerAdapter) mRvAdapter).remove(position);
                 }
+                TastyToastUtil.toast(getActivity(), R.string.collect_suc);
             }
         });
     }

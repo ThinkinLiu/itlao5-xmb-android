@@ -52,6 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             initSettings();
         } catch (Throwable e) {
             // getIntent().hasExtra(出现NullPointerException  （activeandroid.Cache.getTableInfo）主要是后台重新进入时出现
+            e.printStackTrace();
             CrashReport.postCatchedException(e);
             finish();
             return;

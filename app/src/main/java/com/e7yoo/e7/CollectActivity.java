@@ -38,7 +38,7 @@ public class CollectActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mViewPager = (ViewPager) findViewById(R.id.circle_viewpager);
+        mViewPager = (ViewPager) findViewById(R.id.collect_viewpager);
     }
 
     @Override

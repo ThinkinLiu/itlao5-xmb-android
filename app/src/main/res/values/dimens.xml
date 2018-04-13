@@ -87,5 +87,5 @@
 
 
     <dimen name="item_joke_icon">26dp</dimen>
-    <dimen name="item_joke_collect">26dp</dimen>
+    <dimen name="item_joke_collect">48dp</dimen>
 </resources>

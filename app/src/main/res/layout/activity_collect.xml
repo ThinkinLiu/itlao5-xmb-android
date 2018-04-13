@@ -3,17 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.e7yoo.e7.CollectActivity">
-
-    <View
-        android:id="@+id/collect_line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/space_1dp"
-        android:layout_below="@id/circle_top"
-        android:background="@color/color_seperator" />
+    <include
+        android:id="@+id/titleBar"
+        layout="@layout/titlebar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/collect_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/collect_line" />
+        android:layout_below="@id/titleBar" />
 </RelativeLayout>

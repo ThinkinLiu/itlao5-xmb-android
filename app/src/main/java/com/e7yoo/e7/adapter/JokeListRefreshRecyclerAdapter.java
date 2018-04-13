@@ -37,21 +37,28 @@ public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
     }
 
     @Override
-    protected void setHolderView(RecyclerView.ViewHolder holder, int position) {
+    protected void setHolderView(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof ViewHolderJoke) {
-            ViewHolderJoke viewHolderJoke = (ViewHolderJoke) holder;
+            final ViewHolderJoke viewHolderJoke = (ViewHolderJoke) holder;
             if(position % 2 == 0) {
                 viewHolderJoke.root.setBackgroundResource(R.drawable.rounded_corners_bg_joke2);
             } else {
                 viewHolderJoke.root.setBackgroundResource(R.drawable.rounded_corners_bg_joke1);
             }
-            Joke item = (Joke) mDatas.get(position);
+            final Joke item = (Joke) mDatas.get(position);
             if (item != null) {
                 viewHolderJoke.icon.setVisibility(View.GONE);
                 viewHolderJoke.name.setVisibility(View.GONE);
                 if(showCollect) {
                     viewHolderJoke.collect.setVisibility(View.VISIBLE);
-                    onCollectListener.onCollect(viewHolderJoke.collect, item, position);
+                    viewHolderJoke.collect.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(onCollectListener != null) {
+                                onCollectListener.onCollect(v, item, position);
+                            }
+                        }
+                    });
                 } else {
                     viewHolderJoke.collect.setVisibility(View.GONE);
                 }
