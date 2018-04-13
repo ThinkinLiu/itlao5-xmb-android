@@ -67,12 +67,16 @@ public class CollectListFragment extends ListFragment {
             if(joke != null) {
                 lastId = joke.get_id();
             }
-            ArrayList<Joke> jokes = MessageDbHelper.getInstance(E7App.mApp).getCollect(lastId, 0);
-            mRvAdapter.addItemBottom(jokes);
-            if(jokes != null || jokes.size() > 0) {
-                noMore = false;
-            } else {
+            if(lastId == 0) {
                 noMore = true;
+            } else {
+                ArrayList<Joke> jokes = MessageDbHelper.getInstance(E7App.mApp).getCollect(lastId, 0);
+                mRvAdapter.addItemBottom(jokes);
+                if (jokes != null || jokes.size() > 0) {
+                    noMore = false;
+                } else {
+                    noMore = true;
+                }
             }
         }
         if(mSRLayout != null) {

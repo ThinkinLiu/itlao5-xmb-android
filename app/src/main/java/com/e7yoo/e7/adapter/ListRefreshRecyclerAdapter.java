@@ -89,8 +89,8 @@ public abstract class ListRefreshRecyclerAdapter extends RecyclerAdapter {
         mFooterType = type;
         mFooterStringId = footerStringId;
         mFooterShowProgress = footerShowProgress;
-        notifyDataSetChanged();
-        // notifyItemChanged(getItemCount() - 1);
+        //notifyDataSetChanged();
+        notifyItemChanged(getItemCount() - 1);
     }
 
     @Override
