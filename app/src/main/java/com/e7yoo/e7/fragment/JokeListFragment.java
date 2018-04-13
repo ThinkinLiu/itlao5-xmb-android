@@ -1,13 +1,17 @@
 package com.e7yoo.e7.fragment;
 
 import android.os.Message;
+import android.view.View;
 
+import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.JokeListRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.ListRefreshRecyclerAdapter;
 import com.e7yoo.e7.model.Joke;
 import com.e7yoo.e7.model.JokeType;
 import com.e7yoo.e7.net.NetHelper;
+import com.e7yoo.e7.sql.DbThreadPool;
+import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.IOUtils;
 import com.e7yoo.e7.util.JokeUtil;
@@ -95,12 +99,22 @@ public class JokeListFragment extends ListFragment {
 
     @Override
     protected ListRefreshRecyclerAdapter initAdapter() {
-        return new JokeListRefreshRecyclerAdapter(getContext());
+        JokeListRefreshRecyclerAdapter jokeListRefreshRecyclerAdapter = new JokeListRefreshRecyclerAdapter(getContext());
+        jokeListRefreshRecyclerAdapter.setShowCollect(true);
+        return jokeListRefreshRecyclerAdapter;
     }
 
     @Override
     protected void addListener() {
-
+        ((JokeListRefreshRecyclerAdapter) mRvAdapter).setOnCollectListener(new JokeListRefreshRecyclerAdapter.OnCollectListener() {
+            @Override
+            public void onCollect(View view, Joke joke, int position) {
+                DbThreadPool.getInstance().insertCollect(E7App.mApp, joke);
+                if(mRvAdapter != null) {
+                    ((JokeListRefreshRecyclerAdapter) mRvAdapter).remove(position);
+                }
+            }
+        });
     }
 
     boolean isRefresh;

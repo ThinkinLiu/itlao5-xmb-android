@@ -10,6 +10,7 @@ import android.text.TextUtils;
 
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.model.Joke;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.PrivateMsg.Type;
 import com.e7yoo.e7.model.PushMsg;
@@ -25,11 +26,12 @@ public class MessageDbHelper extends SQLiteOpenHelper {
     @SuppressWarnings("unused")
     private static final String TAG = "MessageDbHelper";
     private static final String DB_NAME = "db_e7yoo_info";
-    private static final int DB_VERSION = 6;
+    private static final int DB_VERSION = 7;
     private static final String TABLE_MESSAGE = "t_message_info";
     private static final String TABLE_FAVORITE = "t_favorite_info";
     private static final String TABLE_ROBOT = "t_robot";
     private static final String TABLE_PUSH_MSG = "t_pushmsg";
+    private static final String TABLE_COLLECT = "t_collect";
 
     private static MessageDbHelper mInstance = null;
     private SQLiteDatabase mDatabase;
@@ -106,6 +108,15 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             .append(PushMsgColumns.DESC).append(" TEXT,")
             .append(PushMsgColumns.UNREAD).append(" INTEGER")
             .append(")");
+    StringBuilder sql_collect = new StringBuilder().append("CREATE TABLE IF NOT EXISTS ")
+            .append(TABLE_COLLECT).append("(")
+            .append(CollectColumns._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
+            .append(CollectColumns.CONTENT).append(" TEXT,")
+            .append(CollectColumns.HASHID).append(" TEXT,")
+            .append(CollectColumns.UNIXTIME).append(" INTEGER,")
+            .append(CollectColumns.UPDATETIME).append(" TEXT,")
+            .append(CollectColumns.URL).append(" TEXT")
+            .append(")");
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -113,6 +124,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         db.execSQL(sql_favorite.toString());
         db.execSQL(sql_robot.toString());
         db.execSQL(sql_push_msg.toString());
+        db.execSQL(sql_collect.toString());
     }
 
     @Override
@@ -122,6 +134,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                 // 数据库版本1基础上增加robot表，message表增加robot_id列，其他数据库未改变
                 db.execSQL(sql_robot.toString());
                 db.execSQL(sql_push_msg.toString());
+                db.execSQL(sql_collect.toString());
                 db.execSQL("ALTER TABLE "+ TABLE_MESSAGE + " ADD " + MessageInfoColumns.ROBOT_ID + " INTEGER DEFAULT 1;");
             } else if(oldVersion <= 5) {
                 try {
@@ -130,12 +143,16 @@ public class MessageDbHelper extends SQLiteOpenHelper {
                     e.printStackTrace();
                     CrashReport.postCatchedException(e);
                 }
+                db.execSQL(sql_collect.toString());
+            } else if(oldVersion <= 6) {
+                db.execSQL(sql_collect.toString());
             } else {
                 // 其他情况，将表销毁再创建（后续版本可自行修改）
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGE);
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITE);
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROBOT);
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUSH_MSG);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLLECT);
                 onCreate(db);
             }
         }
@@ -197,6 +214,16 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         private static final String MSG_ID = "msg_id";
         private static final String DESC = "desc";
         private static final String UNREAD = "unread";
+
+    }
+
+    private static class CollectColumns implements BaseColumns {
+        private static final String _ID = "_id";
+        private static final String CONTENT = "content";
+        private static final String HASHID = "hashId";
+        private static final String UNIXTIME = "unixtime";
+        private static final String UPDATETIME = "updatetime";
+        private static final String URL = "url";
 
     }
 
@@ -542,5 +569,64 @@ public class MessageDbHelper extends SQLiteOpenHelper {
         }
         StringBuilder where = new StringBuilder().append(PushMsgColumns._ID).append(" = ?");
         int count = mDatabase.delete(TABLE_PUSH_MSG, where.toString(), new String[]{_id});
+    }
+
+
+
+    public ArrayList<Joke> getCollect(int id, int num) {
+        if (num <= 0) {
+            num = 30;
+        }
+        String where = null;
+        if (id > 0) {
+            where = CollectColumns._ID + "<" + id;
+        }
+        String orderBy = PushMsgColumns._ID + " DESC";
+        String limit = String.valueOf(num);
+        Cursor c = mDatabase.query(TABLE_COLLECT, null, where, null, null, null, orderBy, limit);
+
+        if (c == null) {
+            return new ArrayList<>();
+        }
+        boolean exist = c.moveToFirst();
+        ArrayList<Joke> jokes = new ArrayList<>();
+        Joke joke;
+        if (exist) {
+            do {
+                joke = new Joke();
+                joke.set_id(c.getInt(c.getColumnIndex(CollectColumns._ID)));
+                joke.setContent(c.getString(c.getColumnIndex(CollectColumns.CONTENT)));
+                joke.setHashId(c.getString(c.getColumnIndex(CollectColumns.HASHID)));
+                joke.setUnixtime(c.getLong(c.getColumnIndex(CollectColumns.UNIXTIME)));
+                joke.setUpdatetime(c.getString(c.getColumnIndex(CollectColumns.UPDATETIME)));
+                joke.setUrl(c.getString(c.getColumnIndex(CollectColumns.URL)));
+                jokes.add(joke);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        return jokes;
+    }
+
+    public long insertCollect(Joke joke) {
+        if (joke == null) {
+            return -1;
+        }
+        ContentValues values = new ContentValues();
+        values.put(CollectColumns.CONTENT, joke.getContent());
+        values.put(CollectColumns.HASHID, joke.getHashId());
+        values.put(CollectColumns.UNIXTIME, joke.getUnixtime());
+        values.put(CollectColumns.UPDATETIME, joke.getUpdatetime());
+        values.put(CollectColumns.URL, joke.getUrl());
+        long id = mDatabase.insertOrThrow(TABLE_COLLECT, null, values);
+        return id;
+    }
+
+    public void deleteCollect(String _id) {
+        if (_id == null) {
+            return;
+        }
+        StringBuilder where = new StringBuilder().append(CollectColumns._ID).append(" = ?");
+        int count = mDatabase.delete(TABLE_COLLECT, where.toString(), new String[]{_id});
     }
 }

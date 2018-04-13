@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.AboutActivity;
+import com.e7yoo.e7.CollectActivity;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.PushMsgActivity;
@@ -45,7 +46,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     private View mRootView;
     private ImageView mHeadIconIv;
     private TextView mine_label;
-    private View mMsgLayout, mSetLayout, mAboutLayout;
+    private View mMsgLayout, mCollectLayout,  mSetLayout, mAboutLayout;
     private TextView mineMsgPoint;
 
 
@@ -104,6 +105,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
         mHeadIconIv = mRootView.findViewById(R.id.mine_icon);
         mine_label = mRootView.findViewById(R.id.mine_label);
         mMsgLayout = mRootView.findViewById(R.id.mine_msg_layout);
+        mCollectLayout = mRootView.findViewById(R.id.mine_collect_layout);
         mSetLayout = mRootView.findViewById(R.id.mine_set_layout);
         mAboutLayout = mRootView.findViewById(R.id.mine_about_layout);
         mineMsgPoint = mRootView.findViewById(R.id.mine_msg_point);
@@ -112,6 +114,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     private void initListener() {
         mHeadIconIv.setOnClickListener(this);
         mMsgLayout.setOnClickListener(this);
+        mCollectLayout.setOnClickListener(this);
         mSetLayout.setOnClickListener(this);
         mAboutLayout.setOnClickListener(this);
     }
@@ -195,6 +198,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
                 ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
                 PreferenceUtil.commitInt(Constant.PREFERENCE_PUSH_MSG_UNREAD, 0);
                 setMsgPoint();
+                break;
+            case R.id.mine_collect_layout:
+                ActivityUtil.toActivity(getActivity(), CollectActivity.class);
                 break;
             case R.id.mine_set_layout:
                 ActivityUtil.toActivity(getActivity(), SettingsActivity.class);

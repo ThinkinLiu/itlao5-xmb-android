@@ -1,6 +1,5 @@
 package com.e7yoo.e7.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.e7yoo.e7.ChatActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
 import com.e7yoo.e7.model.Joke;
@@ -24,6 +22,12 @@ public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
 
     public JokeListRefreshRecyclerAdapter(Context context) {
         super(context);
+    }
+
+    private boolean showCollect = false;
+    public void setShowCollect(boolean showCollect) {
+        this.showCollect = showCollect;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -45,6 +49,12 @@ public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
             if (item != null) {
                 viewHolderJoke.icon.setVisibility(View.GONE);
                 viewHolderJoke.name.setVisibility(View.GONE);
+                if(showCollect) {
+                    viewHolderJoke.collect.setVisibility(View.VISIBLE);
+                    onCollectListener.onCollect(viewHolderJoke.collect, item, position);
+                } else {
+                    viewHolderJoke.collect.setVisibility(View.GONE);
+                }
                 viewHolderJoke.content.setText(item.getContent());
                 final String url = item.getUrl();
                 if(url != null) {
@@ -73,6 +83,7 @@ public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
         private View root;
         private ImageView icon;
         private TextView name;
+        private ImageView collect;
         private TextView content;
         private ImageView pic;
         public ViewHolderJoke(View view) {
@@ -80,8 +91,34 @@ public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
             root = view.findViewById(R.id.root_layout);
             icon = view.findViewById(R.id.item_joke_icon);
             name = view.findViewById(R.id.item_joke_username);
+            collect = view.findViewById(R.id.item_joke_collect);
             content = view.findViewById(R.id.item_joke_content);
             pic = view.findViewById(R.id.item_joke_pic);
         }
+    }
+
+    public void remove(int position) {
+        if(position >= 0 && position < mDatas.size()) {
+            mDatas.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, mDatas.size() - position);
+        }
+    }
+
+    public Joke getLastJoke() {
+        if(mDatas == null || mDatas.size() == 0) {
+            return null;
+        } else {
+            return ((Joke) mDatas.get(mDatas.size() - 1));
+        }
+    }
+
+    private OnCollectListener onCollectListener;
+    public void setOnCollectListener(OnCollectListener onCollectListener) {
+        this.onCollectListener = onCollectListener;
+    }
+
+    public interface OnCollectListener {
+        void onCollect(View view, Joke joke, int position);
     }
 }

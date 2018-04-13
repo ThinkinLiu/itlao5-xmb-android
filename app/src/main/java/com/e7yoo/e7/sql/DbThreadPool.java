@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
+import com.e7yoo.e7.model.Joke;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.util.Constant;
@@ -102,6 +103,20 @@ public class DbThreadPool {
             public void run() {
                 try {
                     MessageDbHelper.getInstance(context).deleteMessageInfoByRobotId(robotId);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    CrashReport.postCatchedException(e);
+                }
+            }
+        });
+    }
+
+    public void insertCollect(final Context context, final Joke joke) {
+        execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MessageDbHelper.getInstance(context).insertCollect(joke);
                 } catch (Throwable e) {
                     e.printStackTrace();
                     CrashReport.postCatchedException(e);

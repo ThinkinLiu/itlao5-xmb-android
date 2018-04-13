@@ -7,11 +7,20 @@ import java.io.Serializable;
  */
 
 public class Joke implements Serializable {
+    private int _id;
     private String content;
     private String hashId;
     private long unixtime;
     private String updatetime;
     private String url;
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public String getContent() {
         return content;
