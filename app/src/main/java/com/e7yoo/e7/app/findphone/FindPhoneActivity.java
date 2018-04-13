@@ -13,7 +13,6 @@ import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
-import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ServiceUtil;
 import com.e7yoo.e7.util.UmengUtil;
