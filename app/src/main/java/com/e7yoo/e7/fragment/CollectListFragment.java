@@ -30,7 +30,9 @@ public class CollectListFragment extends ListFragment {
     protected void refreshData(List<Joke> jokes, boolean refresh) {
         if(mDatas == null || refresh) {
             mDatas = jokes;
-            mRvAdapter.refreshData(mDatas);
+            if(mRvAdapter != null) {
+                mRvAdapter.refreshData(mDatas);
+            }
         }
     }
 
@@ -49,14 +51,19 @@ public class CollectListFragment extends ListFragment {
     boolean isRefresh;
     @Override
     protected void loadDataFromNet(boolean isRefresh) {
+
+    }
+
+    @Override
+    protected void loadData(boolean isRefresh) {
         boolean noMore;
-        if(isRefresh) {
-            ArrayList<Joke> jokes = MessageDbHelper.getInstance(E7App.mApp).getCollect(0, 0);
+        if(isRefresh || mRvAdapter == null) {
+            ArrayList<Joke> jokes = MessageDbHelper.getInstance(E7App.mApp).getCollect(-1, 0);
             refreshData(jokes, true);
             noMore = false;
         } else {
             Joke joke = ((JokeListRefreshRecyclerAdapter) mRvAdapter).getLastJoke();
-            int lastId = 0;
+            int lastId = -1;
             if(joke != null) {
                 lastId = joke.get_id();
             }
@@ -68,17 +75,23 @@ public class CollectListFragment extends ListFragment {
                 noMore = true;
             }
         }
-        mSRLayout.setRefreshing(false);
-        if(noMore) {
-            mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
-        } else {
-            mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+        if(mSRLayout != null) {
+            mSRLayout.setRefreshing(false);
+        }
+        if(mRvAdapter != null) {
+            if(noMore) {
+                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
+            } else {
+                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+            }
         }
     }
 
     @Override
     protected void loadDataFromDb() {
-        ArrayList<Joke> jokes = MessageDbHelper.getInstance(E7App.mApp).getCollect(0, 0);
-        refreshData(jokes, false);
+        if(mDatas == null) {
+            ArrayList<Joke> jokes = MessageDbHelper.getInstance(E7App.mApp).getCollect(-1, 0);
+            refreshData(jokes, false);
+        }
     }
 }

@@ -100,7 +100,7 @@ public abstract class ListFragment extends BaseFragment {
         }
     }
 
-    private void loadData(boolean isRefresh) {
+    protected void loadData(boolean isRefresh) {
         if(isNetOk()) {
             loadDataFromNet(isRefresh);
         }

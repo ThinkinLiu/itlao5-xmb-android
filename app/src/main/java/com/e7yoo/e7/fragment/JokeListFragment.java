@@ -83,10 +83,10 @@ public class JokeListFragment extends ListFragment {
             mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
         } else {
             mRvAdapter.addItemBottom(joke);
-            if(joke == null && joke.size() > 0) {
-                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
-            } else {
+            if(joke != null && joke.size() > 0) {
                 mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+            } else {
+                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
             }
         }
     }
@@ -94,7 +94,9 @@ public class JokeListFragment extends ListFragment {
     protected void refreshData(List<Joke> jokes, boolean refresh) {
         if(mDatas == null || refresh) {
             mDatas = jokes;
-            mRvAdapter.refreshData(mDatas);
+            if(mRvAdapter != null) {
+                mRvAdapter.refreshData(mDatas);
+            }
         }
     }
 

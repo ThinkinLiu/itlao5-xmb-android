@@ -578,7 +578,7 @@ public class MessageDbHelper extends SQLiteOpenHelper {
             num = 30;
         }
         String where = null;
-        if (id > 0) {
+        if (id >= 0) {
             where = CollectColumns._ID + "<" + id;
         }
         String orderBy = PushMsgColumns._ID + " DESC";
