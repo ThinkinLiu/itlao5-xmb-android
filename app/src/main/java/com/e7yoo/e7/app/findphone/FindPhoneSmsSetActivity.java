@@ -12,6 +12,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ServiceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 
 public class FindPhoneSmsSetActivity extends BaseActivity implements OnClickListener {
@@ -63,6 +64,7 @@ public class FindPhoneSmsSetActivity extends BaseActivity implements OnClickList
                 }
                 PreferenceUtil.commitString(Constant.PREFERENCE_SMS_FINDPHONE_TEXT, text);
                 finish(text);
+                ServiceUtil.startE7Service(this, new String[]{Constant.PREFERENCE_SMS_FINDPHONE_TEXT}, new String[]{text}, null, null, null, null, null, null);
                 break;
             default:
                 break;

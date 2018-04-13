@@ -23,6 +23,7 @@ import com.e7yoo.e7.fragment.MineFragment;
 import com.e7yoo.e7.fragment.MoreFragment;
 import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.model.Robot;
+import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.BottomNavigationViewHelper;
@@ -298,6 +299,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             return;
         }
         super.onBackPressed();
+        startService(new Intent(this, E7Service.class));
     }
 
     long onBackPressedTime = 0;

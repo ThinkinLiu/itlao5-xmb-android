@@ -30,7 +30,7 @@ public class OfflineRecogParams extends CommonRecogParams {
         Map<String, Object> map = super.fetch(sp);
         map.put(SpeechConstant.DECODER, 2);
         // map.remove(SpeechConstant.PID); // 去除pid，只支持中文
-        map.put(SpeechConstant.PID, 15361);
+        map.put(SpeechConstant.PID, 1536);
         return map;
 
     }
@@ -49,7 +49,7 @@ public class OfflineRecogParams extends CommonRecogParams {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             JSONObject json = new JSONObject();
-            json.put("wakeupkeyword", new JSONArray().put(key).put(WpEventManagerUtil.KEYWORDS[0]).put(WpEventManagerUtil.KEYWORDS[5]));
+            json.put("wakeupkeyword", new JSONArray().put(key).put(WpEventManagerUtil.KEYWORDS[0]).put(WpEventManagerUtil.KEYWORDS[5]).put(WpEventManagerUtil.KEYWORDS[1]).put(WpEventManagerUtil.KEYWORDS[6]));
             map.put(SpeechConstant.SLOT_DATA, json);
         } catch (JSONException e) {
             e.printStackTrace();

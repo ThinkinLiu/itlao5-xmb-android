@@ -2,6 +2,7 @@ package com.e7yoo.e7.app.findphone;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ServiceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.WpEventManagerUtil;
 
@@ -72,6 +74,7 @@ public class FindPhoneVoiceSetActivity extends BaseActivity implements OnClickLi
                 }
                 PreferenceUtil.commitString(Constant.PREFERENCE_WAKEUP_KEYWORD, text);
                 finish(text);
+                ServiceUtil.startE7Service(this, new String[]{Constant.PREFERENCE_WAKEUP_KEYWORD}, new String[]{text}, null, null, null, null, null, null);
                 break;
             default:
                 break;

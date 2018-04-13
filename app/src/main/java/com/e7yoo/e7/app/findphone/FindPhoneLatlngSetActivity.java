@@ -16,6 +16,7 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ServiceUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class FindPhoneLatlngSetActivity extends BaseActivity implements OnClickL
                 }
                 PreferenceUtil.commitString(Constant.PREFERENCE_SMS_FINDPHONE_TEXT_LATLNG, text);
                 finish(text);
+                ServiceUtil.startE7Service(this, new String[]{Constant.PREFERENCE_SMS_FINDPHONE_TEXT_LATLNG}, new String[]{text}, null, null, null, null, null, null);
                 break;
             default:
                 break;

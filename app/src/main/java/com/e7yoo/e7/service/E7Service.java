@@ -65,6 +65,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
     public static final String FROM = "from";
     public static final int FROM_SMS_RECEIVER = 1001;
     public static final int FROM_SMS_RECEIVER_LATLNG = 1002;
+    public static final int FROM_SMS_RECEIVER_PREFERENCE = 10001;
     private Loc mLoc;
 
     private SpeechRecognizer mSpeechRecognizer;
@@ -170,7 +171,8 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && intent.getExtras() != null) {
-            switch (intent.getExtras().getInt(FROM, 0)) {
+            Bundle bundle = intent.getExtras();
+            switch (bundle.getInt(FROM, 0)) {
                 case FROM_SMS_RECEIVER:
                     openVoice();
                     // // MobclickAgent.onEvent(E7App.mApp, Constant.Umeng.Send_play_music_sms);
@@ -184,6 +186,36 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                     }
                     mLoc = Loc.getInstance(mLoc);
                     mLoc.startLocation(myListener);
+                    break;
+                case FROM_SMS_RECEIVER_PREFERENCE:
+                    if(bundle.containsKey("keys")) {
+                        String[] keys = bundle.getStringArray("keys");
+                        String[] values = bundle.getStringArray("values");
+                        for(int i = 0; i < keys.length; i++) {
+                            PreferenceUtil.commitString(keys[i], values[i]);
+                        }
+                    }
+                    if(bundle.containsKey("keys_int")) {
+                        String[] keys = bundle.getStringArray("keys_int");
+                        int[] values = bundle.getIntArray("values_int");
+                        for(int i = 0; i < keys.length; i++) {
+                            PreferenceUtil.commitInt(keys[i], values[i]);
+                        }
+                    }
+                    if(bundle.containsKey("keys_long")) {
+                        String[] keys = bundle.getStringArray("keys");
+                        long[] values = bundle.getLongArray("values");
+                        for(int i = 0; i < keys.length; i++) {
+                            PreferenceUtil.commitLong(keys[i], values[i]);
+                        }
+                    }
+                    if(bundle.containsKey("keys_boolean")) {
+                        String[] keys = bundle.getStringArray("keys");
+                        boolean[] values = bundle.getBooleanArray("values");
+                        for(int i = 0; i < keys.length; i++) {
+                            PreferenceUtil.commitBoolean(keys[i], values[i]);
+                        }
+                    }
                     break;
             }
         }
@@ -302,7 +334,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
         int now = am.getStreamVolume(AudioManager.STREAM_MUSIC);//得到听筒模式的当前值
-        int max = /*now;*/am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int max = now;//*/am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, max, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
         soundp.play(soundm.get(str), 1, 1, 0, 0, 1f);
         try {
@@ -311,6 +343,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             e.printStackTrace();
         }
         am.setStreamVolume(AudioManager.STREAM_MUSIC, now, AudioManager.FLAG_PLAY_SOUND);
+        init(this);
     }
 
     public void releaseMusic() {
@@ -369,6 +402,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         } else {
             if(mMyRecognizer == null) {
                 mMyRecognizer = new MyRecognizer(this, eventListener);
+                mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
             }
 //            if(mSpeechRecognizer == null) {
 //                mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(E7Service.this, new ComponentName(E7Service.this, VoiceRecognitionService.class));
@@ -379,6 +413,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         }
     }
 
+    long lastTime = 0;
         private EventListener eventListener = new EventListener() {
         @Override
         public void onEvent(String name, String params, byte[] data, int offset, int length) {
@@ -402,31 +437,44 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 } else if ("wp.exit".equals(name)) {
                     // 唤醒已经停止
                 } else if(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL.equals(name)) {
-                    if (params.contains("nlu_result")) {
+                    if (params.contains("results_nlu")) {
                         JSONObject json = new JSONObject(params);
-                        String type = json.getString("result_type");
-                        if("nlu_result".equals(type)) {
-                            String str = new String(data, offset, length);
-                            //TastyToastUtil.toast(E7App.mApp, "语音找手机："+str);
-                            System.out.println("------------1---1--" + str);
-                            str = getResult(str);
-                            System.out.println("------------1---2--" + str);
-                            String key = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
-                            if(key != null && key.equals(str)) {
-                                // 语音回复“萌萌在这里”
-                                openVoice();
-                                MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_ASR_KEY);
-                                //TastyToastUtil.toast(E7App.mApp, R.string.mengmeng_is_here);
-                            } else if(WpEventManagerUtil.KEYWORDS[0].equals(str)
-                                    || WpEventManagerUtil.KEYWORDS[5].equals(str)) {// 打开电灯，打开手电筒
-                                E7App.mApp.sendBroadcast(new Intent(FlashLightWidget.ACTION_LED_ON));
-                                MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_ASR_OTHER);
-                                //TastyToastUtil.toast(E7App.mApp, R.string.flashlight_is_open);
+                        String nlu = json.getString("results_nlu");
+                        JSONObject nluJo = new JSONObject(nlu);
+                        JSONArray nluJa = nluJo.getJSONArray("results");
+                        JSONObject objJo = nluJa.getJSONObject(0).getJSONObject("object");
+                        String keyWord = objJo.getString("wakeupkeyword");
+                        if(keyWord == null) {
+                            return;
+                        }
+                        String key = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
+                        if(key != null && key.equals(keyWord)) {
+                            long now = System.currentTimeMillis();
+                            if(now - lastTime < 5000) { // 5S 最多只触发一次
+                                return;
                             }
+                            lastTime = now;
+                            // 语音回复“萌萌在这里”
+                            mMyRecognizer.stop();
+                            openVoice();
+                            MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_ASR_KEY);
+                            //TastyToastUtil.toast(E7App.mApp, R.string.mengmeng_is_here);
+                        } else if(WpEventManagerUtil.KEYWORDS[0].equals(keyWord)
+                                || WpEventManagerUtil.KEYWORDS[5].equals(keyWord)) {// 打开电灯，打开手电筒
+                            E7App.mApp.sendBroadcast(new Intent(FlashLightWidget.ACTION_LED_ON));
+                            MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_ASR_OTHER);
+                            //TastyToastUtil.toast(E7App.mApp, R.string.flashlight_is_open);
+                        } else if(WpEventManagerUtil.KEYWORDS[1].equals(keyWord)
+                                || WpEventManagerUtil.KEYWORDS[6].equals(keyWord)) {// 关闭电灯，关闭手电筒
+                            E7App.mApp.sendBroadcast(new Intent(FlashLightWidget.ACTION_LED_OFF));
+                            MobclickAgent.onEvent(E7App.mApp, UmengUtil.WAKE_UP_ASR_OTHER);
+                            //TastyToastUtil.toast(E7App.mApp, R.string.flashlight_is_open);
                         }
                     }
-                } else if(SpeechConstant.CALLBACK_EVENT_ASR_EXIT.equals(name)) {
+                } else if(SpeechConstant.CALLBACK_EVENT_ASR_EXIT.equals(name) || SpeechConstant.CALLBACK_EVENT_ASR_FINISH.equals(name)) {
                     // 识别结束，资源释放
+                    mMyRecognizer.release();
+                    mMyRecognizer = null;
                     init(E7Service.this);
                 }
             } catch (Throwable e) {
@@ -438,26 +486,34 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
 
     private String getResult(String str) throws JSONException {
         JSONObject jo = new JSONObject(str);
-        JSONArray ja = jo.getJSONArray("results");
-        JSONObject jo2 = ja.getJSONObject(0);
-        JSONObject jo3 = jo2.getJSONObject("object");
-        String result = jo3.getString("wakeupkeyword");
+        JSONObject jo2 = jo.getJSONObject("merged_res");
+        JSONObject jo3 = jo2.getJSONObject("semantic_form");
+        String result = jo3.getString("raw_text");
         return result;
-        /*{
-            "raw_text": "微信",
-                "parsed_text": "微信",
-                "results": [
-                {
-                    "domain": "app",
-                        "intent": "download",
-                        "object":
-                        {
-                            "appname": "微信"
-                        }
-                }
-                ]
-        }*/
     }
+
+//    private String getResult(String str) throws JSONException {
+//        JSONObject jo = new JSONObject(str);
+//        JSONArray ja = jo.getJSONArray("results");
+//        JSONObject jo2 = ja.getJSONObject(0);
+//        JSONObject jo3 = jo2.getJSONObject("object");
+//        String result = jo3.getString("wakeupkeyword");
+//        return result;
+//        /*{
+//            "raw_text": "微信",
+//                "parsed_text": "微信",
+//                "results": [
+//                {
+//                    "domain": "app",
+//                        "intent": "download",
+//                        "object":
+//                        {
+//                            "appname": "微信"
+//                        }
+//                }
+//                ]
+//        }*/
+//    }
 
     private String mKey = null;
     private MyRecognizer mMyRecognizer;
@@ -474,7 +530,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             if(mMap == null) {
                 mMap = new HashMap<>();
                 mMap.put(SpeechConstant.DECODER, 2);
-                mMap.put(SpeechConstant.PID, 15361); // 普通话
+                mMap.put(SpeechConstant.PID, 1536); // 普通话
                 mMap.put(SpeechConstant.NLU, "enable-all");
                 mMap.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0); // 开启长语音。即无静音超时断句。手动调用ASR_STOP停止录音。
                 mMap.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "assets:///baidu_speech_grammar.bsg");

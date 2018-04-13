@@ -15,6 +15,7 @@ import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ServiceUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.util.WpEventManagerUtil;
 
@@ -123,10 +124,15 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                         toFindPhoneActivity(0);
                     }
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 1);
+
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_WAKEUP_KEYWORD}, new int[]{1}, null, null, null, null);
                     findPhoneSmsLayout.setVisibility(View.VISIBLE);
                     UmengUtil.onEvent(UmengUtil.FP_SMS_1);
                 } else {
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 0);
+
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_WAKEUP_KEYWORD}, new int[]{0}, null, null, null, null);
+
                     findPhoneSmsLayout.setVisibility(View.GONE);
                     UmengUtil.onEvent(UmengUtil.FP_SMS_0);
                 }
@@ -137,10 +143,12 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                         toFindPhoneActivity(1);
                     }
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG, 1);
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG}, new int[]{1}, null, null, null, null);
                     findPhoneLatlngLayout.setVisibility(View.VISIBLE);
                     UmengUtil.onEvent(UmengUtil.FP_LATLNG_1);
                 } else {
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG, 0);
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_OPEN_SMS_FINDPHONE_LATLNG}, new int[]{0}, null, null, null, null);
                     findPhoneLatlngLayout.setVisibility(View.GONE);
                     UmengUtil.onEvent(UmengUtil.FP_LATLNG_0);
                 }
@@ -150,10 +158,14 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                     CheckPermissionUtil.checkPermission(this, Manifest.permission.RECORD_AUDIO, REQUEST_TO_BD_VOICE,
                             R.string.dialog_voice_hint_title, R.string.dialog_voice_hint);
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 1);
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_OPEN_VOICE_FINDPHONE}, new int[]{1}, null, null, null, null);
+
                     findPhoneVoiceLayout.setVisibility(View.VISIBLE);
                     UmengUtil.onEvent(UmengUtil.FP_VOICE_1);
                 } else {
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0);
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_OPEN_VOICE_FINDPHONE}, new int[]{0}, null, null, null, null);
+
                     findPhoneVoiceLayout.setVisibility(View.GONE);
                     UmengUtil.onEvent(UmengUtil.FP_VOICE_0);
                 }
