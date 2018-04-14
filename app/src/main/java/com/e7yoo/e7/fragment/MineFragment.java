@@ -26,7 +26,7 @@ import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.MyIconUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
-import com.e7yoo.e7.util.RobotUtil;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
@@ -46,7 +46,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     private View mRootView;
     private ImageView mHeadIconIv;
     private TextView mine_label;
-    private View mMsgLayout, mCollectLayout,  mSetLayout, mAboutLayout;
+    private View mMsgLayout, mCollectLayout, mSetLayout, mShareLayout, mAboutLayout;
     private TextView mineMsgPoint;
 
 
@@ -107,6 +107,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
         mMsgLayout = mRootView.findViewById(R.id.mine_msg_layout);
         mCollectLayout = mRootView.findViewById(R.id.mine_collect_layout);
         mSetLayout = mRootView.findViewById(R.id.mine_set_layout);
+        mShareLayout = mRootView.findViewById(R.id.mine_share_layout);
         mAboutLayout = mRootView.findViewById(R.id.mine_about_layout);
         mineMsgPoint = mRootView.findViewById(R.id.mine_msg_point);
     }
@@ -115,6 +116,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
         mHeadIconIv.setOnClickListener(this);
         mMsgLayout.setOnClickListener(this);
         mCollectLayout.setOnClickListener(this);
+        mShareLayout.setOnClickListener(this);
         mSetLayout.setOnClickListener(this);
         mAboutLayout.setOnClickListener(this);
     }
@@ -204,6 +206,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.mine_set_layout:
                 ActivityUtil.toActivity(getActivity(), SettingsActivity.class);
+                break;
+            case R.id.mine_share_layout:
+                ShareDialogUtil.show(getActivity(), null, getString(R.string.share_mine_title), getString(R.string.share_mine_content), null);
                 break;
             case R.id.mine_about_layout:
                 ActivityUtil.toActivity(getActivity(), AboutActivity.class);

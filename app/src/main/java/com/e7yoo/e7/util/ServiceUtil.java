@@ -49,7 +49,7 @@ public class ServiceUtil {
         if(bundle.containsKey("keys") && bundle.containsKey("values")) {
             String[] keys = bundle.getStringArray("keys");
             String[] values = bundle.getStringArray("values");
-            if(keys.length == values.length) {
+            if(keys != null && values != null && keys.length == values.length) {
                 for (int i = 0; i < keys.length; i++) {
                     PreferenceUtil.commitString(keys[i], values[i]);
                 }
@@ -58,7 +58,7 @@ public class ServiceUtil {
         if(bundle.containsKey("keys_int") && bundle.containsKey("values_int")) {
             String[] keys = bundle.getStringArray("keys_int");
             int[] values = bundle.getIntArray("values_int");
-            if(keys.length == values.length) {
+            if(keys != null && values != null && keys.length == values.length) {
                 for(int i = 0; i < keys.length; i++) {
                     PreferenceUtil.commitInt(keys[i], values[i]);
                 }
@@ -67,7 +67,7 @@ public class ServiceUtil {
         if(bundle.containsKey("keys_long") && bundle.containsKey("values_long")) {
             String[] keys = bundle.getStringArray("keys_long");
             long[] values = bundle.getLongArray("values_long");
-            if(keys.length == values.length) {
+            if(keys != null && values != null && keys.length == values.length) {
                 for (int i = 0; i < keys.length; i++) {
                     PreferenceUtil.commitLong(keys[i], values[i]);
                 }
@@ -76,7 +76,7 @@ public class ServiceUtil {
         if(bundle.containsKey("keys_boolean") && bundle.containsKey("values_boolean")) {
             String[] keys = bundle.getStringArray("keys_boolean");
             boolean[] values = bundle.getBooleanArray("values_boolean");
-            if(keys.length == values.length) {
+            if(keys != null && values != null && keys.length == values.length) {
                 for(int i = 0; i < keys.length; i++) {
                     PreferenceUtil.commitBoolean(keys[i], values[i]);
                 }

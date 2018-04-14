@@ -2,7 +2,7 @@
     <string name="app_name">小萌伴</string>
     <string name="mengmeng">萌萌</string>
     <string name="title_home">伴侣</string>
-    <string name="title_circle">萌圈</string>
+    <string name="title_circle">萌段子</string>
     <string name="title_more">百宝箱</string>
     <string name="title_mine">我的</string>
     <string name="loading">加载中...</string>
@@ -69,6 +69,7 @@
     <string name="mine_msg">消息中心</string>
     <string name="mine_collect">我的收藏</string>
     <string name="mine_set">个性设置</string>
+    <string name="mine_share">邀请好友</string>
     <string name="mine_about">关于我们</string>
 
 
@@ -431,4 +432,6 @@
     <string name="all_cancel">取消全选</string>
 
     <string name="collect_suc">已加入我的收藏</string>
+    <string name="share_mine_title">好应用邀你一起体验</string>
+    <string name="share_mine_content">聊天/看段子/玩游戏/还能帮你找手机，你需要的，[小萌伴]都有！</string>
 </resources>
