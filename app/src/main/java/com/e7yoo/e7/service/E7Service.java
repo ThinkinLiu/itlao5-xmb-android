@@ -37,6 +37,7 @@ import com.e7yoo.e7.util.MyRecognizer;
 import com.e7yoo.e7.util.OfflineRecogParams;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ServiceUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.util.WpEventManagerUtil;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -178,34 +179,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                     mLoc.startLocation(myListener);
                     break;
                 case FROM_SMS_RECEIVER_PREFERENCE:
-                    if(bundle.containsKey("keys")) {
-                        String[] keys = bundle.getStringArray("keys");
-                        String[] values = bundle.getStringArray("values");
-                        for(int i = 0; i < keys.length; i++) {
-                            PreferenceUtil.commitString(keys[i], values[i]);
-                        }
-                    }
-                    if(bundle.containsKey("keys_int")) {
-                        String[] keys = bundle.getStringArray("keys_int");
-                        int[] values = bundle.getIntArray("values_int");
-                        for(int i = 0; i < keys.length; i++) {
-                            PreferenceUtil.commitInt(keys[i], values[i]);
-                        }
-                    }
-                    if(bundle.containsKey("keys_long")) {
-                        String[] keys = bundle.getStringArray("keys");
-                        long[] values = bundle.getLongArray("values");
-                        for(int i = 0; i < keys.length; i++) {
-                            PreferenceUtil.commitLong(keys[i], values[i]);
-                        }
-                    }
-                    if(bundle.containsKey("keys_boolean")) {
-                        String[] keys = bundle.getStringArray("keys");
-                        boolean[] values = bundle.getBooleanArray("values");
-                        for(int i = 0; i < keys.length; i++) {
-                            PreferenceUtil.commitBoolean(keys[i], values[i]);
-                        }
-                    }
+                    ServiceUtil.commitPreference(bundle);
                     break;
             }
         }

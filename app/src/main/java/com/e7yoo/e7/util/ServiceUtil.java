@@ -3,6 +3,7 @@ package com.e7yoo.e7.util;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.e7yoo.e7.service.E7Service;
 
@@ -38,5 +39,48 @@ public class ServiceUtil {
         }
         startIntent.putExtra(E7Service.FROM, E7Service.FROM_SMS_RECEIVER_PREFERENCE);
         context.startService(startIntent);
+    }
+
+    /**
+     * 与startE7Service对应， 处理SharedPreference
+     * @param bundle
+     */
+    public static void commitPreference(Bundle bundle) {
+        if(bundle.containsKey("keys") && bundle.containsKey("values")) {
+            String[] keys = bundle.getStringArray("keys");
+            String[] values = bundle.getStringArray("values");
+            if(keys.length == values.length) {
+                for (int i = 0; i < keys.length; i++) {
+                    PreferenceUtil.commitString(keys[i], values[i]);
+                }
+            }
+        }
+        if(bundle.containsKey("keys_int") && bundle.containsKey("values_int")) {
+            String[] keys = bundle.getStringArray("keys_int");
+            int[] values = bundle.getIntArray("values_int");
+            if(keys.length == values.length) {
+                for(int i = 0; i < keys.length; i++) {
+                    PreferenceUtil.commitInt(keys[i], values[i]);
+                }
+            }
+        }
+        if(bundle.containsKey("keys_long") && bundle.containsKey("values_long")) {
+            String[] keys = bundle.getStringArray("keys_long");
+            long[] values = bundle.getLongArray("values_long");
+            if(keys.length == values.length) {
+                for (int i = 0; i < keys.length; i++) {
+                    PreferenceUtil.commitLong(keys[i], values[i]);
+                }
+            }
+        }
+        if(bundle.containsKey("keys_boolean") && bundle.containsKey("values_boolean")) {
+            String[] keys = bundle.getStringArray("keys_boolean");
+            boolean[] values = bundle.getBooleanArray("values_boolean");
+            if(keys.length == values.length) {
+                for(int i = 0; i < keys.length; i++) {
+                    PreferenceUtil.commitBoolean(keys[i], values[i]);
+                }
+            }
+        }
     }
 }
