@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private final ArrayList<BaseFragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
     private BottomNavigationView navigation;
-    private final int[] titleResIds = {R.string.title_home, R.string.title_circle, R.string.title_more, R.string.title_mine};
+    private final int[] titleResIds = {R.string.title_home, R.string.title_circle, /*R.string.title_findphone,*/ R.string.title_more, R.string.title_mine};
     private ImageView mMorePoint;
     private TextView mMinePoint;
 
@@ -114,6 +114,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         BottomNavigationViewHelper.disableShiftMode(navigation);
         fragments.add(HomeFragment.newInstance());
         fragments.add(CircleFragment.newInstance());
+        //fragments.add(MoreFragment.newInstance());
         fragments.add(MoreFragment.newInstance());
         fragments.add(MineFragment.newInstance());
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), fragments));
@@ -196,6 +197,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 case R.id.navigation_circle:
                     setItem(1);
                     return true;
+                /*case R.id.navigation_findphone:
+                    setItem(2);
+                    return true;*/
                 case R.id.navigation_more:
                     setItem(titleResIds.length - 2);
                     return true;
@@ -323,7 +327,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             Manifest.permission.PACKAGE_USAGE_STATS,
 
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+
+            Manifest.permission.CAMERA
     };
 
     String NOTIFY_PERMISSIONS[] = {

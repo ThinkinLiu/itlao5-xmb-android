@@ -3,6 +3,7 @@
     <string name="mengmeng">萌萌</string>
     <string name="title_home">伴侣</string>
     <string name="title_circle">萌段子</string>
+    <string name="title_findphone"></string>
     <string name="title_more">百宝箱</string>
     <string name="title_mine">我的</string>
     <string name="loading">加载中...</string>
@@ -193,7 +194,7 @@
     <string name="findphone_voice_update">修改语音指令</string>
 
     <string name="set_find_phone_voice_edit_hint">请输入3-5个中文汉字</string>
-    <string name="set_find_phone_voice_text_hint">提示：请设置3-5位中文汉字语音指令\n\n备注：打开"语音找手机"功能后，在手机锁屏或黑屏时，可以呼唤语音指令（默认“小萌小萌”），萌萌会语音回复“主人，我在这里”，您即可根据声音来源找到手机，也可大喊“打开手电筒”，萌萌会发光哦！\n该功能需要您允许应用后台运行，并打开语音权限\n　　更实用便捷的找手机方式正在研发中...</string>
+    <string name="set_find_phone_voice_text_hint">提示：语音找手机请设置3-5位中文汉字语音指令（默认小萌小萌）\n\n备注：打开"语音找手机"功能后，在手机锁屏或黑屏时，可以呼唤语音指令（默认“小萌小萌”），萌萌会语音回复“主人，我在这里”，您即可根据声音来源找到手机，也可大喊“打开手电筒”，萌萌会发光哦！\n该功能需要您允许应用后台运行，并打开语音权限\n　　更实用便捷的找手机方式正在研发中...</string>
     <string name="toast_set_find_phone_voice_length">请设置3-5位语音指令</string>
     <string name="toast_set_find_phone_voice_error">语音指令仅支持纯中文汉字</string>
     <string name="toast_set_find_phone_voice_error2">为了保证成功找到手机，请不要设置为同一个字符</string>
@@ -434,4 +435,6 @@
     <string name="collect_suc">已加入我的收藏</string>
     <string name="share_mine_title">好应用邀你一起体验</string>
     <string name="share_mine_content">聊天/看段子/玩游戏/还能帮你找手机，你需要的，[小萌伴]都有！</string>
+
+    <string name="share_findphone">功能不错，分享给好友</string>
 </resources>

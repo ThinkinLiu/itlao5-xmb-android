@@ -18,29 +18,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/titleBar">
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/navigation">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+        <FrameLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/navigation">
 
-    </FrameLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/backgroud"
-        app:itemIconTint="@drawable/bottom_navigation_color_selector"
-        app:itemTextColor="@drawable/bottom_navigation_color_selector"
-        app:menu="@menu/navigation"
-        android:layout_alignParentBottom="true"/>
+        </FrameLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/backgroud"
+            app:itemIconTint="@drawable/bottom_navigation_color_selector"
+            app:itemTextColor="@drawable/bottom_navigation_color_selector"
+            app:menu="@menu/navigation"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 
@@ -86,6 +86,24 @@
                 android:gravity="center"
                 android:visibility="gone" />-->
         </LinearLayout>
+
+        <!--<LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            &lt;!&ndash;<TextView
+                android:id="@+id/findphone_point"
+                android:layout_width="@dimen/item_main_point"
+                android:layout_height="@dimen/item_main_point"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/space_4x"
+                android:background="@drawable/point"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_5xs"
+                android:gravity="center"
+                android:visibility="gone" />&ndash;&gt;
+        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="0dp"

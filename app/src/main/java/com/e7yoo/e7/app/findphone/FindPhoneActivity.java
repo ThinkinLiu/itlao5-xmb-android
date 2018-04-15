@@ -15,6 +15,7 @@ import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ServiceUtil;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.e7yoo.e7.util.WpEventManagerUtil;
 
@@ -31,6 +32,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
     private View findPhoneVoiceLayout;
     private TextView findPhoneVoiceTv;
     private TextView findPhoneVoiceTv2;
+    private View findPhoneShare;
 
     @Override
     protected String initTitle() {
@@ -56,6 +58,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
         findPhoneVoiceLayout = findViewById(R.id.find_phone_voice);
         findPhoneVoiceTv = (TextView) findViewById(R.id.find_phone_hint_voice);
         findPhoneVoiceTv2 = (TextView) findViewById(R.id.find_phone_text_voice);
+        findPhoneShare = findViewById(R.id.share_findphone);
     }
 
     @Override
@@ -81,6 +84,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
         findPhoneLatlngLayout.setOnClickListener(this);
         findPhoneVoiceBtn.setOnCheckedChangeListener(this);
         findPhoneVoiceLayout.setOnClickListener(this);
+        findPhoneShare.setOnClickListener(this);
     }
 
     @Override
@@ -94,6 +98,9 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                 break;
             case R.id.find_phone_voice:
                 toFindPhoneActivity(2);
+                break;
+            case R.id.share_findphone:
+                ShareDialogUtil.show(this, null, "你还在为找不到手机发愁？", "丢三落四不用怕，【小萌伴】帮我找手机，【小萌伴】语音找手机功能全新改版，可以自定义语音唤醒词了", null);
                 break;
             default:
                 break;

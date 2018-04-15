@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_camera_black_24dp"
         android:title="@string/title_circle" />
 
+    <!--<item
+        android:id="@+id/navigation_findphone"
+        android:icon="@drawable/ic_findphone_black_24dp"
+        android:title="@string/title_findphone" />-->
+
     <item
         android:id="@+id/navigation_more"
         android:icon="@drawable/ic_apps_black_24dp"
