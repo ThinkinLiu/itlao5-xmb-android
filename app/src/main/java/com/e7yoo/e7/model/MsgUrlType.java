@@ -9,6 +9,7 @@ public class MsgUrlType {
     public static final String game = "game:";
     public static final String news = "news:";
     public static final String share = "share:";
+    public static final String share2 = "share2:";
     public static final String history = "history:";
     public static final String flashlight = "flashlight:";
     public static final String finaphone = "finaphone:";

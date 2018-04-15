@@ -37,6 +37,7 @@ public class UmengUtil {
     public static final String CHAT_TO_GIF = "3_chat_to_gif";
     public static final String CHAT_TO_BIG_PIC = "3_chat_to_big_pic";
     public static final String CHAT_TO_SHARE = "3_chat_to_share";
+    public static final String CHAT_TO_SHARE2 = "3_chat_to_share2";
     public static final String CHAT_TO_HISTORY = "3_chat_to_history";
     public static final String CHAT_TO_CIRCLE = "3_chat_to_circle";
     public static final String CHAT_TO_WEB = "3_chat_to_web";
@@ -70,8 +71,11 @@ public class UmengUtil {
     public static final String JOKE_LIST_PIC_MORE = "3_joke_list_pic_more";
 
 
-    public static final String WAKE_UP_XIAOMENG = "wake_up_xiaomeng";
-    public static final String WAKE_UP_OTHER = "wake_up_other";
-    public static final String WAKE_UP_ASR_KEY = "wake_up_asr_key";
-    public static final String WAKE_UP_ASR_OTHER = "wake_up_asr_other";
+    public static final String WAKE_UP_XIAOMENG = "3_wake_up_xiaomeng";
+    public static final String WAKE_UP_OTHER = "3_wake_up_other";
+    public static final String WAKE_UP_ASR_KEY = "3_wake_up_asr_key";
+    public static final String WAKE_UP_ASR_OTHER = "3_wake_up_asr_other";
+
+    public static final String FP_TO_SHARE = "3_fp_to_share";
+    public static final String MINE_TO_SHARE = "3_mine_to_share";
 }

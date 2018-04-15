@@ -28,6 +28,7 @@ import com.e7yoo.e7.util.MyIconUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
+import com.e7yoo.e7.util.UmengUtil;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.compress.CompressConfig;
@@ -209,6 +210,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
                 break;
             case R.id.mine_share_layout:
                 ShareDialogUtil.show(getActivity(), null, getString(R.string.share_mine_title), getString(R.string.share_mine_content), null);
+                UmengUtil.onEvent(UmengUtil.MINE_TO_SHARE);
                 break;
             case R.id.mine_about_layout:
                 ActivityUtil.toActivity(getActivity(), AboutActivity.class);

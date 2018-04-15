@@ -186,8 +186,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         init();
         mChatInputMoreGv.setAdapter(new GridAdapter(this, getGridItems()));
         long openTimes = PreferenceUtil.getLong(Constant.PREFERENCE_CHAT_OPEN_TIMES, 0);
-        if(openTimes == 5) {
+        if(openTimes == 7) {
             addMsgToViewRecv(getString(R.string.chat_url_to_ceshi), MsgUrlType.ceshi);
+        } else if(openTimes % 10 == 3) {
+            addMsgToViewRecv(getString(R.string.chat_url_to_share2), MsgUrlType.share2);
         } else {
             addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
         }
@@ -1009,6 +1011,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 } else if(msg.getUrl().startsWith(MsgUrlType.share)) {
                     ShareDialogUtil.show(ChatActivity.this);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_SHARE);
+                } else if(msg.getUrl().startsWith(MsgUrlType.share2)) {
+                    ShareDialogUtil.show(ChatActivity.this, null, "介绍一下我的伴侣", "聊天/语音/讲笑话，陪我度过闲暇时光；【小萌伴】还带有找手机功能，让我不再担心手机乱放", null);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_SHARE2);
                 } else if(msg.getUrl().startsWith(MsgUrlType.history)) {
                     ActivityUtil.toActivity(ChatActivity.this, TodayHisActivity.class);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_HISTORY);
