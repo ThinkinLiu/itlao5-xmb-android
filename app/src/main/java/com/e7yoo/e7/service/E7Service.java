@@ -90,7 +90,6 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 e.printStackTrace();
                 CrashReport.postCatchedException(e);
             }
-            System.out.println("------------1---isScreenOn--" + isScreenOn);
             try {
                 if (!isScreenOn) {
                     eventWakeUp();
@@ -108,7 +107,6 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             if (intent == null) {
                 return;
             }
-            System.out.println("------------1---ac--" + intent.getAction());
             switch (intent.getAction()) { // 屏幕关闭才开启语音唤醒，为了解决跟微信等使用语音的app之间的冲突
                 case Intent.ACTION_SCREEN_OFF:
                     isScreenOn = false;
@@ -298,7 +296,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
         int now = am.getStreamVolume(AudioManager.STREAM_MUSIC);//得到听筒模式的当前值
-        int max = now;//*/am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int max = /**now;//*/am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, max, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
         soundp.play(soundm.get(str), 1, 1, 0, 0, 1f);
         try {
@@ -306,7 +304,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        am.setStreamVolume(AudioManager.STREAM_MUSIC, now, AudioManager.FLAG_PLAY_SOUND);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, now, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
         init(this);
     }
 
@@ -382,7 +380,6 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         @Override
         public void onEvent(String name, String params, byte[] data, int offset, int length) {
             try {
-                System.out.println("------------1-----" + name + "-:-" + params);
                 if ("wp.data".equals(name)) { // 每次唤醒成功, 将会回调name=wp.data的时间, 被激活的唤醒词在params的word字段
                     JSONObject json = new JSONObject(params);
                     String word = json.getString("word"); // 唤醒词
@@ -506,7 +503,6 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 mMap.putAll(OfflineRecogParams.fetchSlotDataParam(key));
                 mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
             }
-            System.out.println("------------1---map--" + new JSONObject(mMap).toString());
             mMyRecognizer.start(mMap);
 //            BdVoiceUtil.startASR(mSpeechRecognizer, null, true);
         }
