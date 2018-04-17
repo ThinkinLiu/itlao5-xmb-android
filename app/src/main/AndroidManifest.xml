@@ -192,7 +192,9 @@
             android:name="com.baidu.speech.VoiceRecognitionService"
             android:exported="false" />
         <!-- end : baidu speech sdk -->
-
+        <service
+            android:name=".service.JpushService"
+            android:exported="false"></service>
 
         <activity
             android:name=".MainActivity"

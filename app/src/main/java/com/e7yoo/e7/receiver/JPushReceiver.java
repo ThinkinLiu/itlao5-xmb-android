@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.model.PushMsg;
+import com.e7yoo.e7.service.JpushService;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.Constant;
@@ -42,7 +43,7 @@ public class JPushReceiver extends BroadcastReceiver {
             // 注册所得到的注册 ID
         } else if(action.equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
             // 收到了自定义消息 Push 。
-            actionMessageReceived(intent);
+            actionMessageReceived(context, intent);
         } else if(action.equals(JPushInterface.ACTION_NOTIFICATION_RECEIVED)) {
             // 收到了通知 Push。
         } else if(action.equals(JPushInterface.ACTION_NOTIFICATION_OPENED)) {
@@ -58,13 +59,13 @@ public class JPushReceiver extends BroadcastReceiver {
      * 自定义消息
      * @param intent
      */
-    private void actionMessageReceived(Intent intent) {
+    private void actionMessageReceived(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        final String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+        String title = bundle.getString(JPushInterface.EXTRA_TITLE);
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
         String msgId = bundle.getString(JPushInterface.EXTRA_MSG_ID);
-        final PushMsg pushMsg = new PushMsg();
+        PushMsg pushMsg = new PushMsg();
         pushMsg.setTime(System.currentTimeMillis());
         pushMsg.setTitle(title);
         pushMsg.setContent(message);
@@ -72,7 +73,8 @@ public class JPushReceiver extends BroadcastReceiver {
         pushMsg.setMsgId(msgId);
         pushMsg.setDesc("");
         pushMsg.setUnread(1);
-        DbThreadPool.getInstance().insertPushMsg(pushMsg, true);
+        // DbThreadPool.getInstance().insertPushMsg(pushMsg, true);
+        JpushService.startActionSavePushMsg(context, pushMsg, true);
     }
 
 }
