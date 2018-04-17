@@ -344,7 +344,12 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             e.printStackTrace();
             CrashReport.postCatchedException(e);
         }
-        startService(new Intent(this, E7Service.class));
+        try {
+            startService(new Intent(this, E7Service.class));
+        } catch (Throwable e) {
+            e.printStackTrace();
+            CrashReport.postCatchedException(e);
+        }
     }
 
 
@@ -398,7 +403,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 } else if ("wp.exit".equals(name)) {
                     // 唤醒已经停止
                 } else if(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL.equals(name)) {
-                    if (params.contains("results_nlu")) {
+                    if (params.length() > 10 && params.contains("results_nlu")) {
                         JSONObject json = new JSONObject(params);
                         String nlu = json.getString("results_nlu");
                         JSONObject nluJo = new JSONObject(nlu);
@@ -434,8 +439,10 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                     }
                 } else if(SpeechConstant.CALLBACK_EVENT_ASR_EXIT.equals(name) || SpeechConstant.CALLBACK_EVENT_ASR_FINISH.equals(name)) {
                     // 识别结束，资源释放
-                    mMyRecognizer.release();
-                    mMyRecognizer = null;
+                    if(mMyRecognizer != null) {
+                        mMyRecognizer.release();
+                        mMyRecognizer = null;
+                    }
                     init(E7Service.this);
                 }
             } catch (Throwable e) {

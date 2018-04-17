@@ -132,13 +132,13 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                     }
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 1);
 
-                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_WAKEUP_KEYWORD}, new int[]{1}, null, null, null, null);
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_OPEN_SMS_FINDPHONE}, new int[]{1}, null, null, null, null);
                     findPhoneSmsLayout.setVisibility(View.VISIBLE);
                     UmengUtil.onEvent(UmengUtil.FP_SMS_1);
                 } else {
                     PreferenceUtil.commitInt(Constant.PREFERENCE_OPEN_SMS_FINDPHONE, 0);
 
-                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_WAKEUP_KEYWORD}, new int[]{0}, null, null, null, null);
+                    ServiceUtil.startE7Service(this, null, null, new String[]{Constant.PREFERENCE_OPEN_SMS_FINDPHONE}, new int[]{0}, null, null, null, null);
 
                     findPhoneSmsLayout.setVisibility(View.GONE);
                     UmengUtil.onEvent(UmengUtil.FP_SMS_0);

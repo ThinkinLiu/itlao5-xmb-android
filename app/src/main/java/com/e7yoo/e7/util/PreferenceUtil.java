@@ -54,6 +54,14 @@ public class PreferenceUtil {
 
     public static String getString(String key, String faillValue) {
         init(E7App.mApp);
+        if(key.equals(Constant.PREFERENCE_WAKEUP_KEYWORD)) {
+            try { // 版本3.2.1在wakeup_keyword中写入了一个int
+                return mSharedPreferences.getString(key, faillValue);
+            } catch (ClassCastException e) {
+                PreferenceUtil.removeKey(Constant.PREFERENCE_WAKEUP_KEYWORD);
+                return null;
+            }
+        }
         return mSharedPreferences.getString(key, faillValue);
     }
 
