@@ -21,18 +21,19 @@ import com.e7yoo.e7.fragment.CircleFragment;
 import com.e7yoo.e7.fragment.HomeFragment;
 import com.e7yoo.e7.fragment.MineFragment;
 import com.e7yoo.e7.fragment.MoreFragment;
-import com.e7yoo.e7.model.Me;
 import com.e7yoo.e7.model.Robot;
+import com.e7yoo.e7.model.User;
 import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.BottomNavigationViewHelper;
 import com.e7yoo.e7.util.CheckNotification;
 import com.e7yoo.e7.util.CheckPermissionUtil;
+import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
-import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
+//import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -40,6 +41,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.listener.BmobUpdateListener;
+import cn.bmob.v3.update.BmobUpdateAgent;
+import cn.bmob.v3.update.UpdateResponse;
+import cn.bmob.v3.update.UpdateStatus;
 
 /**
  * app主Activity
@@ -108,6 +115,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initSettings() {
+        Bmob.initialize(this, "468e16137326f78942150e3f3e5d588f");
+        initBMobUpdate();
         initPermission();
         initRobot();
         setLeftTv(View.GONE);
@@ -121,14 +130,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         CheckNotification.checkAndOpenNotification(this);
 
-        UpdateHelper.getInstance().init(getApplicationContext(), getResources().getColor(R.color.titlebar_bg));/*Color.parseColor("#459F47"));*/
-        UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
+        // UpdateHelper.getInstance().init(getApplicationContext(), getResources().getColor(R.color.titlebar_bg));/*Color.parseColor("#459F47"));*/
+        // UpdateHelper.getInstance().autoUpdate(getApplicationContext().getPackageName(), false, 12 * 60 * 60 * 1000);
 
         showMinePoint();
         showMoreNew();
         EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
 
         E7App.mApp.queryAndLoadNewPatch();
+    }
+
+    private void initBMobUpdate() {
+        BmobUpdateAgent.setUpdateCheckConfig(false);
+        BmobUpdateAgent.setUpdateOnlyWifi(false);
+        BmobUpdateAgent.update(this);
+        BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
+            @Override
+            public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
+                if (updateStatus == UpdateStatus.Yes) {//版本有更新
+
+                }else if(updateStatus == UpdateStatus.No){
+                    //Toast.makeText(ActAutoUpdate.this, "版本无更新", Toast.LENGTH_SHORT).show();
+                }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
+                    //Toast.makeText(ActAutoUpdate.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
+                }else if(updateStatus==UpdateStatus.IGNORED){
+                    //Toast.makeText(ActAutoUpdate.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
+                    BmobUpdateAgent.silentUpdate(MainActivity.this);
+                }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
+                    //Toast.makeText(ActAutoUpdate.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
+                }else if(updateStatus==UpdateStatus.TimeOut){
+                    //Toast.makeText(ActAutoUpdate.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initRobot() {
@@ -225,7 +259,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void setItem(int position) {
         mViewPager.setCurrentItem(position);
-        setTitleText(null, position);
+        setTitleText(User.getCurrentUser(User.class), position);
     }
 
     public void showCircle() {
@@ -233,9 +267,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setItem(1);
     }
 
-    public void setTitleText(Me me, int position) {
-        if(me != null && position == titleResIds.length - 1) {
-            setTitleTv(me.getNick_name());
+    public void setTitleText(User user, int position) {
+        if(user != null && !CommonUtil.isEmptyTrim(user.getNickname()) && position == titleResIds.length - 1) {
+            setTitleTv(user.getNickname());
         } else {
             setTitleTv(titleResIds[position]);
         }

@@ -15,6 +15,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
+import com.e7yoo.e7.model.User;
+import com.e7yoo.e7.model.UserUtil;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.util.DebugUtil;
 import com.e7yoo.e7.util.MyIconUtil;
@@ -43,7 +45,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
     private static final int FOOTER_COUNT = 1;
     private Robot mRobot;
     private Context mContext;
-//头像    private CommUser mCommUser;
+    private User mUser;
     private String mMyIcon;
     private boolean mShowCheckBox = false;
 
@@ -67,13 +69,17 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         return mShowCheckBox;
     }
 
-    public MsgRefreshRecyclerAdapter(Context context, Robot robot/*, CommUser commUser*/) {
+    public MsgRefreshRecyclerAdapter(Context context, Robot robot, User user) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mRobot = robot;
-        //头像this.mCommUser = commUser;
+        this.mUser = user;
         DebugUtil.setDatas(mMsgs, 1, true);
-        mMyIcon = MyIconUtil.getMyIcon();
+        if(mUser != null && mUser.getIcon() != null) {
+            mMyIcon = mUser.getIcon();
+        } else {
+            mMyIcon = MyIconUtil.getMyIcon();
+        }
     }
 
     public void refreshRobot(Robot robot) {
@@ -81,10 +87,15 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         notifyDataSetChanged();
     }
 
-    /*头像public void refreshMe(CommUser commUser) {
-        mCommUser = commUser;
+    public void refreshMe(User user) {
+        this.mUser= user;
+        if(mUser != null && mUser.getIcon() != null) {
+            mMyIcon = mUser.getIcon();
+        } else {
+            mMyIcon = MyIconUtil.getMyIcon();
+        }
         notifyDataSetChanged();
-    }*/
+    }
 
     public void addItemTop(PrivateMsg newData) {
         mMsgs.add(0, newData);
@@ -203,13 +214,18 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderSend.itemMsgTime.setBackgroundResource(0);
             }
             viewHolderSend.itemMsgContent.setText(mMsgs.get(position).getContent());
-            if(mMyIcon != null) {
-                RequestOptions options = new RequestOptions();
-                options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-                Glide.with(mContext).load(mMyIcon).apply(options).into(viewHolderSend.itemMsgIcon);
-            } else {
-                viewHolderSend.itemMsgIcon.setImageResource(R.mipmap.icon_me);
-            }
+//            if(mUser != null && mUser.getIcon() != null) {
+//                RequestOptions options = new RequestOptions();
+//                options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+//                Glide.with(mContext).load(mUser.getIcon()).apply(options).into(viewHolderSend.itemMsgIcon);
+//            } else if(mMyIcon != null) {
+//                RequestOptions options = new RequestOptions();
+//                options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
+//                Glide.with(mContext).load(mMyIcon).apply(options).into(viewHolderSend.itemMsgIcon);
+//            } else {
+//                viewHolderSend.itemMsgIcon.setImageResource(R.mipmap.icon_me);
+//            }
+            UserUtil.setIcon(mContext, viewHolderSend.itemMsgIcon, mMyIcon);
             viewHolderSend.itemMsgVoice.setVisibility(View.GONE);
             if(ttsMsgTime == mMsgs.get(position).getTime()) {
                 viewHolderSend.itemMsgVoice.setSelected(true);

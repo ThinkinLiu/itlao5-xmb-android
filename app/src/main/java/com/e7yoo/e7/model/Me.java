@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2017/9/11.
  */
-
+@Deprecated
 public class Me implements Serializable {
 
     private static final long serialVersionUID = -3333759175301198943L;

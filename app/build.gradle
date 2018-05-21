@@ -34,7 +34,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 69
-        versionName "3.2.1.180416"
+        versionName "3.2.2.180514"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -122,9 +122,11 @@ dependencies {
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
-    compile files('libs/360update-7.0.3.jar')
+    // compile files('libs/360update-7.0.3.jar')
     // 热修复Sophix
     compile 'com.aliyun.ams:alicloud-android-hotfix:3.2.1'
     // 百度语音
     compile files('libs/bdasr_V3_20180320_9066860.jar')
+    //bmob-sdk
+    // compile 'cn.bmob.android:bmob-sdk:3.6.1'
 }

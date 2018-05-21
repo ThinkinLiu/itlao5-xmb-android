@@ -27,6 +27,14 @@ public class TimeUtil {
 	public static final String dateFormatYMDHM = "yyyy-MM-dd HH:mm";
 	/** 时分. */
 	public static final String dateFormatHM = "HH:mm";
+	/** 月日. */
+	public static final String dateFormatMD = "MMdd";
+
+	public static String getMD() {
+		DateFormat fmt = new SimpleDateFormat(dateFormatMD);
+		String time = fmt.format(System.currentTimeMillis());
+		return time;
+	}
 
 	/**
 	 * 将毫秒转换为显示的时间 TODO(这里用一句话描述这个方法的作用)

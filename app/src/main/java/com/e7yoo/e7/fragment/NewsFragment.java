@@ -21,6 +21,8 @@ import com.e7yoo.e7.model.News;
 import com.e7yoo.e7.model.NewsEntity;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.net.NetCallback;
+import com.e7yoo.e7.net.NetHelper;
+import com.e7yoo.e7.net.NetUtils;
 import com.e7yoo.e7.util.AnimaUtils;
 import com.e7yoo.e7.view.HeadListView;
 import com.google.gson.Gson;
@@ -110,31 +112,24 @@ public class NewsFragment extends BaseFragment {
 			switch (msg.what) {
 			case SET_NEWSLIST:
 				AnimaUtils.startImageViewAnima(detail_loading);
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							if(News.type_weixin.equals(text)) {
-								Net.wxNewsList(new NetCallback() {
-									@Override
-									public void callback(JSONObject object) {
-										sendNetHandler(SHOW_NEWSLIST, object, 1);
-									}
-								}, 20, 1);
-							} else {
-								News.NewsType type = News.cnString2NewsType(text);
-								Net.newsList(new NetCallback() {
-									@Override
-									public void callback(JSONObject object) {
-										sendNetHandler(SHOW_NEWSLIST, object, 0);
-									}
-								}, News.newsType2String(type));
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
+
+				if(News.type_weixin.equals(text)) {
+					NetHelper.newInstance().wxNewsList(new NetCallback() {
+						@Override
+						public void callback(JSONObject object) {
+							sendNetHandler(SHOW_NEWSLIST, object, 1);
 						}
-					}
-				}).start();
+					});
+				} else {
+					News.NewsType type = News.cnString2NewsType(text);
+					String enName = News.newsType2String(type);
+					NetHelper.newInstance().newsList(new NetCallback() {
+						@Override
+						public void callback(JSONObject object) {
+							sendNetHandler(SHOW_NEWSLIST, object, 0);
+						}
+					}, enName);
+				}
 				break;
 			case SHOW_NEWSLIST:
 				AnimaUtils.removeImageViewAnima(detail_loading);

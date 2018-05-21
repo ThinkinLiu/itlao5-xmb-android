@@ -27,16 +27,19 @@ public class PrivateMsgUtil {
         PrivateMsg msg = null;
         try {
             if (object != null) {
-                if (object.getInt("error_code") == 0) {
-                    JSONObject jo = object.optJSONObject("result");
-                    if (jo != null) {
-                        int code = jo.optInt("code");
-                        String text = jo.optString("text");
-                        text = replaceTianqi(text);
-                        text = replaceName(text, robotName);
-                        String url = jo.optString("url");
-                        msg = new PrivateMsg(code, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
-                    }
+                JSONObject jo = null;
+                if(object.has("showapi_res_code")) { // 数据来自showapi
+                    jo = object.optJSONObject("showapi_res_body");
+                } else if (object.getInt("error_code") == 0) { // 数据来自聚合数据
+                    jo = object.optJSONObject("result");
+                }
+                if (jo != null) {
+                    int code = jo.optInt("code");
+                    String text = jo.optString("text");
+                    text = replaceTianqi(text);
+                    text = replaceName(text, robotName);
+                    String url = jo.optString("url");
+                    msg = new PrivateMsg(code, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
                 }
             }
         } catch (JSONException e) {

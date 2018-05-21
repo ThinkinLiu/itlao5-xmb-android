@@ -53,6 +53,7 @@ import com.e7yoo.e7.model.MsgUrlType;
 import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.model.TextSet;
+import com.e7yoo.e7.model.User;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.sql.DbThreadPool;
@@ -176,7 +177,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot);
+        mRvAdapter = new MsgRefreshRecyclerAdapter(this, mRobot, User.getCurrentUser(User.class));
         mRecyclerView.setAdapter(mRvAdapter);
         mHomeSRLayout.setColorSchemeResources(R.color.titlebar_bg);
 

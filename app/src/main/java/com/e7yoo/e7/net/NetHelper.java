@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.e7yoo.e7.fragment.NewsFragment.SHOW_NEWSLIST;
+
 public class NetHelper {
 	private static NetHelper mInstance;
 	private ExecutorService executorService;
@@ -31,13 +33,15 @@ public class NetHelper {
 		return mInstance;
 	}
 
+	private Net net = new ShowApiNet();
+
 	/**
 	 * 历史上的今天，列表
 	 */
 	public void todayHistory() {
 		executorService.execute(new Runnable() {
 			public void run() {
-				Net.getToadyHistory(new NetCallback() {
+				net.getToadyHistory(new NetCallback() {
 					@Override
 					public void callback(JSONObject object) {
 						sendNetHandler(Constant.EVENT_BUS_NET_todayHistory, object);
@@ -54,7 +58,7 @@ public class NetHelper {
 	public void todayHistoryDetails(final String id) {
 		executorService.execute(new Runnable() {
 			public void run() {
-				Net.getToadyHistoryDetails(new NetCallback() {
+				net.getToadyHistoryDetails(new NetCallback() {
 					@Override
 					public void callback(JSONObject object) {
 						sendNetHandler(Constant.EVENT_BUS_NET_todayHistoryDetails, object);
@@ -71,7 +75,7 @@ public class NetHelper {
 	public void rootAsk(final String robotId, final String content) {
 		executorService.execute(new Runnable() {
 			public void run() {
-				Net.robotAsk(new NetCallback() {
+				net.robotAsk(new NetCallback() {
 					@Override
 					public void callback(JSONObject object) {
 						sendNetHandler(Constant.EVENT_BUS_NET_tobotAsk, object);
@@ -82,14 +86,14 @@ public class NetHelper {
 	}
 
 	/**
-	 * 机器人，聊天
+	 *
 	 * @param page
 	 * @param pagesize
 	 */
 	public void jokeNew(final int page, final int pagesize) {
 		executorService.execute(new Runnable() {
 			public void run() {
-				Net.jokeNew(new NetCallback() {
+				net.jokeNew(new NetCallback() {
 					@Override
 					public void callback(JSONObject object) {
 						sendNetHandler(Constant.EVENT_BUS_NET_jokeNew, object);
@@ -100,13 +104,13 @@ public class NetHelper {
 	}
 
 	/**
-	 * 机器人，聊天
+	 *
 	 * @param isPic
 	 */
 	public void jokeRand(final boolean isPic) {
 		executorService.execute(new Runnable() {
 			public void run() {
-				Net.jokeRand(new NetCallback() {
+				net.jokeRand(new NetCallback() {
 					@Override
 					public void callback(JSONObject object) {
 						if(isPic) {
@@ -116,6 +120,38 @@ public class NetHelper {
 						}
 					}
 				}, isPic);
+			}
+		});
+	}
+
+	public void wxNewsList(final NetCallback callback) {
+		executorService.execute(new Runnable() {
+			public void run() {
+				net.wxNewsList(callback, 20, 1);
+			}
+		});
+	}
+
+	public void newsList(final NetCallback callback, final String newsEnName) {
+		executorService.execute(new Runnable() {
+			public void run() {
+				net.newsList(callback, newsEnName);
+			}
+		});
+	}
+
+	public void getToadyHistory(final NetCallback callback) {
+		executorService.execute(new Runnable() {
+			public void run() {
+				net.getToadyHistory(callback);
+			}
+		});
+	}
+
+	public void getToadyHistoryDetails(final NetCallback callback, final String id) {
+		executorService.execute(new Runnable() {
+			public void run() {
+				net.getToadyHistoryDetails(callback, id);
 			}
 		});
 	}

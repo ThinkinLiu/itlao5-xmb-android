@@ -51,7 +51,7 @@ public class Net {
 	 * @param callback
 	 * @param info
 	 */
-	public static void robotAsk(NetCallback callback, String info, String userid) {
+	public void robotAsk(NetCallback callback, String info, String userid) {
 		String url = "http://op.juhe.cn/robot/index";// 请求接口地址
 		Map params = new HashMap();// 请求参数
 		params.put("key", APPKEY_ROBOT);// 您申请到的本接口专用的APPKEY
@@ -66,10 +66,10 @@ public class Net {
 
 	/**
 	 * 问答机器人 数据类型
-	 * 
+	 *
 	 * @param callback
 	 */
-	public static void robotType(NetCallback callback) {
+	public void robotType(NetCallback callback) {
 		String url = "http://op.juhe.cn/robot/code";// 请求接口地址
 		Map params = new HashMap();// 请求参数
 		params.put("dtype", "");// 返回的数据格式，json或xml，默认json
@@ -80,7 +80,7 @@ public class Net {
 	/**
 	 * 2.最新笑话
 	 */
-	public static void jokeNew(NetCallback callback, int page, int pagesize) {
+	public void jokeNew(NetCallback callback, int page, int pagesize) {
 		//String url = "http://japi.juhe.cn/joke/content/text.from";// 请求接口地址
 		String url = "http://v.juhe.cn/joke/content/text.php";
 		Map params = new HashMap();// 请求参数
@@ -93,7 +93,7 @@ public class Net {
 	/**
 	 * 2.随机获取笑话or趣图
 	 */
-	public static void jokeRand(NetCallback callback, boolean isPic) {
+	public void jokeRand(NetCallback callback, boolean isPic) {
 		String url = "http://v.juhe.cn/joke/randJoke.php";
 		Map params = new HashMap();// 请求参数
 		params.put("type", isPic ? "pic" : "");// 类型 pic 趣图， 其他 笑话
@@ -106,21 +106,21 @@ public class Net {
 	 * 类型,,top(头条，默认),shehui(社会),guonei(国内),guoji(国际),yule(娱乐),tiyu(体育)junshi
 	 * (军事),keji(科技),caijing(财经),shishang(时尚)
 	 */
-	public static void newsList(NetCallback callback, String type) {
+	public void newsList(NetCallback callback, String type) {
 		String url = "http://v.juhe.cn/toutiao/index";// 请求接口地址
 		Map params = new HashMap();// 请求参数
 		params.put("type", type);// 类型
 		params.put("key", APPKEY_NEWS);// 您申请的key
 		doNet(callback, url, params);
 	}
-	
+
 	/**
 	 * 微信精选
 	 * @param callback
 	 * @param ps 每页多少条数据
 	 * @param pno 第几页
 	 */
-	public static void wxNewsList(NetCallback callback, int ps, int pno) {
+	public void wxNewsList(NetCallback callback, int ps, int pno) {
 		String url = "http://v.juhe.cn/weixin/query";// 请求接口地址
 		Map params = new HashMap();// 请求参数
 		params.put("ps", ps);// 类型
@@ -130,7 +130,7 @@ public class Net {
 	}
 
 	// 1.事件列表
-	public static void getToadyHistory(NetCallback callback) {
+	public void getToadyHistory(NetCallback callback) {
 		String url = "http://api.juheapi.com/japi/toh";// 请求接口地址
 		Map params = new HashMap();// 请求参数
 		params.put("key", APPKEY_TODAY_HISTORY);// 应用APPKEY(应用详细页查询)
@@ -142,7 +142,7 @@ public class Net {
 	}
 
 	// 2.根据ID查询事件详情
-	public static void getToadyHistoryDetails(NetCallback callback, String id) {
+	public void getToadyHistoryDetails(NetCallback callback, String id) {
 		String url = "http://api.juheapi.com/japi/tohdet";// 请求接口地址
 		Map params = new HashMap();// 请求参数
 		params.put("key", APPKEY_TODAY_HISTORY);// 应用APPKEY(应用详细页查询)
@@ -150,8 +150,8 @@ public class Net {
 		params.put("id", id);// 事件ID
 		doNet(callback, url, params);
 	}
-	
-	private static void doNet(NetCallback callback, String url, Map params, String... method) {
+
+	private void doNet(NetCallback callback, String url, Map params, String... method) {
 		JSONObject object = null;
 		try {
 			String strMethod;

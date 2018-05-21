@@ -73,6 +73,9 @@ public class JokeListFragment extends ListFragment {
     }
 
     private void doMsg(Message msg) {
+        if(mSRLayout == null) {
+            return;
+        }
         mSRLayout.setRefreshing(false);
         ArrayList<Joke> joke = JokeUtil.parseJokeRand((JSONObject) msg.obj);
         if(isRefresh) {

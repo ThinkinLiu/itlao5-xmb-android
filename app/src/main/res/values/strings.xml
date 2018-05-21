@@ -48,6 +48,7 @@
     <string name="more_app_center">应用中心</string>
     <string name="add_robot_name_empty">昵称不能为空</string>
     <string name="add_robot_title_robot">萌伴</string>
+    <string name="title_info">个人信息</string>
     <string name="save">保存</string>
     <string name="input_is_empty">输入内容不能为空</string>
     <string name="sex_male">男</string>
@@ -281,6 +282,7 @@
     <string name="input_hint">请输入...</string>
     <string name="login_error_empty">请输入正确的账号、密码</string>
     <string name="login_ing">正在登录...</string>
+    <string name="welcome">欢迎您，%1$s</string>
     <string name="login_failed">登录失败</string>
     <string name="login_failed_pwd_error">账号或密码错误</string>
     <string name="login_forget_pwd">忘记密码</string>
@@ -304,7 +306,6 @@
     <string name="register_pwd_hint">密码(6-18位):</string>
     <string name="register_pwd_two_hint">密码确认:</string>
 
-    <string name="title_info">个人信息</string>
     <string name="info_name">个人信息</string>
     <string name="info_name_empty">用户昵称不能为空</string>
     <string name="update">修改</string>

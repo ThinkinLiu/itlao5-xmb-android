@@ -6,8 +6,11 @@ import android.content.Intent;
 
 import com.e7yoo.e7.AddRobotActivity;
 import com.e7yoo.e7.ChatActivity;
+import com.e7yoo.e7.InfoActivity;
 import com.e7yoo.e7.InputActivity;
+import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.PushMsgDetailsActivity;
+import com.e7yoo.e7.RegisterActivity;
 import com.e7yoo.e7.SexActivity;
 import com.e7yoo.e7.VoiceActivity;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
@@ -16,6 +19,7 @@ import com.e7yoo.e7.game.GameLandscapeActivity;
 import com.e7yoo.e7.model.GameInfo;
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.model.Robot;
+import com.e7yoo.e7.model.User;
 
 /**
  * Created by Administrator on 2017/8/31.
@@ -102,6 +106,23 @@ public class ActivityUtil {
         Class cls = isLandscape ? GameLandscapeActivity.class : GameActivity.class;
         Intent intent = new Intent(context, cls);
         intent.putExtra(GameActivity.INTENT_URL, gameInfo);
+        context.startActivity(intent);
+    }
+
+    public static void toLogin(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void toRegister(Context context, String name) {
+        Intent intent = new Intent(context, RegisterActivity.class);
+        intent.putExtra("name", name);
+        context.startActivity(intent);
+    }
+
+    public static void toUserInfo(Context context, User mUser) {
+        Intent intent = new Intent(context, InfoActivity.class);
+        intent.putExtra("User", mUser);
         context.startActivity(intent);
     }
 }

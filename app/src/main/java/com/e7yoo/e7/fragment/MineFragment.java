@@ -11,23 +11,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.AboutActivity;
+import com.e7yoo.e7.BaseActivity;
 import com.e7yoo.e7.CollectActivity;
 import com.e7yoo.e7.E7App;
+import com.e7yoo.e7.LoginActivity;
 import com.e7yoo.e7.MainActivity;
 import com.e7yoo.e7.PushMsgActivity;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.SettingsActivity;
+import com.e7yoo.e7.model.User;
+import com.e7yoo.e7.model.UserUtil;
 import com.e7yoo.e7.util.ActivityUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.MyIconUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.ShortCutUtils;
+import com.e7yoo.e7.util.TastyToastUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
@@ -43,8 +49,14 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
+
 public class MineFragment extends BaseFragment implements View.OnClickListener, TakePhoto.TakeResultListener, InvokeListener {
     private View mRootView;
+    private RelativeLayout mHeadLayout;
     private ImageView mHeadIconIv;
     private TextView mine_label;
     private View mMsgLayout, mCollectLayout, mSetLayout, mShareLayout, mAboutLayout;
@@ -61,7 +73,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
             case Constant.EVENT_BUS_CIRCLE_LOGIN:
             case Constant.EVENT_BUS_CIRCLE_LOGOUT:
             case Constant.EVENT_BUS_COMMUSER_MODIFY:
-                initDatas(null);
+                initDatas();
                 break;
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_SUCCESS:
             case Constant.EVENT_BUS_REFRESH_UN_READ_MSG_COMMENT_IS_READ:
@@ -103,6 +115,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void initView() {
+        mHeadLayout = mRootView.findViewById(R.id.mine_top_bg);
         mHeadIconIv = mRootView.findViewById(R.id.mine_icon);
         mine_label = mRootView.findViewById(R.id.mine_label);
         mMsgLayout = mRootView.findViewById(R.id.mine_msg_layout);
@@ -114,6 +127,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void initListener() {
+        mHeadLayout.setOnClickListener(this);
         mHeadIconIv.setOnClickListener(this);
         mMsgLayout.setOnClickListener(this);
         mCollectLayout.setOnClickListener(this);
@@ -126,21 +140,17 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // ((BaseActivity) getActivity()).hintTitle();
-        initDatas(null);
+        initDatas();
     }
 
-    private void initDatas(String myIcon) {
-        if(myIcon == null) {
-            myIcon = MyIconUtil.getMyIcon();
-        }
-        if(myIcon != null) {
-            RequestOptions options = new RequestOptions();
-            options.placeholder(R.mipmap.icon_me).error(R.mipmap.icon_me);
-            Glide.with(getActivity()).load(myIcon).apply(options).into(mHeadIconIv);
+    private void initDatas() {
+        User user = User.getCurrentUser(User.class);
+        UserUtil.setIcon(getActivity(), mHeadIconIv, user);
+        if(user == null) {
+            mine_label.setText(R.string.mine_login_hint);
         } else {
-            mHeadIconIv.setImageResource(R.mipmap.icon_me);
+            mine_label.setText(user.getLabel());
         }
-        mine_label.setText(R.string.mine_label_hint);
     }
 
     private void setMsgPoint() {
@@ -194,8 +204,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.mine_top_bg:
+                break;
             case R.id.mine_icon:
-                toTakePhone();
+                User user = User.getCurrentUser(User.class);
+                if(user != null) {
+                    // toTakePhone();
+                    ActivityUtil.toUserInfo(getActivity(), user);
+                } else {
+                    ActivityUtil.toActivity(getActivity(), LoginActivity.class);
+                }
                 break;
             case R.id.mine_msg_layout:
                 ActivityUtil.toActivity(getActivity(), PushMsgActivity.class);
@@ -270,8 +288,43 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void takeSuccess(TResult result) {
         String path = result.getImage().getCompressPath();
-        MyIconUtil.setMyIcon(path);
-        initDatas(path);
+        final User user = User.getCurrentUser(User.class);
+        if(user != null && path != null) {
+            showProgress(R.string.updateing);
+            final BmobFile bmobFile = new BmobFile(new File(path));
+            ((BaseActivity) getActivity()).addSubscription(bmobFile.uploadblock(new UploadFileListener() {
+                @Override
+                public void done(BmobException e) {
+                    if(e == null && getActivity() != null){ // 上传成功
+                        user.setIcon(bmobFile.getFileUrl());
+                        ((BaseActivity) getActivity()).addSubscription(user.update(user.getObjectId(), new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if(e == null && !isDetached()) { // 成功
+                                    initDatas();
+                                    dismissProgress();
+                                } else {
+                                    if(getActivity() != null) {
+                                        TastyToastUtil.toast(getActivity(), R.string.update_icon_failed);
+                                    }
+                                    dismissProgress();
+                                }
+                            }
+                        }));
+                        initDatas();
+                    } else { // 上传失败
+                        if(getActivity() != null) {
+                            TastyToastUtil.toast(getActivity(), R.string.update_icon_upload_failed);
+                        }
+                        dismissProgress();
+                    }
+                }
+                @Override
+                public void onProgress(Integer value) {
+                    // 返回的上传进度（百分比）
+                }
+            }));
+        }
     }
 
     @Override

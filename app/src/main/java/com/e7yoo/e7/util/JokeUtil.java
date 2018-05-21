@@ -24,7 +24,21 @@ public class JokeUtil {
         PrivateMsg msg = null;
         try {
             if (object != null) {
-                if (object.getInt("error_code") == 0) {
+                String content = null;
+                if(object.has("showapi_res_code")) {
+                    if (object.getInt("showapi_res_code") == 0) {
+                        JSONObject jo = object.optJSONObject("showapi_res_body");
+                        if (jo != null) {
+                            JSONArray ja = jo.optJSONArray("contentlist");
+                            if (ja != null && ja.length() > 0) {
+                                JSONObject jo2 = ja.optJSONObject(0);
+                                if (jo2 != null) {
+                                    content = jo2.getString("title") + "\n\n" + jo2.getString("text");
+                                }
+                            }
+                        }
+                    }
+                } else if (object.getInt("error_code") == 0) {
                     JSONObject jo = object.optJSONObject("result");
                     if (jo != null) {
                         JSONArray ja = jo.optJSONArray("data");
@@ -32,15 +46,18 @@ public class JokeUtil {
                             JSONObject jo2 = ja.optJSONObject(0);
                             if (jo2 != null) {
                                 // String hashId = jo2.optString("hashId");
-                                String text = E7App.mApp.getResources().getString(R.string.joke_happy) + "：\n"
-                                        + jo2.optString("content");
+                                content = jo2.optString("content");
                                 // long unixtime = jo2.optLong("unixtime");
                                 // String updatetime =
                                 // jo2.optString("updatetime");
-                                msg = new PrivateMsg(-1, System.currentTimeMillis(), text, null, PrivateMsg.Type.REPLY, robotId);
                             }
                         }
                     }
+                }
+                if (content != null) {
+                    String text = E7App.mApp.getResources().getString(R.string.joke_happy) + "：\n"
+                            + content;
+                    msg = new PrivateMsg(-1, System.currentTimeMillis(), text, null, PrivateMsg.Type.REPLY, robotId);
                 }
             }
         } catch (JSONException e) {
@@ -56,24 +73,46 @@ public class JokeUtil {
         PrivateMsg msg = null;
         try {
             if (object != null) {
-                if (object.getInt("error_code") == 0) {
+                String text = null;
+                String url = null;
+                if(object.has("showapi_res_code")) {
+                    if (object.getInt("showapi_res_code") == 0) {
+                        JSONObject jo = object.optJSONObject("showapi_res_body");
+                        if (jo != null) {
+                            JSONArray ja = jo.optJSONArray("contentlist");
+                            if (ja != null && ja.length() > 0) {
+                                JSONObject jo2 = ja.optJSONObject(0);
+                                if(jo2 != null) {
+                                    // String hashId = jo2.optString("hashId");
+                                    text = "：\n" + jo2.optString("title");
+                                    if(jo2.has("text")) {
+                                        text = text + "\n\n" + jo2.optString("text");
+                                    }
+                                    // long unixtime = jo2.optLong("unixtime");
+                                    url = jo2.optString("img");
+                                }
+                            }
+                        }
+                    }
+                } else if (object.getInt("error_code") == 0) {
                     JSONArray ja = object.optJSONArray("result");
                     if (ja != null && ja.length() > 0) {
                         JSONObject jo2 = ja.optJSONObject(0);
                         if (jo2 != null) {
                             // String hashId = jo2.optString("hashId");
-                            String text = "：\n"
-                                    + jo2.optString("content");
+                            text = "：\n" + jo2.optString("content");
                             // long unixtime = jo2.optLong("unixtime");
-                            String url = jo2.optString("url");
-                            if(isPic && url != null && url.trim().length() > 0) {
-                                text = E7App.mApp.getResources().getString(R.string.joke_happy_pic) + text;
-                                msg = new PrivateMsg(-2, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
-                            } else {
-                                text = E7App.mApp.getResources().getString(R.string.joke_happy) + text;
-                                msg = new PrivateMsg(-1, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
-                            }
+                            url = jo2.optString("url");
                         }
+                    }
+                }
+                if(text != null) {
+                    if(isPic && url != null && url.trim().length() > 0) {
+                        text = E7App.mApp.getResources().getString(R.string.joke_happy_pic) + text;
+                        msg = new PrivateMsg(-2, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
+                    } else {
+                        text = E7App.mApp.getResources().getString(R.string.joke_happy) + text;
+                        msg = new PrivateMsg(-1, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
                     }
                 }
             }
@@ -93,7 +132,35 @@ public class JokeUtil {
     public static ArrayList<Joke> parseJokeRand(JSONObject object) {
         try {
             if (object != null) {
-                if (object.getInt("error_code") == 0) {
+                if(object.has("showapi_res_code")) {
+                    if (object.getInt("showapi_res_code") == 0) {
+                        JSONObject jo = object.optJSONObject("showapi_res_body");
+                        if (jo != null) {
+                            JSONArray ja = jo.optJSONArray("contentlist");
+                            if (ja != null && ja.length() > 0) {
+                                ArrayList<Joke> list = new ArrayList<>();
+                                JSONObject joI;
+                                Joke joke;
+                                for(int i = 0; i < ja.length(); i++) {
+                                    joI = ja.optJSONObject(i);
+                                    joke = new Joke();
+                                    String content = "";
+                                    if(joI.has("text")) {
+                                        content = "\n\n" + joI.optString("text");
+                                    }
+                                    joke.setContent(joI.optString("title") + content);
+                                    if(joI.has("img")) {
+                                        joke.setUrl(joI.optString("img"));
+                                    }
+                                    joke.setUpdatetime(joI.optString("ct"));
+                                    //joke.setUnixtime(joI.optInt());
+                                    list.add(joke);
+                                }
+                                return list;
+                            }
+                        }
+                    }
+                } else if (object.getInt("error_code") == 0) {
                     JSONArray ja = object.optJSONArray("result");
                     if (ja != null && ja.length() > 0) {
                         ArrayList<Joke> list = new ArrayList<>();

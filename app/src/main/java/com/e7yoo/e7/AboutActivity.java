@@ -14,9 +14,11 @@ import android.widget.TextView;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.UmengUtil;
-import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
+//import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
+
+import cn.bmob.v3.update.BmobUpdateAgent;
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
 
@@ -96,7 +98,8 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 TastyToast.makeText(this, getString(R.string.about_wx_num_clip), TastyToast.LENGTH_SHORT, TastyToast.INFO);
                 break;
             case R.id.ll_app_version:
-                UpdateHelper.getInstance().manualUpdate(getApplicationContext().getPackageName());
+                //UpdateHelper.getInstance().manualUpdate(getApplicationContext().getPackageName());
+                BmobUpdateAgent.forceUpdate(this);
                 break;
             default:
                 break;

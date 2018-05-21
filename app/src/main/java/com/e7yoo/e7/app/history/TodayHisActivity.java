@@ -110,20 +110,29 @@ public class TodayHisActivity extends BaseActivity implements OnClickListener {
 		ArrayList<TodayHisEntity> entitys = new ArrayList<TodayHisEntity>();
 		try {
 			if (object != null) {
-				if (object.getInt("error_code") == 0) {
-					JSONArray ja = object.optJSONArray("result");
-					if (ja != null && ja.length() > 0) {
-						TodayHisEntity entity;
-						Gson gson = new Gson();
-						for(int i = 0; i < ja.length(); i++) {
-							String jo = ja.optString(i);
-							if(!CommonUtil.isEmptyTrimNull(jo)) {
-								try {
-									entity = gson.fromJson(jo, TodayHisEntity.class);
-									entitys.add(entity);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+				JSONArray ja = null;
+				if(object.has("showapi_res_code")) {
+					if (object.getInt("showapi_res_code") == 0) {
+						JSONObject jo2 = object.getJSONObject("showapi_res_body");
+						if(jo2 != null) {
+							ja = jo2.optJSONArray("list");
+						}
+					}
+				} else if (object.getInt("error_code") == 0) {
+					ja = object.optJSONArray("result");
+				}
+
+				if (ja != null && ja.length() > 0) {
+					TodayHisEntity entity;
+					Gson gson = new Gson();
+					for (int i = 0; i < ja.length(); i++) {
+						String jo = ja.optString(i);
+						if (!CommonUtil.isEmptyTrimNull(jo)) {
+							try {
+								entity = gson.fromJson(jo, TodayHisEntity.class);
+								entitys.add(entity);
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
 						}
 					}

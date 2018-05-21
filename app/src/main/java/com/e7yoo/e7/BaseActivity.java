@@ -28,6 +28,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Activity基类
  */
@@ -60,11 +63,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         initViewListener();
     }
 
+
+    private CompositeSubscription mCompositeSubscription;
+
+    /**
+     * 解决Subscription内存泄露问题
+     * @param s
+     */
+    public void addSubscription(Subscription s) {
+        if (this.mCompositeSubscription == null) {
+            this.mCompositeSubscription = new CompositeSubscription();
+        }
+        this.mCompositeSubscription.add(s);
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         dismissProgress();
         EventBus.getDefault().unregister(this);
+        if (this.mCompositeSubscription != null) {
+            this.mCompositeSubscription.unsubscribe();
+        }
     }
 
     @Override

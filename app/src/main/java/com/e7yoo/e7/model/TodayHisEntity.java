@@ -17,6 +17,8 @@ public class TodayHisEntity implements Serializable {
 	private String year;
 	private String content;
 
+	private String img;
+
 	public String get_id() {
 		return _id;
 	}
@@ -34,6 +36,9 @@ public class TodayHisEntity implements Serializable {
 	}
 
 	public String getDes() {
+		if(des == null) {
+			des = "";
+		}
 		return des;
 	}
 
@@ -58,11 +63,22 @@ public class TodayHisEntity implements Serializable {
 	}
 
 	public String getPic() {
+		if(pic == null) {
+			pic = getImg();
+		}
 		return pic;
 	}
 
 	public void setPic(String pic) {
 		this.pic = pic;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public String getTitle() {
@@ -82,6 +98,9 @@ public class TodayHisEntity implements Serializable {
 	}
 
 	public String getContent() {
+		if(content == null) {
+			content = "";
+		}
 		return content;
 	}
 
