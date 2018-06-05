@@ -218,8 +218,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         ArrayList<GridItem> gridItems = new ArrayList<>();
         GridItem gridItem = new GridItem(R.mipmap.item_chat_gridview_picture, R.string.item_chat_gridview_picture, this);
         gridItems.add(gridItem);
-        gridItem = new GridItem(R.mipmap.item_chat_gridview_news, R.string.item_chat_gridview_news, this);
-        gridItems.add(gridItem);
+        //gridItem = new GridItem(R.mipmap.item_chat_gridview_news, R.string.item_chat_gridview_news, this);
+        //gridItems.add(gridItem);
         gridItem = new GridItem(R.mipmap.item_chat_gridview_joke, R.string.item_chat_gridview_joke, this);
         gridItems.add(gridItem);
         gridItem = new GridItem(R.mipmap.item_chat_gridview_game, R.string.item_chat_gridview_game, this);
@@ -624,9 +624,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                         addMsgToViewRecv(getString(R.string.chat_url_to_history), MsgUrlType.history);
                     } else if(pullUpTimes % 200 == 15) {
                         addMsgToViewRecv(getString(R.string.chat_url_to_findphone), MsgUrlType.finaphone);
-                    } else if(pullUpTimes % 100 == 20) {
+                    } /*else if(pullUpTimes % 100 == 20) {
                         addMsgToViewRecv(getString(R.string.chat_url_to_news), MsgUrlType.news);
-                    } else if(isNetOk(true)) {
+                    }*/ else if(isNetOk(true)) {
                         // NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
                         NetHelper.newInstance().jokeRand(RandomUtil.getRandomNum(10) % 2 == 0);
                         mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);

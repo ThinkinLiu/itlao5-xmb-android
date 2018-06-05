@@ -37,7 +37,8 @@
     <string name="add_robot_bg">背景</string>
     <string name="add_robot_bg_blur">背景模糊</string>
     <string name="add">添加</string>
-    <string name="more_news">新闻资讯</string>
+    <!--<string name="more_news">新闻资讯</string>-->
+    <string name="more_news">小萌伴</string>
     <string name="more_history">历史今日</string>
     <string name="more_game">小游戏</string>
     <string name="more_light">手电筒</string>
