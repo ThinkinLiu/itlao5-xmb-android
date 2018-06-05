@@ -76,17 +76,17 @@ public class MoreFragment extends BaseFragment implements View.OnClickListener {
             findPhoneLayout.setOnClickListener(this);
             taobaoLayout.setOnClickListener(this);
         }
-        if(CommonUtil.isChannel(getActivity(), "bd", "91", "hiapk")) {
+        //if(CommonUtil.isChannel(getActivity(), "bd", "91", "hiapk")) {
             /*newsLine.setVisibility(View.GONE);
             newsLayout.setVisibility(View.GONE);*/
             newsTitleTv.setVisibility(View.GONE);
             newsRootLayout.setVisibility(View.GONE);
-        } else {
-            /*newsLine.setVisibility(View.VISIBLE);
-            newsLayout.setVisibility(View.VISIBLE);*/
+        /*} else {
+            *//*newsLine.setVisibility(View.VISIBLE);
+            newsLayout.setVisibility(View.VISIBLE);*//*
             newsTitleTv.setVisibility(View.VISIBLE);
             newsRootLayout.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         boolean showNew = PreferenceUtil.getBoolean(Constant.PREFERENCE_MORE_POINT_NEW, true);
         if(showNew) {

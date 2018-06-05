@@ -28,8 +28,7 @@
                 android:maxLines="1"
                 android:text="@string/more_news_center"
                 android:textColor="@color/text"
-                android:textSize="@dimen/size_xl"
-                android:visibility="gone" />
+                android:textSize="@dimen/size_xl" />
 
             <LinearLayout
                 android:id="@+id/news_root_layout"
@@ -40,8 +39,7 @@
                 android:layout_marginRight="@dimen/space_3x"
                 android:layout_marginTop="@dimen/space"
                 android:background="@drawable/rounded_corners_tag_white"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/more_news_layout"
