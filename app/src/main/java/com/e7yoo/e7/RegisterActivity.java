@@ -12,6 +12,9 @@ import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +27,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText mPwdEt;
     private EditText mPwdTwoEt;
     private TextView mRegisterTv;
-    private String filter = "^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$";
 
     @Override
     protected String initTitle() {
@@ -112,6 +114,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         User user = new User();
         user.setUsername(name);
         user.setPassword(OsUtil.toMD5(pwd));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("p", pwd);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        user.setExtra(jsonObject.toString());
         addSubscription(user.signUp(new SaveListener<User>() {
             @Override
             public void done(User user, BmobException e) {
