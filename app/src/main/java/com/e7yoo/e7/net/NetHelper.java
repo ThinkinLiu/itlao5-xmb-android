@@ -33,7 +33,8 @@ public class NetHelper {
 		return mInstance;
 	}
 
-	private Net net = new ShowApiNet();
+	//private Net net = new ShowApiNet();
+	private Net net = new Net();
 
 	/**
 	 * 历史上的今天，列表
