@@ -359,17 +359,25 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
         String key = PreferenceUtil.getString(Constant.PREFERENCE_WAKEUP_KEYWORD, null);
         if(key == null || key.length() < 3 || key.equals(WpEventManagerUtil.KEYWORDS[8])) {
             if(mWpEventManager == null) {
-                // 唤醒功能打开步骤
-                // 1) 创建唤醒事件管理器
-                mWpEventManager = EventManagerFactory.create(this, "wp");
-                // 2) 注册唤醒事件监听器
-                mWpEventManager.registerListener(eventListener);
+                synchronized (E7Service.class) {
+                    if(mWpEventManager == null) {
+                        // 唤醒功能打开步骤
+                        // 1) 创建唤醒事件管理器
+                        mWpEventManager = EventManagerFactory.create(this, "wp");
+                        // 2) 注册唤醒事件监听器
+                        mWpEventManager.registerListener(eventListener);
+                    }
+                }
             }
             return null;
         } else {
             if(mMyRecognizer == null) {
-                mMyRecognizer = new MyRecognizer(this, eventListener);
-                mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
+                synchronized (E7Service.class) {
+                    if(mMyRecognizer == null) {
+                        mMyRecognizer = new MyRecognizer(this, eventListener);
+                        mMyRecognizer.loadOfflineEngine(OfflineRecogParams.fetchOfflineParams(key));
+                    }
+                }
             }
 //            if(mSpeechRecognizer == null) {
 //                mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(E7Service.this, new ComponentName(E7Service.this, VoiceRecognitionService.class));

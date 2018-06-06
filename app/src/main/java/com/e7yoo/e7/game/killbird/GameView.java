@@ -19,6 +19,7 @@ import android.view.SurfaceView;
 
 import com.e7yoo.e7.R;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -793,7 +794,14 @@ public class GameView extends SurfaceView implements Callback, Runnable {
 	 * 返回图片资源
 	 */
 	public Bitmap getRes(int resID) {
-		return BitmapFactory.decodeResource(getResources(),resID);
+		BitmapFactory.Options opt = new BitmapFactory.Options();
+		opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+		opt.inPurgeable = true;
+		opt.inInputShareable = true;
+		//获取资源图片
+		InputStream is = getResources().openRawResource(resID);
+		return BitmapFactory.decodeStream(is, null, opt);
+		//return BitmapFactory.decodeResource(getResources(),resID);
 	}
 	
 	/**
