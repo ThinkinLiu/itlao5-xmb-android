@@ -428,28 +428,6 @@
                 <category android:name="com.e7yoo.e7" />
             </intent-filter>
         </receiver>
-        <!-- start 360update -->
-        <!--<activity
-            android:name="com.qihoo.appstore.common.updatesdk.lib.UpdateTipDialogActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-        <service
-            android:name="com.qihoo.appstore.updatelib.CheckUpdateService"
-            android:exported="false" />
-
-        <provider
-            android:name="com.qihoo.appstore.updatelib.UpdateProvider"
-            android:authorities="com.e7yoo.e7"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/update_apk_path" />
-        </provider>-->
-        <!-- end 360update -->
 
         <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:screenOrientation="portrait"
@@ -466,13 +444,13 @@
         </activity>
 
         <provider
-            android:authorities="com.e7yoo.e7.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.e7yoo.e7"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/bmob_file_paths" />
         </provider>
 
     </application>

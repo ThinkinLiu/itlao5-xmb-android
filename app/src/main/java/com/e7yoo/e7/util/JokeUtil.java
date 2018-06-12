@@ -146,7 +146,7 @@ public class JokeUtil {
                                     joke = new Joke();
                                     String content = "";
                                     if(joI.has("text")) {
-                                        content = "\n\n" + joI.optString("text");
+                                        content = "\n\n" + joI.optString("text").replaceAll("<br />", "").replaceAll("<br/>", "");
                                     }
                                     joke.setContent(joI.optString("title") + content);
                                     if(joI.has("img")) {
