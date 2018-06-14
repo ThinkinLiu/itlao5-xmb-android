@@ -19,6 +19,13 @@ import com.e7yoo.e7.util.ActivityUtil;
  */
 
 public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
+    private static final int[] BG_RESOURCE = {
+            R.drawable.rounded_corners_bg_joke1,
+            R.drawable.rounded_corners_bg_joke2,
+            R.drawable.rounded_corners_bg_joke3,
+            R.drawable.rounded_corners_bg_joke4,
+            R.drawable.rounded_corners_bg_joke5
+    };
 
     public JokeListRefreshRecyclerAdapter(Context context) {
         super(context);
@@ -40,11 +47,7 @@ public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
     protected void setHolderView(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof ViewHolderJoke) {
             final ViewHolderJoke viewHolderJoke = (ViewHolderJoke) holder;
-            if(position % 2 == 0) {
-                viewHolderJoke.root.setBackgroundResource(R.drawable.rounded_corners_bg_joke2);
-            } else {
-                viewHolderJoke.root.setBackgroundResource(R.drawable.rounded_corners_bg_joke1);
-            }
+            viewHolderJoke.root.setBackgroundResource(BG_RESOURCE[position % BG_RESOURCE.length]);
             final Joke item = (Joke) mDatas.get(position);
             if (item != null) {
                 viewHolderJoke.icon.setVisibility(View.GONE);
