@@ -115,9 +115,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initSettings() {
-        Bmob.initialize(this, "468e16137326f78942150e3f3e5d588f");
-        initBMobUpdate();
         initPermission();
+        initBmob();
         initRobot();
         setLeftTv(View.GONE);
         BottomNavigationViewHelper.disableShiftMode(navigation);
@@ -138,6 +137,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         EventBusUtil.post(Constant.EVENT_BUS_REFRESH_UN_READ_MSG);
 
         E7App.mApp.queryAndLoadNewPatch();
+    }
+
+    private boolean isInitBmob = false;
+    private void initBmob() {
+        if(isInitBmob) {
+            return;
+        }
+        try {
+            Bmob.initialize(this, "468e16137326f78942150e3f3e5d588f");
+            isInitBmob = true;
+        } catch (Throwable e) {
+            CrashReport.postCatchedException(e);
+        }
+        try {
+            initBMobUpdate();
+        } catch (Throwable e) {
+            CrashReport.postCatchedException(e);
+        }
     }
 
     private void initBMobUpdate() {
@@ -355,7 +372,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WAKE_LOCK,
-            Manifest.permission.READ_SMS,
+            Manifest.permission.READ_PHONE_STATE,
 
             Manifest.permission.RECEIVE_BOOT_COMPLETED,
             /*该权限无法弹出框口进行提醒*/Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
@@ -376,6 +393,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     String NOTIFY_PERMISSIONS[] = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WAKE_LOCK,
             Manifest.permission.READ_SMS,
     };
@@ -419,6 +437,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         return;
                     }
                 }
+                initBmob();
                 break;
         }
     }
