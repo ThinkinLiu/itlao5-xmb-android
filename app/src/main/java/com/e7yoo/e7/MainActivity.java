@@ -143,7 +143,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initBMobUpdate() {
         BmobUpdateAgent.setUpdateCheckConfig(false);
         BmobUpdateAgent.setUpdateOnlyWifi(false);
-        BmobUpdateAgent.update(this);
+        long showUpdateTime = PreferenceUtil.getLong(Constant.PREFERENCE_MORE_POINT_NEW, 0);
+        long now = System.currentTimeMillis();
+        if(now - showUpdateTime > 30 * 60 * 1000) {
+            PreferenceUtil.commitLong(Constant.PREFERENCE_MORE_POINT_NEW, now);
+            BmobUpdateAgent.update(this);
+        } else {
+
+        }
         BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
             @Override
             public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {

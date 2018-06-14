@@ -1,0 +1,4 @@
+provider冲突（与bmob）:
+1. 修改了 TConstant的getFileProviderName方法，".fileprovider"改为"fileprovider"
+2. file_paths.xml移除
+3.AndroidManifest.xml中，移除provider
