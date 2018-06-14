@@ -124,6 +124,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             TastyToastUtil.toast(LoginActivity.this, R.string.login_failed);
                             break;
                     }
+                    dismissProgress();
                 }
             }
         }));
