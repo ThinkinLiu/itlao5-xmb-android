@@ -295,6 +295,7 @@
     <string name="circle_name_default">萌友_</string>
     <string name="register_ing">注册中...</string>
     <string name="register_failed">注册失败</string>
+    <string name="register_failed_exist">注册失败,该账号已经存在</string>
     <string name="register_illegal_uid">用户名非法</string>
     <string name="register_device_forbiddened">该设备禁止注册</string>
     <string name="register_close_community">服务器错误</string>
@@ -315,6 +316,7 @@
     <string name="info_input_welcome_hint">想一条帅气的个性签名吧</string>
     <string name="logout">退出登录</string>
     <string name="update_failed">修改失败</string>
+    <string name="update_failed_exist">修改失败，该账号已存在</string>
     <string name="update_icon_upload_failed">头像上传失败</string>
     <string name="update_icon_failed">头像修改失败</string>
     <string name="title_post">帖子</string>

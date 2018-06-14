@@ -271,7 +271,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     };
 
     private void setPage(int position) {
-        setTitleText(null, position);
+        setTitleText(position);
         if (prevMenuItem != null) {
             prevMenuItem.setChecked(false);
         } else {
@@ -283,7 +283,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void setItem(int position) {
         mViewPager.setCurrentItem(position);
-        setTitleText(User.getCurrentUser(User.class), position);
+        setTitleText(position);
     }
 
     public void showCircle() {
@@ -291,11 +291,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setItem(1);
     }
 
-    public void setTitleText(User user, int position) {
-        if(user != null && !CommonUtil.isEmptyTrim(user.getNickname()) && position == titleResIds.length - 1) {
-            setTitleTv(user.getNickname());
+    public void setTitleText(int position) {
+        if(position == titleResIds.length - 1) {
+            User user = User.getCurrentUser(User.class);
+            if(user != null && !CommonUtil.isEmptyTrim(user.getNickname())) {
+                setTitleTv(user.getNickname());
+            } else {
+                setTitleTv(titleResIds[position]);
+            }
         } else {
             setTitleTv(titleResIds[position]);
+        }
+    }
+
+    public void setTitleText(BaseFragment fragment) {
+        if(fragment instanceof MineFragment) {
+            setTitleText(titleResIds.length - 1);
         }
     }
 
@@ -463,7 +474,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.mine_point:
                 int position = titleResIds.length - 1;
                 setItem(position);
-                setTitleText(null, position);
+                setTitleText(position);
                 if (prevMenuItem != null) {
                     prevMenuItem.setChecked(false);
                 } else {

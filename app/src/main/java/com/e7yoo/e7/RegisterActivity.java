@@ -113,6 +113,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         showProgress(R.string.register_ing);
         User user = new User();
         user.setUsername(name);
+        user.setNickname(name);
         user.setPassword(OsUtil.toMD5(pwd));
         JSONObject jsonObject = new JSONObject();
         try {
@@ -128,7 +129,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     TastyToastUtil.toast(RegisterActivity.this, R.string.welcome, user.getNickname());
                     finish(true);
                 } else {
-                    TastyToastUtil.toast(RegisterActivity.this, R.string.register_failed);
+                    if(e.getErrorCode() == 202) {
+                        TastyToastUtil.toast(RegisterActivity.this, R.string.register_failed);
+                    } else {
+                        TastyToastUtil.toast(RegisterActivity.this, R.string.register_failed);
+                    }
                 }
             }
         }));

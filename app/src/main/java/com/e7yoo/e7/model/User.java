@@ -1,5 +1,7 @@
 package com.e7yoo.e7.model;
 
+import android.text.TextUtils;
+
 import cn.bmob.v3.BmobUser;
 
 /**
@@ -43,7 +45,11 @@ public class User extends BmobUser {
 
     public String getNickname() {
         if(nickname == null) {
-            nickname = "m_" + getObjectId();
+            if(TextUtils.isEmpty(getObjectId())) {
+                nickname = "";
+            } else {
+                nickname = "m_" + getObjectId();
+            }
         }
         return nickname;
     }

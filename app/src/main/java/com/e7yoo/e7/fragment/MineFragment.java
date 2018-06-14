@@ -144,6 +144,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void initDatas() {
+        ((MainActivity) getActivity()).setTitleText(this);
         User user = User.getCurrentUser(User.class);
         UserUtil.setIcon(getActivity(), mHeadIconIv, user);
         if(user == null) {

@@ -84,7 +84,6 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                 finish();
                 return;
             }
-            setTitleTv(R.string.add_robot_title_robot);
             int resIcon = R.mipmap.icon_me;
             RequestOptions options = new RequestOptions();
             options.placeholder(resIcon).error(resIcon);
@@ -301,7 +300,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
                 if(e == null) {
                     hasUpdate = true;
                 } else {
-                    TastyToastUtil.toast(InfoActivity.this, R.string.update_failed);
+                    if(e.getErrorCode() == 202) {
+                        TastyToastUtil.toast(InfoActivity.this, R.string.update_failed_exist);
+                    } else {
+                        TastyToastUtil.toast(InfoActivity.this, R.string.update_failed);
+                    }
                 }
                 dismissProgress();
             }
