@@ -225,7 +225,7 @@ public abstract class BaseWebviewActivity extends BaseActivity implements ReWebC
 					if (htr.getType() == HitTestResult.IMAGE_TYPE) {// 判断被点击的类型为图片
 						final String urlStr = htr.getExtra();
 
-						TextSet setItem0 = new TextSet(R.string.save_to_phone, false, new OnClickListener() {
+						TextSet setItem0 = new TextSet(R.string.share_to, false, new OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								ShareDialogUtil.show(BaseWebviewActivity.this, null, "精彩不容错过：","小萌伴分享，好图一起看", urlStr);
