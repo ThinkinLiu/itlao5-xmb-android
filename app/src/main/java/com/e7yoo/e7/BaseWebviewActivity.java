@@ -21,6 +21,7 @@ import com.e7yoo.e7.download.MulThreadDownload.DownloadCallBack;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.util.PopupWindowUtil;
 import com.e7yoo.e7.util.ProgressDialogEx;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.webview.ImageUtil;
 import com.e7yoo.e7.webview.ReWebChomeClient;
 import com.e7yoo.e7.webview.ReWebViewClient;
@@ -223,9 +224,13 @@ public abstract class BaseWebviewActivity extends BaseActivity implements ReWebC
 					HitTestResult htr = mWebView.getHitTestResult();// 获取所点击的内容
 					if (htr.getType() == HitTestResult.IMAGE_TYPE) {// 判断被点击的类型为图片
 						final String urlStr = htr.getExtra();
-						// String name = urlStr.substring(urlStr.lastIndexOf(File.separator) + 1);
-						// if (name.startsWith("image")) {
-						// 与web端约定以img开头的图片才能进行保存，其它图片不能保存
+
+						TextSet setItem0 = new TextSet(R.string.save_to_phone, false, new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								ShareDialogUtil.show(BaseWebviewActivity.this, null, "精彩不容错过：","小萌伴分享，好图一起看", urlStr);
+							}
+						});
 						TextSet setItem1 = new TextSet(R.string.save_to_phone, false, new OnClickListener() {
 							@Override
 							public void onClick(View v) {
@@ -250,9 +255,8 @@ public abstract class BaseWebviewActivity extends BaseActivity implements ReWebC
 							}
 						});
 						PopupWindowUtil.showPopWindow(BaseWebviewActivity.this, mWebView, R.string.save_pictrue_hint,
-								setItem1, null, true);
+								setItem0, setItem1, true);
 						return false;
-						// }
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

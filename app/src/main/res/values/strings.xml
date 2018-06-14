@@ -137,7 +137,7 @@
     <string name="save_success">保存成功</string>
     <string name="save_to_phone">保存到手机</string>
     <string name="cancel">取消</string>
-    <string name="save_pictrue_hint">图片存储…</string>
+    <string name="save_pictrue_hint">将图片…</string>
     <string name="news_from">来源：</string>
     <string name="detail_no_content">您没有收藏</string>
     <string name="favorites_fai">收藏失败</string>

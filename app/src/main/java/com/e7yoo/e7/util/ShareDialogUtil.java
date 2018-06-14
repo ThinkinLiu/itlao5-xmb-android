@@ -38,9 +38,9 @@ import cn.jiguang.share.wechat.WechatMoments;
 import cn.jiguang.share.weibo.SinaWeibo;
 
 public class ShareDialogUtil {
-    public static final String SHARE_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.e7yoo.e7";
-    public static final String SHARE_TITLE = "懂你的【小萌伴】";
-    public static final String SHARE_CONTENT = "拥有【小萌伴】，闲暇时光·陪你";
+    public static final String SHARE_URL = "http://itlao5.com/wp/app";
+    public static final String SHARE_TITLE = "闲暇时光·【小萌伴】陪你";
+    public static final String SHARE_CONTENT = "陪聊·说段子·小游戏···还能帮你找手机...";
     public static final String SHARE_IMAGEPATH = null;
     private static String share_url = SHARE_URL;
     private static String share_title = SHARE_TITLE;
