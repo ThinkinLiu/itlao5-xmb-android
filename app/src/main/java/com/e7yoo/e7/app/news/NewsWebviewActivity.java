@@ -119,7 +119,7 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 				toOpen();
 			}
 		}));
-		PopupWindowUtil.showPopWindow(this, rootView, 0, textSets, true);
+		PopupWindowUtil.showPopWindow(this, rootView, R.string.share_web, textSets, true);
 	}
 
 	private void toShare() {
