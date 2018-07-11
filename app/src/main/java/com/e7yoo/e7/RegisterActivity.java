@@ -114,10 +114,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         User user = new User();
         user.setUsername(name);
         user.setNickname(name);
+        user.setScore(0);
+        user.setSex(0);
+        user.setIcon("http://bmob-cdn-18976.b0.upaiyun.com/2018/07/11/01bd81ab4085a8b68096a1ca24d0ef28.png");
+        user.setLabel("这家伙好懒，什么都没留下！");
         user.setPassword(OsUtil.toMD5(pwd));
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("p", pwd);
+            jsonObject.put("p", getStr(pwd));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -126,6 +130,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void done(User user, BmobException e) {
                 if(e == null) {
+                    user.setNickname("u_" + user.getObjectId());
+                    user.update();
                     TastyToastUtil.toast(RegisterActivity.this, R.string.welcome, user.getNickname());
                     finish(true);
                 } else {
@@ -137,6 +143,24 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 }
             }
         }));
+    }
+
+    private String getStr(String str) {
+        // char[] e7s = "com.e7yoo.e7".toCharArray();
+        char[] chars = str.toCharArray();
+        int length = chars.length;
+        // int e7sLength = e7s.length;
+        for(int i = 0; i < length; i++) {
+            if(chars[i] >= 48 && chars[i] <= 57) {
+                chars[i] = (char) (57 - (chars[i] - 48) % (57 - 48 + 1));
+            } else if(chars[i] >= 65 && chars[i] <= 90) {
+                chars[i] = (char) (90 - (chars[i] - 65) % (90 - 65 + 1));
+            } else if(chars[i] >= 97 && chars[i] <= 122) {
+                chars[i] = (char) (122 - (chars[i] - 97) % (122 - 97 + 1));
+            }
+            // chars[i] = (char) (chars[i] - e7s[i % e7sLength]);
+        }
+        return String.valueOf(chars);
     }
 
     private String getName() {

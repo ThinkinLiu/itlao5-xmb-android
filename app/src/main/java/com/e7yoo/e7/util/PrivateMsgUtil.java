@@ -38,7 +38,14 @@ public class PrivateMsgUtil {
                     String text = jo.optString("text");
                     text = replaceTianqi(text);
                     text = replaceName(text, robotName);
-                    String url = jo.optString("url");
+                    String url = jo.optString("url", null);
+                    if(url == null && jo.has("list")) {
+                        try {
+                            url = jo.optJSONArray("list").optJSONObject(0).optString("detailurl");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     msg = new PrivateMsg(code, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
                 }
             }
@@ -68,6 +75,6 @@ public class PrivateMsgUtil {
 
     }
 
-    private static String[] array = {"聚合数据", "萌萌", "图灵机器人", "图灵工程师", "机器宝宝"};
+    private static String[] array = {"聚合数据", "萌萌", "图灵机器人", "图灵工程师", "机器宝宝", "默认机器人"};
 
 }

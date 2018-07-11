@@ -43,7 +43,11 @@ public class Net {
 	public static final String APPKEY_TODAY_HISTORY = "83c9b89d2f44e0c282fedd945bcc3dc3";
 	/** 微信精选 */
 	public static final String APPKEY_WEIXIN_NEWS = "f833a7b593ca90e0fde7e145f6b1d3d0";
-	
+
+
+	/** HAO API机器人 http://www.haoservice.com/docs/119 */
+	public static final String APPKEY_ROBOT_HAOAPI = "2826ac74d78f44429e436de6331a913e";
+
 
 	/**
 	 * 问答机器人
@@ -52,15 +56,22 @@ public class Net {
 	 * @param info
 	 */
 	public void robotAsk(NetCallback callback, String info, String userid) {
-		String url = "http://op.juhe.cn/robot/index";// 请求接口地址
+//		String url = "http://op.juhe.cn/robot/index";// 请求接口地址
+//		Map params = new HashMap();// 请求参数
+//		params.put("key", APPKEY_ROBOT);// 您申请到的本接口专用的APPKEY
+//		params.put("info", info);// 要发送给机器人的内容，不要超过30个字符
+//		params.put("dtype", "json");// 返回的数据的格式，json或xml，默认为json
+//		params.put("loc", "");// 地点，如北京中关村
+//		params.put("lon", "");// 经度，东经116.234632（小数点后保留6位），需要写为116234632
+//		params.put("lat", "");// 纬度，北纬40.234632（小数点后保留6位），需要写为40234632
+//		params.put("userid", userid);// 1~32位，此userid针对您自己的每一个用户，用于上下文的关联
+//		doNet(callback, url, params);
+
+		//http://apis.haoservice.com/efficient/robot?info=你好美男子&key=your_AppKey
+		String url = "http://apis.haoservice.com/efficient/robot";
 		Map params = new HashMap();// 请求参数
-		params.put("key", APPKEY_ROBOT);// 您申请到的本接口专用的APPKEY
+		params.put("key", APPKEY_ROBOT_HAOAPI);// 您申请到的本接口专用的APPKEY
 		params.put("info", info);// 要发送给机器人的内容，不要超过30个字符
-		params.put("dtype", "json");// 返回的数据的格式，json或xml，默认为json
-		params.put("loc", "");// 地点，如北京中关村
-		params.put("lon", "");// 经度，东经116.234632（小数点后保留6位），需要写为116234632
-		params.put("lat", "");// 纬度，北纬40.234632（小数点后保留6位），需要写为40234632
-		params.put("userid", userid);// 1~32位，此userid针对您自己的每一个用户，用于上下文的关联
 		doNet(callback, url, params);
 	}
 
