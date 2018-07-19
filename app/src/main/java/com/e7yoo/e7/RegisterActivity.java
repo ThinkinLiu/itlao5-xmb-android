@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.e7yoo.e7.model.User;
+import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.OsUtil;
@@ -119,6 +120,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         user.setIcon("http://bmob-cdn-18976.b0.upaiyun.com/2018/07/11/01bd81ab4085a8b68096a1ca24d0ef28.png");
         user.setLabel("这家伙好懒，什么都没留下！");
         user.setPassword(OsUtil.toMD5(pwd));
+        user.setApikey(Net.APPKEY_ROBOT_HAOAPI_register);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("p", getStr(pwd));
@@ -136,7 +138,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     finish(true);
                 } else {
                     if(e.getErrorCode() == 202) {
-                        TastyToastUtil.toast(RegisterActivity.this, R.string.register_failed);
+                        TastyToastUtil.toast(RegisterActivity.this, R.string.register_failed_exist);
                     } else {
                         TastyToastUtil.toast(RegisterActivity.this, R.string.register_failed);
                     }

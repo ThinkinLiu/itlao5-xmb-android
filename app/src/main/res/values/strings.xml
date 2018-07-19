@@ -18,7 +18,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="tuling_exception">我有点头晕，暂时回答不了您的问题</string>
+    <string name="tuling_exception">我有点头晕，暂时回答不了您的问题，试试登录吧</string>
     <string name="chat_input_edit_hint">想聊点啥呢...</string>
     <string name="history_message_nomore">没有更多历史消息</string>
     <string name="net_no">网络不给力哦o(╥﹏╥)o</string>
@@ -252,7 +252,7 @@
     <string name="push_msg_details">消息</string>
     <string name="push_msg_details_more">更多推荐</string>
     <string name="item_push_msg_title_default">[萌伴]消息</string>
-    <string name="item_msg_rev_url">点击打开</string>
+    <string name="item_msg_rev_url">立即前往</string>
     <string name="chat_url_to_share">分享是一种美德，把我推荐给您的朋友们吧！</string>
     <string name="chat_url_to_share2">主人，把我介绍给您的朋友们吧！</string>
     <string name="chat_url_to_game">看累了吧，去玩玩小游戏？</string>
@@ -444,4 +444,5 @@
     <string name="share_findphone">功能不错，分享给好友</string>
     <string name="share_to">分享给好友</string>
     <string name="share_web">将网页...</string>
+    <string name="notify_findphone">您已开启语音找手机功能</string>
 </resources>

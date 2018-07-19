@@ -1,6 +1,7 @@
 package com.e7yoo.e7.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +30,17 @@ public class TimeUtil {
 	public static final String dateFormatHM = "HH:mm";
 	/** 月日. */
 	public static final String dateFormatMD = "MMdd";
+
+	public static long getTime(String yyyyMMddHHmmss) {
+		DateFormat fmt = new SimpleDateFormat(dateFormatYMDHMS);
+		try {
+			Date date = fmt.parse(yyyyMMddHHmmss);
+			return date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return System.currentTimeMillis();
+	}
 
 	public static String getMD() {
 		DateFormat fmt = new SimpleDateFormat(dateFormatMD);

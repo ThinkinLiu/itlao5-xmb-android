@@ -3,6 +3,7 @@ package com.e7yoo.e7.model;
 import android.text.TextUtils;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 
 /**
  * Created by Administrator on 2018/5/9.
@@ -20,6 +21,9 @@ public class User extends BmobUser {
     private String bg; // 主页背景
     private String icon; // 头像
     private String name; // 姓名
+    private BmobGeoPoint addr; // 经纬度（最近登录）
+    private Integer autoCreateId; // 自增长id
+    private String apikey; // 机器人key
 
     public Integer getAge() {
         if(age == null) {
@@ -111,4 +115,29 @@ public class User extends BmobUser {
     public void setName(String name) {
         this.name = name;
     }
+
+    public BmobGeoPoint getAddr() {
+        return addr;
+    }
+
+    public void setAddr(BmobGeoPoint addr) {
+        this.addr = addr;
+    }
+
+    public Integer getAutoCreateId() {
+        return autoCreateId;
+    }
+
+    public void setAutoCreateId(Integer autoCreateId) {
+        this.autoCreateId = autoCreateId;
+    }
+
+    public String getApikey() {
+        return apikey;
+    }
+
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
+    }
+
 }

@@ -5,32 +5,35 @@ import android.view.View;
 
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
-import com.e7yoo.e7.adapter.JokeListRefreshRecyclerAdapter;
+import com.e7yoo.e7.adapter.Joke2ListRefreshRecyclerAdapter;
 import com.e7yoo.e7.adapter.ListRefreshRecyclerAdapter;
+import com.e7yoo.e7.model.Feed;
 import com.e7yoo.e7.model.Joke;
 import com.e7yoo.e7.model.JokeType;
-import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.sql.DbThreadPool;
-import com.e7yoo.e7.sql.MessageDbHelper;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.IOUtils;
-import com.e7yoo.e7.util.JokeUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.RandomUtil;
 import com.e7yoo.e7.util.TastyToastUtil;
+import com.e7yoo.e7.util.TimeUtil;
 import com.e7yoo.e7.util.UmengUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by andy on 2018/4/6.
  */
 
 public class JokeListFragment extends ListFragment {
-
+    private static final int PAGE_SIZE_PIC = 20;
+    private static final int PAGE_SIZE_JOKE = 10;
+    private int pageNum = 0;
     public static JokeListFragment newInstance() {
         JokeListFragment fragment = new JokeListFragment();
         return fragment;
@@ -40,6 +43,13 @@ public class JokeListFragment extends ListFragment {
 
     public JokeListFragment setJokeType(JokeType jokeType) {
         this.jokeType = jokeType;
+        if(jokeType == JokeType.JOKE) {
+            pageNum = PreferenceUtil.getInt(Constant.PREFERENCE_PAGE_NUM_TXT, 0);
+        } else if(jokeType == JokeType.PIC) {
+            pageNum = PreferenceUtil.getInt(Constant.PREFERENCE_PAGE_NUM_PIC, 0);
+        } else {
+            pageNum = RandomUtil.getRandomNum(1000);
+        }
         return this;
     }
 
@@ -49,52 +59,10 @@ public class JokeListFragment extends ListFragment {
             return;
         }
         switch (msg.what) {
-            case Constant.EVENT_BUS_NET_jokeRand:
-                if(JokeType.JOKE == jokeType) {
-                    doMsg(msg);
-                    if(isRefresh) {
-                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_JOKE_REFRESH);
-                    } else {
-                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_JOKE_MORE);
-                    }
-                }
-                break;
-            case Constant.EVENT_BUS_NET_jokeRand_pic:
-                if(JokeType.PIC == jokeType) {
-                    doMsg(msg);
-                    if(isRefresh) {
-                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_PIC_REFRESH);
-                    } else {
-                        UmengUtil.onEvent(UmengUtil.JOKE_LIST_PIC_MORE);
-                    }
-                }
-                break;
         }
     }
 
-    private void doMsg(Message msg) {
-        if(mSRLayout == null) {
-            return;
-        }
-        mSRLayout.setRefreshing(false);
-        ArrayList<Joke> joke = JokeUtil.parseJokeRand((JSONObject) msg.obj);
-        if(isRefresh) {
-            if(joke != null && joke.size() > 0) {
-                saveDataToDb(joke);
-                refreshData(joke, true);
-            }
-            mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
-        } else {
-            mRvAdapter.addItemBottom(joke);
-            if(joke != null && joke.size() > 0) {
-                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
-            } else {
-                mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
-            }
-        }
-    }
-
-    protected void refreshData(List<Joke> jokes, boolean refresh) {
+    protected void refreshData(List<Feed> jokes, boolean refresh) {
         if(mDatas == null || refresh) {
             mDatas = jokes;
             if(mRvAdapter != null) {
@@ -105,19 +73,25 @@ public class JokeListFragment extends ListFragment {
 
     @Override
     protected ListRefreshRecyclerAdapter initAdapter() {
-        JokeListRefreshRecyclerAdapter jokeListRefreshRecyclerAdapter = new JokeListRefreshRecyclerAdapter(getContext());
+        Joke2ListRefreshRecyclerAdapter jokeListRefreshRecyclerAdapter = new Joke2ListRefreshRecyclerAdapter(getContext());
         jokeListRefreshRecyclerAdapter.setShowCollect(true);
         return jokeListRefreshRecyclerAdapter;
     }
 
     @Override
     protected void addListener() {
-        ((JokeListRefreshRecyclerAdapter) mRvAdapter).setOnCollectListener(new JokeListRefreshRecyclerAdapter.OnCollectListener() {
+        ((Joke2ListRefreshRecyclerAdapter) mRvAdapter).setOnCollectListener(new Joke2ListRefreshRecyclerAdapter.OnCollectListener() {
             @Override
-            public void onCollect(View view, Joke joke, int position) {
+            public void onCollect(View view, Feed feed, int position) {
+                Joke joke = new Joke();
+                joke.setContent(feed.getTitle() + (feed.getContent() == null ? "" : feed.getContent()));
+                joke.setUrl(feed.getImg());
+                joke.setHashId(feed.getObjectId().hashCode() + "");
+                joke.setUpdatetime(feed.getUpdatedAt());
+                joke.setUnixtime(TimeUtil.getTime(feed.getTime()));
                 DbThreadPool.getInstance().insertCollect(E7App.mApp, joke);
                 if(mRvAdapter != null) {
-                    ((JokeListRefreshRecyclerAdapter) mRvAdapter).remove(position);
+                    ((Joke2ListRefreshRecyclerAdapter) mRvAdapter).remove(position);
                 }
                 TastyToastUtil.toast(getActivity(), R.string.collect_suc);
             }
@@ -133,15 +107,75 @@ public class JokeListFragment extends ListFragment {
         }
         switch (jokeType) {
             case PIC:
-                NetHelper.newInstance().jokeRand(true);
+                query(Feed.FeedType_PIC, PAGE_SIZE_PIC, pageNum);
                 break;
             case JOKE:
-                NetHelper.newInstance().jokeRand(false);
+                query(Feed.FeedType_JOKE, PAGE_SIZE_JOKE, pageNum);
                 break;
             case ALL:
             default:
                 break;
         }
+    }
+
+    /**
+     *
+     * @param type 参考Feed#type  类型 0 普通帖子，1 笑话， 2 趣图，其他待拓展
+     * @param pageSize 页大小
+     * @param pageNum 第几页 从0开始
+     */
+    private void query(final int type, int pageSize, final int pageNum) {
+        BmobQuery<Feed> query = new BmobQuery<>();
+        query.addWhereEqualTo("type", type)
+                .setLimit(pageSize)
+                .setSkip(pageNum * pageSize)
+                .order("-createdAt")
+                .findObjects(new FindListener<Feed>() {
+            @Override
+            public void done(List<Feed> list, BmobException e) {
+                int nextPage = pageNum;
+                if(e != null) {
+                    if(list == null || list.size() == 0) {
+                        nextPage = 0;
+                        mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.NO_MORE, R.string.loading_no_more, false);
+                    } else {
+                        nextPage++;
+                        if(isRefresh) {
+                            saveDataToDb(list);
+                            refreshData(list, true);
+                        } else {
+                            mRvAdapter.addItemBottom(list);
+                        }
+                        mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+                    }
+                } else {
+                    mRvAdapter.setFooter(ListRefreshRecyclerAdapter.FooterType.END, R.string.loading_up_load_more, false);
+                }
+                switch (type) {
+                    case Feed.FeedType_TOPIC:
+
+                        break;
+                    case Feed.FeedType_JOKE:
+                        PreferenceUtil.commitInt(Constant.PREFERENCE_PAGE_NUM_TXT, nextPage);
+
+                        if(isRefresh) {
+                            UmengUtil.onEvent(UmengUtil.JOKE_LIST_JOKE_REFRESH);
+                        } else {
+                            UmengUtil.onEvent(UmengUtil.JOKE_LIST_JOKE_MORE);
+                        }
+                        break;
+                    case Feed.FeedType_PIC:
+                        PreferenceUtil.commitInt(Constant.PREFERENCE_PAGE_NUM_PIC, nextPage);
+
+                        if(isRefresh) {
+                            UmengUtil.onEvent(UmengUtil.JOKE_LIST_PIC_REFRESH);
+                        } else {
+                            UmengUtil.onEvent(UmengUtil.JOKE_LIST_PIC_MORE);
+                        }
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -153,7 +187,7 @@ public class JokeListFragment extends ListFragment {
             }
             Object obj = IOUtils.UnserializeStringToObject(jokeList);
             if(obj != null) {
-                ArrayList<Joke> jokes = (ArrayList<Joke>) obj;
+                List<Feed> jokes = (List<Feed>) obj;
                 refreshData(jokes, false);
             }
         } catch (Throwable e) {
@@ -161,7 +195,7 @@ public class JokeListFragment extends ListFragment {
         }
     }
 
-    private void saveDataToDb(ArrayList<Joke> jokes) {
+    private void saveDataToDb(List<Feed> jokes) {
         PreferenceUtil.commitString(getKey(jokeType), IOUtils.SerializeObjectToString(jokes));
     }
 
@@ -172,16 +206,17 @@ public class JokeListFragment extends ListFragment {
         }
         switch (jokeType) {
             case JOKE:
-                preferenceKey = Constant.PREFERENCE_CIRCLE_JOKE_JOKE;
+                preferenceKey = Constant.PREFERENCE_CIRCLE_JOKE_JOKE_feed;
                 break;
             case PIC:
-                preferenceKey = Constant.PREFERENCE_CIRCLE_JOKE_PIC;
+                preferenceKey = Constant.PREFERENCE_CIRCLE_JOKE_PIC_feed;
                 break;
             case ALL:
             default:
-                preferenceKey = Constant.PREFERENCE_CIRCLE_JOKE_ALL;
+                preferenceKey = Constant.PREFERENCE_CIRCLE_JOKE_ALL_feed;
                 break;
         }
         return preferenceKey;
     }
+
 }

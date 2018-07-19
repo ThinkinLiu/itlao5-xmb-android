@@ -47,6 +47,8 @@ public class Net {
 
 	/** HAO API机器人 http://www.haoservice.com/docs/119 */
 	public static final String APPKEY_ROBOT_HAOAPI = "2826ac74d78f44429e436de6331a913e";
+    /** HAO API机器人登录后 http://www.haoservice.com/docs/119 */
+    public static final String APPKEY_ROBOT_HAOAPI_register = "6675a704a8b3413b9de9d3f025cfd366";
 
 
 	/**
@@ -55,7 +57,7 @@ public class Net {
 	 * @param callback
 	 * @param info
 	 */
-	public void robotAsk(NetCallback callback, String info, String userid) {
+	public void robotAsk(NetCallback callback, String info, String userid, String apikey) {
 //		String url = "http://op.juhe.cn/robot/index";// 请求接口地址
 //		Map params = new HashMap();// 请求参数
 //		params.put("key", APPKEY_ROBOT);// 您申请到的本接口专用的APPKEY
@@ -70,7 +72,11 @@ public class Net {
 		//http://apis.haoservice.com/efficient/robot?info=你好美男子&key=your_AppKey
 		String url = "http://apis.haoservice.com/efficient/robot";
 		Map params = new HashMap();// 请求参数
-		params.put("key", APPKEY_ROBOT_HAOAPI);// 您申请到的本接口专用的APPKEY
+        if(apikey != null && apikey.length() > 6) {
+            params.put("key", apikey);
+        } else {
+            params.put("key", APPKEY_ROBOT_HAOAPI);// 您申请到的本接口专用的APPKEY
+        }
 		params.put("info", info);// 要发送给机器人的内容，不要超过30个字符
 		doNet(callback, url, params);
 	}

@@ -54,6 +54,7 @@ import com.e7yoo.e7.model.PrivateMsg;
 import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.model.User;
+import com.e7yoo.e7.model.UserUtil;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.sql.DbThreadPool;
@@ -580,11 +581,15 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     private boolean sendText(String content) {
         // mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
         addMsgToView(content);
+        String apikey = null;
+        if(User.getCurrentUser(User.class) != null) {
+            apikey = User.getCurrentUser(User.class).getApikey();
+        }
         if(isNetOk(true)) {
             if(getResources().getString(R.string.mengmeng).equals(mRobot.getName())) {
-                NetHelper.newInstance().rootAsk("", content);
+                NetHelper.newInstance().rootAsk("", content, apikey);
             } else {
-                NetHelper.newInstance().rootAsk(String.valueOf(mRobot.getId()), content);
+                NetHelper.newInstance().rootAsk(String.valueOf(mRobot.getId()), content, apikey);
             }
         }
         return true;
@@ -608,51 +613,56 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void initLoadMoreListener() {
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            int lastVisibleItem;
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if (isNeedLoadMore(newState)) {
-                    int pullUpTimes = PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, 0);
-                    if(pullUpTimes % 50 == 8) {
-                        addMsgToViewRecv(getString(R.string.chat_url_to_share), MsgUrlType.share);
-                    } else if(pullUpTimes % 50 == 12) {
-                        addMsgToViewRecv(getString(R.string.chat_url_to_game), MsgUrlType.game);
-                    } else if(pullUpTimes % 100 == 25) {
-                        addMsgToViewRecv(getString(R.string.chat_url_to_history), MsgUrlType.history);
-                    } else if(pullUpTimes % 200 == 15) {
-                        addMsgToViewRecv(getString(R.string.chat_url_to_findphone), MsgUrlType.finaphone);
-                    } /*else if(pullUpTimes % 100 == 20) {
+        setLoadMoreListener(mOnScrollListener);
+    }
+
+    private void setLoadMoreListener(RecyclerView.OnScrollListener onScrollListener) {
+        mRecyclerView.setOnScrollListener(onScrollListener);
+    }
+
+    private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
+        int lastVisibleItem;
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
+            if (isNeedLoadMore(newState)) {
+                int pullUpTimes = PreferenceUtil.getInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, 0);
+                if(pullUpTimes % 50 == 8) {
+                    addMsgToViewRecv(getString(R.string.chat_url_to_share), MsgUrlType.share);
+                } else if(pullUpTimes % 50 == 12) {
+                    addMsgToViewRecv(getString(R.string.chat_url_to_game), MsgUrlType.game);
+                } else if(pullUpTimes % 100 == 25) {
+                    addMsgToViewRecv(getString(R.string.chat_url_to_history), MsgUrlType.history);
+                } else if(pullUpTimes % 200 == 15) {
+                    addMsgToViewRecv(getString(R.string.chat_url_to_findphone), MsgUrlType.finaphone);
+                } /*else if(pullUpTimes % 100 == 20) {
                         addMsgToViewRecv(getString(R.string.chat_url_to_news), MsgUrlType.news);
                     }*/ else if(isNetOk(true)) {
-                        // NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
-                        NetHelper.newInstance().jokeRand(RandomUtil.getRandomNum(10) % 2 == 0);
-                        mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
-                    }
-                    PreferenceUtil.commitInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, ++pullUpTimes);
+                    // NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
+                    NetHelper.newInstance().jokeRand(RandomUtil.getRandomNum(10) % 2 == 0);
+                    mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                 }
-                UmengUtil.onEvent(UmengUtil.PULL_UP);
+                PreferenceUtil.commitInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, ++pullUpTimes);
             }
+            UmengUtil.onEvent(UmengUtil.PULL_UP);
+        }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                //最后一个可见的ITEM
-                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-            }
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            //最后一个可见的ITEM
+            lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+        }
 
-            private boolean isNeedLoadMore(int newState) {
-                return !isFinishing() && newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mRvAdapter.getItemCount()
-                        && mRvAdapter.getFooter() != MsgRefreshRecyclerAdapter.FooterType.LOADING
-                        && mRvAdapter.getFooter() != MsgRefreshRecyclerAdapter.FooterType.NO_MORE
-                        && !mHomeSRLayout.isRefreshing();
-            }
-        });
-
-    }
+        private boolean isNeedLoadMore(int newState) {
+            return !isFinishing() && newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mRvAdapter.getItemCount()
+                    && mRvAdapter.getFooter() != MsgRefreshRecyclerAdapter.FooterType.LOADING
+                    && mRvAdapter.getFooter() != MsgRefreshRecyclerAdapter.FooterType.NO_MORE
+                    && !mHomeSRLayout.isRefreshing();
+        }
+    };
 
     public void onEventMainThread(Message msg) {
         if(isFinishing()) {
@@ -1047,6 +1057,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 } else if(msg.getUrl().startsWith(MsgUrlType.big_pic)) {
                     Glide.with(ChatActivity.this).load(msg.getUrl().replace(MsgUrlType.big_pic, "")).into(bigPic);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_BIG_PIC);
+                } else if(msg.getUrl().startsWith(MsgUrlType.login)) {
+                    ActivityUtil.toLogin(ChatActivity.this);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_LOGIN);
                 } else{
                     // 其他，跳往webview
                     ActivityUtil.toNewsWebviewActivity(ChatActivity.this, msg.getUrl(), NewsWebviewActivity.INTENT_FROM_CHAT_MSG);

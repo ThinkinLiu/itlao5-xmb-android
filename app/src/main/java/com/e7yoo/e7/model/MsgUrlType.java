@@ -18,5 +18,6 @@ public class MsgUrlType {
     public static final String zhaoyaojing = "zhaoyaojing:";
     public static final String gif = "gif:";
     public static final String big_pic = "big_pic:";
+    public static final String login = "login:";
 
 }

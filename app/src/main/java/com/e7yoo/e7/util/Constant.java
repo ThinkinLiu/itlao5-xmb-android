@@ -79,6 +79,10 @@ public class Constant {
     public static final String PREFERENCE_CIRCLE_JOKE_JOKE = "preference_circle_joke_joke";
     public static final String PREFERENCE_CIRCLE_JOKE_PIC = "preference_circle_joke_pic";
 
+    public static final String PREFERENCE_CIRCLE_JOKE_ALL_feed = "preference_circle_joke_all_feed";
+    public static final String PREFERENCE_CIRCLE_JOKE_JOKE_feed = "preference_circle_joke_joke_feed";
+    public static final String PREFERENCE_CIRCLE_JOKE_PIC_feed = "preference_circle_joke_pic_feed";
+
     public static final String PREFERENCE_MY_ICON = "preference_my_icon";
 
     public static final String PREFERENCE_LAST_GET_PATCH_TIME = "preference_last_get_patch_time";
@@ -90,4 +94,7 @@ public class Constant {
 
     public static final String PREFERENCE_SHOW_UPDATE_TIME = "preference_show_update_time";
     public static final String PREFERENCE_SHOW_UPDATE_TIME_DOWNLOADED = "preference_show_update_time_downloaded";
+
+    public static final String PREFERENCE_PAGE_NUM_PIC = "preference_page_num_pic";
+    public static final String PREFERENCE_PAGE_NUM_TXT = "preference_page_num_txt";
 }

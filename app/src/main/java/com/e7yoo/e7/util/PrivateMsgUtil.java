@@ -2,6 +2,7 @@ package com.e7yoo.e7.util;
 
 import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
+import com.e7yoo.e7.model.MsgUrlType;
 import com.e7yoo.e7.model.PrivateMsg;
 
 import org.json.JSONException;
@@ -53,7 +54,7 @@ public class PrivateMsgUtil {
             e.printStackTrace();
         }
         if(msg == null) {
-            msg = new PrivateMsg(1000, System.currentTimeMillis(), E7App.mApp.getString(R.string.tuling_exception), null, PrivateMsg.Type.REPLY, robotId);
+            msg = new PrivateMsg(1000, System.currentTimeMillis(), E7App.mApp.getString(R.string.tuling_exception), MsgUrlType.login, PrivateMsg.Type.REPLY, robotId);
         }
         return msg;
     }

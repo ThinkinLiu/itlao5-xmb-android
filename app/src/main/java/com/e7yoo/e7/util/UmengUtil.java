@@ -40,6 +40,7 @@ public class UmengUtil {
     public static final String CHAT_TO_SHARE2 = "3_chat_to_share2";
     public static final String CHAT_TO_HISTORY = "3_chat_to_history";
     public static final String CHAT_TO_CIRCLE = "3_chat_to_circle";
+    public static final String CHAT_TO_LOGIN = "3_chat_to_login";
     public static final String CHAT_TO_WEB = "3_chat_to_web";
     public static final String GAME_2048 = "3_game_2048";
     public static final String GAME_BIRD = "3_game_bird";

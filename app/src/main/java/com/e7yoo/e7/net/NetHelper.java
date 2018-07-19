@@ -73,7 +73,7 @@ public class NetHelper {
 	 * 机器人，聊天
 	 * @param content
 	 */
-	public void rootAsk(final String robotId, final String content) {
+	public void rootAsk(final String robotId, final String content, final String apikey) {
 		executorService.execute(new Runnable() {
 			public void run() {
 				net.robotAsk(new NetCallback() {
@@ -81,7 +81,7 @@ public class NetHelper {
 					public void callback(JSONObject object) {
 						sendNetHandler(Constant.EVENT_BUS_NET_tobotAsk, object);
 					}
-				}, content, OsUtil.getUdid(E7App.mApp) + robotId);
+				}, content, OsUtil.getUdid(E7App.mApp) + robotId, apikey);
 			}
 		});
 	}

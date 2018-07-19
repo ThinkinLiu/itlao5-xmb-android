@@ -2,12 +2,15 @@ package com.e7yoo.e7.service;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
@@ -43,6 +46,8 @@ import com.e7yoo.e7.util.WpEventManagerUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
+import junit.runner.Version;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,6 +80,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
     private boolean isScreenOn = true;
     private void init(Context context) {
         if (PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) != 0) {
+            startForeground(101, getNotification());
             try {
                 PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
                 isScreenOn = pm.isScreenOn();//如果为true，则表示屏幕“亮”了，否则屏幕“暗”了。
@@ -98,6 +104,24 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 e.printStackTrace();
                 CrashReport.postCatchedException(e);
             }
+        }
+    }
+
+    private Notification getNotification(){
+        Notification.Builder mBuilder = new Notification.Builder(this);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mBuilder.setShowWhen(false);
+        }
+        mBuilder.setWhen(System.currentTimeMillis());
+        mBuilder.setAutoCancel(false);
+        mBuilder.setSmallIcon(R.mipmap.logo_round);
+        mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
+        mBuilder.setContentText(getString(R.string.notify_findphone));
+        mBuilder.setContentTitle(getString(R.string.app_name));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            return mBuilder.build();
+        } else {
+            return mBuilder.getNotification();
         }
     }
 
