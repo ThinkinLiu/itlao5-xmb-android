@@ -15,7 +15,7 @@ import cn.bmob.v3.datatype.BmobRelation;
  * Created by Administrator on 2018/5/9.
  */
 
-public class Feed extends BmobObject {
+    public class Feed extends BmobObject {
     private static final long serialVersionUID = 1L;
 
     public static final int FeedType_TOPIC = 0;

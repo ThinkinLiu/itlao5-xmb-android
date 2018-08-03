@@ -9,6 +9,7 @@ import com.e7yoo.e7.BuildConfig;
 import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ServiceUtil;
 
 /**
  * Created by andy on 2017/6/25.
@@ -68,14 +69,16 @@ public class SmsReceiver extends BroadcastReceiver {
                 if (content.trim().equals(str)) {
                     Intent intentE7Service = new Intent(context, E7Service.class);
                     intentE7Service.putExtra(E7Service.FROM, E7Service.FROM_SMS_RECEIVER);
-                    context.startService(intentE7Service);
+                    //context.startService(intentE7Service);
+                    ServiceUtil.startService(context, intentE7Service);
                     abortBroadcast();
                     return;
                 } else if (content.trim().equals(strLatLng)) {
                     Intent intentE7Service = new Intent(context, E7Service.class);
                     intentE7Service.putExtra(E7Service.FROM, E7Service.FROM_SMS_RECEIVER_LATLNG);
                     intentE7Service.putExtra("phoneNum", smsMessage.getOriginatingAddress());//getDisplayOriginatingAddress());
-                    context.startService(intentE7Service);
+                    //context.startService(intentE7Service);
+                    ServiceUtil.startService(context, intentE7Service);
                     abortBroadcast();
                     return;
                 } /*else {
@@ -84,7 +87,8 @@ public class SmsReceiver extends BroadcastReceiver {
                 }*/
             }
             Intent intentE7Service = new Intent(context, E7Service.class);
-            context.startService(intentE7Service);
+            //context.startService(intentE7Service);
+        ServiceUtil.startService(context, intentE7Service);
         /*}*/
     }
 

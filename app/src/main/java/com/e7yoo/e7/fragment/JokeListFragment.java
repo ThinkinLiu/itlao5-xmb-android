@@ -133,6 +133,10 @@ public class JokeListFragment extends ListFragment {
                 .findObjects(new FindListener<Feed>() {
             @Override
             public void done(List<Feed> list, BmobException e) {
+                if(mSRLayout == null) {
+                    return;
+                }
+                mSRLayout.setRefreshing(false);
                 int nextPage = pageNum;
                 if(e != null) {
                     if(list == null || list.size() == 0) {

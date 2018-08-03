@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -40,6 +41,35 @@ public class CheckPermissionUtil {
         } catch (Throwable e) {
         }
         return true;
+    }
+
+    public static void AskForInstallAppPermission(final Activity act) {
+        final MaterialDialog materialDialog = new MaterialDialog(act);
+        materialDialog.setTitle(R.string.dialog_install_hint_title)
+                .setMessage(R.string.dialog_install_hint)
+                .setPositiveButton(act.getString(R.string.goto_open), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        materialDialog.dismiss();
+                        requestPer(act);
+                    }
+                })
+                .setNegativeButton(act.getString(R.string.goto_ignore), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        materialDialog.dismiss();
+                    }
+                }).show();
+    }
+
+    private static void requestPer(Activity activity) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean b = activity.getPackageManager().canRequestPackageInstalls();
+            if(!b) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                activity.startActivityForResult(intent, 10086);
+            }
+        }
     }
 
     public static void AskForPermission(final Activity act, int titleResId, int hintResId) {

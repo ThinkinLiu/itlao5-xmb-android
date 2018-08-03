@@ -3,9 +3,11 @@ package com.e7yoo.e7.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.e7yoo.e7.model.PushMsg;
 import com.e7yoo.e7.sql.DbThreadPool;
+import com.e7yoo.e7.util.ServiceUtil;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -26,6 +28,12 @@ public class JpushService extends IntentService {
         super("JpushService");
     }
 
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        ServiceUtil.startForeground(this, ServiceUtil.JpushServiceNotifyId, this.getApplicationContext(), 0, 0, 0, 0 );
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     /**
      * Starts this service to perform action Foo with the given parameters. If
      * the service is already performing a task this action will be queued.
@@ -38,7 +46,8 @@ public class JpushService extends IntentService {
         intent.setAction(ACTION_SAVE_PUSH_MSG);
         intent.putExtra(EXTRA_PUSH_MSG, pushMsg);
         intent.putExtra(EXTRA_HAS_EXTRAS, hashExtras);
-        context.startService(intent);
+        //context.startService(intent);
+        ServiceUtil.startService(context, intent);
     }
 
     /**

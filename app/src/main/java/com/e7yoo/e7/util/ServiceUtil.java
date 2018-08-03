@@ -1,10 +1,15 @@
 package com.e7yoo.e7.util;
 
+import android.app.Notification;
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.e7yoo.e7.R;
 import com.e7yoo.e7.service.E7Service;
 
 /**
@@ -12,6 +17,9 @@ import com.e7yoo.e7.service.E7Service;
  */
 
 public class ServiceUtil {
+    public static final int E7ServiceNotifyId = 101;
+    public static final int JpushServiceNotifyId = 102;
+
     public static void startE7Service(Context context, String[] keys, String[] values
             , String[] keys_int, int[] values_int
             , String[] keys_long, long[] values_long
@@ -38,7 +46,8 @@ public class ServiceUtil {
             startIntent.putExtra("values_boolean", values_boolean);
         }
         startIntent.putExtra(E7Service.FROM, E7Service.FROM_SMS_RECEIVER_PREFERENCE);
-        context.startService(startIntent);
+        // context.startService(startIntent);
+        ServiceUtil.startService(context, startIntent);
     }
 
     /**
@@ -83,4 +92,50 @@ public class ServiceUtil {
             }
         }
     }
+
+    public static void startService(Context context, Intent intent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
+    }
+
+    public static void startForeground(Service service, int id, Context context, int textResId, int titleResId, int smallIconResId, int largeIconResId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            service.startForeground(id, getNotification(context, textResId, titleResId, smallIconResId, largeIconResId)); //这个id不要和应用内的其他同志id一样，不行就写 int.maxValue()        //context.startForeground(SERVICE_ID, builder.getNotification());
+        }
+    }
+
+
+    private static Notification getNotification(Context context, int textResId, int titleResId, int smallIconResId, int largeIconResId){
+        Notification.Builder mBuilder = new Notification.Builder(context);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mBuilder.setShowWhen(false);
+        }
+        mBuilder.setWhen(System.currentTimeMillis());
+        mBuilder.setAutoCancel(false);
+        if(textResId == 0) {
+            textResId = R.string.notify_findphone;
+        }
+        if(titleResId == 0) {
+            titleResId = R.string.app_name;
+        }
+        if(smallIconResId == 0) {
+            smallIconResId = R.mipmap.logo_round;
+        }
+        if(largeIconResId == 0) {
+            largeIconResId = R.mipmap.logo;
+        }
+        mBuilder.setSmallIcon(smallIconResId);
+        mBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), largeIconResId));
+        mBuilder.setContentText(context.getString(textResId));
+        mBuilder.setContentTitle(context.getString(titleResId));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            return mBuilder.build();
+        } else {
+            return mBuilder.getNotification();
+        }
+    }
+
 }

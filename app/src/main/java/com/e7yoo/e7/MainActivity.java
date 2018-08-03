@@ -3,8 +3,11 @@ package com.e7yoo.e7;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +37,7 @@ import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 //import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
+import com.e7yoo.e7.util.ServiceUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -43,6 +47,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.listener.BmobDialogButtonListener;
 import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import cn.bmob.v3.update.UpdateResponse;
@@ -166,27 +171,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             PreferenceUtil.commitLong(Constant.PREFERENCE_SHOW_UPDATE_TIME, now);
             BmobUpdateAgent.update(this);
         } else {
-
         }
-        BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
-            @Override
-            public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-                if (updateStatus == UpdateStatus.Yes) {//版本有更新
 
-                }else if(updateStatus == UpdateStatus.No){
-                    //Toast.makeText(ActAutoUpdate.this, "版本无更新", Toast.LENGTH_SHORT).show();
-                }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
-                    //Toast.makeText(ActAutoUpdate.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
-                }else if(updateStatus==UpdateStatus.IGNORED){
-                    //Toast.makeText(ActAutoUpdate.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
-                    BmobUpdateAgent.silentUpdate(MainActivity.this);
-                }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
-                    //Toast.makeText(ActAutoUpdate.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
-                }else if(updateStatus==UpdateStatus.TimeOut){
-                    //Toast.makeText(ActAutoUpdate.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
+        //设置对对话框按钮的点击事件的监听
+        BmobUpdateAgent.setDialogListener(new BmobDialogButtonListener() {
+            @Override
+            public void onClick(int status) {
+                // TODO Auto-generated method stub
+                BmobUpdateAgent.setDialogListener(null);
+                switch (status) {
+                    case UpdateStatus.Update:
+                        // Toast.makeText(ActAutoUpdate.this, "点击了立即更新按钮" , Toast.LENGTH_SHORT).show();
+                        break;
+                    case UpdateStatus.NotNow:
+                        // Toast.makeText(ActAutoUpdate.this, "点击了以后再说按钮" , Toast.LENGTH_SHORT).show();
+                        BmobUpdateAgent.silentUpdate(MainActivity.this);
+                        break;
+                    case UpdateStatus.Close://只有在强制更新状态下才会在更新对话框的右上方出现close按钮,如果用户不点击”立即更新“按钮，这时候开发者可做些操作，比如直接退出应用等
+                        // Toast.makeText(ActAutoUpdate.this, "点击了对话框关闭按钮" , Toast.LENGTH_SHORT).show();
+                        BmobUpdateAgent.silentUpdate(MainActivity.this);
+                        break;
                 }
             }
         });
+//        BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
+//            @Override
+//            public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
+//                if (updateStatus == UpdateStatus.Yes) {//版本有更新
+//
+//                }else if(updateStatus == UpdateStatus.No){
+//                    //Toast.makeText(ActAutoUpdate.this, "版本无更新", Toast.LENGTH_SHORT).show();
+//                }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
+//                    //Toast.makeText(ActAutoUpdate.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
+//                }else if(updateStatus==UpdateStatus.IGNORED){
+//                    //Toast.makeText(ActAutoUpdate.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
+//                    BmobUpdateAgent.silentUpdate(MainActivity.this);
+//                }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
+//                    //Toast.makeText(ActAutoUpdate.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
+//                }else if(updateStatus==UpdateStatus.TimeOut){
+//                    //Toast.makeText(ActAutoUpdate.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
     private void initRobot() {
@@ -372,12 +398,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             return;
         }
         super.onBackPressed();
-        startService(new Intent(this, E7Service.class));
+
+        ServiceUtil.startService(this.getApplicationContext(), new Intent(this, E7Service.class));
+        //startService(new Intent(this, E7Service.class));
     }
 
     long onBackPressedTime = 0;
-
-
 
     String PERMISSIONS[] = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -442,13 +468,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 for (int i = 0; i < permissions.length; i++) {
                     String permission = permissions[i];
-                    if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED
-                            && isNeedNotify(permission)) {
-                        CheckPermissionUtil.AskForPermission(MainActivity.this, R.string.dialog_file_hint_title, R.string.dialog_file_hint);
-                        return;
+                    if(permission != null && grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        if(isNeedNotify(permission)) {
+                            CheckPermissionUtil.AskForPermission(MainActivity.this, R.string.dialog_file_hint_title, R.string.dialog_file_hint);
+                            return;
+                        }
+
                     }
                 }
                 initBmob();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !getPackageManager().canRequestPackageInstalls()) {
+                    CheckPermissionUtil.AskForInstallAppPermission(MainActivity.this);
+                }
                 break;
         }
     }

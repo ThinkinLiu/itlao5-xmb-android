@@ -80,7 +80,6 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
     private boolean isScreenOn = true;
     private void init(Context context) {
         if (PreferenceUtil.getInt(Constant.PREFERENCE_OPEN_VOICE_FINDPHONE, 0) != 0) {
-            startForeground(101, getNotification());
             try {
                 PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
                 isScreenOn = pm.isScreenOn();//如果为true，则表示屏幕“亮”了，否则屏幕“暗”了。
@@ -104,24 +103,6 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                 e.printStackTrace();
                 CrashReport.postCatchedException(e);
             }
-        }
-    }
-
-    private Notification getNotification(){
-        Notification.Builder mBuilder = new Notification.Builder(this);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mBuilder.setShowWhen(false);
-        }
-        mBuilder.setWhen(System.currentTimeMillis());
-        mBuilder.setAutoCancel(false);
-        mBuilder.setSmallIcon(R.mipmap.logo_round);
-        mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo));
-        mBuilder.setContentText(getString(R.string.notify_findphone));
-        mBuilder.setContentTitle(getString(R.string.app_name));
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            return mBuilder.build();
-        } else {
-            return mBuilder.getNotification();
         }
     }
 
@@ -183,6 +164,7 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
     private Object phoneNumObj = new Object();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        ServiceUtil.startForeground(this, ServiceUtil.E7ServiceNotifyId, this.getApplicationContext(), 0, 0, 0, 0 );
         if (intent != null && intent.getExtras() != null) {
             Bundle bundle = intent.getExtras();
             switch (bundle.getInt(FROM, 0)) {
@@ -369,13 +351,12 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
             CrashReport.postCatchedException(e);
         }
         try {
-            startService(new Intent(this, E7Service.class));
+            ServiceUtil.startService(this.getApplicationContext(), new Intent(this, E7Service.class));
         } catch (Throwable e) {
             e.printStackTrace();
             CrashReport.postCatchedException(e);
         }
     }
-
 
     private EventManager mWpEventManager;
 

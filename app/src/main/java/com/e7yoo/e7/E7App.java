@@ -9,6 +9,7 @@ import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
+import com.e7yoo.e7.util.ServiceUtil;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -93,8 +94,9 @@ public class E7App extends MultiDexApplication {
         auth = "c51334ce1b84a1efd36e603b88185f9b".equals(OsUtil.getUdid(mApp));
 
 
-        Intent intentE7Service = new Intent(this, E7Service.class);
-        this.startService(intentE7Service);
+        Intent intentE7Service = new Intent(this.getApplicationContext(), E7Service.class);
+        //this.startService(intentE7Service);
+        ServiceUtil.startService(this.getApplicationContext(), intentE7Service);
     }
 
     private void jPush() {

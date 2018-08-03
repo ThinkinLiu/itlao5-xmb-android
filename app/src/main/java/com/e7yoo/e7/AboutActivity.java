@@ -18,6 +18,7 @@ import com.e7yoo.e7.util.UmengUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import cn.bmob.v3.listener.BmobDialogButtonListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 
 public class AboutActivity extends BaseActivity implements OnClickListener {
@@ -99,6 +100,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.ll_app_version:
                 //UpdateHelper.getInstance().manualUpdate(getApplicationContext().getPackageName());
+                BmobUpdateAgent.setDialogListener(null);
                 BmobUpdateAgent.forceUpdate(this);
                 break;
             default:
