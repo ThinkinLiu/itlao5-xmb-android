@@ -11,21 +11,21 @@ import cn.bmob.v3.datatype.BmobRelation;
  * Created by Administrator on 2018/5/9.
  */
 
-public class Comment extends BmobObject {
-    private static final long serialVersionUID = 1L;
+public class comment extends BmobObject {
+    private static final long serialVersionUID = 101L;
 
-    private BmobPointer srcFeed; // 原贴
+    private feed srcFeed; // 原贴
     private BmobRelation likes; // 喜欢
     private List images; // 图片
     private String extra; // 拓展字段 json
     private String content; // 内容
     private User author; // 作者
 
-    public BmobPointer getSrcFeed() {
+    public feed getSrcFeed() {
         return srcFeed;
     }
 
-    public void setSrcFeed(BmobPointer srcFeed) {
+    public void setSrcFeed(feed srcFeed) {
         this.srcFeed = srcFeed;
     }
 

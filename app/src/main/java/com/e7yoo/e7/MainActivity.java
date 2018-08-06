@@ -167,33 +167,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         BmobUpdateAgent.setUpdateOnlyWifi(false);
         long showUpdateTime = PreferenceUtil.getLong(Constant.PREFERENCE_SHOW_UPDATE_TIME, 0);
         long now = System.currentTimeMillis();
-        if(now - showUpdateTime > 30 * 60 * 1000) {
+        if(now - showUpdateTime > 3 * 24 * 60 * 60 * 1000) {
             PreferenceUtil.commitLong(Constant.PREFERENCE_SHOW_UPDATE_TIME, now);
             BmobUpdateAgent.update(this);
-        } else {
-        }
 
-        //设置对对话框按钮的点击事件的监听
-        BmobUpdateAgent.setDialogListener(new BmobDialogButtonListener() {
-            @Override
-            public void onClick(int status) {
-                // TODO Auto-generated method stub
-                BmobUpdateAgent.setDialogListener(null);
-                switch (status) {
-                    case UpdateStatus.Update:
-                        // Toast.makeText(ActAutoUpdate.this, "点击了立即更新按钮" , Toast.LENGTH_SHORT).show();
-                        break;
-                    case UpdateStatus.NotNow:
-                        // Toast.makeText(ActAutoUpdate.this, "点击了以后再说按钮" , Toast.LENGTH_SHORT).show();
-                        BmobUpdateAgent.silentUpdate(MainActivity.this);
-                        break;
-                    case UpdateStatus.Close://只有在强制更新状态下才会在更新对话框的右上方出现close按钮,如果用户不点击”立即更新“按钮，这时候开发者可做些操作，比如直接退出应用等
-                        // Toast.makeText(ActAutoUpdate.this, "点击了对话框关闭按钮" , Toast.LENGTH_SHORT).show();
-                        BmobUpdateAgent.silentUpdate(MainActivity.this);
-                        break;
+            //设置对对话框按钮的点击事件的监听
+            BmobUpdateAgent.setDialogListener(new BmobDialogButtonListener() {
+                @Override
+                public void onClick(int status) {
+                    // TODO Auto-generated method stub
+                    BmobUpdateAgent.setDialogListener(null);
+                    switch (status) {
+                        case UpdateStatus.Update:
+                            // Toast.makeText(ActAutoUpdate.this, "点击了立即更新按钮" , Toast.LENGTH_SHORT).show();
+                            break;
+                        case UpdateStatus.NotNow:
+                            // Toast.makeText(ActAutoUpdate.this, "点击了以后再说按钮" , Toast.LENGTH_SHORT).show();
+                            BmobUpdateAgent.silentUpdate(MainActivity.this);
+                            break;
+                        case UpdateStatus.Close://只有在强制更新状态下才会在更新对话框的右上方出现close按钮,如果用户不点击”立即更新“按钮，这时候开发者可做些操作，比如直接退出应用等
+                            // Toast.makeText(ActAutoUpdate.this, "点击了对话框关闭按钮" , Toast.LENGTH_SHORT).show();
+                            BmobUpdateAgent.silentUpdate(MainActivity.this);
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            BmobUpdateAgent.silentUpdate(MainActivity.this);
+        }
 //        BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
 //            @Override
 //            public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {

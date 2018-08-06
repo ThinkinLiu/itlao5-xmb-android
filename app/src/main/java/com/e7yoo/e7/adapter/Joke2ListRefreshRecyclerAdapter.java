@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.app.news.NewsWebviewActivity;
-import com.e7yoo.e7.model.Feed;
+import com.e7yoo.e7.model.feed;
 import com.e7yoo.e7.util.ActivityUtil;
 
 /**
@@ -48,7 +48,7 @@ public class Joke2ListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter 
         if(holder instanceof ViewHolderJoke) {
             final ViewHolderJoke viewHolderJoke = (ViewHolderJoke) holder;
             viewHolderJoke.root.setBackgroundResource(BG_RESOURCE[position % BG_RESOURCE.length]);
-            final Feed item = (Feed) mDatas.get(position);
+            final feed item = (feed) mDatas.get(position);
             if (item != null) {
                 viewHolderJoke.icon.setVisibility(View.GONE);
                 viewHolderJoke.name.setVisibility(View.GONE);
@@ -119,11 +119,11 @@ public class Joke2ListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter 
         }
     }
 
-    public Feed getLastJoke() {
+    public feed getLastJoke() {
         if(mDatas == null || mDatas.size() == 0) {
             return null;
         } else {
-            return ((Feed) mDatas.get(mDatas.size() - 1));
+            return ((feed) mDatas.get(mDatas.size() - 1));
         }
     }
 
@@ -133,6 +133,6 @@ public class Joke2ListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter 
     }
 
     public interface OnCollectListener {
-        void onCollect(View view, Feed joke, int position);
+        void onCollect(View view, feed joke, int position);
     }
 }

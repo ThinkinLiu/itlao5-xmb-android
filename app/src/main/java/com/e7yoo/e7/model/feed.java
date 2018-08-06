@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.datatype.BmobPointer;
@@ -15,15 +16,15 @@ import cn.bmob.v3.datatype.BmobRelation;
  * Created by Administrator on 2018/5/9.
  */
 
-    public class Feed extends BmobObject {
-    private static final long serialVersionUID = 1L;
+    public class feed extends BmobObject {
+    private static final long serialVersionUID = 100L;
 
     public static final int FeedType_TOPIC = 0;
     public static final int FeedType_JOKE = 1;
     public static final int FeedType_PIC = 2;
     private Integer type; // 类型 0 普通帖子，1 笑话， 2 趣图，其他待拓展
     private String title; // 标题
-    private BmobPointer srcFeed; // 原贴
+    private feed srcFeed; // 原贴
     private BmobRelation likes; // 喜欢
     private List images; // 图片
     private BmobRelation favs; // 收藏
@@ -33,7 +34,7 @@ import cn.bmob.v3.datatype.BmobRelation;
     private BmobGeoPoint addr; // 经纬度（发帖时）
     private String addrName; // 发帖地址名称
     private String addrDetails; // 发帖详细地址
-    private String time; // 发帖时间
+    private BmobDate time; // 发帖时间
     private String img; // 单张图片
 
     public Integer getType() {
@@ -55,11 +56,11 @@ import cn.bmob.v3.datatype.BmobRelation;
         this.title = title;
     }
 
-    public BmobPointer getSrcFeed() {
+    public feed getSrcFeed() {
         return srcFeed;
     }
 
-    public void setSrcFeed(BmobPointer srcFeed) {
+    public void setSrcFeed(feed srcFeed) {
         this.srcFeed = srcFeed;
     }
 
@@ -135,11 +136,11 @@ import cn.bmob.v3.datatype.BmobRelation;
         this.addrDetails = addrDetails;
     }
 
-    public String getTime() {
+    public BmobDate getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(BmobDate time) {
         this.time = time;
     }
 
