@@ -66,8 +66,12 @@ public class Joke2ListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter 
                     viewHolderJoke.collect.setVisibility(View.GONE);
                 }
                 String content = item.getTitle();
-                if(item.getContent() != null) {
-                    content = content + item.getContent();
+                if(item.getContent() != null && item.getContent().length() > 0) {
+                    if(content != null && content.length() > 0) {
+                        content = "【" + content + "】" + item.getContent();
+                    } else {
+                        content = item.getContent();
+                    }
                 }
                 viewHolderJoke.content.setText(content);
                 final String url = item.getImg();
@@ -75,7 +79,7 @@ public class Joke2ListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter 
                     viewHolderJoke.pic.setVisibility(View.VISIBLE);
                     RequestOptions options = new RequestOptions();
                     options.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
-                    if(url.endsWith(".gif")) {
+                    if(url.endsWith(".gif") || !url.contains(".")) {
                         Glide.with(mContext).asGif().load(url).apply(options).into(viewHolderJoke.pic);
                     } else {
                         Glide.with(mContext).asBitmap().load(url).apply(options).into(viewHolderJoke.pic);
