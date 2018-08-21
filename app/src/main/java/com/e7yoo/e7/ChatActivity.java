@@ -55,6 +55,7 @@ import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.model.TextSet;
 import com.e7yoo.e7.model.User;
 import com.e7yoo.e7.model.UserUtil;
+import com.e7yoo.e7.model.feed;
 import com.e7yoo.e7.net.Net;
 import com.e7yoo.e7.net.NetHelper;
 import com.e7yoo.e7.sql.DbThreadPool;
@@ -81,6 +82,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 /**
  * Created by Administrator on 2017/8/31.
@@ -520,7 +526,30 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             case R.string.item_chat_gridview_joke:
                 addMsgToView(getString(textResId));
                 if(isNetOk(true)) {
-                    NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
+//                    NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
+                    BmobQuery<feed> query = new BmobQuery<>();
+                    int numTemp = RandomUtil.getRandomNum(10);
+                    query.addWhereEqualTo("type", numTemp % 2 == 0 ? feed.FeedType_JOKE : feed.FeedType_PIC)
+                            .setLimit(1)
+                            .setSkip(numTemp % 2 == 0 ? RandomUtil.getRandomNum(20000)*1 + 100 : RandomUtil.getRandomNum(2000)*1 + 100)
+                            .order("-createdAt")
+                            .findObjects(new FindListener<feed>() {
+                                @Override
+                                public void done(List<feed> list, BmobException e) {
+                                    String robotName = null;
+                                    int robotId = 0;
+                                    if(mRobot == null || mRobot.getName() == null) {
+                                        robotName = getString(R.string.mengmeng);
+                                    } else {
+                                        robotName = mRobot.getName();
+                                        robotId = mRobot.getId();
+                                    }
+                                    PrivateMsg jokeMsg = JokeUtil.parseBmobJoke(robotId, robotName, list == null ? null : list.get(0));
+                                    mRvAdapter.addItemBottom(jokeMsg);
+                                    scrollToEnd();
+                                    mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
+                                }
+                            });
                     mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
                 }
                 UmengUtil.onEvent(UmengUtil.SEND_JOKE);
@@ -640,8 +669,32 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                         addMsgToViewRecv(getString(R.string.chat_url_to_news), MsgUrlType.news);
                     }*/ else if(isNetOk(true)) {
                     // NetHelper.newInstance().jokeNew(RandomUtil.getRandomNum(100000)*1 + 1, 1);
-                    NetHelper.newInstance().jokeRand(RandomUtil.getRandomNum(10) % 2 == 0);
+                    //NetHelper.newInstance().jokeRand(RandomUtil.getRandomNum(10) % 2 == 0);
+                    BmobQuery<feed> query = new BmobQuery<>();
+                    int numTemp = RandomUtil.getRandomNum(10);
+                    query.addWhereEqualTo("type", numTemp % 2 == 0 ? feed.FeedType_JOKE : feed.FeedType_PIC)
+                            .setLimit(1)
+                            .setSkip(numTemp % 2 == 0 ? RandomUtil.getRandomNum(20000)*1 + 100 : RandomUtil.getRandomNum(2000)*1 + 100)
+                            .order("-createdAt")
+                            .findObjects(new FindListener<feed>() {
+                                @Override
+                                public void done(List<feed> list, BmobException e) {
+                                    String robotName = null;
+                                    int robotId = 0;
+                                    if(mRobot == null || mRobot.getName() == null) {
+                                        robotName = getString(R.string.mengmeng);
+                                    } else {
+                                        robotName = mRobot.getName();
+                                        robotId = mRobot.getId();
+                                    }
+                                    PrivateMsg jokeMsg = JokeUtil.parseBmobJoke(robotId, robotName, list == null ? null : list.get(0));
+                                    mRvAdapter.addItemBottom(jokeMsg);
+                                    scrollToEnd();
+                                    mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.END, 0, false);
+                                }
+                            });
                     mRvAdapter.setFooter(MsgRefreshRecyclerAdapter.FooterType.LOADING, R.string.loading, true);
+
                 }
                 PreferenceUtil.commitInt(Constant.PREFERENCE_CHAT_PULL_UP_TIMES, ++pullUpTimes);
             }

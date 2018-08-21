@@ -87,9 +87,9 @@ public class ReWebViewClient extends WebViewClient {
     @SuppressLint("DefaultLocale")
 	@Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        if (view != null && view.getContext() != null && !url.toLowerCase().contains("")) {
+        /*if (view != null && view.getContext() != null && !url.toLowerCase().contains("")) {
             return new WebResourceResponse(null,null,null);
-        }
+        }*/
         if (view != null && view.getContext() != null && ADFilterUtil.hasAd(view.getContext(), url.toLowerCase())) {
             return new WebResourceResponse(null,null,null);
         }

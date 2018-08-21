@@ -71,7 +71,7 @@ public class JokeListRefreshRecyclerAdapter extends ListRefreshRecyclerAdapter {
                     viewHolderJoke.pic.setVisibility(View.VISIBLE);
                     RequestOptions options = new RequestOptions();
                     options.placeholder(R.mipmap.log_e7yoo_transport).error(R.mipmap.log_e7yoo_transport);
-                    if(url.endsWith(".gif")) {
+                    if(url.endsWith(".gif") || !url.contains(".")) {
                         Glide.with(mContext).asGif().load(url).apply(options).into(viewHolderJoke.pic);
                     } else {
                         Glide.with(mContext).asBitmap().load(url).apply(options).into(viewHolderJoke.pic);

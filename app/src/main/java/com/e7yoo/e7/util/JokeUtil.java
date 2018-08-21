@@ -4,6 +4,7 @@ import com.e7yoo.e7.E7App;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.model.Joke;
 import com.e7yoo.e7.model.PrivateMsg;
+import com.e7yoo.e7.model.feed;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -62,6 +63,33 @@ public class JokeUtil {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+        if(msg == null) {
+            msg = new PrivateMsg(1000, System.currentTimeMillis(), E7App.mApp.getString(R.string.joke_parse_error), null, PrivateMsg.Type.REPLY, robotId);
+        }
+        return msg;
+    }
+
+    public static PrivateMsg parseBmobJoke(int robotId, String robotName, feed object) {
+        PrivateMsg msg = null;
+        if (object != null) {
+            String content = object.getTitle();
+            if(object.getContent() != null && object.getContent().length() > 0) {
+                if(content != null && content.length() > 0) {
+                    content = content + "\n\n" + object.getContent();
+                } else {
+                    content = object.getContent();
+                }
+            }
+            String url = object.getImg();
+            if(url != null || url.length() > 0) {
+                url = null;
+            }
+            if ((content != null && content.length() > 0) || url != null) {
+                String text = E7App.mApp.getResources().getString(R.string.joke_happy) + "：\n"
+                        + content;
+                msg = new PrivateMsg(-1, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
+            }
         }
         if(msg == null) {
             msg = new PrivateMsg(1000, System.currentTimeMillis(), E7App.mApp.getString(R.string.joke_parse_error), null, PrivateMsg.Type.REPLY, robotId);
