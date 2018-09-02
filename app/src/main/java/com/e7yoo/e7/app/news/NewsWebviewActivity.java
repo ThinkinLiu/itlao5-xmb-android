@@ -133,7 +133,7 @@ public class NewsWebviewActivity extends BaseWebviewActivity implements OnClickL
 			CrashReport.postCatchedException(new Throwable("wangyefenxiang_url_is_null"));
 			return;
 		}
-		ShareDialogUtil.show(this, url, null, getString(R.string.wangyefenxiang) + title, null);
+		shareTo(this, url, null, getString(R.string.wangyefenxiang) + title, null);
 	}
 
 	private void toOpen() {

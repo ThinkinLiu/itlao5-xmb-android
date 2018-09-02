@@ -1005,7 +1005,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void toShare(PrivateMsg msg) {
-        ShareDialogUtil.show(this, null, getString(R.string.chat_long_click_share_title, mRobot != null ? mRobot.getName() : getString(R.string.mengmeng)), msg.getContent(), null);
+        shareTo(this, null, getString(R.string.chat_long_click_share_title, mRobot != null ? mRobot.getName() : getString(R.string.mengmeng)), msg.getContent(), null);
     }
 
     /*private void toPost(PrivateMsg msg) {
@@ -1073,10 +1073,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                     ActivityUtil.toActivity(ChatActivity.this, NewsActivity.class);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_NEWS);
                 } else if(msg.getUrl().startsWith(MsgUrlType.share)) {
-                    ShareDialogUtil.show(ChatActivity.this);
+                    shareTo(ChatActivity.this);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_SHARE);
                 } else if(msg.getUrl().startsWith(MsgUrlType.share2)) {
-                    ShareDialogUtil.show(ChatActivity.this, null, "介绍一下我的伴侣", "聊天/语音/讲笑话，陪我度过闲暇时光；【小萌伴】还带有找手机功能，让我不再担心手机乱放", null);
+                    shareTo(ChatActivity.this, null, "介绍一下我的伴侣", "聊天/语音/讲笑话，陪我度过闲暇时光；【小萌伴】还带有找手机功能，让我不再担心手机乱放", null);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_SHARE2);
                 } else if(msg.getUrl().startsWith(MsgUrlType.history)) {
                     ActivityUtil.toActivity(ChatActivity.this, TodayHisActivity.class);

@@ -232,7 +232,7 @@ public abstract class BaseWebviewActivity extends BaseActivity implements ReWebC
 						TextSet setItem0 = new TextSet(R.string.share_to, false, new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								ShareDialogUtil.show(BaseWebviewActivity.this, null, "给你分享了一张图片：","快来【小萌伴】，看看我给你分享的趣图吧...", urlStr);
+								shareTo(BaseWebviewActivity.this, null, "给你分享了一张图片：","快来【小萌伴】，看看我给你分享的趣图吧...", urlStr);
 							}
 						});
 						TextSet setItem1 = new TextSet(R.string.save_to_phone, false, new OnClickListener() {

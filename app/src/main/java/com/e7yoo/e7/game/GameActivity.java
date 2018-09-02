@@ -161,7 +161,7 @@ public class GameActivity extends BaseWebviewActivity implements View.OnClickLis
                 imageUrl = getImagePath();
             }
         }
-        ShareDialogUtil.show(this, url, title, content, imageUrl);
+        shareTo(this, url, title, content, imageUrl);
 
         UmengUtil.onEvent(UmengUtil.GAME_SHARE);
     }

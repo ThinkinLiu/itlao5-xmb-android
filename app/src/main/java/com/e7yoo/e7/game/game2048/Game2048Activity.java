@@ -119,7 +119,7 @@ public class Game2048Activity extends BaseActivity implements OnClickListener {
 	}
 
 	private void toShare() {
-		ShareDialogUtil.show(this, null,
+		shareTo(this, null,
 				getString(R.string.app_share_from),
 				getString(R.string.game_share_text, getString(R.string.gamelist_game2048), getScore() + ""),
 				ShareDialogUtil.SHARE_IMAGE_PATH_TAKE_SCREENSHOT);

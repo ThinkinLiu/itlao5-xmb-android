@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -36,7 +34,6 @@ import com.e7yoo.e7.util.CommonUtil;
 import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.EventBusUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
-//import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.e7yoo.e7.util.ServiceUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -48,10 +45,10 @@ import java.util.ArrayList;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.listener.BmobDialogButtonListener;
-import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
-import cn.bmob.v3.update.UpdateResponse;
 import cn.bmob.v3.update.UpdateStatus;
+
+//import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 
 /**
  * app主Activity
@@ -193,7 +190,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             });
         } else {
-            BmobUpdateAgent.silentUpdate(MainActivity.this);
+            long silentUpdateTime = PreferenceUtil.getLong(Constant.PREFERENCE_SHOW_UPDATE_TIME_silentUpdate, 0);
+
+            if(now - silentUpdateTime > 10 * 60 * 1000) {
+                PreferenceUtil.commitLong(Constant.PREFERENCE_SHOW_UPDATE_TIME_silentUpdate, silentUpdateTime);
+                BmobUpdateAgent.silentUpdate(MainActivity.this);
+            }
         }
 //        BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
 //            @Override

@@ -10,13 +10,14 @@ import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.OsUtil;
 import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.ServiceUtil;
+import com.e7yoo.umeng.UmengUtils;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
-import cn.jiguang.share.android.api.JShareInterface;
+//import cn.jiguang.share.android.api.JShareInterface;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -93,6 +94,7 @@ public class E7App extends MultiDexApplication {
         bugly();
         auth = "c51334ce1b84a1efd36e603b88185f9b".equals(OsUtil.getUdid(mApp));
 
+        UmengUtils.init(mApp.getApplicationContext());
 
         Intent intentE7Service = new Intent(this.getApplicationContext(), E7Service.class);
         //this.startService(intentE7Service);
@@ -102,8 +104,8 @@ public class E7App extends MultiDexApplication {
     private void jPush() {
         JPushInterface.setDebugMode(false);
         JPushInterface.init(mApp);
-        JShareInterface.setDebugMode(false);
-        JShareInterface.init(mApp);
+//        JShareInterface.setDebugMode(false);
+//        JShareInterface.init(mApp);
     }
 
     private void ali() {

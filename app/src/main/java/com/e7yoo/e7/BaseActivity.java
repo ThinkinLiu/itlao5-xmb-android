@@ -1,8 +1,10 @@
 package com.e7yoo.e7;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,13 +22,16 @@ import android.widget.TextView;
 
 import com.e7yoo.e7.util.CheckPermissionUtil;
 import com.e7yoo.e7.util.ProgressDialogEx;
+import com.e7yoo.e7.util.ShareDialogUtil;
 import com.e7yoo.e7.util.SystemBarTintManager;
+import com.e7yoo.umeng.UmengUtils;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.util.SharedUtil;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -454,6 +459,38 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (token != null) {
             InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    private boolean isShareShow = false;
+
+    /**
+     *
+     * @param context
+     * @param url 分享文本跳转的url
+     * @param title 标题
+     * @param content 文本
+     * @param imgPath 图片
+     */
+    public void shareTo(Activity context, String url, String title, String content, String imgPath) {
+        isShareShow = true;
+        ShareDialogUtil.show(context, url, title, content, imgPath);
+    }
+
+    /**
+     *
+     * @param context
+     */
+    public void shareTo(Activity context) {
+        isShareShow = true;
+        ShareDialogUtil.show(context);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(isShareShow) {
+            UmengUtils.onActivityResult(getApplicationContext(), requestCode, requestCode, data);
         }
     }
 }

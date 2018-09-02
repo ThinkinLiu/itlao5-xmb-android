@@ -93,6 +93,7 @@ public class Constant {
     public static final String PREFERENCE_MORE_POINT_NEW = "preference_more_point_new";
 
     public static final String PREFERENCE_SHOW_UPDATE_TIME = "preference_show_update_time";
+    public static final String PREFERENCE_SHOW_UPDATE_TIME_silentUpdate = "preference_show_update_time_silentUpdate";
     public static final String PREFERENCE_SHOW_UPDATE_TIME_DOWNLOADED = "preference_show_update_time_downloaded";
 
     public static final String PREFERENCE_PAGE_NUM_PIC = "preference_page_num_pic";

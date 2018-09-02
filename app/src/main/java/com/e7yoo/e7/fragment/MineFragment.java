@@ -228,7 +228,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener, 
                 ActivityUtil.toActivity(getActivity(), SettingsActivity.class);
                 break;
             case R.id.mine_share_layout:
-                ShareDialogUtil.show(getActivity(), null, getString(R.string.share_mine_title), getString(R.string.share_mine_content), null);
+                ((BaseActivity) getActivity()).shareTo(getActivity(), null, getString(R.string.share_mine_title), getString(R.string.share_mine_content), null);
                 UmengUtil.onEvent(UmengUtil.MINE_TO_SHARE);
                 break;
             case R.id.mine_about_layout:

@@ -78,7 +78,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.iv_share:
             case R.id.ll_share:
-                ShareDialogUtil.show(this);
+                shareTo(this);
                 UmengUtil.onEvent(UmengUtil.ABOUT_SHARE);
                 break;
             case R.id.ll_qr_code:

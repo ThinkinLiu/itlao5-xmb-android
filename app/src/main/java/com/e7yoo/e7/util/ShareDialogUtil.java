@@ -2,9 +2,9 @@ package com.e7yoo.e7.util;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
+//import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+//import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,27 +20,31 @@ import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
+import com.e7yoo.umeng.UmengUtils;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import cn.jiguang.share.android.api.JShareInterface;
-import cn.jiguang.share.android.api.PlatActionListener;
-import cn.jiguang.share.android.api.Platform;
-import cn.jiguang.share.android.api.ShareParams;
-import cn.jiguang.share.qqmodel.QQ;
-import cn.jiguang.share.qqmodel.QZone;
-import cn.jiguang.share.wechat.Wechat;
-import cn.jiguang.share.wechat.WechatMoments;
-import cn.jiguang.share.weibo.SinaWeibo;
+//import cn.jiguang.share.android.api.JShareInterface;
+//import cn.jiguang.share.android.api.PlatActionListener;
+//import cn.jiguang.share.android.api.Platform;
+//import cn.jiguang.share.android.api.ShareParams;
+//import cn.jiguang.share.qqmodel.QQ;
+//import cn.jiguang.share.qqmodel.QZone;
+//import cn.jiguang.share.wechat.Wechat;
+//import cn.jiguang.share.wechat.WechatMoments;
+//import cn.jiguang.share.weibo.SinaWeibo;
 
 public class ShareDialogUtil {
     public static final String SHARE_URL = "http://itlao5.com/wp/app";
     public static final String SHARE_TITLE = "闲暇时光·【小萌伴】陪你";
-    public static final String SHARE_CONTENT = "陪聊·说段子·小游戏···还能帮你找手机...";
+    public static final String SHARE_CONTENT = "陪聊·段子·小游戏···还能帮你找手机";
     public static final String SHARE_IMAGEPATH = null;
     private static String share_url = SHARE_URL;
     private static String share_title = SHARE_TITLE;
@@ -48,17 +52,17 @@ public class ShareDialogUtil {
     private static String share_imagePath = SHARE_IMAGEPATH;
 
     private static Dialog dialog;
-    private static Context context;
+    private static Activity context;
 
-    public static void show(Context context, String url, String title, String content, String iamgePath) {
-        show(context);
+    public static void show(Activity act, String url, String title, String content, String iamgePath) {
+        show(act);
         share_url = TextUtils.isEmpty(url) ? SHARE_URL : url;
         share_title = TextUtils.isEmpty(title) ? SHARE_TITLE : title;
         share_content = TextUtils.isEmpty(content) ? SHARE_CONTENT : content;
         share_imagePath = TextUtils.isEmpty(iamgePath) ? SHARE_IMAGEPATH : iamgePath;
     }
 
-    public static void show(Context context){
+    public static void show(Activity act) {
         share_url = SHARE_URL;
         share_title = SHARE_TITLE;
         share_content = SHARE_CONTENT;
@@ -107,6 +111,7 @@ public class ShareDialogUtil {
     private static void initView(View view) {
         GridView gridView = view.findViewById(R.id.share_gv);
         GridAdapter mAdapter = new GridAdapter(gridView.getContext(), getDatas(), true);
+        gridView.setNumColumns(5);
         gridView.setAdapter(mAdapter);
     }
 
@@ -126,123 +131,221 @@ public class ShareDialogUtil {
             if(item == null) {
                 return;
             }
-            String name = null;
-            ShareParams shareParams = new ShareParams();
+
+            SHARE_MEDIA media = null;
+//            String name = null;
+//            ShareParams shareParams = new ShareParams();
             switch (item.getTextResId()) {
                 case R.string.share_to_wx:
-                    name = Wechat.Name;
-                    shareParams.setTitle(share_title);
-                    shareParams.setText(share_content);
+//                    name = Wechat.Name;
+//                    shareParams.setTitle(share_title);
+//                    shareParams.setText(share_content);
+                    media = SHARE_MEDIA.WEIXIN;
                     break;
                 case R.string.share_to_circle:
                     // 没有text
-                    name = WechatMoments.Name;
-                    shareParams.setTitle(share_content);
+//                    name = WechatMoments.Name;
+//                    shareParams.setTitle(share_content);
+                    media = SHARE_MEDIA.WEIXIN_CIRCLE;
                     break;
                 case R.string.share_to_qq:
-                    name = QQ.Name;
-                    shareParams.setTitle(share_title);
-                    shareParams.setText(share_content);
+//                    name = QQ.Name;
+//                    shareParams.setTitle(share_title);
+//                    shareParams.setText(share_content);
+                    media = SHARE_MEDIA.QQ;
                     break;
                 case R.string.share_to_qzone:
-                    name = QZone.Name;
-                    shareParams.setTitle(share_title);
-                    shareParams.setText(share_content);
+//                    name = QZone.Name;
+//                    shareParams.setTitle(share_title);
+//                    shareParams.setText(share_content);
+                    media = SHARE_MEDIA.QZONE;
                     break;
                 case R.string.share_to_sina:
                     // 没有title
-                    name = SinaWeibo.Name;
-                    shareParams.setText(share_content);
+//                    name = SinaWeibo.Name;
+//                    shareParams.setText(share_content);
+                    media = SHARE_MEDIA.SINA;
                     break;
             }
-            if(name != null) {
-                shareParams.setShareType(Platform.SHARE_WEBPAGE);
-                shareParams.setUrl(share_url);//必须
-                setShareImg(name, shareParams);
-                share(name, shareParams);
+//            if(name != null) {
+//                shareParams.setShareType(Platform.SHARE_WEBPAGE);
+//                shareParams.setUrl(share_url);//必须
+//                setShareImg(name, shareParams);
+//                share(name, shareParams);
+//            }
+
+            if(media != null) {
+                UMImage image = new UMImage(context, share_imagePath);
+                UmengUtils.share(context, media, share_url, share_title, share_content, image, shareListener);
             }
+
             dismiss();
         }
     };
 
-    public static final String SHARE_IMAGE_PATH_TAKE_SCREENSHOT = "ScreenShot";
-    private static void setShareImg(String name, ShareParams shareParams) {
+    private UMImage getUMImage() {
         if(SHARE_IMAGE_PATH_TAKE_SCREENSHOT.equals(share_imagePath)) {
             if(context instanceof Activity) {
                 Bitmap bitmap = BitmapUtils.takeScreenShot((Activity) context);
                 if(bitmap != null) {
-                    shareParams.setImageData(bitmap);
-                    return;
+                    return new UMImage(context, bitmap);
                 }
             }
             share_imagePath = null;
         }
         String imagePath = TextUtils.isEmpty(share_imagePath) ? getImagePath() : share_imagePath;
         if(TextUtils.isEmpty(imagePath)) {
-            if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
-                shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
-            } else {
-                shareParams.setImageUrl("http://e7yoo.com/apk/logo_share.png");
-            }
+            return new UMImage(context, "http://e7yoo.com/apk/logo_share.png");
         } else {
             if(share_imagePath.startsWith("http")) {
-                if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
-                    shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
-                } else {
-                    shareParams.setImageUrl(share_imagePath);
-                }
+                return new UMImage(context, share_imagePath);
             } else {
-                shareParams.setImagePath(imagePath);
+                return new UMImage(context, new File(share_imagePath));
             }
         }
     }
 
-    private static void share(final String name, ShareParams shareParams) {
-        JShareInterface.share(name, shareParams, new PlatActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+    public static final String SHARE_IMAGE_PATH_TAKE_SCREENSHOT = "ScreenShot";
+//    private static void setShareImg(String name, ShareParams shareParams) {
+//        if(SHARE_IMAGE_PATH_TAKE_SCREENSHOT.equals(share_imagePath)) {
+//            if(context instanceof Activity) {
+//                Bitmap bitmap = BitmapUtils.takeScreenShot((Activity) context);
+//                if(bitmap != null) {
+//                    shareParams.setImageData(bitmap);
+//                    return;
+//                }
+//            }
+//            share_imagePath = null;
+//        }
+//        String imagePath = TextUtils.isEmpty(share_imagePath) ? getImagePath() : share_imagePath;
+//        if(TextUtils.isEmpty(imagePath)) {
+//            if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
+//                shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
+//            } else {
+//                shareParams.setImageUrl("http://e7yoo.com/apk/logo_share.png");
+//            }
+//        } else {
+//            if(share_imagePath.startsWith("http")) {
+//                if(name.equals(Wechat.Name) || name.equals(WechatMoments.Name)) {
+//                    shareParams.setImageData(BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share));
+//                } else {
+//                    shareParams.setImageUrl(share_imagePath);
+//                }
+//            } else {
+//                shareParams.setImagePath(imagePath);
+//            }
+//        }
+//    }
 
-                Logs.isDebug();
-            }
+//    private static void share(final String name, ShareParams shareParams) {
+//        JShareInterface.share(name, shareParams, new PlatActionListener() {
+//            @Override
+//            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+//
+//                Logs.isDebug();
+//            }
+//
+//            @Override
+//            public void onError(Platform platform, int i, int i1, Throwable throwable) {
+//                Logs.isDebug();
+//                if(name != null) {
+//                    if(context != null) {
+//                        String text = "QQ";
+//                        if (name.equals(QQ.Name)) {
+//                            text = context.getString(R.string.share_to_qq);
+//                        } else if (name.equals(QZone.Name)) {
+//                            text = context.getString(R.string.share_to_qq);
+//                        } else if (name.equals(Wechat.Name)) {
+//                            text = context.getString(R.string.share_to_wx);
+//                        } else if (name.equals(WechatMoments.Name)) {
+//                            text = context.getString(R.string.share_to_wx);
+//                        } else {
+//                            text = context.getString(R.string.share_to_sina);
+//                        }
+//                        if(context instanceof Activity) {
+//                            final String finalText = text;
+//                            ((Activity) context).runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    TastyToastUtil.toast(context, R.string.share_failed, finalText);
+//                                }
+//                            });
+//                        }
+//                    }
+//                }
+//                CrashReport.postCatchedException(throwable);
+//            }
+//
+//            @Override
+//            public void onCancel(Platform platform, int i) {
+//                Logs.isDebug();
+//
+//            }
+//        });
+//    }
 
-            @Override
-            public void onError(Platform platform, int i, int i1, Throwable throwable) {
-                Logs.isDebug();
-                if(name != null) {
-                    if(context != null) {
-                        String text = "QQ";
-                        if (name.equals(QQ.Name)) {
-                            text = context.getString(R.string.share_to_qq);
-                        } else if (name.equals(QZone.Name)) {
-                            text = context.getString(R.string.share_to_qq);
-                        } else if (name.equals(Wechat.Name)) {
-                            text = context.getString(R.string.share_to_wx);
-                        } else if (name.equals(WechatMoments.Name)) {
-                            text = context.getString(R.string.share_to_wx);
-                        } else {
-                            text = context.getString(R.string.share_to_sina);
-                        }
-                        if(context instanceof Activity) {
-                            final String finalText = text;
-                            ((Activity) context).runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    TastyToastUtil.toast(context, R.string.share_failed, finalText);
-                                }
-                            });
-                        }
+    private static UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+
+        }
+
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param throwable 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable throwable) {
+            if(platform != null) {
+                if(context != null) {
+                    String text = "QQ";
+                    if (platform == SHARE_MEDIA.QQ) {
+                        text = context.getString(R.string.share_to_qq);
+                    } else if (platform == SHARE_MEDIA.QZONE) {
+                        text = context.getString(R.string.share_to_qq);
+                    } else if (platform == SHARE_MEDIA.WEIXIN) {
+                        text = context.getString(R.string.share_to_wx);
+                    } else if (platform == SHARE_MEDIA.WEIXIN_CIRCLE) {
+                        text = context.getString(R.string.share_to_wx);
+                    } else {
+                        text = context.getString(R.string.share_to_sina);
+                    }
+                    if(context instanceof Activity) {
+                        final String finalText = text;
+                        ((Activity) context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TastyToastUtil.toast(context, R.string.share_failed, finalText);
+                            }
+                        });
                     }
                 }
-                CrashReport.postCatchedException(throwable);
             }
+            CrashReport.postCatchedException(throwable);
+        }
 
-            @Override
-            public void onCancel(Platform platform, int i) {
-                Logs.isDebug();
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
 
-            }
-        });
-    }
+        }
+    };
 
     private static String getImagePath() {
         try {

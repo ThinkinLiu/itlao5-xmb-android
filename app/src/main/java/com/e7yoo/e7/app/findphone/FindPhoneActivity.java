@@ -100,7 +100,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
                 toFindPhoneActivity(2);
                 break;
             case R.id.share_findphone:
-                ShareDialogUtil.show(this, null, "你还在为找不到手机发愁？", "丢三落四不用怕，【小萌伴】帮我找手机，【小萌伴】语音找手机功能全新改版，可以自定义语音唤醒词了", null);
+                shareTo(this, null, "你还在为找不到手机发愁？", "丢三落四不用怕，【小萌伴】帮我找手机，【小萌伴】语音找手机功能全新改版，可以自定义语音唤醒词了", null);
                 UmengUtil.onEvent(UmengUtil.FP_TO_SHARE);
                 break;
             default:
