@@ -85,9 +85,11 @@ public class JokeUtil {
             if(url == null || url.length() == 0) {
                 url = null;
             }
-            if ((content != null && content.length() > 0) || url != null) {
-                String text = E7App.mApp.getResources().getString(R.string.joke_happy) + "：\n"
-                        + content;
+            if(url != null && url.trim().length() > 0) {
+                String text = E7App.mApp.getResources().getString(R.string.joke_happy_pic) + content;
+                msg = new PrivateMsg(-2, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
+            } else if (content != null && content.length() > 0) {
+                String text = E7App.mApp.getResources().getString(R.string.joke_happy) + "：\n" + content;
                 msg = new PrivateMsg(-1, System.currentTimeMillis(), text, url, PrivateMsg.Type.REPLY, robotId);
             }
         }
