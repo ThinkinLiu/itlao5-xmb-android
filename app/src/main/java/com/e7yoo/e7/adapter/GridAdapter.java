@@ -76,7 +76,7 @@ public class GridAdapter extends BaseAdapter {
         final GridItem item = getItem(i);
         if(item != null) {
             holder.iv.setImageResource(item.getTopDrawableResId());
-            holder.iv.setOnClickListener(new View.OnClickListener() {
+            /*holder.iv*/view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(item != null && item.getGridItemClickListener() != null) {
