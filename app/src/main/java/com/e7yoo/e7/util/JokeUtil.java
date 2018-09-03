@@ -82,7 +82,7 @@ public class JokeUtil {
                 }
             }
             String url = object.getImg();
-            if(url != null || url.length() > 0) {
+            if(url == null || url.length() == 0) {
                 url = null;
             }
             if ((content != null && content.length() > 0) || url != null) {
