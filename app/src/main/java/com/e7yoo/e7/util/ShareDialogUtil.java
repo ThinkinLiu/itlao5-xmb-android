@@ -135,6 +135,7 @@ public class ShareDialogUtil {
             }
 
             SHARE_MEDIA media = null;
+            String title = share_title;
 //            String name = null;
 //            ShareParams shareParams = new ShareParams();
             switch (item.getTextResId()) {
@@ -149,6 +150,7 @@ public class ShareDialogUtil {
 //                    name = WechatMoments.Name;
 //                    shareParams.setTitle(share_content);
                     media = SHARE_MEDIA.WEIXIN_CIRCLE;
+                    title = share_content;
                     break;
                 case R.string.share_to_qq:
 //                    name = QQ.Name;
@@ -177,15 +179,16 @@ public class ShareDialogUtil {
 //            }
 
             if(media != null) {
-                UMImage image = new UMImage(context, share_imagePath);
-                UmengUtils.share(context, media, share_url, share_title, share_content, image, shareListener);
+                //UMImage image = new UMImage(context, share_imagePath);
+                UMImage image = getUMImage();
+                UmengUtils.share(context, media, share_url, title, share_content, image, shareListener);
             }
 
             dismiss();
         }
     };
 
-    private UMImage getUMImage() {
+    private static UMImage getUMImage() {
         if(SHARE_IMAGE_PATH_TAKE_SCREENSHOT.equals(share_imagePath)) {
             if(context instanceof Activity) {
                 Bitmap bitmap = BitmapUtils.takeScreenShot((Activity) context);
