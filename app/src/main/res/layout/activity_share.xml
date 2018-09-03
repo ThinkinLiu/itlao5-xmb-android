@@ -21,6 +21,6 @@
         android:paddingBottom="@dimen/space_5x"
         android:paddingTop="@dimen/space_2x"
         android:scrollbars="none"
-        android:verticalSpacing="@dimen/space_2x" />
+        android:verticalSpacing="@dimen/space" />
 
 </LinearLayout>

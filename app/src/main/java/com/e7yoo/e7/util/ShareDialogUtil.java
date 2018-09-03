@@ -111,7 +111,9 @@ public class ShareDialogUtil {
     private static void initView(View view) {
         GridView gridView = view.findViewById(R.id.share_gv);
         GridAdapter mAdapter = new GridAdapter(gridView.getContext(), getDatas(), true);
-        gridView.setNumColumns(5);
+        if(CommonUtil.getWindowsWidth(context) > 720) {
+            gridView.setNumColumns(5);
+        }
         gridView.setAdapter(mAdapter);
     }
 
