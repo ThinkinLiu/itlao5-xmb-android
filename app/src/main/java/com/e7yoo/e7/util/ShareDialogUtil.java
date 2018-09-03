@@ -67,11 +67,11 @@ public class ShareDialogUtil {
         share_title = SHARE_TITLE;
         share_content = SHARE_CONTENT;
         share_imagePath = SHARE_IMAGEPATH;
-        if(ShareDialogUtil.context != context || dialog == null) {
-            ShareDialogUtil.context = context;
-            dialog = new Dialog(context, R.style.ShareDialogStyle);
+        if(ShareDialogUtil.context != act || dialog == null) {
+            ShareDialogUtil.context = act;
+            dialog = new Dialog(act, R.style.ShareDialogStyle);
             //填充对话框的布局
-            View view = LayoutInflater.from(context).inflate(R.layout.activity_share, null);
+            View view = LayoutInflater.from(act).inflate(R.layout.activity_share, null);
             initDialog(view);
         }
         dialog.show();//显示对话框
