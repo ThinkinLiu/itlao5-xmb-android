@@ -198,7 +198,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             addMsgToViewRecv(getString(R.string.chat_url_to_ceshi), MsgUrlType.ceshi);
         } else if(openTimes % 10 == 3) {
             addMsgToViewRecv(getString(R.string.chat_url_to_share2), MsgUrlType.share2);
-        } else if(openTimes % 10 == 6) {
+        } else if(openTimes % 15 == 6) {
             addMsgToViewRecv(getString(R.string.chat_url_to_evaluate), MsgUrlType.evaluate);
         } else {
             addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
