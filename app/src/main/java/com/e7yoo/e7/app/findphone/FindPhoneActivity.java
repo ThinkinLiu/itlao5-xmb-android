@@ -33,6 +33,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
     private TextView findPhoneVoiceTv;
     private TextView findPhoneVoiceTv2;
     private View findPhoneShare;
+    private View findphoneEvaluate;
 
     @Override
     protected String initTitle() {
@@ -59,6 +60,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
         findPhoneVoiceTv = (TextView) findViewById(R.id.find_phone_hint_voice);
         findPhoneVoiceTv2 = (TextView) findViewById(R.id.find_phone_text_voice);
         findPhoneShare = findViewById(R.id.share_findphone);
+        findphoneEvaluate = findViewById(R.id.evaluate_findphone);
     }
 
     @Override
@@ -85,6 +87,7 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
         findPhoneVoiceBtn.setOnCheckedChangeListener(this);
         findPhoneVoiceLayout.setOnClickListener(this);
         findPhoneShare.setOnClickListener(this);
+        findphoneEvaluate.setOnClickListener(this);
     }
 
     @Override
@@ -102,6 +105,10 @@ public class FindPhoneActivity extends BaseActivity implements OnCheckedChangeLi
             case R.id.share_findphone:
                 shareTo(this, null, "你还在为找不到手机发愁？", "丢三落四不用怕，【小萌伴】帮我找手机，【小萌伴】语音找手机功能全新改版，可以自定义语音唤醒词了", null);
                 UmengUtil.onEvent(UmengUtil.FP_TO_SHARE);
+                break;
+            case R.id.evaluate_findphone:
+                ShareDialogUtil.evaluate(FindPhoneActivity.this);
+                UmengUtil.onEvent(UmengUtil.FP_TO_EVALUATE);
                 break;
             default:
                 break;

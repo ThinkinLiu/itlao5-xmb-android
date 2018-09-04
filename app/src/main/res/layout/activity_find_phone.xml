@@ -306,6 +306,23 @@
                 android:textSize="@dimen/size_l"
                 android:background="@drawable/rounded_corners_tag_green"/>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:background="@color/color_seperator" />
+
+            <TextView
+                android:id="@+id/evaluate_findphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/evaluate_findphone"
+                android:layout_margin="@dimen/space_5x"
+                android:padding="@dimen/space_2x"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="@dimen/size_l"
+                android:background="@drawable/rounded_corners_tag_green"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

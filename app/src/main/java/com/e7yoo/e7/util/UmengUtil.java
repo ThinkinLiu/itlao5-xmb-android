@@ -79,5 +79,6 @@ public class UmengUtil {
     public static final String WAKE_UP_ASR_OTHER = "3_wake_up_asr_other";
 
     public static final String FP_TO_SHARE = "3_fp_to_share";
+    public static final String FP_TO_EVALUATE = "3_fp_to_evaluate";
     public static final String MINE_TO_SHARE = "3_mine_to_share";
 }
