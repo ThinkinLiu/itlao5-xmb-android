@@ -230,7 +230,7 @@
     <string name="about_wx">微信公众号</string>
     <string name="about_wx_text">小萌伴</string>
     <string name="about_wx_num">xmengban</string>
-    <string name="about_wx_num_clip">微信公众号已复制</string>
+    <string name="about_wx_num_clip">微信公众号已复制，请打开微信搜索关注公众号</string>
     <string name="about_app_version">当前版本</string>
     <string name="about_app_version_no">当前已是最新版本</string>
     <string name="qr_code_hint">扫一扫， 下载体验</string>
@@ -257,6 +257,7 @@
     <string name="item_msg_rev_url">立即前往</string>
     <string name="chat_url_to_share">分享是一种美德，把我推荐给您的朋友们吧！</string>
     <string name="chat_url_to_share2">主人，把我介绍给您的朋友们吧！</string>
+    <string name="chat_url_to_evaluate">主人，给个好评吧！</string>
     <string name="chat_url_to_game">看累了吧，去玩玩小游戏？</string>
     <string name="chat_url_to_history">每一天都是特别的日子，是否去了解一下呢？</string>
     <string name="chat_url_to_findphone">手机老是找不到，试试找手机功能吧！</string>

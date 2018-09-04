@@ -198,6 +198,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             addMsgToViewRecv(getString(R.string.chat_url_to_ceshi), MsgUrlType.ceshi);
         } else if(openTimes % 10 == 3) {
             addMsgToViewRecv(getString(R.string.chat_url_to_share2), MsgUrlType.share2);
+        } else if(openTimes % 10 == 6) {
+            addMsgToViewRecv(getString(R.string.chat_url_to_evaluate), MsgUrlType.evaluate);
         } else {
             addMsgToViewHint(AutoMsg.MSG[RandomUtil.getRandomNum(AutoMsg.MSG.length)]);
         }
@@ -1078,7 +1080,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 } else if(msg.getUrl().startsWith(MsgUrlType.share2)) {
                     shareTo(ChatActivity.this, null, "介绍一下我的伴侣", "聊天/语音/讲笑话，陪我度过闲暇时光；【小萌伴】还带有找手机功能，让我不再担心手机乱放", null);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_SHARE2);
-                } else if(msg.getUrl().startsWith(MsgUrlType.history)) {
+                } else if (msg.getUrl().startsWith(MsgUrlType.evaluate)) {
+                    ShareDialogUtil.evaluate(ChatActivity.this);
+                    UmengUtil.onEvent(UmengUtil.CHAT_TO_EVALUATE);
+                } if(msg.getUrl().startsWith(MsgUrlType.history)) {
                     ActivityUtil.toActivity(ChatActivity.this, TodayHisActivity.class);
                     UmengUtil.onEvent(UmengUtil.CHAT_TO_HISTORY);
                 } else if(msg.getUrl().startsWith(MsgUrlType.flashlight)) {

@@ -3,8 +3,10 @@ package com.e7yoo.e7.util;
 import android.app.Activity;
 import android.app.Dialog;
 //import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 //import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import com.e7yoo.e7.adapter.GridAdapter;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
 import com.e7yoo.umeng.UmengUtils;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -391,5 +394,17 @@ public class ShareDialogUtil {
             CrashReport.postCatchedException(e);
         }
         return null;
+    }
+
+    public static void evaluate(Activity activity) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + activity.getPackageName()));
+            activity.startActivity(intent);
+        } catch (Exception e) {
+            TastyToast.makeText(activity, activity.getString(R.string.about_evaluate_error), TastyToast.LENGTH_SHORT,
+                    TastyToast.WARNING);
+            CrashReport.postCatchedException(new Exception("evaluate no app shop"));
+        }
     }
 }

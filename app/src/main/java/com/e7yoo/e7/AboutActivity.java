@@ -17,6 +17,7 @@ import com.e7yoo.e7.util.UmengUtil;
 //import com.qihoo.appstore.common.updatesdk.lib.UpdateHelper;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.socialize.media.UMImage;
 
 import cn.bmob.v3.listener.BmobDialogButtonListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
@@ -65,16 +66,8 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.iv_evaluate:
             case R.id.ll_evaluate:
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("market://details?id=" + this.getPackageName()));
-                    startActivity(intent);
-                    UmengUtil.onEvent(UmengUtil.ABOUT_LIKE);
-                } catch (Exception e) {
-                    TastyToast.makeText(this, getString(R.string.about_evaluate_error), TastyToast.LENGTH_SHORT,
-                            TastyToast.WARNING);
-                    CrashReport.postCatchedException(new Exception("evaluate no app shop"));
-                }
+                ShareDialogUtil.evaluate(AboutActivity.this);
+                UmengUtil.onEvent(UmengUtil.ABOUT_LIKE);
                 break;
             case R.id.iv_share:
             case R.id.ll_share:
@@ -172,7 +165,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
                 getWindow().getDecorView().findViewById(R.id.qrcode).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // ShareUtil.share(AboutActivity.this, getString(R.string.qr_code_share_title), getString(R.string.qr_code_share_content), null, new UMImage(AboutActivity.this, R.drawable.e7_qrcode_360));
+                        shareTo(AboutActivity.this, getString(R.string.qr_code_share_title), getString(R.string.qr_code_share_content), null, "http://e7yoo.com/apk/e7_qrcode_360.png");
                     }
                 });
             } catch (Exception e) {
