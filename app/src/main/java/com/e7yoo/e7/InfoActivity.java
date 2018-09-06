@@ -2,6 +2,7 @@ package com.e7yoo.e7;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.e7yoo.e7.meiniepan.Pic2Ascii;
 import com.e7yoo.e7.model.User;
 import com.e7yoo.e7.model.UserUtil;
 import com.e7yoo.e7.util.ActivityUtil;
@@ -222,7 +224,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void takeSuccess(TResult result) {
         String path = result.getImage().getCompressPath();
-        uploadImg(path);
+        String filePath = Pic2Ascii.amendRotatePhoto(path, InfoActivity.this);
+//                imageView.setImageBitmap(BitmapFactory.decodeFile(filepath));
+        Bitmap bitmap = Pic2Ascii.createAsciiPic(filePath, InfoActivity.this);
+        String path2 = Pic2Ascii.saveBitmap2file(bitmap, InfoActivity.this);
+        uploadImg(path2);
     }
 
     private void uploadImg(String path) {
