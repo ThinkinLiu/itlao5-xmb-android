@@ -146,12 +146,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(isInitBmob) {
             return;
         }
-        try {
-            Bmob.initialize(this, "468e16137326f78942150e3f3e5d588f");
-            isInitBmob = true;
-        } catch (Throwable e) {
+        /*try { 改为放入BaseActivity中
+            Bmob.initialize(this.getApplicationContext(), "468e16137326f78942150e3f3e5d588f");
+        */
+        isInitBmob = true;
+        /*} catch (Throwable e) {
             CrashReport.postCatchedException(e);
-        }
+        }*/
         try {
             initBMobUpdate();
         } catch (Throwable e) {

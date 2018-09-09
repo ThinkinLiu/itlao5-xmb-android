@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.util.SharedUtil;
 
+import cn.bmob.v3.Bmob;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -45,6 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TextView leftTv;
     private TextView titleTv;
     private TextView rightTv;
+    public static boolean isBmobInited = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView();
         EventBus.getDefault().register(this);
         try {
+            if(!isBmobInited) {
+                Bmob.initialize(this.getApplicationContext(), "468e16137326f78942150e3f3e5d588f");
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        isBmobInited = true;
+        try {
+
             initSettings();
         } catch (Throwable e) {
             // getIntent().hasExtra(出现NullPointerException  （activeandroid.Cache.getTableInfo）主要是后台重新进入时出现

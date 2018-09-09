@@ -421,6 +421,9 @@ public class E7Service extends Service/* implements RecognitionListener*/ {
                         String nlu = json.getString("results_nlu");
                         JSONObject nluJo = new JSONObject(nlu);
                         JSONArray nluJa = nluJo.getJSONArray("results");
+                        if(nluJa.length() == 0) {
+                            return;
+                        }
                         JSONObject objJo = nluJa.getJSONObject(0).getJSONObject("object");
                         String keyWord = objJo.getString("wakeupkeyword");
                         if(keyWord == null) {
