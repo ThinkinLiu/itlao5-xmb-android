@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.e7yoo.e7.AddRobotActivity;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +39,20 @@ import java.util.UUID;
  */
 
 public class Pic2Ascii {
+
+
+    /**
+     * 根据图片文件生成ascii图片并获取生成的图片地址
+     * @param ctx
+     * @param path
+     * @return
+     */
+    public static String fileToAsciiFile(Context ctx, String path) {
+        String filePath = Pic2Ascii.amendRotatePhoto(path, ctx);
+        Bitmap bitmap = Pic2Ascii.createAsciiPic(filePath, ctx);
+        String path2 = Pic2Ascii.saveBitmap2file(bitmap, ctx);
+        return path2;
+    }
 
     private static String generateFileName() {
         return UUID.randomUUID().toString();

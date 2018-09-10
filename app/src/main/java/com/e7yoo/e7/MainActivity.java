@@ -27,6 +27,7 @@ import com.e7yoo.e7.model.User;
 import com.e7yoo.e7.service.E7Service;
 import com.e7yoo.e7.sql.DbThreadPool;
 import com.e7yoo.e7.sql.MessageDbHelper;
+import com.e7yoo.e7.util.AppConfigsUtil;
 import com.e7yoo.e7.util.BottomNavigationViewHelper;
 import com.e7yoo.e7.util.CheckNotification;
 import com.e7yoo.e7.util.CheckPermissionUtil;
@@ -146,6 +147,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(isInitBmob) {
             return;
         }
+
         /*try { 改为放入BaseActivity中
             Bmob.initialize(this.getApplicationContext(), "468e16137326f78942150e3f3e5d588f");
         */
@@ -155,6 +157,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }*/
         try {
             initBMobUpdate();
+        } catch (Throwable e) {
+            CrashReport.postCatchedException(e);
+        }
+        try {
+            AppConfigsUtil.queryConfigs();
         } catch (Throwable e) {
             CrashReport.postCatchedException(e);
         }

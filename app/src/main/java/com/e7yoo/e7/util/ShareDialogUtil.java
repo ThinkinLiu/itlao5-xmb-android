@@ -20,6 +20,7 @@ import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
 import com.e7yoo.e7.R;
 import com.e7yoo.e7.adapter.GridAdapter;
+import com.e7yoo.e7.model.AppConfigs;
 import com.e7yoo.e7.model.GridItem;
 import com.e7yoo.e7.model.GridItemClickListener;
 import com.e7yoo.umeng.UmengUtils;
@@ -59,14 +60,14 @@ public class ShareDialogUtil {
 
     public static void show(Activity act, String url, String title, String content, String iamgePath) {
         show(act);
-        share_url = TextUtils.isEmpty(url) ? SHARE_URL : url;
+        share_url = TextUtils.isEmpty(url) ? AppConfigsUtil.getShareUrl(SHARE_URL) : url;
         share_title = TextUtils.isEmpty(title) ? SHARE_TITLE : title;
         share_content = TextUtils.isEmpty(content) ? SHARE_CONTENT : content;
         share_imagePath = TextUtils.isEmpty(iamgePath) ? SHARE_IMAGEPATH : iamgePath;
     }
 
     public static void show(Activity act) {
-        share_url = SHARE_URL;
+        share_url = AppConfigsUtil.getShareUrl(SHARE_URL);
         share_title = SHARE_TITLE;
         share_content = SHARE_CONTENT;
         share_imagePath = SHARE_IMAGEPATH;

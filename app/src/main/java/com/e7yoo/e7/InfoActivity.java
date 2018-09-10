@@ -224,11 +224,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void takeSuccess(TResult result) {
         String path = result.getImage().getCompressPath();
-        String filePath = Pic2Ascii.amendRotatePhoto(path, InfoActivity.this);
-//                imageView.setImageBitmap(BitmapFactory.decodeFile(filepath));
-        Bitmap bitmap = Pic2Ascii.createAsciiPic(filePath, InfoActivity.this);
-        String path2 = Pic2Ascii.saveBitmap2file(bitmap, InfoActivity.this);
-        uploadImg(path2);
+        path = Pic2Ascii.fileToAsciiFile(InfoActivity.this, path);
+        uploadImg(path);
     }
 
     private void uploadImg(String path) {
