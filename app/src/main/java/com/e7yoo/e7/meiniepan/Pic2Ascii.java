@@ -103,7 +103,8 @@ public class Pic2Ascii {
     }
 
     public static Bitmap createAsciiPic(final String path, Context context) {
-        final String base = "#8XOHLTI)i=+;:,.";// 字符串由复杂到简单
+        //final String base = "$@B%8&WM#hkbdpqwmXQZO0LCJUYzcvunxrjftIi/|()1{}[]?-_+~<>!l;:,^`'.";
+        final String base = "@&#8HOXTLI)i+=;:,.";// 字符串由复杂到简单
 //        final String base = "#,.0123456789:;@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";// 字符串由复杂到简单
         StringBuilder text = new StringBuilder();
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
