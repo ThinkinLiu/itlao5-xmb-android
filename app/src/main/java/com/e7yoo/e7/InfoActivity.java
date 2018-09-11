@@ -224,7 +224,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void takeSuccess(TResult result) {
         String path = result.getImage().getCompressPath();
-        path = Pic2Ascii.fileToAsciiFile(InfoActivity.this, path);
+        //path = Pic2Ascii.fileToAsciiFile(InfoActivity.this, path);
         uploadImg(path);
     }
 
