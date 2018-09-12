@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutionException;
 //import cn.jiguang.share.weibo.SinaWeibo;
 
 public class ShareDialogUtil {
-    public static final String SHARE_URL = "http://itlao5.com/wp/app";
+    public static final String SHARE_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.e7yoo.e7";//"http://itlao5.com/wp/app";
     public static final String SHARE_TITLE = "闲暇时光·【小萌伴】陪你";
     public static final String SHARE_CONTENT = "陪聊·段子·小游戏···还能帮你找手机";
     public static final String SHARE_IMAGEPATH = null;
