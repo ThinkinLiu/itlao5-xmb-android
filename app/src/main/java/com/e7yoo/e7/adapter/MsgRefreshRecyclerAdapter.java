@@ -209,9 +209,11 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             if(showTime) {
                 viewHolderSend.itemMsgTime.setText(TimeUtil.formatMsgTime(mMsgs.get(position).getTime()));
                 viewHolderSend.itemMsgTime.setBackgroundResource(R.drawable.rounded_corners_tag_gray_trans);
+                viewHolderSend.itemMsgTime.setVisibility(View.VISIBLE);
             } else {
                 viewHolderSend.itemMsgTime.setText("");
                 viewHolderSend.itemMsgTime.setBackgroundResource(0);
+                viewHolderSend.itemMsgTime.setVisibility(View.GONE);
             }
             viewHolderSend.itemMsgContent.setText(mMsgs.get(position).getContent());
 //            if(mUser != null && mUser.getIcon() != null) {
@@ -240,9 +242,11 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             if(showTime) {
                 viewHolderRev.itemMsgTime.setText(TimeUtil.formatMsgTime(mMsgs.get(position).getTime()));
                 viewHolderRev.itemMsgTime.setBackgroundResource(R.drawable.rounded_corners_tag_gray_trans);
+                viewHolderRev.itemMsgTime.setVisibility(View.VISIBLE);
             } else {
                 viewHolderRev.itemMsgTime.setText("");
                 viewHolderRev.itemMsgTime.setBackgroundResource(0);
+                viewHolderRev.itemMsgTime.setVisibility(View.GONE);
             }
             viewHolderRev.itemMsgContent.setText(mMsgs.get(position).getContent());
             int resIcon = RobotUtil.getDefaultIconResId(mRobot);
@@ -292,9 +296,11 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             if(showTime) {
                 viewHolderHint.itemMsgTime.setText(TimeUtil.formatMsgTime(mMsgs.get(position).getTime()));
                 viewHolderHint.itemMsgTime.setBackgroundResource(R.drawable.rounded_corners_tag_gray_trans);
+                viewHolderHint.itemMsgTime.setVisibility(View.VISIBLE);
             } else {
                 viewHolderHint.itemMsgTime.setText("");
                 viewHolderHint.itemMsgTime.setBackgroundResource(0);
+                viewHolderHint.itemMsgTime.setVisibility(View.GONE);
             }
             viewHolderHint.itemMsgHint.setText(mMsgs.get(position).getContent());
             addClickListener(viewHolderHint.itemMsgHint, null, null, position);
