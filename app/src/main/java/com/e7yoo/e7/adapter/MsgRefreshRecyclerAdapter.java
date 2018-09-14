@@ -18,8 +18,11 @@ import com.e7yoo.e7.model.Robot;
 import com.e7yoo.e7.model.User;
 import com.e7yoo.e7.model.UserUtil;
 import com.e7yoo.e7.sql.DbThreadPool;
+import com.e7yoo.e7.util.ChatPopUtil;
+import com.e7yoo.e7.util.Constant;
 import com.e7yoo.e7.util.DebugUtil;
 import com.e7yoo.e7.util.MyIconUtil;
+import com.e7yoo.e7.util.PreferenceUtil;
 import com.e7yoo.e7.util.RobotUtil;
 import com.e7yoo.e7.util.TimeUtil;
 
@@ -234,6 +237,8 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             } else {
                 viewHolderSend.itemMsgVoice.setSelected(false);
             }
+            viewHolderSend.contentLayout.setBackgroundResource(ChatPopUtil.getInstance().getChatPop()[0]);
+            viewHolderSend.itemMsgVoice.setImageResource(ChatPopUtil.getInstance().getChatPop()[2]);
             // viewHolderSend.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
             addClickListener(viewHolderSend.contentLayout, viewHolderSend.itemMsgVoice, null, position);
         } else if(holder instanceof ViewHolderRev) {
@@ -287,6 +292,8 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                     urlView = viewHolderRev.itemMsgUrl;
                 }
             }
+            viewHolderRev.contentLayout.setBackgroundResource(ChatPopUtil.getInstance().getChatPop()[1]);
+            viewHolderRev.itemMsgVoice.setImageResource(ChatPopUtil.getInstance().getChatPop()[2]);
             // viewHolderRev.itemMsgIcon.setImageResource();
             // viewHolderRev.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
             addClickListener(viewHolderRev.contentLayout, viewHolderRev.itemMsgVoice, urlView, position);

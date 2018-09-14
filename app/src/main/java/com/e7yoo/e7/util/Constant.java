@@ -69,6 +69,7 @@ public class Constant {
     public static final String PREFERENCE_PUSH_MSG_UNREAD = "preference_push_msg_unread";
     public static final String PREFERENCE_CHAT_PULL_UP_TIMES = "preference_chat_pull_up_times";
     public static final String PREFERENCE_CHAT_OPEN_TIMES = "preference_chat_open_times";
+    public static final String PREFERENCE_CHAT_POP_NUM = "preference_chat_pop_num";
 
 
     public static final String PREFERENCE_CIRCLE_POST_FEED_TOPIC = "preference_circle_post_feed_topic";
