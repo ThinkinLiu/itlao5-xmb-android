@@ -83,6 +83,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
         } else {
             mMyIcon = MyIconUtil.getMyIcon();
         }
+        ChatPopUtil.getInstance().init();
     }
 
     public void refreshRobot(Robot robot) {
@@ -237,6 +238,8 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
             } else {
                 viewHolderSend.itemMsgVoice.setSelected(false);
             }
+            viewHolderSend.itemMsgContent.setTextColor(ChatPopUtil.getInstance().getChatPopTextColor()[0]);
+            viewHolderSend.itemMsgTime.setTextColor(ChatPopUtil.getInstance().getChatPopTextColor()[2]);
             viewHolderSend.contentLayout.setBackgroundResource(ChatPopUtil.getInstance().getChatPop()[0]);
             viewHolderSend.itemMsgVoice.setImageResource(ChatPopUtil.getInstance().getChatPop()[2]);
             // viewHolderSend.itemMsgVoice.setImageResource(mMsgs.get(position).getContent());
@@ -292,6 +295,8 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                     urlView = viewHolderRev.itemMsgUrl;
                 }
             }
+            viewHolderRev.itemMsgContent.setTextColor(ChatPopUtil.getInstance().getChatPopTextColor()[1]);
+            viewHolderRev.itemMsgTime.setTextColor(ChatPopUtil.getInstance().getChatPopTextColor()[2]);
             viewHolderRev.contentLayout.setBackgroundResource(ChatPopUtil.getInstance().getChatPop()[1]);
             viewHolderRev.itemMsgVoice.setImageResource(ChatPopUtil.getInstance().getChatPop()[2]);
             // viewHolderRev.itemMsgIcon.setImageResource();
@@ -310,6 +315,8 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderHint.itemMsgTime.setVisibility(View.GONE);
             }
             viewHolderHint.itemMsgHint.setText(mMsgs.get(position).getContent());
+            viewHolderHint.itemMsgTime.setTextColor(ChatPopUtil.getInstance().getChatPopTextColor()[2]);
+            viewHolderHint.itemMsgHint.setTextColor(ChatPopUtil.getInstance().getChatPopTextColor()[2]);
             addClickListener(viewHolderHint.itemMsgHint, null, null, position);
         } else if(holder instanceof ViewHolderFooter) {
             ViewHolderFooter viewHolderFooter = (ViewHolderFooter) holder;
@@ -322,6 +329,7 @@ public class MsgRefreshRecyclerAdapter extends RecyclerAdapter {
                 viewHolderFooter.layout.setBackgroundResource(0);
             }
             viewHolderFooter.loadingPb.setVisibility(mFooterShowProgress ? View.VISIBLE : View.GONE);
+            viewHolderFooter.loadingTv.setTextColor(ChatPopUtil.getInstance().getChatPopTextColor()[2]);
         }
         holder.itemView.setTag(position);
     }

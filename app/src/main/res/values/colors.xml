@@ -54,4 +54,8 @@
     <color name="color_bg_joke3">#09ff0000</color>
     <color name="color_bg_joke4">#0900ff00</color>
     <color name="color_bg_joke5">#090000ff</color>
+
+    <color name="color_chat_send">#000000</color>
+    <color name="color_chat_rev">#333333</color>
+    <color name="color_chat_hint">#666666</color>
 </resources>
