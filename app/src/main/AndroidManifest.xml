@@ -154,41 +154,41 @@
         <!-- start hotfix -->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
-            android:value="24846408" />
+            android:value="阿里热更新" />
         <meta-data
             android:name="com.taobao.android.hotfix.APPSECRET"
-            android:value="379523f21cdc6c4379d25c0914b96846" />
+            android:value="阿里热更新" />
         <meta-data
             android:name="com.taobao.android.hotfix.RSASECRET"
-            android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCLcgdx4ajic8lEcy02Be+6I+65QrZsxrUeAwhrJY/apI5PYoQDAvX2g2kmOQG81Cl0YqNy6TJLfiuwqf67xrtXH6HEFURiRWOGEcfnaeN7wxceh1FAvf6Zfi+jBPJEn5soLkGmn3snNd66umDQlhNbixZAvKY+OICz7vg1FhvbgbgJPAngCgl6aE9foTj6eCBb551B1mADC2c6CpLYjJ5pcUllAyjZ7DvrIFWu8yPjGYPqORJ6KQwlJreITR7Di8s0LS0CQWknMQFkF6ufSNws+nb+fm5S+1fiNnTcX/nP7BMwqiOn/I+yjfLpByyHMiO2KzxXId31F7G1PUL95cPFAgMBAAECggEAYtMnb5ALzqFcbIRr8DN42CSLFQSwoJqa1XA00SrHrp6ctKoPAMtiYZh0NsCD+L0ru+4EBHY8TMBYWlW/0HhhYLdsP7kKw9KFXAjR8bFbpOR4SAyCiy2beFCzlgb1Y6jxnyJZKKsx7nIBLbjU0D7r7R6/YJXSA5qrq9maUpUenQtX7ZCBHk3ftPnIsukjzZduO/e8Jhi4zs9LPa/lPrTt+ui/oACFwXKF6+x1l3VIdFxyx3mygjGLaTtaDV1omyNPlnszeBT+ufQ1tTvdXq9vwfEM5cmebAvTUlDb53U01Ssdft0p4ohbC7o2UOkbw3FzAQ2r3aIGHpBkNlo7JNdwKQKBgQDxZgvhL0TaaGhp/jgDhq71geLFApn6YBKbLLlkKPUM3tWKnt2xyBM1WAw4BTufv/s6wECrtW4894MSp3FP8mZD2QMu6dGxxpHy1V3qVo4b+RVbwjLe6K5CSFJvECZ/5tE6IOJx6LXiEOba6NHBeMKk9OXaZUNFh5DR/UfkE+SvPwKBgQCT4UgLENXGNacPGdBaLcHkjsiIwdDvNpDPxcdtSQzM3C28++seaE3QDLA2Sj+A0jB9jF0q918jvFW+mncV+JQMAPFjCsaRAp5JfhUXxZmRRJGyksLVe5h//+x5+/jxVnKixU/zzU7IaxFy4kLGZ9Gf1Xk11RZuW9TLjWqIKIbP+wKBgCiSlTaQ4kqvN7Vw4+s7zNY4sWuZZ1XcpePs3XAHLkCuh0eYMfy6evgBR3R29LGB6/DQ9U2m3dNjamVNPU9Jl4SZyd4tsG/nxwoAcJt9Vr8+2ycj+bbbdsZvL2O5XC8tFUdm1Yh9q2xGmPZ8IR0adeSRwLw3PtpF0cJphpa//TSzAoGACMHZi1Y24qMAvqMvtHdrOQa/l2Gq5s+bacJzmeQujt8nEj704HsayIxHzx88fXt1BapPRiEaEDqx9TSegr2Svtc7dDsKIUI/b2i5BQxdmL2vxxxrz0qfcE0OivbB+kC9TyhSIMTyummkweHmRGuXfVid8fMpfeWQR3Gbcm679QsCgYBtuxquUrT4oMVW+3s71z8rhZEAXqfDx4nd1cg8DGPqC+Qh45b8nWu7eetLWQ50ljmX+yVmzboHCJQHIx6HFv44syewfKKMorOQpxLiLE/7aMm7u1UEtXHAwLVoAZPpA77AOjGVM/vRLwYnBLFMjPjeLzu1xSMcE+yAkcL6xFsKdA==" />
+            android:value="阿里热更新" />
         <!-- end hotfix -->
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5788cee967e58e9b78004641" />
+            android:value="友盟" />
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="afbf92d21efd4a6c01d749e645cac08d" />
+            android:value="友盟" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="e7yoo" />
+            android:value="友盟" />
 
         <!-- begin: baidu speech sdk -->
         <!-- 请填写应用实际的APP_ID -->
         <meta-data
             android:name="com.baidu.speech.APP_ID"
-            android:value="8389593" />
+            android:value="百度语音" />
         <!-- 请填写应用实际的API_KEY -->
         <meta-data
             android:name="com.baidu.speech.API_KEY"
-            android:value="sdUF1rdsEihOc2wqxc4CfW2k3cRP3Y6T" />
+            android:value="百度语音" />
         <!-- 请填写应用实际的SECRET_KEY -->
         <meta-data
             android:name="com.baidu.speech.SECRET_KEY"
-            android:value="Frs7YCTuyBW9FeZ3xiVARAfcGD7G4COq" />
+            android:value="百度语音" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="GoWYBk4HjdguymeqODa2OwZu5u6teMbA" />
+            android:value="百度lbs" />
         <service
             android:name="com.baidu.speech.VoiceRecognitionService"
             android:exported="false" />
