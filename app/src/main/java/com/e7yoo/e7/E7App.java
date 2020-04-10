@@ -109,13 +109,13 @@ public class E7App extends MultiDexApplication {
     }
 
     private void ali() {
-        FeedbackAPI.init(mApp, "24846408", "379523f21cdc6c4379d25c0914b96846");
+        FeedbackAPI.init(mApp, "阿里反馈sdk id", "阿里反馈sdk 秘钥");
     }
 
     private void bugly() {
         MobclickAgent.setDebugMode(false);
         MobclickAgent.setCatchUncaughtExceptions(false);
-        CrashReport.initCrashReport(getApplicationContext(), "ab0c0f5941", false);
+        CrashReport.initCrashReport(getApplicationContext(), "腾讯bugly id", false);
         CrashReport.setUserId(OsUtil.getUdid(this));
     }
 
